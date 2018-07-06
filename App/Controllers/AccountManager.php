@@ -118,7 +118,7 @@ class AccountManager extends Controller
 	    $this->view->setErrorMessages( $inputValidator->getErrors() );
 
 		$this->view->setTemplate( "account-manager/partner-sign-in.tpl" );
-		$this->view->render( "App/Views/account-manager.php" );
+		$this->view->render( "App/Views/AccountManager.php" );
 	}
 
 	public function chooseBusiness()
@@ -174,7 +174,7 @@ class AccountManager extends Controller
 		$this->view->assign( "businesses", $businesses );
 		$this->view->assign( "user", $this->user );
 		$this->view->setTemplate( "account-manager/choose-business.tpl" );
-		$this->view->render( "App/Views/account-manager.php" );
+		$this->view->render( "App/Views/AccountManager.php" );
 	}
 
 	public function indexAction()
@@ -213,7 +213,7 @@ class AccountManager extends Controller
 	    $this->view->assign( "csrf_token", $csrf_token );
 	    $this->view->setErrorMessages( $inputValidator->getErrors() );
 		$this->view->setTemplate( "account-manager/home.tpl" );
-		$this->view->render( "App/Views/account-manager.php" );
+		$this->view->render( "App/Views/AccountManager.php" );
 	}
 
 	public function businessesAction()
@@ -246,7 +246,7 @@ class AccountManager extends Controller
 	    $this->view->setErrorMessages( $inputValidator->getErrors() );
 
 		$this->view->setTemplate( "account-manager/choose-business.tpl" );
-		$this->view->render( "App/Views/account-manager.php" );
+		$this->view->render( "App/Views/AccountManager.php" );
 	}
 
 	public function addBusinessAction()
@@ -403,7 +403,7 @@ class AccountManager extends Controller
 		$this->view->setErrorMessages( $inputValidator->getErrors() );
 
 		$this->view->setTemplate( "account-manager/add-business.tpl" );
-		$this->view->render( "App/Views/account-manager.php" );
+		$this->view->render( "App/Views/AccountManager.php" );
 	}
 
 	public function forgotPassword()
@@ -469,7 +469,7 @@ class AccountManager extends Controller
 		$this->view->setErrorMessages( $inputValidator->getErrors() );
 
 		$this->view->setTemplate( "account-manager/forgot-password.tpl" );
-		$this->view->render( "App/Views/account-manager.php" );
+		$this->view->render( "App/Views/AccountManager.php" );
 	}
 
 	public function passwordResetValidation()
@@ -556,20 +556,20 @@ class AccountManager extends Controller
 		$this->view->setErrorMessages( $inputValidator->getErrors() );
 
 		$this->view->setTemplate( "account-manager/reset-password.tpl" );
-		$this->view->render( "App/Views/account-manager.php" );
+		$this->view->render( "App/Views/AccountManager.php" );
 	}
 
 
 	public function invalidToken()
 	{
 		$this->view->setTemplate( "account-manager/invalid-token.tpl" );
-		$this->view->render( "App/Views/account-manager.php" );
+		$this->view->render( "App/Views/AccountManager.php" );
 	}
 
 	public function upgradeAction()
 	{
 		$this->view->setTemplate( "account-manager/upgrade.tpl" );
-		$this->view->render( "App/Views/account-manager.php" );
+		$this->view->render( "App/Views/AccountManager.php" );
 	}
 
 	public function logout()
