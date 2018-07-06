@@ -16,7 +16,7 @@
     display: none;
 }
 </style>
-<div id='ppHeader'>http://www.jiujitsuscout.com Privacy Policy</div>
+<div id='ppHeader'>https://www.jiujitsuscout.com Privacy Policy</div>
 <div id='ppBody'>
   <div class='ppConsistencies'>
     <div class='col-2'>
@@ -109,10 +109,8 @@
     <br>
     <br>
   </div>
-  <div class='innerText'>We do not use an SSL certificate</div>
-  <div class='innerText'> <strong>•</strong> We do not need an SSL because:</div>
-  <div class='innerText'>all information collected is either encrypted or stored in password protected databases</div>
-  <span id='coUs'></span>
+  <div class='innerText'>We use an SSL certificate</div>
+ <span id='coUs'></span>
   <br>
   <div class='grayText'><strong>Do we use 'cookies'?</strong></div>
   <br />
