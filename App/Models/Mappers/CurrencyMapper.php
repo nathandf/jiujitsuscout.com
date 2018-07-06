@@ -22,10 +22,11 @@ class CurrencyMapper extends DataMapper
 
     public function mapFromCountry( $country )
     {
+        $country = strtolower( $country );
         $entityFactory = $this->container->getService( "entity-factory" );
 
         $sql = $this->DB->prepare( "SELECT * FROM currency WHERE country = :country" );
-        $sql->bindParam( ":country", strtolower( $country ) );
+        $sql->bindParam( ":country", $country );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
         $currency = $entityFactory->build( "Currency" );
