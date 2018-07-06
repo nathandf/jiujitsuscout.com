@@ -1,0 +1,42 @@
+.sms-station {
+  background: #FFFFFF;
+}
+.conversation-box {
+  background: #f9fafb;
+  border: 1px solid #DDDDDD;
+  border-radius: 3px;
+  box-sizing: border-box;
+  max-height: 200px;
+  overflow-y: scroll;
+  margin: 0 auto;
+  margin-top: 15px;
+  padding: 20px;
+}
+.you {
+  background: #FFFFFF;
+  border: 1px solid #333;
+  box-sizing: border-box;
+  border-radius: 3px;
+  padding: 10px;
+  float: left;
+  max-width: 40ch;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.them {
+  background: #e3ecef;
+  border: 1px solid #3576D4;
+  box-sizing: border-box;
+  border-radius: 3px;
+  padding: 10px;
+  float: right;
+  max-width: 40ch;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.time {
+  font-weight: 600;
+  color: #999;
+}

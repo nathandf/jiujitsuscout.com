@@ -1,0 +1,7 @@
+server_vars.php
+blog
+jiu-jitsu-business
+cache/*.json
+commit_vars.php
+debug_sql_fail_.log
+.idea/

@@ -1,0 +1,26 @@
+{
+    "require": {
+        "twilio/sdk": "^5.16",
+        "paypal/rest-api-sdk-php": "*",
+        "sendgrid/sendgrid": "~6.0",
+        "smarty/smarty": "~3.1",
+        "facebook/graph-sdk": "^5.6"
+    },
+    "autoload": {
+      "psr-4": {
+        "Core\\": "Core/",
+        "Conf\\": "Conf/",
+        "Contracts\\": "Contracts/",
+        "Helpers\\": "Helpers/",
+        "Controllers\\": "Controllers/",
+        "Views\\": "Views/",
+        "Models\\": "Models/",
+        "Mappers\\": "Models/Mappers/",
+        "Services\\": "Models/Services/",
+        "Composites\\": "Models/Composites/"
+      },
+      "files": [
+            "Conf/constants.php"
+        ]
+    }
+}

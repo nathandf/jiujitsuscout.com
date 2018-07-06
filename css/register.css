@@ -1,0 +1,28 @@
+.hero {
+    box-sizing: border-box;
+    background-image: url( "../img/sitting-karate.jpg" );
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.register-box {
+    box-sizing: border-box;
+    margin-bottom: 0px;
+}
+
+
+.choose-con-title {
+  padding: 3px;
+  border-radius: 3px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.choose-btn {
+  margin-top: 20px;
+  margin-bottom: 0px;
+  padding: 15px;
+  text-align: center;
+  width: 300px;
+}

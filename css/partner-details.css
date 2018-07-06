@@ -1,0 +1,151 @@
+*{
+	border: 0;
+	margin: 0;
+	padding: 0;
+    font-family: 'Source Sans Pro',Tahoma;
+}
+
+body {}
+
+
+
+#nav-top {
+		height: 50px;
+		background: #f6f7f9;
+
+	}
+
+		#nav-top ul {
+			padding-top: 5px;
+			list-style-type: none;
+		}
+			#nav-top ul li {
+				width: auto;
+				float: left;
+				position: relative;
+			}
+				#nav-top ul li a {
+					display: block;
+					padding: 7px 20px;
+					text-decoration: none;
+
+					color: #333;
+					font-size: 20px;
+					font-weight: 600;
+
+				}
+					#nav-top ul li a:hover{
+						background: #333;
+						color: #f6f7f9;
+						border-radius: 3px;
+					}
+
+					td
+					{
+						padding-right: 15px;
+					}
+					body {}
+
+						#wrapper {
+							margin: 0 auto;
+							width: auto;
+						}
+
+								#task-bar {
+
+									top: 0px;
+									left: 0px;
+									background: #000000;
+									height: 100%;
+									width: 15%;
+									position: fixed;
+								}
+
+								.gln-button{
+									text-decoration: none;
+									margin: 0px auto;
+
+									width: 150px;
+									padding: 12px;
+									cursor: pointer;
+									border-radius: 3px;
+									background: red;
+									font-weight: 600;
+									color: #FFFFFF;
+									border-bottom: 3px solid #cc1100;
+								}
+									.gln-button:hover{
+
+										background: #cc1100;
+										border-bottom: 3px solid red;
+									}
+
+
+
+							#main-panel {
+
+							}
+
+						#content {
+							height: auto;
+							padding: 25px;
+							background: linear-gradient(to right, #FFEBEE,#FBE9E7,#F3E5F5,#E0F2F1);
+							background: #e0e0e0;
+
+						}
+
+						.update_button
+						{
+							box-sizing: border-box;
+							font-size: 14px;
+							color: #fff;
+							background: #00C853;
+							padding: 5px;
+							margin: 5px;
+							margin-left: 0px;
+							box-shadow: 0px 1px 3px #777;
+						}
+						.update_button:hover
+						{
+							cursor: pointer;
+							box-shadow: 0px 3px 7px #777;
+						}
+						.delete_button
+						{
+							box-sizing: border-box;
+							font-size: 14px;
+							color: #fff;
+							background: #D32F2F;
+							padding: 5px;
+							margin: 5px
+							margin-left: 0px;
+							box-shadow: 0px 1px 3px #777;
+						}
+						.delete_button:hover
+						{
+							cursor: pointer;
+							box-shadow: 0px 3px 7px #777;
+						}
+						.info_field {
+							margin-top: 5px;
+							margin-bottom: 5px;
+							width: 250px;
+							height: 35px;
+							border: 1px solid #CCCCCC;
+							border-radius: 2px;
+							box-shadow: 0px 1px 3px #777;
+							text-align: center;
+						}
+						.info_field:hover
+						{
+							transition: .4s;
+							box-shadow: 0px 3px 7px #777;
+						}
+						.info_field:focus
+						{
+							box-shadow: 0px 3px 7px #777;
+						}
+
+					.clear {
+						clear: both;
+					}

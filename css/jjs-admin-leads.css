@@ -1,0 +1,18 @@
+.lead-tag-columns {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.lead-tag {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #000;
+  display: block;
+  background: #FFF;
+  text-decoration: none;
+}
+
+.lead-tag:hover {
+  cursor: pointer;
+  background: #EEE;
+}

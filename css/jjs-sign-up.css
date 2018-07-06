@@ -1,0 +1,142 @@
+@charset "UTF-8";
+@ibm blue #466bb0 light slate gray #778899;
+
+*{
+	border: 0;
+	margin: 0;
+	padding: 0;
+    font-family: Tahoma;
+}
+
+body {}
+
+#wrapper {
+	width: auto;
+	margin: 0 auto;
+	border-bottom: 2px solid #ffffff;
+	position: relative;
+}
+	
+	#nav-top {
+		height: 80px;
+		background-color: #778899;
+	}
+		#nav-top h1 a{
+			color: #eeeeee;
+			margin-left: 10px;
+			padding-top: 20px;
+			float: left;
+			text-decoration: none;
+		}
+		
+		#nav-top ul {
+			padding-top: 20px;
+			list-style-type: none;
+		}
+			#nav-top ul li {
+				width: auto;
+				float: right;
+				position: relative;
+			}
+				#nav-top ul li a {
+					display: block;
+					padding: 10px 20px;
+					text-decoration: none;
+					font-family: Tahoma;
+					color: #ffffff;
+					font-size: 20px;
+					font-weight: 600;
+					transition: 0.1s;
+					
+				}
+					#nav-top ul li a:hover{
+						color: #a6d785;
+					}
+	#header {
+		background-color: #gggggg;
+		height: 60px;
+		text-align: center;
+		border-bottom: 1px solid #eeeeee;
+	}
+		#header h2 {
+			color: black;
+			padding-top: 15px;
+		}
+	
+	#content {
+	
+		min-height: 420px;
+		padding-top: 30px;
+		padding-left: 30px;
+		background: url("img/jjmat.jpg");
+		
+	}
+		#sign-up-box {
+			height: 360px;
+			width: 360px;
+			padding-bottom: 40px;
+			margin-left: 475px;
+			background: linear-gradient(#778899, #236b8e);
+		}
+			#sign-up-box h3 {
+				padding-top: 20px;
+				padding-left: 10px;
+				color: #eee;
+				text-align: center;
+			}
+			#sign-up-box a {
+				padding-top: 20px;
+				padding-left: 10px;
+				padding-bottom: 20px;
+				color: #a6d785;
+				text-align: center;
+			}
+			#sign-up-box #customer-user{
+				height: 40px;
+				width: 300px;
+				top: 0px;
+				left: 30px;
+				position: relative;
+			}
+			#sign-up-box #customer-pass {
+				height: 40px;
+				width: 300px;
+				top: 10px;
+				left: 30px;
+				position: relative;
+			}
+			#sign-up-box #customer-pass-confirm {
+				height: 40px;
+				width: 300px;
+				top: 20px;
+				left: 30px;
+				position: relative;
+			}
+
+			#sign-up-box #button {
+				background: #a6d785;
+				height: 50px;
+				width: 300px;
+				top: 260px;
+				left: 30px;
+				position: relative;
+				font-size: 22px;
+				font-family: Tahoma;
+				font-weight: 600;
+				color: #eeeeee;
+			}
+				#sign-up-box #button:hover {
+					border: 2px solid gold;
+				}
+
+	#footer {
+		height: 50px;
+		background-color: #ccc;
+	}
+
+.clear {
+	clear: both;
+}
+
+	
+	

@@ -1,0 +1,301 @@
+*{
+	border: 0;
+	margin: 0;
+	padding: 0;
+    font-family: Tahoma;
+}
+
+td {
+	text-align: left;
+	padding: 10px;
+}
+
+body {}
+
+#wrapper {
+	width: auto;
+	margin: 0 auto;
+	border-bottom: 2px solid #ffffff;
+	position: relative;
+}
+
+#nav-top {
+	height: auto;
+	background: #f6f7f9;
+
+}
+
+
+		.settings {
+			color: #f6f7f9;
+			background: #333;
+		}
+		.home {
+			color: #f6f7f9;
+			background: #333;
+		}
+		#nav-top {
+			position: relative;
+			z-index: 1;
+			padding-left: 25px;
+			height: auto;
+			background: #f6f7f9;
+			box-shadow: 1px 1px 5px #333;
+		}
+
+			#nav-top ul {
+
+				list-style-type: none;
+			}
+				#nav-top ul li {
+
+					width: auto;
+					float: left;
+					position: relative;
+				}
+
+				#nav-top ul .page-title {
+					width: auto;
+					float: left;
+					position: relative;
+					font-weight: 600;
+					padding: 7px 25px;
+					font-size: 16px;
+				}
+
+					#nav-top ul li a {
+						display: block;
+						padding: 7px 20px;
+						text-decoration: none;
+
+						color: #333;
+						font-size: 16px;
+						font-weight: 100;
+
+
+					}
+						#nav-top ul li a:hover{
+							background: #333;
+							color: #f6f7f9;
+							border-radius: 1px;
+						}
+
+					.right-nav {
+						float: right;
+					}
+	#header {
+		text-align: center;
+		height: 60px;
+		border-bottom: 1px solid #eeeeee;
+	}
+		#header #jjs-header {
+			color: black;
+			padding-top: 15px;
+			position: relative;
+		}
+
+	#content {
+		background: url("img/jjmat.jpg");
+		min-height: 540px;
+		padding: 25px;
+
+
+	}
+
+		#admin-container {
+			height: auto;
+			width: auto;
+			border: 2px solid #778899;
+			background: #FFFFFF;
+		}
+			#admin-container h1 {
+				text-align: center;
+				margin: 10px;
+			}
+			#admin-container h2 {
+				text-align: center;
+				margin: 10px;
+			}
+			#admin-container h3 {
+				text-align: center;
+				margin: 10px;
+			}
+
+	#lead-box {
+			text-align: center;
+			margin: 0 auto;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			display: block;
+			background: #FFFFFF;
+			border: 1px solid #333;
+			border-radius: 3px;
+
+		}
+			#lead-box #lead-tag-container {
+				display: inline-block;
+				width: 100%;
+				color: #333;
+
+			}
+
+			.no-lead-tag {
+			width: 100%;
+			display: inline-block;
+			margin: 0 auto;
+			color: #333;
+			border-top: 1px solid #ccc;
+			font-size: 16px;
+		}
+		.lead-tag {
+			width: 100%;
+			display: inline-block;
+			margin: 0 auto;
+			color: #333;
+			border-top: 1px solid #ccc;
+			font-size: 16px;
+
+		}
+
+			.gln-column {
+				box-sizing: border-box;
+				float: left;
+				padding: 10px;
+				padding-top: 18px;
+				height: 57px;
+				width: 25%;
+				border-bottom: 1px solid #ccc;
+
+			}
+
+			.column {
+				box-sizing: border-box;
+				float: left;
+				padding: 10px;
+				padding-top: 20px;
+				height: 57px;
+				width: 25%;
+				border-bottom: 1px solid #ccc;
+
+			}
+
+
+			.lead-tag-h {
+			display: inline-block;
+			width: 100%;
+			margin: 0 auto;
+
+			text-align: center;
+			color: #eee;
+
+			font-size: 13px;
+			font-weight: 600;
+		}
+
+
+			.column-h {
+
+				box-sizing: border-box;
+				float: left;
+				padding: 10px;
+				width: 25%;
+				background: linear-gradient(#333, #444);
+
+			}
+
+			.sep {
+				width: auto;
+				height: 2px;
+				background: #FFFFFF;
+			}
+
+
+	#footer {
+		height: 50px;
+		background-color: #ccc;
+	}
+
+.delete_button
+{
+	background: #fff;
+	border: 2px solid red;
+	border-radius: 3px;
+}
+
+.delete_button:hover
+{
+	cursor: pointer;
+}
+
+.clear {
+	clear: both;
+}
+
+.school-container{
+	height: auto;
+	width: auto;
+	margin: 0 auto;
+	margin: 25px;
+	border: 2px solid #778899;
+	background: #EEEEEE;
+}
+
+.tag-table {
+	margin: 25px;
+	margin: 0 auto;
+}
+
+.head-input {
+	height: 35px;
+	width: 500px;
+	border: 2px solid #778899;
+	border-radius: 10px 10px 10px 10px;
+}
+.head-input-charset {
+	height: 35px;
+	width: 500px;
+	border: 2px solid #778899;
+	border-radius: 10px 10px 10px 10px;
+}
+.head-input-robots {
+	height: 35px;
+	width: 500px;
+	border: 2px solid #778899;
+	border-radius: 10px 10px 10px 10px;
+}
+
+.submit-button {
+	height: 35px;
+	width: 100px;
+	background: #EEEEEE;
+	border: 2px solid #778899;
+}
+	.submit-button:hover {
+		background: #BBBBBB;
+		color: #FFFFFF;
+
+	}
+
+.inner-container {
+	height: 100px;
+	width: 100px;
+	border: 2px solid #778899;
+	text-align: center;
+	margin-left: 45px;
+	background: #FFFFFF;
+}
+
+.inner-text {
+	font-weight: 600;
+	font-size: 15px;
+	margin-bottom: 10px;
+}
+
+.inner-header {
+	font-weight: 600;
+	font-size: 15px;
+	margin-bottom: 20px;
+	border-bottom: 2px solid #778899;
+	color: #FFFFFF;
+	background: #236B8E;
+}

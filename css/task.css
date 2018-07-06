@@ -1,0 +1,83 @@
+.task-group {
+	box-sizing: border-box;
+	width: 95%;
+	background: #FFFFFF;
+}
+
+.task-heading {
+	box-sizing: border-box;
+	height: 45px;
+	width: 100%;
+	line-height: 45px;
+	background: #FFFFFF;
+	border-bottom: 1px solid #C0C0C0;
+}
+
+.task {
+	box-sizing: border-box;
+	height: 45px;
+	width: 100%;
+	line-height: 45px;
+	background: #FFFFFF;
+	border-bottom: 1px solid #C0C0C0;
+	transition: .25s;
+}
+
+.task:hover {
+	background: #f1f1f1;
+}
+
+.task-check {
+	margin-top: 7px;
+	box-sizing: border-box;
+	background: #f6f7f9;
+	color: #C0C0C0;
+	font-weight: 100;
+	height: 28px;
+	width: 28px;
+	border-radius: 25px;
+	line-height: 28px;
+	text-align: center;
+	border: 1px solid #C0C0C0;
+	transition: .25s;
+}
+
+.task-check:hover {
+	color: #37BF91;
+	background: #8FE8BD;
+	border: 1px solid #37BF91;
+}
+
+.task-toggle-button {
+	border: 1px solid #C0C0C0;
+	border-radius: 5px;
+	padding: 4px;
+	padding-left: 6px;
+	padding-right: 6px;
+	background: #F6F7F9;
+	margin-top: 7px;
+}
+
+.task-toggle-button:hover {
+	color: #C0C0C0;
+	border: 1px solid #C0C0C0;
+}
+
+.task-drop {
+	box-sizing: border-box;
+	padding: 20px;
+	border-bottom: 1px solid #C0C0C0;
+}
+
+.task-name-input {
+	box-sizing: border-box;
+	background: none;
+	width: 80%;
+	box-sizing: border-box;
+	border-bottom: 1px solid #888;
+	transition: .4s;
+}
+
+.task-name-input:focus {
+	border-bottom: 1px solid #448AFF
+}

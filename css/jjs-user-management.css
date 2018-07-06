@@ -1,0 +1,638 @@
+
+*{
+	border: 0;
+	margin: 0;
+	padding: 0;
+    font-family: Tahoma;
+}
+*:focus
+{
+	outline: none;
+}
+body {}
+
+	#wrapper {
+		margin: 0 auto;
+		width: auto;
+	}
+
+			#task-bar {
+
+				top: 0px;
+				left: 0px;
+				background: #000000;
+				height: 100%;
+				width: 15%;
+				position: fixed;
+			}
+
+
+			.update-button{
+				margin: 0px auto;
+				width: 150px;
+				height: 35px;
+				cursor: pointer;
+				border-radius: 3px;
+				background: #00B8EB;
+				font-weight: 600;
+				color: #FFFFFF;
+			}
+				.update-button:hover{
+				background: #0098CB;
+			}
+
+			#nav-top {
+				height: auto;
+				background: #f6f7f9;
+
+			}
+
+
+					.settings {
+						color: #f6f7f9;
+						background: #333;
+					}
+					.home {
+						color: #f6f7f9;
+						background: #333;
+					}
+					#nav-top {
+						position: relative;
+						z-index: 1;
+						padding-left: 25px;
+						height: auto;
+						background: #f6f7f9;
+						box-shadow: 1px 1px 5px #333;
+					}
+
+						#nav-top ul {
+
+							list-style-type: none;
+						}
+							#nav-top ul li {
+
+								width: auto;
+								float: left;
+								position: relative;
+							}
+
+							#nav-top ul .page-title {
+								width: auto;
+								float: left;
+								position: relative;
+								font-weight: 600;
+								padding: 7px 25px;
+								font-size: 16px;
+							}
+
+								#nav-top ul li a {
+									display: block;
+									padding: 7px 20px;
+									text-decoration: none;
+
+									color: #333;
+									font-size: 16px;
+									font-weight: 100;
+
+
+								}
+									#nav-top ul li a:hover{
+										background: #333;
+										color: #f6f7f9;
+										border-radius: 1px;
+									}
+
+	header {
+		text-align: center;
+		background-color: #ffffff;
+		font-size: 1.5em;
+		font-weight: 600;
+		padding: 10px;
+		border: 1px solid #EEEEEE;
+}
+
+
+	#content {
+		height: auto;
+		padding: 25px;
+
+
+	}
+
+	.legend {
+		box-sizing: border-box;
+		border: 1px solid #333;
+		padding: 15px;
+		margin-top: 15px;
+		margin-bottom: 15px;
+	}
+
+	.key {
+		display: inline-block;
+		vertical-align: middle;
+		height: 25px;
+		width: 25px;
+		box-sizing: border-box;
+		border: 1px solid #333;
+		background-color: rgba(250,250,0,.3);
+
+	}
+	.value {
+		display: inline-block;
+	}
+
+		#admin-container {
+			height: auto;
+			width: auto;
+
+		}
+			#admin-container h1 {
+				color: #333;
+				text-align: left;
+
+			}
+
+			#admin-container #gymname {
+				color: #236B8E;
+				font-size: 22px;
+				font-weight: 600;
+			}
+			#admin-container h2 {
+				text-align: center;
+				margin: 10px;
+			}
+			#admin-container h3 {
+				text-align: center;
+				margin: 10px;
+			}
+
+
+		summary::-webkit-details-marker {
+		  display: none
+		}
+
+		.user-tag
+		{
+			box-sizing: border-box;
+			padding: 10px;
+		}
+
+		.update_button
+		{
+			box-sizing: border-box;
+			font-size: 14px;
+			color: #fff;
+			background: #00C853;
+			padding: 5px;
+			margin: 5px;
+			box-shadow: 0px 1px 3px #777;
+		}
+		.update_button:hover
+		{
+			cursor: pointer;
+			box-shadow: 0px 3px 7px #777;
+		}
+		.delete_button
+		{
+			box-sizing: border-box;
+			font-size: 14px;
+			color: #fff;
+			background: #D32F2F;
+			padding: 5px;
+			margin: 5px
+			margin-left: 0px;
+			box-shadow: 0px 1px 3px #777;
+		}
+		.delete_button:hover
+		{
+			cursor: pointer;
+			box-shadow: 0px 3px 7px #777;
+		}
+		.dropdown
+		{
+			box-sizing: border-box;
+			padding: 5px;
+			border-radius: 2px;
+			border: 1px solid #ccc;
+			box-shadow: 0px 1px 3px #777;
+		}
+		.dropdown:hover
+		{
+			cursor: pointer;
+			box-shadow: 0px 3px 7px #777;
+		}
+
+
+		details {
+
+			background: #f6f7f9;
+			margin: 10px auto;
+			width: 100%;
+			text-align: center;
+
+		}
+		.update-header {
+			text-align: center;
+		}
+		.update-title {
+			font-size: 22px;
+			font-weight: 600;
+			text-align: center;
+			color: #333;
+		}
+		.category-btn{
+			display: block;
+			box-sizing: border-box;
+			border: 1px solid #778899;
+			padding-top: 10px;
+			margin: 0 auto;
+
+			width: 100%;
+			height: 40px;
+			border-radius: 3px;
+			color: #4b4f56;
+			background: linear-gradient(#f6f7f9, #f4f4f4);
+			font-weight: bold;
+			font-size: 14px;
+
+		}
+
+		.category-btn:hover{
+			cursor: pointer;
+			background: #333;
+			color: #eee;
+
+		}
+
+
+		.section {
+			display: inline-block;
+			margin: 0 auto;
+		}
+		.photo-container {
+			text-align: center;
+			border: 1px solid #333;
+			margin: 0 auto;
+			margin-left: 20px;
+			margin-top: 20px;
+			margin-right: 20px;
+			width: 300px;
+			height: 340px;
+
+			float: left;
+		}
+			.photo-container .school-logo {
+				width: 300px;
+				height: 300px;
+			}
+
+		#lead-box {
+			text-align: center;
+			margin: 0 auto;
+			margin-top: 20px;
+			display: block;
+			background: #FFFFFF;
+			border: 1px solid #333;
+			border-radius: 3px;
+
+		}
+			#lead-box #lead-tag-container {
+				display: inline-block;
+				width: 100%;
+				color: #FFFFFF;
+
+			}
+
+		#video-upload-box {
+			display: block;
+			margin: 0 auto;
+			padding-top: 20px;
+			margin-top: 20px;
+			text-align: center;
+			width: 765px;
+
+
+		}
+		#video-link {
+			height: 30px;
+			width: 650px;
+			margin: 0 auto;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			border: 1px solid #333;
+		}
+		#video-upload-box #school-video {
+			margin: 0 auto;
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+
+		#interest-check-box {
+			display: block;
+			text-align: center;
+			margin: 0 auto;
+			width: 765px;
+			height: auto;
+
+			background: #fff;
+
+
+		}
+
+		.b-h {
+			margin-top: 20px;
+			padding: 30px;
+			padding-bottom: 45px;
+			background: #ffffff;
+			width: 400px;
+			height: 300px;
+
+			float: left;
+		}
+
+		.inp {
+			height: 30px;
+			width: 300px;
+			border: 1px solid #778899;
+		}
+
+		.t-a {
+			margin-top: 20px;
+			height: 200px;
+			width: 400px;
+			border: 1px solid #778899;
+		}
+		.no-lead-tag {
+			width: 100%;
+			display: inline-block;
+			margin: 0 auto;
+			color: #333;
+			border-top: 1px solid #ccc;
+			font-size: 16px;
+		}
+		.lead-tag {
+			width: 100%;
+			display: inline-block;
+			margin: 0 auto;
+			color: #333;
+			border-top: 1px solid #ccc;
+			font-size: 16px;
+
+		}
+
+			.lead-tag:hover{
+				background: #F6F7F9;
+				cursor: pointer;
+			}
+
+			.gln-column {
+				box-sizing: border-box;
+				float: left;
+				padding: 10px;
+				padding-top: 18px;
+				height: 57px;
+				width: 20%;
+				border-bottom: 1px solid #ccc;
+
+			}
+
+			.column {
+				box-sizing: border-box;
+				float: left;
+				padding: 10px;
+				padding-top: 20px;
+				height: 57px;
+				width: 20%;
+				border-bottom: 1px solid #ccc;
+
+			}
+
+
+			.lead-tag-h {
+			display: inline-block;
+			width: 100%;
+			margin: 0 auto;
+
+			text-align: center;
+			color: #eee;
+
+			font-size: 13px;
+			font-weight: 600;
+		}
+
+
+			.column-h {
+
+				box-sizing: border-box;
+				float: left;
+				padding: 10px;
+				width: 20%;
+				background: linear-gradient(#333, #444);
+
+			}
+
+			.sep {
+				width: auto;
+				height: 2px;
+				background: #FFFFFF;
+			}
+
+#lp-modal{
+	display: none;
+	position: absolute;
+	height: 40px;
+	width: 200px;
+	background: #000;
+	transition: .25s;
+}
+#sc-modal{
+	display:none;
+	height: 40px;
+	width: 200px;
+	background: #000;
+	transition: .25s;
+}
+
+#update-lp:hover {
+	cursor:help;
+}
+
+#update-sc:hover {
+	cursor:help;
+}
+
+.update-container {
+
+	padding-top: 15px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+
+
+}
+	.update-container h2{
+		text-align: center;
+		color: #333;
+	}
+
+	.check-box-clear {
+	clear: both;
+}
+
+.select-box {
+	font-size: 1.25em;
+	margin: 0 auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 300px;
+	height: 50px;
+	border-radius: 5px;
+	border: 2px solid #CCCCCC;
+}
+
+#partner-detail-box {
+			text-align: center;
+			margin: 0 auto;
+			height: auto;
+			width: auto;
+			background: #FFFFFF;
+			position: relative;
+			color: white;
+		}
+			#partner-detail-box h2 {
+				margin-top: 10px;
+				margin-bottom: 10px;
+				text-align: center;
+				color: #236b8e;
+			}
+			#partner-detail-box h4 {
+				margin-top: 10px;
+				margin-bottom: 10px;
+				color: #236b8e;
+				margin-top: 20px;
+			}
+
+			.preference {
+				margin: 10px;
+			}
+			.current {
+				font-weight: 600;
+
+			}
+
+			.check-box-container {
+				height: auto;
+				margin-left: 120px;
+				width: 220px;
+				margin: 0 auto;
+			}
+				.check-box-container span {
+					color: #000000;
+					float: left;
+					margin-top: 15px;
+					margin-left: 5px;
+				}
+				.check-box-container input[type=checkbox]{
+					float: left;
+					height: 25px;
+					width: 25px;
+					margin-top: 15px;
+				}
+
+			#partner-detail-box table {
+				display: block;
+				margin: 0 auto;
+				width: 320px;
+			}
+
+	.ppc {
+		padding-bottom: 10px;
+		padding-top: 10px;
+
+	}
+	.ppct {
+		padding-top: 10px;
+
+	}
+	.ppcb {
+		padding-bottom: 10px;
+
+	}
+
+
+
+.clear {
+	clear: both;
+}
+
+.school-container{
+	height: 200px;
+	width: auto;
+	margin: 0 auto;
+	margin: 25px;
+
+	background: #EEEEEE;
+	overflow-y: scroll;
+}
+
+.tag-table {
+	margin: 25px;
+	margin: 0 auto;
+}
+
+.inner-container {
+	height: 100px;
+	width: 100px;
+
+	text-align: center;
+	margin-top: 25px;
+	margin-left: 45px;
+	background: #FFFFFF;
+}
+
+.inner-text {
+	font-weight: 600;
+	font-size: 15px;
+	margin-bottom: 10px;
+}
+
+.inner-header {
+	font-weight: 600;
+	font-size: 15px;
+	margin-bottom: 20px;
+	border-bottom: 2px solid #778899;
+	color: #FFFFFF;
+	background: #236B8E;
+}
+	#footer {
+		height: 50px;
+		background: #333;
+		color: #fff;
+	}
+	#footer a {
+		color: #fff;
+	}
+
+.pu-l {
+	float: left;
+	margin-left: 5px;
+	margin-top: 7px;
+}
+
+.pu-r {
+	float: right;
+	background: #00B8EB;
+	height: 25px;
+	width: 100px;
+	margin-top: -23px;
+	margin-right: 10px;
+	color: #FFFFFF;
+	border-radius: 3px;
+}
+	.pu-r:hover{
+		background: #0098CB;
+		cursor: pointer;
+	}
+
+.clear {
+	clear: both;
+}

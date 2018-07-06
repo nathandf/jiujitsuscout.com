@@ -1,0 +1,10 @@
+.partner-tag {
+	display: block;
+	margin-bottom: 15px;
+	background-color: #FFFFFF;
+	box-sizing: border-box;
+}
+
+.partner-tag:hover {
+	cursor: pointer;
+}

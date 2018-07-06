@@ -1,0 +1,36 @@
+.landing-page-tag {
+  background: #FFF;
+  margin-top: 15px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: 1px solid #CCCCCC;
+  padding: 8px;
+}
+
+.landing-page-icon {
+  border-radius: 5px;
+  padding: 5px;
+  color: #FFF;
+}
+
+.action-button {
+  margin-top: 3px;
+  margin-bottom: 0px;
+}
+
+.m-clear {
+  display: none;
+  clear: both;
+}
+
+@media screen and (max-width: 500px) {
+
+  .m-clear {
+    display: block;
+  }
+
+  .action-buttons {
+    float: left;
+  }
+
+}

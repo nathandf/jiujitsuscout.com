@@ -1,0 +1,155 @@
+.upgrade-title {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 45px;
+  font-weight: 100;
+  text-align: center;
+  color: #333;
+}
+
+.business-name {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.billing-type-section {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.billing-type-labels {
+  font-size: 11px;
+  font-weight: 100;
+  color: #444;
+  margin-left: 10px;
+  margin-right: 15px;
+}
+
+.pricing-section {
+  margin-bottom: 45px;
+}
+
+.pricing-tier {
+  margin-top: 90px;
+  border-top: 4px solid #25E8C8;
+  height: 900px;
+}
+
+.pricing-tier:hover {
+  border-top: 4px solid #7A6FF0;
+}
+
+.featured-tier {
+  margin-top: 0px;
+  height: 990px;
+}
+
+.pricing-title {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  font-size: 30px;
+  font-weight: 100;
+  color: #333;
+  text-align: center;
+  border-bottom: 1px solid #CCC;
+}
+
+.billing-plan-section {
+  padding: 20px;
+  border-bottom: 1px solid #CCC;
+  height: 180px;
+}
+
+.featured-billing-plan-section {
+  padding: 30px;
+  border-bottom: 1px solid #CCC;
+  height: 250px;
+}
+
+.price {
+  padding-bottom: 15px;
+  font-size: 35px;
+  font-weight: 100;
+  color: #333;
+  text-align: center;
+}
+
+.billing-frequency {
+  font-size: 12px;
+  font-weight: 100;
+  color: #AAA;
+  margin-left: 10px;
+}
+
+.billing-quantity-section {
+  margin-top: 20px;
+}
+
+.billing-quantity-dropdown, option {
+  width: 80px;
+  height: 40px;
+  border: 2px solid #CCC;
+  border-radius: 3px;
+  font-size: 14px;
+  color: #777;
+  font-weight: 100;
+}
+.billing-quantity-dropdown:hover, option {
+  border: 2px solid #25E8C8;
+  cursor: pointer;
+  text-align: center;
+}
+
+.billing-plan-description {
+  font-size: 20px;
+  font-weight: 100;
+  color: #666;
+}
+
+.billing-plan-button {
+  text-decoration: none;
+  color: #FFF;
+  background: #7A6FF0;
+  display: block;
+  margin: 0 auto;
+  margin-top: 25px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100px;
+  font-weight: 100;
+}
+
+.feature-section {
+  padding: 30px;
+}
+
+.feature-section-title {
+  color: #222;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.feature-check {
+  display: block;
+  float: left;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-right: 10px;
+  color: #25E8C8;
+}
+
+.feature {
+  display: block;
+  float: left;
+  font-size: 14px;
+  font-weight: 100;
+  color: #777;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+  max-width: 30ch;
+}

@@ -1,0 +1,65 @@
+.funnel {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 10;
+}
+
+.f-lvl {
+	display: block;
+	text-decoration: none;
+	text-align: center;
+	box-sizing: border-box;
+	margin: 0 auto;
+	margin-bottom: 8px;
+	color: #FFF;
+	font-weight: 600;
+	padding: 8px;
+}
+
+.f-lvl:hover {
+	cursor: pointer;
+}
+
+.funnel-bg-1 {
+  background: #0667D0;
+}
+
+.funnel-bg-2 {
+  background: #FF6373;
+}
+
+.funnel-bg-3 {
+  background: #FDA32E;
+}
+
+.funnel-bg-4 {
+  background: #37BF91;
+}
+
+.funnel-bg-5 {
+  background: #7A6FF0;
+}
+
+.funnel-level-1 {
+	width: 90%;
+}
+
+.funnel-level-2 {
+	width: 75%;
+}
+
+.funnel-level-3 {
+	width: 60%;
+}
+
+.funnel-level-4 {
+	width: 45%;
+}
+
+.funnel-level-5 {
+	width: 30%;
+}
+
+.funnel-level-last {
+  background: #37BF91;
+}

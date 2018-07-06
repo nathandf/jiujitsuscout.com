@@ -1,0 +1,114 @@
+.partner-title {
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    font-size: 35px;
+    margin-bottom: 15px;
+    margin-top: 40px;
+}
+
+.partner-sub-title {
+  margin: 0 auto;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 40px;
+  max-width: 60ch;
+}
+
+.partner-box {
+  box-sizing: border-box;
+  padding: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  color: #444;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 3px;
+  background: #FFFFFF;
+}
+
+.sign-up-button {
+  width: 200px;
+  height: 40px;
+  background: #448AFF;
+  color: #FFFFFF;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.sign-up-button:hover {
+  cursor: pointer;
+}
+
+.sign-up-field {
+  width: 300px;
+  height: 40px;
+  border-radius: 3px;
+  border: 1px solid #DDDDDD;
+  text-indent: 10px;
+  transition: .4s;
+  margin-bottom: 15px;
+}
+
+.sign-up-field:hover {
+  border: 1px solid #3EA7EB;
+}
+
+.sign-up-field:focus {
+  border: 1px solid #3EA7EB;
+}
+
+.partner-title-bottom {
+  margin-top: 20px;
+  color: #858B8C;
+  font-weight: 600;
+}
+
+.partner-overview {
+  box-sizing: border-box;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background: #FFFFFF;
+}
+
+.overview-right {
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.overview-image {
+  width: 100%;
+}
+
+.list-item {
+  padding-bottom: 15px;
+  text-align: left;
+}
+
+.partner-tools {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background: #FFFFFF;
+}
+
+.dark {
+  color: #333;
+  font-weight: 600;
+}
+
+.sign-up-free-box {
+  text-align: center;
+  background: #FFFFFF;
+  color: #858B8C;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 50px;
+}
+
+.city-name {
+  color: #00C853;
+}

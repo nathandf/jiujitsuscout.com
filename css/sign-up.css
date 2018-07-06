@@ -1,0 +1,243 @@
+
+	#content {
+
+		margin: 0 auto;
+		width: 100%;
+		height: auto;
+		background: #FFF;
+		background-position-y: 40%;
+
+	}
+		.h1 {
+			color: #444;
+			text-align: center;
+			background: #f6f6f6;
+			font-size: 35px;
+			padding-top: 40px;
+			padding-bottom: 40px;
+			margin-bottom: 40px;
+		}
+		.copy-top{
+
+			max-width: 850px;
+			margin: 0 auto;
+			text-align: center;
+			color: #555;
+		}
+			.copy-top #h1{
+				font-size: 25px;
+
+			}
+
+		header {
+		text-align: center;
+		width: 100%;
+		background-color: #ffffff;
+		font-size: 1.5em;
+		font-weight: 600;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		border-bottom: 1px solid #EEEEEE;
+}
+
+		#partner-info-box {
+			color: #444;
+			background: #fff;
+			margin: 0 auto;
+			margin-top: 40px;
+			margin-bottom: 40px;
+			padding-top: 15px;
+
+			text-align: center;
+			width: 300px;
+			border-radius: 3px;
+			border: 3px solid #CCCCCC;
+		}
+		.password_label
+		{
+			color: #444;
+			margin-top: 15px;
+		}
+
+		#partner-info-box .copy-top {
+			font-size: 25px;
+			font-weight: 600;
+			padding-bottom: 15px;
+		}
+
+			h2 {
+				color: #236B8E;
+			}
+			#headline-top {
+				background: #236B8E;
+				color: white;
+				font-weight: 100;
+
+			}
+			#headline {
+				margin: 10px;
+				font-size: 15px;
+
+			}
+			.p-input {
+				margin-top: 5px;
+				margin-bottom: 5px;
+				width: 250px;
+				height: 35px;
+				border: 1px solid #CCCCCC;
+				border-radius: 2px;
+
+				text-align: center;
+			}
+
+				#partner-info-box #button {
+					background: #00C853;
+					margin: 10px auto;
+					margin-top: 15px;
+					margin-bottom: 15px;
+					height: 50px;
+					width: 250px;
+					font-size: 20px;
+
+					font-weight: 600;
+					color: #FFFFFF;
+					border-radius: 3px;
+					box-shadow: 0px 1px 3px #555;
+				}
+					#partner-info-box #button:hover {
+						box-shadow: 0px 1px 7px #333;
+						cursor: pointer;
+					}
+	#footer {
+		height: 50px;
+		background-color: #ccc;
+	}
+
+.clear {
+	clear: both;
+}
+
+@media screen and (max-width: 1100px){
+
+	#content {
+		width: 100%;
+	}
+
+	#nav-top {
+	font-size: 1em;
+	text-align: center;
+	width: 100%;
+	}
+
+	#nav-top h1 {
+		padding-top: 20px
+	}
+
+	#nav-top h1 a{
+		float:none;
+		margin: 0 auto;
+
+	}
+
+
+	#partner-info-box {
+		box-sizing: border-box;
+		width: 100%;
+		margin: 0 auto;
+		margin-top: 40px;
+		margin-bottom: 40px;
+
+	}
+
+	#partner-info-box h1{
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	.p-input {
+				margin-top: 5px;
+				margin-bottom: 5px;
+				width: 250px;
+				height: 35px;
+				border: 1px solid #CCCCCC;
+				border-radius: 2px;
+
+				text-align: center;
+			}
+
+
+}
+@media screen and (max-width: 850px){
+	#partner-info-box{
+		background: none;
+	}
+	.copy-top{
+		width: 100%;
+	}
+	.copy-top #h1{
+		font-size: 22px;
+	}
+}
+@media screen and (max-width: 750px){
+
+	.do-banner {
+		display: none;
+	}
+	.mo-banner{
+			display: block;
+		}
+}
+
+@media screen and (max-width: 700px){
+
+	.p-input{
+		width: 320px;
+
+	}
+
+	#headline {
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+
+}
+@media screen and (max-width: 520px){
+	#headline-top {
+		display: none;
+	}
+}
+@media screen and (max-width: 450px){
+
+	header {
+		padding: 0px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		margin: 0px;
+		height: 20px;
+		width: auto;
+		font-size: 1em;
+	}
+
+	#nav-top {
+		text-align: center;
+		padding: 0px;
+		height: auto;
+	}
+
+	#nav-top h1 {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+
+	.p-input{
+		width: 300px;
+
+	}
+
+
+}
+
+@media screen and (max-width: 320px){
+	#content {
+		width: 320px;
+	}
+}

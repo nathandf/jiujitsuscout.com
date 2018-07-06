@@ -1,0 +1,50 @@
+.slider {
+    -webkit-appearance: none;
+    width: 300px;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+		margin-top: 30px;
+		margin-bottom: 30px;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+		border: 2px solid #0667D0;
+    background: #FFFFFF;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #0667D0;
+    cursor: pointer;
+}
+
+.budget-widget {
+	background: #FFF;
+	margin-top: 15px;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+.budget {
+	margin-top: 10px;
+	font-weight: 600;
+	font-size: 22px;
+	color: #333333;
+	letter-spacing: 1px;
+}
+
+.budget-time {
+	font-size: 14px;
+	color: #888;
+	font-weight: 100;
+}

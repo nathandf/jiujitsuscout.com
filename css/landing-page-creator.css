@@ -1,0 +1,44 @@
+.lp-creator-content {
+  overflow-y: scroll;
+  position: absolute;
+  width: 75%;
+  right: 0;
+  top: 0;
+}
+
+.creator-form {
+  overflow-y: scroll;
+  height: 100%;
+  width: 25%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: #FFF;
+  margin-bottom: 100px;
+}
+
+.creator-button-container {
+  position: fixed;
+	top: 0;
+  background: #FFF;
+  width: 25%;
+  padding-top: 10px;
+  padding-right: 15px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #000;
+}
+
+
+.input-container {
+  display: block;
+  margin: 0 auto;
+}
+
+.sidebar {
+  display: border-box;
+  padding-left: 10px;
+  width: 100%;
+  padding-top: 60px;
+}

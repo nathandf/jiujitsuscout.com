@@ -1,0 +1,77 @@
+.calendar {
+	width: 100%;
+	display: table;
+	box-sizing: border-box;
+	border: 3px solid #DDD;
+	background: #f6f7f9;
+}
+
+.calendar-row {
+	border-bottom: 2px solid #DDD;
+}
+
+.weekday-column {
+	box-sizing: border-box;
+	width: 125px;
+}
+
+.weekday-header {
+	width: 100%;
+	text-align: center;
+	padding: 3px;
+	box-sizing: border-box;
+}
+
+.course {
+	border: 3px solid #DDD;
+	background: #FFF;
+	width: 125px;
+	height: 125px;
+	box-sizing: border-box;
+	padding: 12px;
+}
+
+.course-checkbox {
+	opacity: 0;
+}
+
+.course-container {
+	display: inline-block;
+	margin-top: 12px;
+	margin-left: 12px;
+	margin-bottom: 12px;
+	border: 2px solid transparent;
+}
+
+.course-checkbox-container {
+	display: inline-block;
+}
+
+#courses-container input[type=checkbox]:checked + .course-container{
+    border: 2px solid #00C853;
+}
+
+.course-name {
+	height: 60%;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.course-time {
+	height: 40%;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.schedule-name-input {
+	box-sizing: border-box;
+	background: none;
+	width: 80%;
+	box-sizing: border-box;
+	border-bottom: 1px solid #888;
+	transition: .4s;
+}
+
+.schedule-name-input:focus {
+	border-bottom: 1px solid #448AFF
+}
