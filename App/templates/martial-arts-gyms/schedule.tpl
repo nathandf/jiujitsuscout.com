@@ -6,7 +6,7 @@
 		{$facebook_pixel|default:""}
 	</head>
 	<body>
-		{include file='includes/navigation/martial-arts-gym-nav-mobile.tpl'}
+		
 		<div id="content" class="" itemscope itemtype="http://schema.org/LocalBusiness">
 			{include file='includes/snippets/profile-title-bar.tpl'}
 			{include file='includes/navigation/martial-arts-gym-nav.tpl'}

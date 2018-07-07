@@ -1,4 +1,4 @@
-<div class="nav-top-alt">
+<div class="nav-top">
   <ul class="nav-top-ul">
     <li class="nav-item-l"><a class="nav-link" href="{$HOME}martial-arts-gyms/{$business->site_slug}/">Home</a></li>
     <li class="nav-item-l"><a class="nav-link" href="{$HOME}martial-arts-gyms/{$business->site_slug}/reviews">Reviews</a></li>
