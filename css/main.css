@@ -55,6 +55,18 @@
     --alt-border-bottom: 3px solid #00C853;
 }
 
+/* Removed Default styles */
+/* clears the 'X' from Internet Explorer */
+input[type=search]::-ms-clear {  display: none; width : 0; height: 0; }
+input[type=search]::-ms-reveal {  display: none; width : 0; height: 0; }
+
+/* clears the 'X' from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+
 * {
     border: 0;
     margin: 0;
@@ -89,8 +101,10 @@ iframe {
 
 .nav-top-alt {
     font-family: var(--std-font-family);
-    background: #0667D0;
-    color: var(--main-font-dark);
+    /* background: #0667D0;
+    color: var(--main-font-dark); */
+    color: #333;
+    background: #FFF;
 }
 
 .nav-top-main {
@@ -222,6 +236,18 @@ iframe {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
+}
+
+.overlay-white {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(256, 256, 256, .9);
+}
+
+.overlay-white-light {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(256, 256, 256, .7);
 }
 
 .content {

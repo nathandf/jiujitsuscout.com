@@ -1,40 +1,38 @@
 
-summary::-webkit-details-marker {
-		  display: none
-		}
-
 #search-box {
 	padding-top: 0px;
 	padding-bottom: 0px;
-	text-align: center;
 	height: auto;
 	width: 100%;
 	margin: 0 auto;
-	background: url(../img/kick-duck.jpg);
+	/* background: url(../img/kick-duck.jpg);
 	background-size: 100%;
-	background-position-y: 85%;
+	background-position-y: 85%; */
 }
+
 .sb-overlay {
-	padding-top: 135px;
-	padding-bottom: 135px;
+	padding-top: 100px;
+	padding-bottom: 100px;
 }
+
 .search-title {
-	color: #FFFFFF;
-  text-shadow: 0px 0px 15px #000;
+	color: #2F3033;
+	font-family: "Open Sans", sans-serif;
+	font-size: 35px;
+  	/* text-shadow: 0px 0px 15px #000; */
 	margin-bottom: 20px;
 }
 .search-sub-title {
 	display: table;
-	margin: 0 auto;
-	color: #FFFFFF;
-	text-shadow: 0px 5px 15px #000;
+	color: #000;
+	/* text-shadow: 0px 5px 15px #000; */
 	max-width: 70ch;
 	text-align: center;
 	margin-bottom: 10px;
 }
 
 .sb-link {
-	color: #FFFFFF;
+	color: #000;
 	text-decoration: none;
 }
 
@@ -87,45 +85,42 @@ summary::-webkit-details-marker {
 	vertical-align: middle;
 	display: inline-block;
 	text-align: center;
-	font-size: 1.5em;
+	font-family: "Raleway", sans-serif;
+	font-size: 15px;
 	height: 50px;
-	width: 300px;
-	margin: 10px;
+	width: 450px;
 	border-radius: 3px 0px 0px 3px;
-	background: linear-gradient(#FFFFFF, #EEEEEE);
-	border: 1px solid #CCCCCC;
-	border-top: 1px solid #BBBBBB;
-	border-left: 1px solid #BBBBBB;
-	margin-left: 10px;
+	border: 1px solid #DDD;
 	margin-right: -5px;
-
 }
+
 #search-bar:hover {
 	cursor: text;
 }
 #search-bar:focus {
-	outline-color: #cc1100;
+	border: 1px solid #0667D0;
+	transition: .25s;
 }
 
 #find-gyms-button {
 	vertical-align: middle;
 	display: inline-block;
-	background: #CC1100;
-	border: 2px solid #CC1100;
+	background: #0667D0;
+	border: 2px solid #0667D0;
 	border-radius: 0px 2px 2px 0px;
 	height: 50px;
 	width: 175px;
-	font-size: 1.5em;
-	font-family: Tahoma;
-	font-weight: 600;
+	font-size: 15px;
+	/* font-family: Tahoma;
+	font-weight: 600; */
 	color: #FFFFFF;
 	margin-right: 10px;
 	transition: .3s;
 }
 
 #find-gyms-button:hover {
-	background: red;
-	border: 2px solid red;
+	background: #0667D0;
+	border: 2px solid #0667D0;
 	cursor: pointer;
 }
 
@@ -133,17 +128,12 @@ summary::-webkit-details-marker {
 	outline: none;
 }
 
-.categories {
-	width: 100%;
-	height: 60px;
-	background: #F7FAFB;
-	background: #F49334;
-	padding-top: var( --std-padding );
-	padding-bottom: var( --std-padding );
+.mo {
+	display: none;
 }
 
-.categories a {
-	color: #CED6D9;
+.dt {
+	display: block;
 }
 
 @media screen and (max-width: 800px) {
@@ -154,20 +144,32 @@ summary::-webkit-details-marker {
 	}
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 680px) {
 
-    #find-gyms-button {
-		width: 75%;
-		margin: 0 auto;
-		border-radius: 0px;
+	.search-title {
+		font-size: 30px;
 	}
 
 	#search-bar {
-		display: block;
 		width: 75%;
-		margin: 0 auto;
-		border-radius: 0px;
 	}
+
+	#find-gyms-button {
+		width: 21%;
+	}
+
+	.mo {
+		display: block;
+	}
+
+	.dt {
+		display: none;
+	}
+
+}
+
+@media screen and (max-width: 600px) {
+
 
 	#search-box {
 		background-size: 150%;

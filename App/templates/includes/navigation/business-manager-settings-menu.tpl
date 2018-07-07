@@ -1,4 +1,4 @@
-<div class="nav-top-alt de-tab">
+<div class="nav-top">
   <ul class="nav-top-ul">
     <li class="nav-item-l"><a class="nav-link" href="{$HOME}account-manager/business/settings/location">Location</a></li>
     <li class="nav-item-l"><a class="nav-link" href="{$HOME}account-manager/business/settings/disciplines">Disciplines</a></li>

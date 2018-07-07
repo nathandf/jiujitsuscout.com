@@ -30,11 +30,11 @@
 	    {include file='includes/navigation/main-menu.tpl'}
 		<div class="alt-content" >
 			<div id="search-box">
-				<div class="overlay-light">
+				<div class="overlay-white-light">
 					<div class="sb-overlay">
-						<div class="con-cnt-fit" style="width: 100%;">
-							<div class="overlay-strong">
-			        			<h1 class="h1 search-title">Find <span class="tc-white">{if !is_null($discipline)}{$discipline->nice_name}{else}Martial Arts{/if}</span> Gyms Near You</h1>
+						<div class="con-cnt-xxlrg">
+							<div class="inner-pad-med">
+			        			<h1 class="search-title">Find {if !is_null($discipline)}{$discipline->nice_name}{else}Martial Arts{/if} Gyms Near&nbsp;You</h1>
 								<div class="clear"></div>
 								<form method="get" action="{$HOME}search">
 			        			<span itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
@@ -50,15 +50,15 @@
 								{if !is_null($discipline)}
 								<input type="hidden" name="discid" value="{$discipline->id}">
 								{/if}
-								<input type="submit" class="mat-hov" id="find-gyms-button" value="Find Gyms" /><br>
+								<button type="submit" class="" id="find-gyms-button"/><span class="dt">Find Gyms</span><span class="mo"><i class="fa fa-search" aria-hidden="true"></i></span></button>
 						    	</form>
 								<div class="search-sub-title push-t-med">
-									<a href="?discipline=brazilian-jiu-jitsu" class="sb-link text-lrg art1">Brazilian Jiu Jitsu</a><span class="text-lrg-heavy push-l-med"></span>
-									<a href="?discipline=mixed-martial-arts" class="sb-link text-lrg art2">MMA</a><span class="text-lrg-heavy push-l-med"></span>
-									<a href="?discipline=kickboxing" class="sb-link text-lrg art3">Kickboxing</a><span class="text-lrg-heavy push-l-med"></span>
-									<a href="?discipline=muay-thai" class="sb-link text-lrg art4">Muay Thai</a><span class="text-lrg-heavy push-l-med"></span>
-									<a href="?discipline=judo" class="sb-link text-lrg art5">Judo</a><span class="text-lrg-heavy push-l-med"></span>
-									<a href="?discipline=karate" class="sb-link text-lrg art1">Karate</a>
+									<a href="?discipline=brazilian-jiu-jitsu" class="push-r"><span>Brazilian Jiu Jitsu</span></a>
+									<a href="?discipline=mixed-martial-arts" class="push-r">MMA</a>
+									<a href="?discipline=kickboxing" class="push-r">Kickboxing</a>
+									<a href="?discipline=muay-thai" class="push-r">Muay Thai</a>
+									<a href="?discipline=judo" class="push-r">Judo</a>
+									<a href="?discipline=karate" class="push-r">Karate</a>
 								</div>
 							</div>
 		        		</div>
