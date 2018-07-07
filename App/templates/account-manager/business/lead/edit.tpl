@@ -16,20 +16,20 @@
 					</div>
 				{/foreach}
 			{/if}
-			<h2 class="first last">Lead Details</h2>
+			<h2 class="push-t-med push-b-med">Edit Lead Details</h2>
 			<form method="post" action="">
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="update_prospect" value="{$csrf_token}">
-				<label>First name</label><br>
+				<label class="text-sml">First name</label><br>
 				<input type="text" class="inp field-sml" name="first_name" value="{$lead->first_name}">
-				<div class="clear"></div>
-				<label>Last name</label><br>
+				<div class="clear push-t-med"></div>
+				<label class="text-sml">Last name</label><br>
 				<input type="text" class="inp field-sml" name="last_name" value="{$lead->last_name}">
-				<div class="clear"></div>
-				<label>Email</label><br>
+				<div class="clear push-t-med"></div>
+				<label class="text-sml">Email</label><br>
 				<input type="text" class="inp field-sml" name="email" value="{$lead->email}">
-				<div class="clear"></div>
-				<lable>Country Code</lable><br>
+				<div class="clear push-t-med"></div>
+				<label class="text-sml">Country Code</label><br>
 				<select class="inp field-sml cursor-pt" id="country_code" name="country_code"/>
 					{if $phone->country_code != null}
 					<option selected="selected" value="{$phone->country_code}">+{$phone->country_code}</option>
@@ -50,27 +50,27 @@
 					<option value="{$country->phonecode}">{if $country->iso3}{$country->iso3}{else}{$country->iso}{/if} +{$country->phonecode}</option>
 					{/foreach}
 				</select>
-				<div class="clear"></div>
-				<label>Phone number</label><br>
+				<div class="clear push-t-med"></div>
+				<label class="text-sml">Phone number</label><br>
 				<input type="text" class="inp field-sml" name="phone_number" value="{$phone->national_number|default:null}">
-				<div class="clear"></div>
-				<label>Address</label><br>
+				<div class="clear push-t-med"></div>
+				<label class="text-sml">Address</label><br>
 				<input type="text" class="inp field-sml" name="address_1" value="{$lead->address_1}" placeholder="123 Anywher St.">
 				<input type="text" class="inp field-sml" name="address_2" value="{$lead->address_2}" placeholder="Ex. Apt #123">
-				<div class="clear"></div>
-				<label>City</label><br>
+				<div class="clear push-t-med"></div>
+				<label class="text-sml">City</label><br>
 				<input type="text" class="inp field-sml" name="city" value="{$lead->city}" placeholder="City">
-				<div class="clear"></div>
-				<label>Region</label><br>
+				<div class="clear push-t-med"></div>
+				<label class="text-sml">Region</label><br>
 				<input type="text" class="inp field-sml" name="region" value="{$lead->region}" placeholder="State/Region/Province">
 				<div class="clear"></div>
-				<input type="submit" class="btn bnt-inline floatleft push-r first" value="Update Lead">
+				<input type="submit" class="btn bnt-inline floatleft push-r push-t-med" value="Update Lead">
 			</form>
 			<form method="post" action="">
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="trash" value="{$csrf_token}">
 				<input type="hidden" name="prospect_id" value="{$lead->id}">
-				<button type="submit" class="btn btn-inline bg-red first push-l floatleft --c-trash"><i class="fa fa-trash" aria-hidden="true"></i></button>
+				<button type="submit" class="btn btn-inline bg-red push-t-med push-l floatleft --c-trash"><i class="fa fa-trash" aria-hidden="true"></i></button>
 			</form>
 			<div class="clear"></div>
 		</div>

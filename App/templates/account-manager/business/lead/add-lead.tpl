@@ -29,25 +29,22 @@
 					<label class="text-sml">Email</label><br>
 					<input type="text" class="inp field-sml" name="email" value="{$inputs.add_lead.email|default:null}"><br>
 					<div class="clear push-t-med"></div>
-					<label class="text-sml">Country Code</label><br>
-					<select class="inp field-sml cursor-pt" id="country_code" name="country_code"/>
-						{if $country_code}
-						<option value="">-- Default Country Code --</option>
-						<option value="{$country_code}" selected="selected">+{$country_code}</option>
-						{/if}
-						<option value="">-- Common Country Codes --</option>
-						<option value="1">USA +1</option>
-						<option value="1">CAN +1</option>
-						<option value="44">UK +44</option>
-						<option value="61">AUS +61</option>
-						<option value="">-- All Country Codes --</option>
-						{foreach from=$countries item=country}
-						<option value="{$country->phonecode}">{if $country->iso3}{$country->iso3}{else}{$country->iso}{/if} +{$country->phonecode}</option>
-						{/foreach}
-					</select>
+					<input type="hidden" name="country_code" value="{if $country_code}{$country_code}{else}1{/if}">
 					<div class="clear push-t-med"></div>
 					<label class="text-sml">Phone Number</label><br>
 					<input type="text" class="inp field-sml" name="number" value="{$inputs.add_lead.number|default:null}"><br>
+					<div class="clear push-t-med"></div>
+					<label class="text-sml">Source</label><br>
+					<select name="source" class="inp field-sml cursor-pt">
+						<option value="" selected="selected" hidden="hidden"></option>
+						<option value="jiujitsuscout">JiuJitsuScout</option>
+						<option value="facebook">Facebook</option>
+						<option value="google">Google</option>
+						<option value="walk-in">Walk-in</option>
+						<option value="referral">Referral</option>
+						<option value="other">Other</option>
+						<option value="unknown">Unknown</option>
+					</select>
 					<div class="clear push-t-med"></div>
 					<input id="appointment-checkbox" class="cursor-pt push-t-med" name="schedule_appointment" type="checkbox" value="true"><label class="text-sml" for="appointment-checkbox"> Schedule an appointment?</label>
 					<input type="submit" class="btn btn-cnt push-t-med" name="add-lead" value="Create Lead +">

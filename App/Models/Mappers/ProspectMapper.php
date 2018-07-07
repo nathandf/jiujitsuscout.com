@@ -11,8 +11,8 @@ class ProspectMapper extends DataMapper
   {
     $id = $this->insert(
             "prospect",
-            [ "first_name", "last_name", "email", "phone_id", "business_id" ],
-            [ $prospect->first_name, $prospect->last_name, $prospect->email, $prospect->phone_id, $prospect->business_id ]
+            [ "first_name", "last_name", "email", "phone_id", "business_id", "source" ],
+            [ $prospect->first_name, $prospect->last_name, $prospect->email, $prospect->phone_id, $prospect->business_id, $prospect->source ]
           );
     return $id;
   }
@@ -168,6 +168,7 @@ class ProspectMapper extends DataMapper
     $prospect->type                    = $data[ "type" ];
     $prospect->status                  = $data[ "status" ];
     $prospect->business_id             = $data[ "business_id" ];
+    $prospect->source                  = $data[ "source" ];
     $prospect->group_ids               = $data[ "group_ids" ];
     $prospect->first_name              = $data[ "first_name" ];
     $prospect->last_name               = $data[ "last_name" ];

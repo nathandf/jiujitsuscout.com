@@ -12,6 +12,7 @@ class Prospect extends Person implements EntityInterface
     public $status;
     public $trial_start;
     public $trial_end;
+    public $source;
     public $trial_remind_status;
     public $google_review_status;
     public $native_review_status;

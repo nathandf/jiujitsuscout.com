@@ -326,8 +326,13 @@ class Business extends Controller
                     "number" => [
                         "name" => "Phone Number",
                         "phone" => true
+                    ],
+                    "source" => [
+                        "name" => "Source"
                     ]
-                ], "add_lead" // error index
+                ],
+
+                "add_lead" // error index
             ) )
         {
             // Build phone
@@ -338,6 +343,7 @@ class Business extends Controller
             $prospect->setLastName( $input->get( "last_name" ) );
             $prospect->setEmail( $input->get( "email" ) );
             $prospect->business_id = $this->business->id;
+            $prospect->source = $input->get( "source" );
             $prospect->phone_id = $phone->id;
             $prospect_id = $prospectRepo->save( $prospect );
 
