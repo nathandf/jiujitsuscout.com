@@ -6,8 +6,7 @@
 	</head>
 	<body>
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
-    {include file="includes/navigation/business-manager-menu.tpl"}
-    {include file="includes/navigation/business-manager-menu-mobile.tpl"}
+	    {include file="includes/navigation/business-manager-menu.tpl"}
 		<div class="con-cnt-xlrg first inner-pad-med">
 			<a class="btn btn-inline bg-dark-mint text-med first" href="{$HOME}account-manager/business/member/{$member->id}/">< Member Manager</a>
 			{if !empty($error_messages.edit_member)}
@@ -20,17 +19,17 @@
 			<form method="post" action="">
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="update_member" value="{$csrf_token}">
-				<h2 class="first last">Member Details</h2>
-				<label>First name</label><br>
+				<h2 class="push-t-med push-b-med">Member Details</h2>
+				<label class="text-sml">First name</label><div class="clear"></div>
 				<input type="text" class="inp field-sml" name="first_name" value="{$member->first_name}">
 				<div class="clear"></div>
-				<label>Last name</label><br>
+				<label class="text-sml">Last name</label><div class="clear"></div>
 				<input type="text" class="inp field-sml" name="last_name" value="{$member->last_name}">
 				<div class="clear"></div>
-				<label>Email</label><br>
+				<label class="text-sml">Email</label><div class="clear"></div>
 				<input type="text" class="inp field-sml" name="email" value="{$member->email}">
 				<div class="clear"></div>
-				<lable>Country Code</lable><br>
+				<label class="text-sml">Country Code</label><div class="clear"></div>
 				<select class="inp field-sml cursor-pt" id="country_code" name="country_code"/>
 					{if $phone->country_code != null}
 					<option selected="selected" value="{$phone->country_code}">+{$phone->country_code}</option>
@@ -52,17 +51,17 @@
 					{/foreach}
 				</select>
 				<div class="clear"></div>
-				<label>Phone number</label><br>
+				<label class="text-sml">Phone number</label><div class="clear"></div>
 				<input type="text" class="inp field-sml" name="phone_number" value="{$phone->national_number|default:null}">
 				<div class="clear"></div>
-				<label>Address</label><br>
+				<label class="text-sml">Address</label><div class="clear"></div>
 				<input type="text" class="inp field-sml" name="address_1" value="{$member->address_1}" placeholder="123 Anywher St.">
 				<input type="text" class="inp field-sml" name="address_2" value="{$member->address_2}" placeholder="Ex. Apt #123">
 				<div class="clear"></div>
-				<label>City</label><br>
+				<label class="text-sml">City</label><div class="clear"></div>
 				<input type="text" class="inp field-sml" name="city" value="{$member->city}" placeholder="City">
 				<div class="clear"></div>
-				<label>Region</label><br>
+				<label class="text-sml">Region</label><div class="clear"></div>
 				<input type="text" class="inp field-sml" name="region" value="{$member->region}" placeholder="State/Region/Province">
 				<div class="clear"></div>
 				<input type="submit" class="btn bnt-inline first floatleft push-r" value="Update Member">

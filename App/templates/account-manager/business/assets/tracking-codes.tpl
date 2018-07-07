@@ -24,7 +24,7 @@
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input type="text" name="facebook_pixel_id" class="inp field-med first" value="{$business->facebook_pixel_id}" placeholder="Facebook Pixel ID">
 					<div class="clear"></div>
-					<input class="btn btn-inline" type="submit" value="Update Facebook Pixel ID" name="update-pixel" />
+					<input class="btn btn-inline push-t-med" type="submit" value="Update Facebook Pixel ID" name="update-pixel" />
 					<div class="clear"></div>
 				</form>
 				<div class="clear"></div>

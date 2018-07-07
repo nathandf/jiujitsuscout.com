@@ -1,4 +1,4 @@
-<div class="nav-top-alt de-tab">
+<div class="nav-top">
   <ul class="nav-top-ul">
     <li class="nav-item-l"><a class="nav-link" href="{$HOME}account-manager/business/assets/">Logo</a></li>
     <li class="nav-item-l"><a class="nav-link" href="{$HOME}account-manager/business/assets/tracking-codes">Tracking Codes</a></li>

@@ -7,7 +7,7 @@
 	<body>
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
 	    {include file="includes/navigation/business-manager-menu.tpl"}
-		<div class="con-cnt-xlrg first inned-pad-med">
+		<div class="con-cnt-xlrg first inner-pad-med">
 			<a class="btn btn-inline bg-deep-blue text-med first" href="{$HOME}account-manager/business/group/{$group->id}/">< Group Manager</a>
 			{if !empty($error_messages.edit_group)}
 				{foreach from=$error_messages.edit_group item=message}
