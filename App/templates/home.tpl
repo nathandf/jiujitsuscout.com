@@ -46,7 +46,7 @@
 			        			<meta itemprop="valueName" content="search_term" />
 			        			</span>
 			        			</span>
-						  		<input type="search" id="search-bar" name="q" placeholder="City, State, Region" value="{if isset($geo->city) && isset($geo->region)}{$geo->city|default:null}, {$geo->region|default:null}{/if}" >
+						  		<input type="search" id="search-bar" name="q" placeholder="City, State, Region" value="{if isset($geo->city) && $geo->city != "" && isset($geo->region) && $geo->region != ""}{$geo->city|default:null}, {$geo->region|default:null}{/if}" >
 								{if !is_null($discipline)}
 								<input type="hidden" name="discid" value="{$discipline->id}">
 								{/if}
