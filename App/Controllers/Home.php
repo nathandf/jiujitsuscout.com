@@ -14,6 +14,7 @@ class Home extends Controller
         // Get geo info of user by ip using the IPInfo API
         $geoIP = $ipinfo->getGeoByIP();
 
+        vdumpd($geoIP);
         $this->view->assign( "geo", $geoIP );
     }
 
