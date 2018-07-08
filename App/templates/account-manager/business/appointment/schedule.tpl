@@ -22,10 +22,10 @@
 				<h2>Schedule Appointment</h2>
 				<p class="last"><b>For: </b>{$lead->first_name|capitalize} {$lead->last_name|capitalize}</p>
 				<h3 class="first">Date</h3>
-				{html_select_date class="inp field-xsml-plus cursor-pt first" start_year='-1' end_year='+3'}
+				{html_select_date class="inp field-sml cursor-pt first" start_year='-1' end_year='+3'}
 				<div class="clear"></div>
 				<h3>Time</h3>
-				{html_select_time class="inp field-xsml cursor-pt first" minute_interval=15 display_seconds=false use_24_hours=false}
+				{html_select_time class="inp field-sml cursor-pt first" minute_interval=15 display_seconds=false use_24_hours=false}
 				<h3>Reminders</h3>
 				<input type="checkbox" id="remind_user" class="first cursor-pt" name="remind_user" class="cursor-pt" value="true" checked="checked"> <label for="remind_user">Send me a reminder </label>
 				<div class="clear"></div>

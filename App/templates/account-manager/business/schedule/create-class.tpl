@@ -44,10 +44,10 @@
 					</select>
 					<div class="clear"></div>
 					<p class="text-sml push-t-med">Start Time</p>
-					{html_select_time class="inp field-xsml cursor-pt" minute_interval=15 display_seconds=false prefix=start_ use_24_hours=false}
+					{html_select_time class="inp field-sml cursor-pt" minute_interval=15 display_seconds=false prefix=start_ use_24_hours=false}
 					<div class="clear"></div>
 					<p class="text-sml push-t-med">End Time</p>
-					{html_select_time class="inp field-xsml cursor-pt" minute_interval=15 display_seconds=false prefix=end_ use_24_hours=false}
+					{html_select_time class="inp field-sml cursor-pt" minute_interval=15 display_seconds=false prefix=end_ use_24_hours=false}
 					<div class="clear"></div>
 					<div class="hr-sml push-t-med"></div>
 					<p class="text-sml push-b-med">Add to schedules</p>

@@ -304,8 +304,13 @@ class Business extends Controller
         // Set current coutnry
         $country = $countryRepo->getByISO( $this->account->country );
 
-        // Groups
+        // Groups and group IDs
         $groups = $groupRepo->getAllByBusinessID( $this->business->id );
+        $group_ids = [];
+
+        foreach ( $groups as $group ) {
+            $group_ids[] = $group;
+        }
 
         // Add lead
         if ( $input->exists() && $inputValidator->validate( $input,
@@ -356,7 +361,14 @@ class Business extends Controller
             $prospect_id = $prospectRepo->save( $prospect );
 
             if ( $input->issetField( "group_ids" ) && !empty( $input->get( "group_ids" ) ) ) {
-                $prospectRepo->updateGroupIDsByID( implode( ",", $input->get( "group_ids" ) ), $prospect_id );
+                $submitted_group_ids = implode( ",", $input->get( "group_ids" ) );
+                foreach ( $submitted_group_ids as $key => $submitted_group_id ) {
+                    // Verify that the all submitted group ids are owned by this business. If not, unset.
+                    if ( !in_array( $submitted_group_ids, $group_ids ) ) {
+                        unset( $submitted_group_ids[ $key ] );
+                    }
+                }
+                $prospectRepo->updateGroupIDsByID( $submitted_group_ids, $prospect_id );
             }
 
             if ( $input->issetField( "schedule_appointment" ) && $input->get( "schedule_appointment" ) == "true" ) {

@@ -33,10 +33,10 @@
 					<textarea style="text-indent: 0px; padding: 8px;" name="description" class="inp field-med" id="" cols="30" rows="10" placeholder="Campaign Description">{$inputs.create_campaign.description|default:null}</textarea>
 					<div class="clear"></div>
 					<p><b>Start Date:</b></p>
-					{html_select_date class="inp field-xsml-plus cursor-pt first" prefix='start' start_year='-1' end_year='+3'}
+					{html_select_date class="inp field-sml cursor-pt first" prefix='start' start_year='-1' end_year='+3'}
 					<div class="clear"></div>
 					<p><b>End Date:</b></p>
-					{html_select_date class="inp field-xsml-plus cursor-pt first"  prefix='end' start_year='-1' end_year='+3'}
+					{html_select_date class="inp field-sml cursor-pt first"  prefix='end' start_year='-1' end_year='+3'}
 					<div class="clear"></div>
 					<input type="submit" class="btn btn-inline" value="Create campaign">
 				</form>

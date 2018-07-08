@@ -35,7 +35,7 @@
 					<p class="text-med-heavy">Extend trial by:</p>
 					<form method="post" action="{$HOME}account-manager/business/lead/{$lead->id}/trial">
 						<input type="hidden" name="token" value="{$csrf_token}">
-						<input id="quantity" type="number" class="inp field-xsml" name="quantity" placeholder="Ex. 6"> <label for="quantity">Qty.</label>
+						<input id="quantity" type="number" class="inp field-sml" name="quantity" placeholder="Ex. 6"> <label for="quantity">Qty.</label>
 						<select class="inp field-sml cursor-pt" name="unit" id="unit">
 							<option value="week" selected="selected" hidden="hidden">Week(s)</option>
 							<option id="day" value="day">Day(s)</option>

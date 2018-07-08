@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{$HOME}css/choose-lp-template.css">
 {/block}
 {block name="marketing-manager-body"}
-  <div class="con-cnt-xlrg first">
+  <div class="con-cnt-xlrg push-t-med inner-pad-med">
     <h2>Choose a template</h2>
     <a class="btn btn-inline bg-deep-blue text-med first" href="{$HOME}account-manager/business/landing-pages/">< Landing Pages</a>
     {foreach from=$templates item=template}

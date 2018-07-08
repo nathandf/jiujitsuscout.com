@@ -12,13 +12,15 @@
 				<img class="img-sml" src="{$HOME}img/jjslogoiconwhite.jpg" alt="">
 				<div class="clear"></div>
 				<span class="text-med"> Not a partner yet? <br><a class="link text-med" href="{$HOME}partner/">Add your business</a></span>
-				{if !empty($error_messages.sign_in)}
-					{foreach from=$error_messages.sign_in item=message}
-						<div class="con-message-failure mat-hov cursor-pt --c-hide">
-								<p class="user-message-body">{$message}</p>
-						</div>
-					{/foreach}
-				{/if}
+				<div class="inner-pad-med">
+					{if !empty($error_messages.sign_in)}
+						{foreach from=$error_messages.sign_in item=message}
+							<div class="con-message-failure mat-hov cursor-pt --c-hide">
+									<p class="user-message-body">{$message}</p>
+							</div>
+						{/foreach}
+					{/if}
+				</div>
 				<form action="" method="post">
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input type="hidden" name="sign_in" value="{$csrf_token}">

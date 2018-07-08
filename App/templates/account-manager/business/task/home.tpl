@@ -47,10 +47,10 @@
 				<div class="clear"></div>
 				<p class="text-lrg-heavy push-t-med">Schedule Task:</p>
 				<p class="text-lrg push-t">Date</p>
-				{html_select_date time="{$year}-{$month}-{$day}" class="inp field-xsml-plus cursor-pt first" start_year='-1' end_year='+3'}
+				{html_select_date time="{$year}-{$month}-{$day}" class="inp field-sml cursor-pt first" start_year='-1' end_year='+3'}
 				<div class="clear"></div>
 				<p class="text-lrg push-t">Time</p>
-				{html_select_time time="{$year}-{$month}-{$day} {$hour}:{$minute}" class="inp field-xsml cursor-pt first" minute_interval=15 display_seconds=false use_24_hours=false}
+				{html_select_time time="{$year}-{$month}-{$day} {$hour}:{$minute}" class="inp field-sml cursor-pt first" minute_interval=15 display_seconds=false use_24_hours=false}
 				<div class="clear"></div>
 				<input type="submit" class="btn bnt-inline first floatleft push-r" value="Update Task">
 			</form>

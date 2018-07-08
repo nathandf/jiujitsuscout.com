@@ -8,6 +8,5 @@
 {block name="body"}
   {include file="includes/navigation/business-manager-login-menu.tpl"}
   {include file="includes/navigation/business-manager-marketing-menu.tpl"}
-  {include file="includes/navigation/business-manager-marketing-menu-mobile.tpl"}
   {block name="marketing-manager-body"}{/block}
 {/block}

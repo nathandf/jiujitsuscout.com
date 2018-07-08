@@ -46,7 +46,6 @@
 	{if $template_view_active || $preview_active}
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
 		{include file="includes/navigation/business-manager-marketing-menu.tpl"}
-		{include file="includes/navigation/business-manager-menu-mobile.tpl"}
 	{/if}
 	{include file="includes/forms/standard-form-hidden.tpl"}
 	<div id="content" class="content{$creator_active_content_class}" style="background: {if $page->image_background}url({$HOME}img/uploads/{$page->image_background}){else}#FFF{/if}; background-attachment: fixed; background-repeat: no-repeat; background-size: 100%, 100%;">

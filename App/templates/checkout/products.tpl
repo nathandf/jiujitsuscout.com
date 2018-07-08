@@ -27,7 +27,7 @@
       <p class="text-sml">{$product->description}</p>
       <p>Quantity:</p>
       <div class="clear"></div>
-      <input type="number" class="inp field-xsml" name="product_data[{$smarty.foreach.product_loop.index}][quantity]" value="0">
+      <input type="number" class="inp field-sml" name="product_data[{$smarty.foreach.product_loop.index}][quantity]" value="0">
       <p></p>
       {/foreach}
       <input type="submit" class="btn btn-inline first" value="Checkout">

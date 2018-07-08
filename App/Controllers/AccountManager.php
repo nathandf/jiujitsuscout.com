@@ -98,6 +98,8 @@ class AccountManager extends Controller
 	    {
 			if ( $userAuth->logIn( $input->get( "email" ), $input->get( "password" ) ) ) {
 				$this->view->redirect( "account-manager/choose-business" );
+			} else {
+				$inputValidator->addError( "sign_in", "Email and/or password are incorrect." );
 			}
 		}
 
@@ -113,8 +115,7 @@ class AccountManager extends Controller
 	    // Input values submitted from form
 	    $this->view->assign( "inputs", $inputs );
 
-	    $csrf_token = $this->session->generateCSRFToken();
-	    $this->view->assign( "csrf_token", $csrf_token );
+	    $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 	    $this->view->setErrorMessages( $inputValidator->getErrors() );
 
 		$this->view->setTemplate( "account-manager/partner-sign-in.tpl" );
