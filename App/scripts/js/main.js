@@ -36,4 +36,7 @@ $( function() {
         $( "#nav-items-container" ).scrollTop();
     } );
 
+    $( ".--c-advanced-options" ).on( "click", function() {
+        $( "#advanced-options" ).slideToggle();
+    } );
 } );

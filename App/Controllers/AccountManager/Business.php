@@ -294,6 +294,7 @@ class Business extends Controller
         $inputValidator = $this->load( "input-validator" );
         $phoneRepo = $this->load( "phone-repository" );
         $prospectRepo = $this->load( "prospect-repository" );
+        $groupRepo = $this->load( "group-repository" );
         $entityFactory = $this->load( "entity-factory" );
         $countryRepo = $this->load( "country-repository" );
 
@@ -302,6 +303,9 @@ class Business extends Controller
 
         // Set current coutnry
         $country = $countryRepo->getByISO( $this->account->country );
+
+        // Groups
+        $groups = $groupRepo->getAllByBusinessID( $this->business->id );
 
         // Add lead
         if ( $input->exists() && $inputValidator->validate( $input,
@@ -329,6 +333,10 @@ class Business extends Controller
                     ],
                     "source" => [
                         "name" => "Source"
+                    ],
+                    "group_ids" => [
+                        "name" => "Group IDs",
+                        "is_array" => true
                     ]
                 ],
 
@@ -346,6 +354,10 @@ class Business extends Controller
             $prospect->source = $input->get( "source" );
             $prospect->phone_id = $phone->id;
             $prospect_id = $prospectRepo->save( $prospect );
+
+            if ( $input->issetField( "group_ids" ) && !empty( $input->get( "group_ids" ) ) ) {
+                $prospectRepo->updateGroupIDsByID( implode( ",", $input->get( "group_ids" ) ), $prospect_id );
+            }
 
             if ( $input->issetField( "schedule_appointment" ) && $input->get( "schedule_appointment" ) == "true" ) {
                 $this->view->redirect( "account-manager/business/appointment/schedule?prospect_id=" . $prospect_id );
@@ -367,6 +379,7 @@ class Business extends Controller
         // Input values submitted from form
         $this->view->assign( "inputs", $inputs );
 
+        $this->view->assign( "groups", $groups );
         $this->view->assign( "countries", $countries );
         $this->view->assign( "country_code", $country->phonecode );
 

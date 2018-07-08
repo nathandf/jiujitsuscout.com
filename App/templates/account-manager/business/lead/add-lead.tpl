@@ -46,7 +46,18 @@
 						<option value="unknown">Unknown</option>
 					</select>
 					<div class="clear push-t-med"></div>
-					<input id="appointment-checkbox" class="cursor-pt push-t-med" name="schedule_appointment" type="checkbox" value="true"><label class="text-sml" for="appointment-checkbox"> Schedule an appointment?</label>
+					<p class="text-med tc-deep-blue --c-advanced-options cursor-pt">Advanced options ></p>
+					<div style="display: none;" id="advanced-options" class="push-t-med push-b-med">
+						<input id="appointment-checkbox" class="cursor-pt checkbox floatleft" name="schedule_appointment" type="checkbox" value="true">
+						<label class="text-med floatleft" for="appointment-checkbox"> Schedule an appointment?</label>
+						<div class="clear"></div>
+						<p class="text-lrg-heavy push-b-med push-t-med">Add to groups</p>
+						{foreach from=$groups item=group}
+						<input id="group-cb-{$group->id}" class="cursor-pt checkbox floatleft" type="checkbox" name="group_ids[]" value="{$group->id}">
+						<label class="floatleft" for="group-cb-{$group->id}">{$group->name|capitalize}</label>
+						<div class="clear"></div>
+						{/foreach}
+					</div>
 					<input type="submit" class="btn btn-cnt push-t-med" name="add-lead" value="Create Lead +">
 				</form>
 			</div>
