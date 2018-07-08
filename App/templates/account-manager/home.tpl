@@ -7,20 +7,19 @@
 	<body>
 		{include file="includes/navigation/account-manager-login-menu.tpl"}
 	    {include file="includes/navigation/account-manager-menu.tpl"}
-		<div class="inner-pad-med">
-			<table cellspacing="0" class="con-cnt-xxlrg push-t-med push-b-med">
-				<tr class="bg-green">
-					<th class="tc-white">Account</td>
-					<th class="tc-white">Businesses</td>
-					<th class="tc-white">Users</td>
-				</tr>
-				<tr class="bg-white">
-					<td class="text-center">{$account_type->name|capitalize}{if $account_type->id == 1}<br><a class="link text-sml tc-mango" target="_blank" href="{$HOME}account-manager/upgrade"><b>Upgrade</b></a>{/if}</p></td>
-					<td class="text-center">{$businesses|@count}</td>
-					<td class="text-center">{$total_users}<br><b class="text-sml-heavy">max users: {if $account_type->max_users > 998}Unlimited{else}{$account_type->max_users}{/if}</b></p></td>
-				</tr>
-			</table>
-		</div>
+		<table cellspacing="0" class="con-cnt-xxlrg push-t-med push-b-med">
+			<tr class="bg-green">
+				<th class="tc-white">Account</td>
+				<th class="tc-white">Businesses</td>
+				<th class="tc-white">Users</td>
+			</tr>
+			<tr class="bg-white">
+				<td class="text-center">{$account_type->name|capitalize}{if $account_type->id == 1}<br><a class="link text-sml tc-mango" target="_blank" href="{$HOME}account-manager/upgrade"><b>Upgrade</b></a>{/if}</p></td>
+				<td class="text-center">{$businesses|@count}</td>
+				<td class="text-center">{$total_users}<br><b class="text-sml-heavy">max users: {if $account_type->max_users > 998}Unlimited{else}{$account_type->max_users}{/if}</b></p></td>
+			</tr>
+		</table>
+
 		<h2 class="title-wrapper push-t-med">Businesses</h2>
 		<div class="con-cnt-xxlrg encapsulate first">
 			{foreach from=$businesses item=business name=businesses}
