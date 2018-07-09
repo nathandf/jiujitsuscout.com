@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {include file='includes/head/main-head.tpl'}
-    <link rel="stylesheet" type="text/css" href="{$HOME}css/ma-profile-main.css"/>
-    {$facebook_pixel|default:""}
-</head>
-<body>
-<div id="content" class="" itemscope itemtype="http://schema.org/LocalBusiness">
-    {include file='includes/snippets/profile-title-bar.tpl'}
-    {include file='includes/navigation/martial-arts-gym-nav.tpl'}
+{extends file="layouts/business-profile.tpl"}
+
+{block name="business-profile-head"}
+	{$facebook_pixel|default:""}
+{/block}
+
+{block name="business-profile-body"}
     <h2 class="page-title">Contact Us</h2>
     <div class="contact-us-container">
         <div class="contact-us-header"><p>Have questions?<br>Contact us below and we will get in touch with you right
@@ -50,6 +46,4 @@
         <div class="clear"></div>
     </div>
     <div class="clear"></div>
-</div><!-- end content -->
-</body>
-</html>
+{/block}

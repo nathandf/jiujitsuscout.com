@@ -12,8 +12,16 @@ class MartialArtsGyms extends Controller
     {
         require_once( "App/Helpers/tracking-code-builders.php" );
         $this->requireParam( "siteslug" );
+
         $businessRepo = $this->load( "business-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
+
+        // Get business by the unique URL slug
         $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
+
+        // Get phone associated with this business
+        $phone = $phoneRepo->getByID( $this->business->phone_id );
+        $this->business->phone = $phone;
 
         // Render 404 if no business is returned
         if ( is_null( $this->business->id ) || $this->business->id == "" ) {
@@ -22,9 +30,6 @@ class MartialArtsGyms extends Controller
         // Load configs
         $Config = $this->load( "config" );
 
-        // Get business by the unique URL slug
-        $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
-
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
         $facebook_pixel = build_facebook_pixel( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
 
@@ -32,6 +37,7 @@ class MartialArtsGyms extends Controller
         if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
             $facebook_pixel = build_facebook_pixel( $this->business->facebook_pixel_id );
         }
+
         $this->view->assign( "facebook_pixel", $facebook_pixel );
     }
 
@@ -117,7 +123,17 @@ class MartialArtsGyms extends Controller
                      ], "info_request" // error index
                 ) )
             {
-                echo "Info Request Submitted";
+                $prospect = $prospectRegistrar->build();
+                $prospect->first_name = $input->get( "name" );
+                $prospect->last_name = "";
+                $prospect->email = strtolower( $input->get( "email" ) );
+                $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
+                $prospect->phone_id = $phone->id;
+                $prospect->business_id = $this->business->id;
+                $prospect->source = "JiuJitsuScout Profile: home page - info request form";
+                $prospectRegistrar->register( $prospect );
+
+                $this->view->redirect( "martial-arts-gyms/{$this->business->site_slug}/thank-you" );
             }
 
             if ( $input->exists() && $input->issetField( "rate_review" ) && $inputValidator->validate( $input,
@@ -198,6 +214,8 @@ class MartialArtsGyms extends Controller
         // Load services for input processing and validation
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $prospectRegistrar = $this->load( "prospect-registrar" );
+        $phoneRepo = $this->load( "phone-repository" );
 
         // Input validation rules for two forms. Contact form and sidebar promo form
         if ( $input->exists() && $input->issetField( "contact" ) && $inputValidator->validate( $input,
@@ -225,7 +243,17 @@ class MartialArtsGyms extends Controller
                 ], "contact" // error index
             ) )
         {
-            echo "Contact Successful";
+            $prospect = $prospectRegistrar->build();
+            $prospect->first_name = $input->get( "name" );
+            $prospect->last_name = "";
+            $prospect->email = strtolower( $input->get( "email" ) );
+            $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
+            $prospect->phone_id = $phone->id;
+            $prospect->business_id = $this->business->id;
+            $prospect->source = "JiuJitsuScout Profile: contact page - contact us form";
+            $prospectRegistrar->register( $prospect );
+
+            $this->view->redirect( "martial-arts-gyms/{$this->business->site_slug}/thank-you" );
         }
 
         if ( $input->exists() && $input->issetField( "sidebar_promo" ) && $inputValidator->validate( $input,
@@ -253,7 +281,17 @@ class MartialArtsGyms extends Controller
                 ], "sidebar_promo" // error index
             ) )
         {
-            echo "Sidebar Promo Redemption Successful";
+            $prospect = $prospectRegistrar->build();
+            $prospect->first_name = $input->get( "name" );
+            $prospect->last_name = "";
+            $prospect->email = strtolower( $input->get( "email" ) );
+            $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
+            $prospect->phone_id = $phone->id;
+            $prospect->business_id = $this->business->id;
+            $prospect->source = "JiuJitsuScout Profile: contact page sidebar promo form";
+            $prospectRegistrar->register( $prospect );
+
+            $this->view->redirect( "martial-arts-gyms/{$this->business->site_slug}/thank-you" );
         }
 
         // Set variables to populate inputs after form submission failure and assign to view
@@ -290,9 +328,13 @@ class MartialArtsGyms extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $prospectRegistrar = $this->load( "prospect-registrar" );
+        $phoneRepo = $this->load( "phone-repository" );
 
         // Input validation rules
-        if ( $input->exists() && $inputValidator->validate( $input,
+        if ( $input->exists() && $inputValidator->validate(
+
+                $input,
+
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -315,15 +357,21 @@ class MartialArtsGyms extends Controller
                         "name" => "Email",
                         "required" => true,
                         "email" => true,
-                     ]
-                 ], "free_class" // error index
-             ) )
+                    ]
+                ],
+
+                "free_class" // error index
+
+            ) )
         {
             $prospect = $prospectRegistrar->build();
-            $prospect->setFirstName( $input->get( "name" ) );
-            $prospect->setEmail( $input->get( "email" ) );
-            $prospect->setNumber( $input->get( "number" ) );
+            $prospect->first_name = $input->get( "name" );
+            $prospect->last_name = "";
+            $prospect->email = strtolower( $input->get( "email" ) );
+            $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
+            $prospect->phone_id = $phone->id;
             $prospect->business_id = $this->business->id;
+            $prospect->source = "JiuJitsuScout Profile: free class page";
             $prospectRegistrar->register( $prospect );
 
             $this->view->redirect( "martial-arts-gyms/{$this->business->site_slug}/thank-you" );
@@ -385,7 +433,17 @@ class MartialArtsGyms extends Controller
                 ], "sidebar_promo" // error index
             ) )
         {
-            echo "Sidebar Promo Redemption Successful";
+            $prospect = $prospectRegistrar->build();
+            $prospect->first_name = $input->get( "name" );
+            $prospect->last_name = "";
+            $prospect->email = strtolower( $input->get( "email" ) );
+            $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
+            $prospect->phone_id = $phone->id;
+            $prospect->business_id = $this->business->id;
+            $prospect->source = "JiuJitsuScout Profile: instructors page - sidebar promo form";
+            $prospectRegistrar->register( $prospect );
+
+            $this->view->redirect( "martial-arts-gyms/{$this->business->site_slug}/thank-you" );
         }
 
         // Set variables to populate inputs after form submission failure and assign to view
@@ -461,7 +519,17 @@ class MartialArtsGyms extends Controller
                 ], "sidebar_promo" // error index
             ) )
         {
-            echo "Sidebar Promo Redemption Successful";
+            $prospect = $prospectRegistrar->build();
+            $prospect->first_name = $input->get( "name" );
+            $prospect->last_name = "";
+            $prospect->email = strtolower( $input->get( "email" ) );
+            $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
+            $prospect->phone_id = $phone->id;
+            $prospect->business_id = $this->business->id;
+            $prospect->source = "JiuJitsuScout Profile: reviews page - sidebar promo form";
+            $prospectRegistrar->register( $prospect );
+
+            $this->view->redirect( "martial-arts-gyms/{$this->business->site_slug}/thank-you" );
         }
 
         // Set variables to populate inputs after form submission failure and assign to view
@@ -521,7 +589,17 @@ class MartialArtsGyms extends Controller
                 ], "sidebar_promo" // error index
             ) )
         {
-            echo "Sidebar Promo Redemption Successful";
+            $prospect = $prospectRegistrar->build();
+            $prospect->first_name = $input->get( "name" );
+            $prospect->last_name = "";
+            $prospect->email = strtolower( $input->get( "email" ) );
+            $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
+            $prospect->phone_id = $phone->id;
+            $prospect->business_id = $this->business->id;
+            $prospect->source = "JiuJitsuScout Profile: schedule page - sidebar promo form";
+            $prospectRegistrar->register( $prospect );
+
+            $this->view->redirect( "martial-arts-gyms/{$this->business->site_slug}/thank-you" );
         }
 
         // Set variables to populate inputs after form submission failure and assign to view
@@ -550,6 +628,7 @@ class MartialArtsGyms extends Controller
     {
         require_once( "App/Helpers/tracking-code-builders.php" );
         $Config = $this->load( "config" );
+
         $prospectRegistrar = $this->load( "prospect-registrar" );
         $reviewRepo = $this->load( "review-repository" );
         $phoneRepo = $this->load( "phone-repository" );
