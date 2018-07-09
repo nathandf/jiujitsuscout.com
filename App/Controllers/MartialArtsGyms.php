@@ -43,7 +43,7 @@ class MartialArtsGyms extends Controller
 
         $this->view->assign( "business", $this->business );
         $this->view->assign( "facebook_pixel", $facebook_pixel );
-        $this->view->assign( "google", $google_api_key );
+        $this->view->assign( "google_api_key", $google_api_key );
     }
 
     public function index()
