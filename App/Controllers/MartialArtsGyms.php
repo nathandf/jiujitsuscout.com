@@ -58,6 +58,7 @@ class MartialArtsGyms extends Controller
             $reviewRepo = $this->load( "review-repository" );
             $input = $this->load( "input" );
             $inputValidator = $this->load( "input-validator" );
+            $prospectRegistrar = $this->load( "prospect-registrar" );
             $phoneRepo = $this->load( "phone-repository" );
 
             // Require in helper functions
@@ -420,6 +421,8 @@ class MartialArtsGyms extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $prospectRegistrar = $this->load( "prospect-registrar" );
+        $phoneRepo = $this->load( "phone-repository" );
 
         if ( $input->exists() && $input->issetField( "sidebar_promo" ) && $inputValidator->validate( $input,
                 [
@@ -483,10 +486,14 @@ class MartialArtsGyms extends Controller
 
     public function reviewsAction()
     {
+        // Returns pretty html stars (fontawesome)
+        require_once( "App/Helpers/fa-return-stars.php" );
+
         // Load services to process and validate input
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
-        require_once( "App/Helpers/fa-return-stars.php" );
+        $prospectRegistrar = $this->load( "prospect-registrar" );
+        $phoneRepo = $this->load( "phone-repository" );
         $reviewRepo = $this->load( "review-repository" );
 
         $reviews = $reviewRepo->getAllByBusinessID( $this->business->id );
@@ -575,6 +582,8 @@ class MartialArtsGyms extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $prospectRegistrar = $this->load( "prospect-registrar" );
+        $phoneRepo = $this->load( "phone-repository" );
 
         // Processing and validation of input
         if ( $input->exists() && $input->issetField( "sidebar_promo" ) && $inputValidator->validate( $input,
