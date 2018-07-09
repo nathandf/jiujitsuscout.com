@@ -158,7 +158,7 @@ class MartialArtsGyms extends Controller
                 foreach ( $user_ids as $user_id ) {
                     $users[] = $userRepo->getByID( $user_id );
                 }
-                
+
                 // Send the email to each user
                 foreach ( $users as $user ) {
                     $userMailer->sendLeadCaptureNotification(
@@ -740,6 +740,116 @@ class MartialArtsGyms extends Controller
         $this->view->setTemplate( "martial-arts-gyms/landing-page-templates/" . $landingPage->template_file );
         $this->view->render( "App/Views/MartialArtsGyms.php" );
 
+    }
+
+    public function leaveReviewAction()
+    {
+        require_once( "App/Helpers/fa-return-stars.php" );
+        require_once( "App/Helpers/tracking-code-builders.php" );
+
+        // Load input and input validation helpers and services
+        $Config = $this->load( "config" );
+        $businessRepo = $this->load( "business-repository" );
+        $reviewRepo = $this->load( "review-repository" );
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $prospectRegistrar = $this->load( "prospect-registrar" );
+        $userRepo = $this->load( "user-repository" );
+        $userMailer = $this->load( "user-mailer" );
+        $phoneRepo = $this->load( "phone-repository" );
+
+        // Replace the facebook pixel if user specifies a pixel id of their own
+        if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
+            $facebook_pixel = build_facebook_pixel( $this->business->facebook_pixel_id, [ "ViewContent" ] );
+        }
+
+        // Get reviews from business id
+        $reviews = $reviewRepo->getAllByBusinessID( $this->business->id );
+        // Calculating number and total of ratings
+        $sum_rating = 0;
+        $total_ratings = 0;
+        $business_rating = 0;
+        foreach ( $reviews as $review ) {
+            $sum_rating = $sum_rating + $review->rating;
+            $total_ratings++;
+        }
+
+        if ( $total_ratings > 0 ) {
+            $business_rating = round( $sum_rating / $total_ratings, 1 );
+        }
+
+        // return html stars
+        $html_stars = fa_return_stars( $business_rating );
+
+        // Build facebook tracking pixel using jiujitsuscout clients pixel id
+        $facebook_pixel = build_facebook_pixel( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
+
+
+        if ( $input->exists() && $input->issetField( "rate_review" ) && $inputValidator->validate( $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "name" => [
+                        "name" => "Name",
+                        "required" => true,
+                        "min" => 1,
+                        "max" => 50
+                    ],
+                    "email" => [
+                        "name" => "Email",
+                        "required" => true,
+                        "email" => true
+                    ],
+                    "rating" => [
+                        "name" => "Rating",
+                        "required" => true
+                    ],
+                    "review" => [
+                        "name" => "Review",
+                        "required" => true
+                    ]
+                ], "review" // error index
+            ) )
+        {
+            $reviewRepo->create( $this->business->id, $input->get( "name" ), $input->get( "email" ), $input->get( "review" ), $input->get( "rating" ), time() );
+            $this->view->redirect( "martial-arts-gyms/" . $this->business->site_slug . "/reviews" );
+        }
+
+        // Set variables to populate inputs after form submission failure and assign to view
+        $inputs = [];
+        // info request
+        if ( $input->issetField( "info_request" ) ) {
+            $inputs[ "info_request" ][ "name" ] = $input->get( "name" );
+            $inputs[ "info_request" ][ "email" ] = $input->get( "email" );
+            $inputs[ "info_request" ][ "number" ] = $input->get( "number" );
+        }
+
+        // rating review
+        if ( $input->issetField( "rate_review" ) ) {
+            $inputs[ "rate_review" ][ "name" ] = $input->get( "name" );
+            $inputs[ "rate_review" ][ "email" ] = $input->get( "email" );
+            $inputs[ "rate_review" ][ "number" ] = $input->get( "review" );
+        }
+
+        $this->view->assign( "inputs", $inputs );
+
+        $csrf_token = $this->session->generateCSRFToken();
+        $this->view->assign( "csrf_token", $csrf_token );
+
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+        // Assign data the view
+        $this->view->assign( "facebook_pixel", $facebook_pixel );
+        $this->view->assign( "reviews", $reviews );
+        $this->view->assign( "business", $this->business );
+        $this->view->assign( "html_stars", $html_stars );
+        $this->view->assign( "total_ratings", $total_ratings );
+        $this->view->assign( "business_rating", $business_rating );
+
+        $this->view->setTemplate( "martial-arts-gyms/leave-review.tpl" );
+        $this->view->render( "App/Views/MartialArtsGyms.php" );
     }
 
 }

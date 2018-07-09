@@ -6,7 +6,7 @@
 
 {block name="business-profile-body"}
 	<h2 class="page-title">Testimonials</h2>
-	<p class="review-link"><a href="{$HOME}martial-arts-gyms/{$business->site_slug}/#review">Leave a Review!</a></p>
+	<p class="review-link"><a href="{$HOME}martial-arts-gyms/{$business->site_slug}/leave-review#review">Leave a Review!</a></p>
 	<div class="testimonials-container">
 		<div class="testimonials-header"><p>Reviews for {$business->business_name}<br>{$business->city} {$business->region}<br>Martial Arts</p></div>
 		<div class="testimonials">
