@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
 {
     public static $files = array (
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '3f8bdd3b35094c73a26f0106e3c0f8b2' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/SendGrid.php',
         '9dda55337a76a24e949fbcc5d905a2c7' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/helpers/mail/Mail.php',
         'f084d01b0a599f67676cffef638aa95b' => __DIR__ . '/..' . '/smarty/smarty/libs/bootstrap.php',
@@ -15,6 +19,10 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
     );
 
     public static $prefixLengthsPsr4 = array (
+        'p' => 
+        array (
+            'phpseclib\\' => 10,
+        ),
         'V' => 
         array (
             'Views\\' => 6,
@@ -31,9 +39,12 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         'P' => 
         array (
             'Psr\\Log\\' => 8,
+            'Psr\\Http\\Message\\' => 17,
+            'Psr\\Cache\\' => 10,
         ),
         'M' => 
         array (
+            'Monolog\\' => 8,
             'Models\\' => 7,
             'Mappers\\' => 8,
         ),
@@ -41,8 +52,16 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         array (
             'Helpers\\' => 8,
         ),
+        'G' => 
+        array (
+            'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
+            'GuzzleHttp\\' => 11,
+            'Google\\Auth\\' => 12,
+        ),
         'F' => 
         array (
+            'Firebase\\JWT\\' => 13,
             'Facebook\\' => 9,
         ),
         'C' => 
@@ -56,6 +75,10 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpseclib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
         'Views\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Views',
@@ -76,6 +99,18 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
         'Models\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Models',
@@ -87,6 +122,26 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         'Helpers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Helpers',
+        ),
+        'GuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'GuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
+        'GuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'Google\\Auth\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/auth/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Facebook\\' => 
         array (
@@ -122,6 +177,22 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
                 0 => __DIR__ . '/..' . '/paypal/rest-api-sdk-php/lib',
             ),
         ),
+        'G' => 
+        array (
+            'Google_Service_' => 
+            array (
+                0 => __DIR__ . '/..' . '/google/apiclient-services/src',
+            ),
+            'Google_' => 
+            array (
+                0 => __DIR__ . '/..' . '/google/apiclient/src',
+            ),
+        ),
+    );
+
+    public static $classMap = array (
+        'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
+        'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -130,6 +201,7 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
             $loader->prefixLengthsPsr4 = ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a::$classMap;
 
         }, null, ClassLoader::class);
     }

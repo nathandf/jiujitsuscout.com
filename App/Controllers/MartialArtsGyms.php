@@ -30,6 +30,9 @@ class MartialArtsGyms extends Controller
         // Load configs
         $Config = $this->load( "config" );
 
+        // Get jiujitsuscout google api key
+        $google_api_key = $Config::$configs[ "google" ][ "api_key" ];
+
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
         $facebook_pixel = build_facebook_pixel( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
 
@@ -40,6 +43,7 @@ class MartialArtsGyms extends Controller
 
         $this->view->assign( "business", $this->business );
         $this->view->assign( "facebook_pixel", $facebook_pixel );
+        $this->view->assign( "google", $google_api_key );
     }
 
     public function index()
@@ -72,8 +76,12 @@ class MartialArtsGyms extends Controller
                 $this->view->render404();
             }
 
+            // Get jiujitsuscout google api key
+            $google_api_key = $Config::$configs[ "google" ][ "api_key" ];
+
             // Build facebook tracking pixel using jiujitsuscout clients pixel id
             $facebook_pixel = build_facebook_pixel( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ], [ "ViewContent" ] );
+
             // Replace the facebook pixel if user specifies a pixel id of their own
             if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
                 $facebook_pixel = build_facebook_pixel( $this->business->facebook_pixel_id, [ "ViewContent" ] );
@@ -196,6 +204,7 @@ class MartialArtsGyms extends Controller
             $this->view->setErrorMessages( $inputValidator->getErrors() );
 
             // Assign data the view
+            $this->view->assign( "google_api_key", $google_api_key );
             $this->view->assign( "facebook_pixel", $facebook_pixel );
             $this->view->assign( "reviews", $reviews );
             $this->view->assign( "business", $this->business );
