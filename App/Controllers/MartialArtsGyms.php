@@ -59,6 +59,8 @@ class MartialArtsGyms extends Controller
             $input = $this->load( "input" );
             $inputValidator = $this->load( "input-validator" );
             $prospectRegistrar = $this->load( "prospect-registrar" );
+            $userRepo = $this->load( "user-repository" );
+            $userMailer = $this->load( "user-mailer" );
             $phoneRepo = $this->load( "phone-repository" );
 
             // Require in helper functions
@@ -133,7 +135,9 @@ class MartialArtsGyms extends Controller
                         "info" => [
                             "required" => true
                          ]
-                     ], "info_request" // error index
+                     ], "
+
+                     info_request" // error index
                 ) )
             {
                 $prospect = $prospectRegistrar->build();
@@ -145,6 +149,31 @@ class MartialArtsGyms extends Controller
                 $prospect->business_id = $this->business->id;
                 $prospect->source = "JiuJitsuScout Profile: home page - info request form";
                 $prospectRegistrar->register( $prospect );
+
+                // Get the users that require email lead notifications
+                $users = [];
+                $user_ids = explode( ",", $this->business->user_notification_recipient_ids );
+
+                // Populate users array with users data
+                foreach ( $user_ids as $user_id ) {
+                    $users[] = $userRepo->getByID( $user_id );
+                }
+                
+                // Send the email to each user
+                foreach ( $users as $user ) {
+                    $userMailer->sendLeadCaptureNotification(
+                        $user->first_name,
+                        $user->email,
+                        [
+                            "name" => $prospect->first_name,
+                            "email" => $prospect->email,
+                            "number" => "+" . $phone->country_code  . " " . $phone->national_number,
+                            "source" => $prospect->source,
+                            "id" => $prospect->id,
+                            "additional_info" => "Info Requested - " . $input->get( "info" )
+                        ]
+                    );
+                }
 
                 $this->view->redirect( "martial-arts-gyms/{$this->business->site_slug}/thank-you" );
             }
@@ -229,6 +258,8 @@ class MartialArtsGyms extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $prospectRegistrar = $this->load( "prospect-registrar" );
+        $userRepo = $this->load( "user-repository" );
+        $userMailer = $this->load( "user-mailer" );
         $phoneRepo = $this->load( "phone-repository" );
 
         // Input validation rules for two forms. Contact form and sidebar promo form
@@ -342,6 +373,8 @@ class MartialArtsGyms extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $prospectRegistrar = $this->load( "prospect-registrar" );
+        $userRepo = $this->load( "user-repository" );
+        $userMailer = $this->load( "user-mailer" );
         $phoneRepo = $this->load( "phone-repository" );
 
         // Input validation rules
@@ -422,6 +455,8 @@ class MartialArtsGyms extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $prospectRegistrar = $this->load( "prospect-registrar" );
+        $userRepo = $this->load( "user-repository" );
+        $userMailer = $this->load( "user-mailer" );
         $phoneRepo = $this->load( "phone-repository" );
 
         if ( $input->exists() && $input->issetField( "sidebar_promo" ) && $inputValidator->validate( $input,
@@ -493,6 +528,8 @@ class MartialArtsGyms extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $prospectRegistrar = $this->load( "prospect-registrar" );
+        $userRepo = $this->load( "user-repository" );
+        $userMailer = $this->load( "user-mailer" );
         $phoneRepo = $this->load( "phone-repository" );
         $reviewRepo = $this->load( "review-repository" );
 
@@ -583,6 +620,8 @@ class MartialArtsGyms extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $prospectRegistrar = $this->load( "prospect-registrar" );
+        $userRepo = $this->load( "user-repository" );
+        $userMailer = $this->load( "user-mailer" );
         $phoneRepo = $this->load( "phone-repository" );
 
         // Processing and validation of input
@@ -652,6 +691,8 @@ class MartialArtsGyms extends Controller
         $Config = $this->load( "config" );
 
         $prospectRegistrar = $this->load( "prospect-registrar" );
+        $userRepo = $this->load( "user-repository" );
+        $userMailer = $this->load( "user-mailer" );
         $reviewRepo = $this->load( "review-repository" );
         $phoneRepo = $this->load( "phone-repository" );
 

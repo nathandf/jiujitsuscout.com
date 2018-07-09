@@ -1,7 +1,6 @@
 <?php
 /*
 * Front Controller
-* NOTE Mailing functionality disabled in Models\Services\UserMailer
 */
 // autoloading native classes and third party libraries. Check composer.json for details
 require_once( "App/vendor/autoload.php" );
