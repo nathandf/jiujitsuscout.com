@@ -38,6 +38,7 @@ class MartialArtsGyms extends Controller
             $facebook_pixel = build_facebook_pixel( $this->business->facebook_pixel_id );
         }
 
+        $this->view->assign( "business", $this->business );
         $this->view->assign( "facebook_pixel", $facebook_pixel );
     }
 
@@ -47,22 +48,25 @@ class MartialArtsGyms extends Controller
             $this->view->setTemplate( "martial-arts-gyms/gyms-list.tpl" );
         } else {
 
-            // Load input and input validation helpers
+            // Load input and input validation helpers and services
+            $Config = $this->load( "config" );
+            $businessRepo = $this->load( "business-repository" );
+            $reviewRepo = $this->load( "review-repository" );
             $input = $this->load( "input" );
             $inputValidator = $this->load( "input-validator" );
+            $phoneRepo = $this->load( "phone-repository" );
 
             // Require in helper functions
             require_once( "App/Helpers/fa-return-stars.php" );
             require_once( "App/Helpers/tracking-code-builders.php" );
 
-            // Grab some configs
-            $Config = $this->load( "config" );
-            // Load repos
-            $businessRepo = $this->load( "business-repository" );
-            $reviewRepo = $this->load( "review-repository" );
-
             // Get business by the unique URL slug
             $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
+
+            // Get phone associated with this business
+            $phone = $phoneRepo->getByID( $this->business->phone_id );
+            $this->business->phone = $phone;
+
             // Render 404 if no business is returned
             if ( is_null( $this->business->id ) || $this->business->id == "" ) {
                 $this->view->render404();

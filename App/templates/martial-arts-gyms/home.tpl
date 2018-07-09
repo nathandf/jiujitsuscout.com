@@ -5,9 +5,35 @@
 {/block}
 
 {block name="business-profile-body"}
-	<div class="content-container-16-9 bg-black">
-		<img class="inner-content-container-fit" src="{$HOME}img/finisher.jpg">
+	<div class="inner-pad-med" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+		<div>
+			<p>{$business->business_name}'s Rating: <span itemprop="ratingValue">{$business_rating}</span>/ 5</p>
+			<p>{$html_stars}</p>
+		</div>
+		<div>
+			<p>Reviews: <span itemprop="reviewCount">{$total_ratings}</span></p>
+		</div>
+		<div class="clear"></div>
 	</div>
+	<div class="inner-pad-med" style="border-top: 1px solid #CCCCCC;">
+		<a class="btn btn-inline push-r-med floatright " href="{$HOME}martial-arts-gyms/{$business->site_slug}/free-class" style="margin-bottom: 0;">Free Class</a>
+		<table cellspacing="0" class="">
+			<tr>
+				<td style="padding: 0px;"><p class="text-med-heavy">Phone: </p></td>
+				<td style="padding: 0px;"><p class="text-sml push-l">+{$business->phone->country_code} {$business->phone->national_number}</p></td>
+			</tr>
+			<tr>
+				<td style="padding: 0px;"><p class="text-med-heavy">Address: </p></td>
+				<td style="padding: 0px;"><p class="text-sml push-l">{$business->address_1}, {$business->city}, {$business->region} {$business->postal_code}</p></td>
+			</tr>
+		</table>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	{include file="includes/widgets/js-google-map.tpl"}
+	<!-- <div class="content-container-16-9 bg-black">
+		<img class="inner-content-container-fit" src="{$HOME}img/finisher.jpg">
+	</div> -->
 	<div class="con-cnt-xxlrg">
 		<p class="title-wrapper text-xlrg-heavy push-t-med">Request Information</p>
 		<div class="con-outer-fit inner-pad-med bg-deep-blue">
@@ -42,27 +68,8 @@
 		<div class="clear"></div>
 	</div>
 	<div class="clear"></div>
-	<div class="inner-pad-med">
-		<p>Come by for your <a class="link" href="{$HOME}martial-arts-gyms/{$business->site_slug}/free-class">free trial class!</a></p>
-		{*{include file='includes/snippets/js-google-map.tpl'}*}
-		<div class="clear"></div>
-		<p>{$business->address_1}, {$business->city}, {$business->region} {$business->postal_code}</p>
-		<div class="clear"></div>
-	</div>
-	<div class="clear"></div>
 	<div id="review" class="inner-pad-med">
 		<h2 class="push-b-med">Leave a Review and Rate your experience!</h2>
-		<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-			<div>
-				<p>{$business->business_name}'s Rating: <span itemprop="ratingValue">{$business_rating}</span>/ 5</p>
-				<p>{$html_stars}</p>
-			</div>
-			<div>
-				<p>Reviews: <span itemprop="reviewCount">{$total_ratings}</span></p>
-			</div>
-			<div class="clear"></div>
-		</div>
-		<p class="text-med-heavy push-t-med push-b-med">Rate Your Experience!</p>
 		{if isset($error_messages.review)}
 			{foreach from=$error_messages.review item=message}
 				<div class="con-message-failure mat-hov cursor-pt --c-hide">
