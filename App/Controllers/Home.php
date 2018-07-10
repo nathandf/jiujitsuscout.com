@@ -11,10 +11,25 @@ class Home extends Controller
     {
         $ipinfo = $this->load( "ip-info" );
 
-        // Get geo info of user by ip using the IPInfo API
-        $geoIP = $ipinfo->getGeoByIP();
+        $geo_info = $this->session->getCookie( "geo-info" );
+        $geo_info_request = $this->session->getCookie( "geo-info-request" );
 
-        $this->view->assign( "geo", $geoIP );
+        if ( is_null( $geo_info ) && is_null( $geo_info_request ) ) {
+            // Get geo info of user by ip using the IPInfo API
+            $geoIP = $ipinfo->getGeoByIP();
+
+            if ( $geoIP && $geoIP->city != "" && $geoIP->region != "" ) {
+                $geo_info = $geoIP->city . ", " . $geoIP->region;
+            }
+
+            $this->session->setCookie( "geo-info", $geo_info );
+            $this->session->setCookie( "geo-info-request", true );
+
+            $this->view->assign( "geo", $geo_info );
+        } else {
+            $this->view->assign( "geo", $this->session->getCookie( "geo-info" ) );
+        }
+
     }
 
     public function indexAction()

@@ -20,7 +20,6 @@ class Session
     private function setSession( $index, $value )
     {
         $_SESSION[ $index ] = $value;
-//        setcookie( $index, $token, time() + 1000, null, null, false, false );
     }
 
     public function getSession( $index )
@@ -47,7 +46,7 @@ class Session
         if ( isset( $_SESSION[ "flash_messages" ] ) ) {
             $flash_messages = $_SESSION[ "flash_messages"];
             unset( $_SESSION[ "flash_messages" ] );
-            
+
             return $flash_messages;
         }
 
@@ -65,6 +64,20 @@ class Session
     public function getCSRFToken()
     {
         return $this->crsf_token;
+    }
+
+    public function setCookie( $index, $value )
+    {
+        setcookie( $index, $value, time() + ( 3600 * 24 ), null, null, false, false );
+    }
+
+    public function getCookie( $index )
+    {
+        if ( isset( $_COOKIE[ $index ] ) ) {
+            return $_COOKIE[ $index ];
+        }
+
+        return null;
     }
 
     public function getCookieToken( $index )
