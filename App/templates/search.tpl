@@ -1,34 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 	<head>
-    <title>Find Brazilian Jiu Jitsu classes and MMA near me | BJJ Schools, MMA Gyms and more</title>
-    <meta name="description" content="Find Brazilian Jiu Jitsu classes and MMA gyms near you with our BJJ Gym Finder. Browse martial arts gyms in your area and try a class for free">
-		<meta name="msvalidate.01" content="B9CB71BA77FCF02DC8BBE5FAA9A33456" />
-		<span itemscope itemtype="http://schema.org/Organization" itemid="#amt-organization">
-		<meta itemprop="name" content="Jiu Jitsu Classes and MMA gyms Near Me | BJJ School Finder" />
-		<span itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-			<meta itemprop="name" content="Brazilian Jiu Jitsu Classes and MMA Gyms Near Me logo" />
-			<meta itemprop="text" content="Find Jiu Jitsu near me logo" />
-			<meta itemprop="url" content="http://www.jiujitsuscout.com/img/jiujitsuscoutlogo.jpg" />
-			<meta itemprop="contentUrl" content="http://www.jiujitsuscout.com/img/jiujitsuscoutlogo.jpg" />
-			<meta itemprop="encodingFormat" content="image/jpg" />
-		</span>
-		<meta itemprop="url" content="http://www.jiujitsuscout.com/" />
-		<meta itemprop="sameAs" content="https://twitter.com/Find_Bjj_Gyms" />
-		<meta itemprop="sameAs" content="https://www.facebook.com/JiuJitsuScout/" />
-		<meta itemprop="mainEntityOfPage" content="http://www.jiujitsuscout.com/" />
-		</span>
-		<span itemscope itemtype="http://schema.org/WebSite" itemid="#amt-website">
-		<meta itemprop="name" content="BJJ School FInder | BJJ near me" />
-		<meta itemprop="headline" content="Home" />
-		<meta itemprop="url" content="http://www.jiujitsuscout.com/" />
-		<link rel="canonical" href="http://www.jiujitsuscout.com/">
+    	<title>Find Brazilian Jiu Jitsu classes and MMA near me | BJJ Schools, MMA Gyms and more</title>
 		{include file="includes/head/main-head.tpl"}
 		<link rel="stylesheet" type="text/css" href="{$HOME}css/search.css"/>
 		<script src="{$HOME}{$JS_SCRIPTS}search.js"></script>
 	</head>
 	<body>
 		{include file="includes/navigation/main-menu.tpl"}
+		<div class="clear"></div>
 	    <div class="results-header">
 	      <form method="get" onsubmit="" action="search#results" >
 
@@ -62,7 +42,7 @@
 						<p class="text-med">{$business->promotional_offer}</p>
 						<div class="clear"></div>
 						<button id="request-offer-{$smarty.foreach.business_listings.iteration}" class="mat-hov-alt request-offer-btn bg-good-green push-t cursor-pt --offer-request-form-drop"><span class="tc-white text-sml-heavy">Get Offer</span></button>
-						<button id="request-schedule-{$smarty.foreach.business_listings.iteration}" class="mat-hov-alt request-schedule-btn bg-mango push-t cursor-pt --schedule-request-form-drop"><span class="tc-good-green text-sml-heavy">Request Schedule</span></button>
+						<button id="request-schedule-{$smarty.foreach.business_listings.iteration}" class="mat-hov-alt request-schedule-btn push-t cursor-pt --schedule-request-form-drop"><span class="tc-good-green text-sml-heavy">Request Schedule</span></button>
 						<div class="clear"></div>
 					</span>
 					<div class="clear"></div>

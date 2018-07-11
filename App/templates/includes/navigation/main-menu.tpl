@@ -2,7 +2,7 @@
     <a href="{$HOME}">
         <img src="{$HOME}img/jjslogotypographyfulltransparentblack.png" class="floatleft cursor-pt login-menu-logo" alt="">
     </a>
-    <div id="nav-dropdown-button" class="nav-dropdown-button floatright push-r-med" style="line-height: 60px">
+    <div id="nav-dropdown-button" class="nav-dropdown-button floatright push-r-med" style="line-height: 60px;">
         <span class="text-xlrg-heavy tc-gun-metal">
             <i class="fa fa-bars" aria-hidden="true"></i>
         </span>
