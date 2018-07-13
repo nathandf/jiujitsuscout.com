@@ -1,7 +1,9 @@
 
 <div class="sign-up-form">
 	<p class="form-title" ><strong>{$page->text_form|default:"Sign up to lock in your spot!"}</strong></p>
-	<form method="post" action="{$HOME}martial-arts-gyms/{$business->site_slug}/thank-you">
+	<form method="post" action="">
+		<input type="hidden" name="token" value="{$csrf_token}">
+		<input type="hidden" name="landing_page" value="{$csrf_token}">
 		<input type="text" class="form-field" name="name" placeholder="First name" required="required" />
 		<input type="text" class="form-field" name="email" placeholder="Email" required="required" />
 		<input type="text" class="form-field" name="number" placeholder="Phone Number" required="required" />

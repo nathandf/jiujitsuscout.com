@@ -75,4 +75,39 @@ class UserMailer
         return true;
     }
 
+    public function sendReviewNotification( $user_name, $user_email, $reviewer_info = [] )
+    {
+        $this->mailer->setRecipientName( $user_name );
+        $this->mailer->setRecipientEmailAddress( $user_email );
+        $this->mailer->setSenderName( "JiuJitsuScout" );
+        $this->mailer->setSenderEmailAddress( "notifications@jiujitsuscout.com" );
+        $this->mailer->setContentType( "text/html" );
+        $this->mailer->setEmailSubject( "Your Business was Reviewed" );
+        $this->mailer->setEmailBody( '
+            <div>
+                <table cellspacing=0 style="width: 300px; background: #f6f7f9; border-collapse: collapse; table-layout: fixed; border: 1px solid #CCCCCC; box-sizing: border-box; padding: 15px; display: block; margin-left: 20px;">
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Name:</td>
+                        <td>' . $reviewer_info[ "name" ] . '</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Email:</td>
+                        <td>' . $reviewer_info[ "email" ] . '</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Rating:</td>
+                        <td>' . $reviewer_info[ "rating" ] . '</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Review:</td>
+                        <td><p sytle="max-width: 50ch;">' . $reviewer_info[ "review" ] . '</p></td>
+                    </tr>
+                </table>
+            </div>
+        ' );
+        $this->mailer->mail();
+
+        return true;
+    }
+
 }

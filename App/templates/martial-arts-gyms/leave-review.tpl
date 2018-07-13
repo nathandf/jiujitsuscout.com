@@ -24,7 +24,7 @@
 				</div>
 			{/foreach}
 		{/if}
-		<form method="post" id="comment-form" action="{$HOME}martial-arts-gyms/{$business->site_slug}/#review-box">
+		<form method="post" id="comment-form" action="">
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="rate_review" value="{$csrf_token}">
 			<select form="comment-form" name="rating" class="inp field-sml cursor-pt">
