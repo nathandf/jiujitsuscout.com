@@ -6,11 +6,17 @@
     </div>
     <ul class="nav-top-ul" itemscope itemtype="http://schema.org/BreadcrumbList">
         <div id="nav-items-container" class="nav-items-container">
+            <div class="nav-item-seperator"></div>
             <li class="nav-item-l"><a class="nav-link-main" href="{$HOME}martial-arts-gyms/{$business->site_slug}/">Home</a></li>
+            <div class="nav-item-seperator"></div>
             <li class="nav-item-l"><a class="nav-link-main" href="{$HOME}martial-arts-gyms/{$business->site_slug}/reviews">Reviews</a></li>
+            <!-- <div class="nav-item-seperator"></div>
             <li class="nav-item-l"><a class="nav-link-main" href="{$HOME}martial-arts-gyms/{$business->site_slug}/schedule">Schedule</a></li>
-            <li class="nav-item-l"><a class="nav-link-main" href="{$HOME}martial-arts-gyms/{$business->site_slug}/instructors">Instructors</a></li>
+            <div class="nav-item-seperator"></div>
+            <li class="nav-item-l"><a class="nav-link-main" href="{$HOME}martial-arts-gyms/{$business->site_slug}/instructors">Instructors</a></li> -->
+            <div class="nav-item-seperator"></div>
             <li class="nav-item-l"><a class="nav-link-main" href="{$HOME}martial-arts-gyms/{$business->site_slug}/contact">Contact Us</a></li>
+            <div class="nav-item-seperator"></div>
             <li class="nav-item-l"><a class="nav-link-main" href="{$HOME}martial-arts-gyms/{$business->site_slug}/free-class"> Reserve Free Class </a></li>
          </div>
     </ul>
