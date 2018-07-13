@@ -983,6 +983,8 @@ class MartialArtsGyms extends Controller
                     ]
                 );
             }
+
+            $this->view->redirect( "martial-arts-gyms/{$this->params[ "siteslug" ]}/thank-you" );
         }
 
         $this->view->assign( "page", $landingPage );
@@ -1005,7 +1007,6 @@ class MartialArtsGyms extends Controller
 
         $this->view->setTemplate( "martial-arts-gyms/landing-page-templates/" . $landingPage->template_file );
         $this->view->render( "App/Views/MartialArtsGyms.php" );
-
     }
 
     public function leaveReviewAction()
