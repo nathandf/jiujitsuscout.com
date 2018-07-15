@@ -12,7 +12,7 @@ $config[ "email_settings" ] = [
         "url_prefix" => "http://localhost/jiujitsuscout.com/"
     ],
     "staging" => [
-        "url_prefix" => "http://develop.jiujitsuscout.stupidsimple.tech"
+        "url_prefix" => "http://develop.jiujitsuscout.stupidsimple.tech/"
     ],
     "production" => [
         "url_prefix" => "https://jiujitsuscout.com/"
