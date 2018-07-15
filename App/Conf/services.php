@@ -311,7 +311,10 @@ $container->register( "mailer", function() use ( $container ) {
 } );
 
 $container->register( "user-mailer", function() use ( $container ) {
-	$mailerService = new \Models\Services\UserMailer( $container->getService( "mailer" ) );
+	$mailerService = new \Models\Services\UserMailer(
+		$container->getService( "mailer" ),
+		$container->getService( "config" )
+	);
 	return $mailerService;
 } );
 

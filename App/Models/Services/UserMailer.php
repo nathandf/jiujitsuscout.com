@@ -6,10 +6,12 @@ class UserMailer
 {
 
     public $mailer;
+    public $configs;
 
-    public function __construct( \Contracts\MailerInterface $mailer )
+    public function __construct( \Contracts\MailerInterface $mailer, \Conf\Configs $Config )
     {
         $this->setMailer( $mailer );
+        $this->configs = $Config::$configs[ "email_settings" ][ "staging" ];
     }
 
     public function setMailer( $mailer )
@@ -65,7 +67,7 @@ class UserMailer
                 </table>
                 <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
                     <tr>
-                        <td><a href="localhost/jiujitsuscout.com/account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
                     </tr>
                 </table>
             </div>

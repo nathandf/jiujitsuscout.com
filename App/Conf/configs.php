@@ -6,6 +6,19 @@ $config[ "facebook" ][ "pixel_id" ] = '1842001532752101';
 $config[ "max_upload_filesize" ] = "2MB";
 $config[ "default_logo" ] = "jjslogoiconwhite.jpg";
 
+// Email Settings
+$config[ "email_settings" ] = [
+    "development" => [
+        "url_prefix" => "http://localhost/jiujitsuscout.com/"
+    ],
+    "staging" => [
+        "url_prefix" => "http://develop.jiujitsuscout.stupidsimple.tech"
+    ],
+    "production" => [
+        "url_prefix" => "https://jiujitsuscout.com/"
+    ],
+];
+
 // Database
 $config[ "db" ] = [
     "host" => "localhost",
