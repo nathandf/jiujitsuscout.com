@@ -28,7 +28,7 @@ class UserMailer
         $this->mailer->setContentType( "text/html" );
         $this->mailer->setEmailSubject( "Welcome to JiuJitsuScout!" );
         $this->mailer->setEmailBody( "Your profile on JiuJitsuScout is complete!" );
-        #$this->mailer->mail();
+        $this->mailer->mail();
 
         return true;
     }
