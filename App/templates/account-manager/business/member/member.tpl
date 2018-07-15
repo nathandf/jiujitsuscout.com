@@ -11,7 +11,6 @@
 		{include file="includes/navigation/business-manager-menu.tpl"}
 		<div id="content">
 			{include file='includes/modals/quick-email.tpl'}
-			{include file='includes/modals/quick-text.tpl'}
 			<div class="con-cnt-xlrg inner-pad-med">
 				<div class="clear first"></div>
 				<a class="btn btn-inline bg-dark-mint text-med" href="{$HOME}account-manager/business/members#member{$member->id}">< All Members</a>

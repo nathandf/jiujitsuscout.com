@@ -26,7 +26,6 @@
   </head>
   <body>
     {include file='includes/navigation/main-menu.tpl'}
-    {include file='includes/navigation/main-menu-mobile.tpl'}
     <div class="con-cnt-xxlrg first">
         <h1>About JiuJitsuScout</h1>
         <h2 class="first">Our Mission</h2>

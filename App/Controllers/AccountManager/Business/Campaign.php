@@ -98,6 +98,11 @@ class Campaign extends Controller
         $campaignTypeRepo = $this->load( "campaign-type-repository" );
         $campaignRepo = $this->load( "campaign-repository" );
         $salesAgentMailer = $this->load( "sales-agent-mailer" );
+        $phoneRepo = $this->load( "phone-repository" );
+
+        // Get this users phone resource and set phone number property of user object
+        $phone = $phoneRepo->getByID( $this->user->phone_id );
+        $this->user->phone_number = "+" . $phone->country_code . " " . $phone->national_number;
 
         $campaignTypeIds = [];
         $campaignTypes = $campaignTypeRepo->getAll();

@@ -150,10 +150,16 @@ class LandingPage extends Controller
             $this->view->redirect( "account-manager/business/landing-page/" . $this->param[ "id" ] . "/" );
         }
 
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
         $templateRepo = $this->load( "landing-page-template-repository" );
+
         $templates = $templateRepo->getAll();
 
         $this->view->assign( "templates", $templates );
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setTemplate( "account-manager/business/landing-page/choose-template.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/LandingPage.php" );
@@ -165,7 +171,10 @@ class LandingPage extends Controller
             $this->view->redirect( "account-manager/business/landing-pages/" );
         }
 
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
         $landingPageRepo = $this->load( "landing-page-repository" );
+
         $landingPage = $landingPageRepo->getByID( $this->params[ "id" ] );
 
         if ( empty( $landingPage->id ) ) {
@@ -173,8 +182,10 @@ class LandingPage extends Controller
         }
 
         $this->view->assign( "preview_active", true );
-
         $this->view->assign( "page", $landingPage );
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setTemplate( "martial-arts-gyms/landing-page-templates/" . $landingPage->template_file );
         $this->view->render( "App/Views/AccountManager/Business/LandingPage.php" );
@@ -189,6 +200,7 @@ class LandingPage extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $landingPageTemplateRepo = $this->load( "landing-page-template-repository" );
+
         $landingPageTemplates = $landingPageTemplateRepo->getAll();
 
         $template_ids = [];
@@ -243,6 +255,9 @@ class LandingPage extends Controller
             $this->view->assign( "template_view_active", true );
             $this->view->assign( "template", $template );
             $this->view->assign( "page", $page );
+
+            $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+            $this->view->setErrorMessages( $inputValidator->getErrors() );
 
             $this->view->setTemplate( "martial-arts-gyms/landing-page-templates/" . $template->template_filename );
             $this->view->render( "App/Views/AccountManager/Business/LandingPage.php" );
@@ -442,8 +457,7 @@ class LandingPage extends Controller
         // Input values submitted from form
         $this->view->assign( "inputs", $inputs );
 
-        $csrf_token = $this->session->generateCSRFToken();
-        $this->view->assign( "csrf_token", $csrf_token );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->assign( "groups", $groups );

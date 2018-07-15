@@ -42,7 +42,7 @@
 							{else}
 							<option selected="selected" hidden="hidden" value="">-- Choose Code --</option>
 							{/if}
-							{if $country_code}
+							{if isset($country_code)}
 							<option value="">-- Default Country Code --</option>
 							<option value="{$country_code}">+{$country_code}</option>
 							{/if}

@@ -9,7 +9,7 @@
 	    {include file="includes/navigation/business-manager-menu.tpl"}
 		<div class="con-cnt-xxlrg first inner-pad-med">
 			<h3>Choose a Member</h3>
-			<span>or <a class="link" href="{$HOME}account-manager/business/add-lead">create a new one</a></span>
+			<span>or <a class="link" href="{$HOME}account-manager/business/member/new">create a new one</a></span>
 			<div class="clear"></div>
 			<!-- <input type="search" class="inp field-med first last" placeholder="Search">
 			<div class="clear"></div> -->

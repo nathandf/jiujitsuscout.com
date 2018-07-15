@@ -12,7 +12,6 @@
 		<div id="content">
 			{include file='includes/modals/lead-info.tpl'}
 			{include file='includes/modals/quick-email.tpl'}
-			{include file='includes/modals/quick-text.tpl'}
 			<div class="clear"></div>
 			<div class="con con-cnt-xlrg inner-pad-med">
 				<a class="btn btn-inline bg-salmon text-med" href="{$HOME}account-manager/business/leads">< Leads</a>
