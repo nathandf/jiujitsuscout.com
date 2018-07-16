@@ -1,6 +1,6 @@
 # JiuJitsuScout.com | Business Automation platform for martial arts businesses
 
-## Versioning Standards ##
+## Versioning Standards
 ---
 Details on the branching model can be found [here](https://nvie.com/posts/a-successful-git-branching-model/).
 ---
