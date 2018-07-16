@@ -135,11 +135,11 @@ class BusinessRepository extends Service
     $businessMapper->updateVideoByID( $id, $video_link );
   }
 
-  public function updateFacebookPixelIDBYID( $facebook_pixel_id, $id )
-  {
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
-    $businessMapper->updateFacebookPixelIDByID( $id, $facebook_pixel_id );
-  }
+    public function updateFacebookPixelIDBYID( $facebook_pixel_id, $id )
+    {
+        $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+        $businessMapper->updateFacebookPixelIDByID( $id, $facebook_pixel_id );
+    }
 
   public function updateLogoByID( $id, $logo_filename )
   {
