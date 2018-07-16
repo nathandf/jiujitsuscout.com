@@ -2,7 +2,7 @@
 
 ## Versioning Standards
 ---
-Details on the branching model can be found [here](https://nvie.com/posts/a-successful-git-branching-model/).
+<p>Details on the branching model can be found</p> [here](https://nvie.com/posts/a-successful-git-branching-model/).
 ---
 ### Version Numbering implementation
 
