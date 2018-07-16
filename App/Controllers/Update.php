@@ -15,13 +15,13 @@ class Update extends Controller
         $phoneRepo = $this->load( "phone-repository" );
         $businessRepo = $this->load( "business-repository" );
         $reviewRepo = $this->load( "review-repository" );
-
+        
         $dm = new \Models\Mappers\DataMapperTEMP($this->container);
 
         // $ratings_reviews = $dm->getAll( "ratings_reviews" );
         // $leads = $dm->getAll( "leads" );
         // $tracking_codes = $dm->getAll( "partner_tracking_codes" );
-        $businesses = $businessRepo->getAll();
+        // $businesses = $businessRepo->getAll();
 
         foreach ( $businesses as $business ) {
             // foreach ( $tracking_codes as $tc ) {

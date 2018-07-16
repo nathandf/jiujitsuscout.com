@@ -11,7 +11,7 @@ class UserMailer
     public function __construct( \Contracts\MailerInterface $mailer, \Conf\Config $Config )
     {
         $this->setMailer( $mailer );
-        $this->configs = $Config::$configs[ "email_settings" ][ "staging" ];
+        $this->configs = $Config::$configs[ "email_settings" ][ $Config::getEnv() ];
     }
 
     public function setMailer( $mailer )
