@@ -22,11 +22,14 @@ $config[ "email_settings" ] = [
 // Database
 $config[ "db" ] = [
     "host" => "localhost",
+
     // "dbname" => "jjs_development",
-    "dbname" => "yurigloc_jjs_development",
-    // "dbname" => "jjs_main",
-    // "user" => "jjspartner",
-    "user" => "yurigloc_develop",
+    // "dbname" => "yurigloc_jjs_development",
+    // "user" => "yurigloc_develop",
+
+    "dbname" => "jjs_main",
+    "user" => "jjspartner",
+
     "password" => "Q7Np4WBUfCveynAy"
 ];
 
