@@ -30,10 +30,6 @@
 							{else}
 							<option selected="selected" hidden="hidden" value="">-- Choose Code --</option>
 							{/if}
-							{if $country_code}
-							<option value="">-- Default Country Code --</option>
-							<option value="{$country_code}">+{$country_code}</option>
-							{/if}
 							<option value="">-- Common Country Codes --</option>
 							<option value="1">USA +1</option>
 							<option value="1">CAN +1</option>
