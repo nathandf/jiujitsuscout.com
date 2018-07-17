@@ -11,7 +11,7 @@ require_once( "App/Helpers/debug.php" );
 $container = new Core\DI_Container;
 
 // Environment
-Conf\Config::setEnv( "production" );
+Conf\Config::setEnv( "development" );
 
 // Load services using DI_Container
 require_once( "App/Conf/services.php" );
