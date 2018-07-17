@@ -35,7 +35,7 @@ $config[ "db" ] = [
     ],
     "production" => [
         "host" => "localhost",
-        "dbname" => "yuriglock_jjs_main",
+        "dbname" => "yurigloc_jjs_main",
         "user" => "yurigloc_main",
         "password" => "XHN8yxNzpN2l",
     ]
