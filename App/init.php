@@ -18,9 +18,9 @@ require_once( "App/Conf/services.php" );
 
 // Error handling
 Core\Error::setEnv( Conf\Config::getEnv() );
-// error_reporting( E_ALL );
-// set_error_handler( "Core\Error::errorHandler" );
-// set_exception_handler( "Core\Error::exceptionHandler" );
+error_reporting( E_ALL );
+set_error_handler( "Core\Error::errorHandler" );
+set_exception_handler( "Core\Error::exceptionHandler" );
 
 // Session and token handling
 $session = $container->getService( "session" );
