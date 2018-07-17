@@ -49,7 +49,7 @@ class Error
 
             error_log( $message );
 
-            require_once( "App/templates/$code.shtml" );
+            #require_once( "App/templates/$code.shtml" );
         }
     }
 }
