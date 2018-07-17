@@ -9,8 +9,8 @@ class PhoneRepository extends Service
     {
         $phone = new \Models\Phone();
         $phoneMapper = new \Models\Mappers\PhoneMapper( $this->container );
-        $phone->country_code = $country_code;
-        $phone->national_number = $national_number;
+        $phone->country_code = trim( preg_replace( "/[^0-9]/", "", $country_code ) );
+        $phone->national_number = trim( preg_replace( "/[^0-9]/", "", $national_number ) );
         $phoneMapper->create( $phone );
 
         return $phone;

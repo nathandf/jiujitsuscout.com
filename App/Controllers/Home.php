@@ -81,6 +81,10 @@ class Home extends Controller
         $geometry = $this->load( "geometry" );
         $disciplineRepo = $this->load( "discipline-repository" );
         $reviewRepo = $this->load( "review-repository" );
+        $prospectRepo = $this->load( "prospect-repository" );
+        $entityFactory = $this->load( "entity-factory" );
+        $phoneRepo = $this->load( "phone-repository" );
+        $noteRegistrar = $this->load( "note-registrar" );
 
         // html star builder helper
         require_once( "App/Helpers/fa-return-stars.php" );
@@ -100,7 +104,56 @@ class Home extends Controller
         }
         $discipline = null;
 
-        if ( $input->exists( "get" ) && $inputValidator->validate(
+        if ( $input->exists( "get" ) && $input->issetField( "no_results" ) && $inputValidator->validate(
+
+                $input,
+
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "name" => [
+                        "required" => true
+                    ],
+                    "number" => [
+                        "required" => true,
+                        "phone" => true
+                    ],
+                    "email" => [
+                        "required" => true,
+                        "email" => true
+                    ],
+                    "q" => [
+                        "required" => true
+                    ]
+                ],
+
+                "contact_me" /* error index */
+            ) )
+        {
+            $phone = $phoneRepo->create( 0, $input->get( "number" ) );
+            $prospect = $entityFactory->build( "Prospect" );
+            $prospect->first_name = $input->get( "name" );
+            $prospect->last_name = "";
+            $prospect->email = $input->get( "email" );
+            $prospect->business_id = 0;
+            $prospect->source = "No Search Results Page";
+            $prospect->phone_id = $phone->id;
+            $prospect_id = $prospectRepo->save( $prospect );
+
+            $noteRegistrar->save(
+                "Search query: " . $input->get( "q" ),
+                0,
+                null,
+                $prospect_id,
+                null,
+                null
+            );
+
+            $this->view->redirect( "thank-you" );
+
+        } elseif ( $input->exists( "get" ) && $inputValidator->validate(
 
                 $input,
 
@@ -360,7 +413,7 @@ class Home extends Controller
 
     public function studentRegistration()
     {
-        echo "Student Registration";
+        // TODO Student Registration
     }
 
     public function aboutUs()
@@ -378,6 +431,21 @@ class Home extends Controller
     public function termsAndConditions()
     {
         $this->view->setTemplate( "terms-and-conditions.tpl" );
+        $this->view->render( "App/Views/Home.php" );
+    }
+
+    public function contactMe()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $prospectRepo = $this->load( "prospect-repository" );
+        $entityFactory = $this->load( "entity-factory" );
+    }
+
+    public function thankYou()
+    {
+        // TODO add facbook pixel
+        $this->view->setTemplate( "thank-you.tpl" );
         $this->view->render( "App/Views/Home.php" );
     }
 

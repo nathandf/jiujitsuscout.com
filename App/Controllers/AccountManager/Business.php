@@ -309,7 +309,7 @@ class Business extends Controller
         $group_ids = [];
 
         foreach ( $groups as $group ) {
-            $group_ids[] = $group;
+            $group_ids[] = $group->id;
         }
 
         // Add lead
@@ -361,14 +361,15 @@ class Business extends Controller
             $prospect_id = $prospectRepo->save( $prospect );
 
             if ( $input->issetField( "group_ids" ) && !empty( $input->get( "group_ids" ) ) ) {
-                $submitted_group_ids = implode( ",", $input->get( "group_ids" ) );
+                $submitted_group_ids = $input->get( "group_ids" );
                 foreach ( $submitted_group_ids as $key => $submitted_group_id ) {
                     // Verify that the all submitted group ids are owned by this business. If not, unset.
-                    if ( !in_array( $submitted_group_ids, $group_ids ) ) {
+                    if ( !in_array( $submitted_group_id, $group_ids ) ) {
                         unset( $submitted_group_ids[ $key ] );
                     }
                 }
-                $prospectRepo->updateGroupIDsByID( $submitted_group_ids, $prospect_id );
+                
+                $prospectRepo->updateGroupIDsByID( implode( ",", $submitted_group_ids ), $prospect_id );
             }
 
             if ( $input->issetField( "schedule_appointment" ) && $input->get( "schedule_appointment" ) == "true" ) {

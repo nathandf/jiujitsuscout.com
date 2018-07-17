@@ -21,16 +21,24 @@ $config[ "email_settings" ] = [
 
 // Database
 $config[ "db" ] = [
-    "host" => "localhost",
-
-    // "dbname" => "jjs_development",
-    "dbname" => "yurigloc_jjs_development",
-    "user" => "yurigloc_develop",
-
-    // "dbname" => "jjs_main",
-    // "user" => "jjspartner",
-
-    "password" => "Q7Np4WBUfCveynAy"
+    "development" => [
+        "host" => "localhost",
+        "dbname" => "yurigloc_jjs_development",
+        "user" => "yurigloc_develop",
+        "password" => "Q7Np4WBUfCveynAy",
+    ],
+    "staging" => [
+        "host" => "localhost",
+        "dbname" => "jjs_main",
+        "user" => "jjspartner",
+        "password" => "Q7Np4WBUfCveynAy",
+    ],
+    "production" => [
+        "host" => "localhost",
+        "dbname" => "yurigloc_jjs_main",
+        "user" => "yurigloc_main",
+        "password" => "XHN8yxNzpN2l",
+    ]
 ];
 
 // Google APIs

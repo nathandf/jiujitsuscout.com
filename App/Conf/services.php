@@ -38,9 +38,9 @@ $container->register( "templating-engine", function() use ( $container ) {
 $container->register( "pdo", function() use ( $container ) {
 	$conf = $container->getService( "config" );
 	$pdo = new \PDO(
-		"mysql:host={$conf::$configs[ "db" ][ "host" ]}; dbname={$conf::$configs[ "db" ][ "dbname" ]};",
-		$conf::$configs[ "db" ][ "user" ],
-		$conf::$configs[ "db" ][ "password" ]
+		"mysql:host={$conf::$configs[ "db" ][ "{$conf::getEnv()}" ][ "host" ]}; dbname={$conf::$configs[ "db" ][ "{$conf::getEnv()}" ][ "dbname" ]};",
+		$conf::$configs[ "db" ][ "{$conf::getEnv()}" ][ "user" ],
+		$conf::$configs[ "db" ][ "{$conf::getEnv()}" ][ "password" ]
 	);
 	$pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 	return $pdo;
