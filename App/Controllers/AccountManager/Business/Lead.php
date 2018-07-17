@@ -418,7 +418,7 @@ class Lead extends Controller
             $prospectRepo->updateTypeByID( "trash", $input->get( "prospect_id" ) );
 
             // Remove group ids
-            $prospectRepo->updateGroupIDsByID( [], $input->get( "prospect_id" ) );
+            $prospectRepo->updateGroupIDsByID( "", $input->get( "prospect_id" ) );
 
             // Remove appointments
             $appointmentRepo->removeByProspectID( $input->get( "prospect_id" ) );
