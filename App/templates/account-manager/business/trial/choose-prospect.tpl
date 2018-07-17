@@ -6,8 +6,7 @@
 	</head>
 	<body>
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
-    {include file="includes/navigation/business-manager-menu.tpl"}
-    {include file="includes/navigation/business-manager-menu-mobile.tpl"}
+	    {include file="includes/navigation/business-manager-menu.tpl"}
 		<div class="con-cnt-xxlrg first inner-pad-med">
 			<h3>Choose a Lead</h3>
 			<span>or <a class="link" href="{$HOME}account-manager/business/add-lead">create a new one</a></span>
