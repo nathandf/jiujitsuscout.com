@@ -6,7 +6,7 @@
 	{include file="includes/navigation/admin-menu.tpl"}
 	<div class="con-cnt-xxlrg push-t-med push-b-med">
 		<table style="width: 100%;">
-			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">#</th>
+			<th class="bg-salmon tc-white" style="border: 1px solid #CCC; width: 50px;">#</th>
 			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Business</th>
 			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Name</th>
 			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Email</th>
@@ -14,7 +14,7 @@
 		{foreach from=$prospects item=prospect name="prospect_loop"}
 			{if $smarty.foreach.prospect_loop.iteration <= 100}
 			<tr style="background: {cycle values='#FFF,#F6F7F9'}">
-				<td style="text-align: center; border: 1px solid #CCC;">{$smarty.foreach.prospect_loop.iteration}</td>
+				<td style="text-align: center; border: 1px solid #CCC; width: 50px">{$smarty.foreach.prospect_loop.iteration}</td>
 				<td style="text-align: center; border: 1px solid #CCC;">{$prospect->business_name}</td>
 				<td style="text-align: center; border: 1px solid #CCC;">{$prospect->first_name}{if isset($prospect->last_name)} {$prospect->last_name}{/if}</td>
 				<td style="text-align: center; border: 1px solid #CCC;">{$prospect->email}</td>
