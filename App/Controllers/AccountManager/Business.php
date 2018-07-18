@@ -225,7 +225,7 @@ class Business extends Controller
                                     $prospectRepo->updateStatusByID( "trash", $lead_id );
                                     $prospectRepo->updateTypeByID( "trash", $lead_id );
                                     // Remove group ids
-                                    $prospectRepo->updateGroupIDsByID( [], $lead_id );
+                                    $prospectRepo->updateGroupIDsByID( "", $lead_id );
                                     // Remove appointments assosciated with lead
                                     $appointmentRepo->removeByProspectID( $lead_id );
                                     if ( $iteration == $lead_count ) {
@@ -368,7 +368,7 @@ class Business extends Controller
                         unset( $submitted_group_ids[ $key ] );
                     }
                 }
-                
+
                 $prospectRepo->updateGroupIDsByID( implode( ",", $submitted_group_ids ), $prospect_id );
             }
 
