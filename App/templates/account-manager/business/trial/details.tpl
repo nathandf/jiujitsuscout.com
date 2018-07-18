@@ -27,7 +27,7 @@
 				<input id="specific-end-date-select" class="cursor-pt push-b-med push-t-med" type="checkbox" name="specific_end_date" value="true"> <label for="specific-end-date">Set specific end date</label>
 				<div id="trial-length" style="display: block;" class="trial-length">
 					<h3>Trial Length</h3>
-					<input id="quantity" type="quantity" class="inp field-xsml-plusfirst" name="quantity" placeholder="Ex. 6"> <label for="quantity">Qty.</label>
+					<input id="quantity" type="quantity" class="inp field-sml push-t" name="quantity" placeholder="Ex. 6"> <label for="quantity">Qty.</label>
 					<select class="inp field-sml cursor-pt" name="unit" id="unit">
 						<option value="week" selected="selected" hidden="hidden">Week(s)</option>
 						<option id="day" value="day">Day(s)</option>

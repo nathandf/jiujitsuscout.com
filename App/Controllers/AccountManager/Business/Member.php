@@ -286,7 +286,7 @@ class Member extends Controller
             $member = $entityFactory->build( "Member" );
             $member->business_id            = $this->business->id;
             $member->status                 = "active";
-            $member->setFirstName( $input->get( "first_name" ) );
+            $member->first_name  = trim( $input->get( "first_name" ) );
             $member->last_name              = $input->get( "last_name" );
             $member->email                  = $input->get( "email" );
 
@@ -296,9 +296,11 @@ class Member extends Controller
             $member->native_review          = 0;
             $member->google_review          = 0;
             $member->email_unsubscribe      = 0;
+            $member->text_unsubscribe       = 0;
+            $member->prospect_id            = null;
             // Save member and get new id
             $member = $memberRegistrar->register( $member );
-
+            
             $this->view->redirect( "account-manager/business/member/" . $member->id . "/" );
         }
 
