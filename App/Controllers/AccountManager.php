@@ -456,7 +456,7 @@ class AccountManager extends Controller
 					<br><br>
 					Click the link below to reset your password.
 					<br>
-					<a href='develop.jiujitsuscout.stupidsimple.tech/account-manager/password-reset-validation?reset_token={$nonceToken->value}'>localhost/develop.jiujitsuscout.com/account-manager/password-reset-validation?reset_token={$nonceToken->value}</a>
+					<a href='https://jiujitsuscout.com/jjs-admin/password-reset-validation?reset_token={$nonceToken->value}'>localhost/develop.jiujitsuscout.com/account-manager/password-reset-validation?reset_token={$nonceToken->value}</a>
 					<br><br>
 					If you did not send a password reset request, ignore this message.
 				" );

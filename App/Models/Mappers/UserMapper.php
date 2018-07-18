@@ -161,19 +161,20 @@ class UserMapper extends DataMapper
 		}
 	}
 
-  private function populateUser( \Models\User $user, $data )
-  {
-    $user->id = $data[ "id" ];
-    $user->first_name = $data[ "first_name" ];
-    $user->last_name = $data[ "last_name" ];
-    $user->email = $data[ "email" ];
-    $user->phone_id = $data[ "phone_id" ];
-    $user->role = $data[ "role" ];
-    $user->account_id = $data[ "account_id" ];
-    $user->current_business_id = $data[ "current_business_id" ];
-    $user->password = $data[ "password" ];
-    $user->token = $data[ "token" ];
-  }
+    private function populateUser( \Models\User $user, $data )
+    {
+        $user->id = $data[ "id" ];
+        $user->user_type = $data[ "user_type" ];
+        $user->first_name = $data[ "first_name" ];
+        $user->last_name = $data[ "last_name" ];
+        $user->email = $data[ "email" ];
+        $user->phone_id = $data[ "phone_id" ];
+        $user->role = $data[ "role" ];
+        $user->account_id = $data[ "account_id" ];
+        $user->current_business_id = $data[ "current_business_id" ];
+        $user->password = $data[ "password" ];
+        $user->token = $data[ "token" ];
+    }
 
 
 }
