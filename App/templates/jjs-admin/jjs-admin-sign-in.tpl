@@ -10,8 +10,6 @@
 			<div class="encapsulation-cnt">
 				<p class="form-title">Sign in</p>
 				<img class="img-sml" src="{$HOME}img/jjslogoiconwhite.jpg" alt="">
-				<div class="clear"></div>
-				<span class="text-med"> Not a partner yet? <br><a class="link text-med" href="{$HOME}partner/">Add your business</a></span>
 				<div style="padding-left: 10px;">
 					{if !empty($error_messages.sign_in)}
 						{foreach from=$error_messages.sign_in item=message}

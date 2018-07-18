@@ -9,32 +9,38 @@ class UserAuthenticator extends Service
 
     public $repo;
 
-  public function __construct( UserRepository $repo )
-  {
-    $this->repo = $repo;
-  }
-
-  public function userValidate()
-  {
-    if ( $this->isUserValidated() ) {
-      switch ( $this->determineValidationType() ) {
-        case "session":
-          $user = $this->repo->getByID( $_SESSION[ "jjs_user_id" ] );
-          $this->setUser( $user );
-          break;
-        case "cookie":
-          $this->repo->getByToken( $_COOKIE[ "jiujitsuscout" ][ "user_login_token" ] );
-          $this->setUser( $user );
-          break;
-        case null:
-          return false;
-      }
-
-      return true;
+    public function __construct( UserRepository $repo )
+    {
+        $this->repo = $repo;
     }
 
-    return false;
-  }
+    public function userValidate( array $required_user_types = [] )
+    {
+        if ( $this->isUserValidated() ) {
+            switch ( $this->determineValidationType() ) {
+                case "session":
+                    $user = $this->repo->getByID( $_SESSION[ "jjs_user_id" ] );
+                    if ( !$this->validateUserType( $user->user_type, $required_user_types ) ) {
+                        return false;
+                    }
+                    $this->setUser( $user );
+                    break;
+                case "cookie":
+                    $user = $this->repo->getByToken( $_COOKIE[ "jiujitsuscout" ][ "user_login_token" ] );
+                    if ( !$this->validateUserType( $user->user_type, $required_user_types ) ) {
+                        return false;
+                    }
+                    $this->setUser( $user );
+                    break;
+                case null:
+                    return false;
+        }
+
+            return true;
+        }
+
+        return false;
+    }
 
   public function loggedIn()
   {
@@ -139,5 +145,15 @@ class UserAuthenticator extends Service
     }
     return $this->user;
   }
+
+    public function validateUserType( $user_type, array $required_user_types = [] )
+    {
+        if ( in_array( $user_type, $required_user_types ) || empty( $required_user_types ) ) {
+
+            return true;
+        }
+
+        return false;
+    }
 
 }
