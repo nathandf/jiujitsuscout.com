@@ -5,7 +5,7 @@
 {/block}
 
 {block name="body"}
-	{include file="includes/navigation/main-menu.tpl"}
+	{include file="includes/navigation/admin-menu.tpl"}
 {/block}
 
 {block name="footer"}{/block}

@@ -13,7 +13,7 @@ class JJSAdmin extends Controller
 		$userAuth = $this->load( "user-authenticator" );
 		$userRepo = $this->load( "user-repository" );
 		// If user not validated with session or cookie, send them to sign in
-		if ( !$userAuth->userValidate() ) {
+		if ( !$userAuth->userValidate( [ "jjs-admin" ] ) ) {
 			$this->view->redirect( "jjs-admin/sign-in" );
 		}
 		// User is logged in. Get the user object from the UserAuthenticator service
@@ -98,12 +98,55 @@ class JJSAdmin extends Controller
 
     public function businessesAction()
     {
+        $businessRepo = $this->load( "business-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
+
+
+        $businesses = $businessRepo->getAll();
+
+        // Load businesses phone resoure by phone_id and assign to business object
+        foreach ( $businesses as $business ) {
+            $phone = $phoneRepo->getByID( $business->phone_id );
+            $business->phone = $phone;
+        }
+
+        $this->view->assign( "businesses", $businesses );
+
         $this->view->setTemplate( "jjs-admin/businesses.tpl" );
         $this->view->render( "App/Views/JJSAdmin.php" );
     }
 
     public function leadsAction()
     {
+        $businessRepo = $this->load( "business-repository" );
+        $prospectRepo = $this->load( "prospect-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
+
+        $prospects = $prospectRepo->getAll();
+
+        $businesses = $businessRepo->getAll();
+        $businessNamesByID = [];
+
+        // Create an array of business names indexed by business id
+        foreach ( $businesses as $business ) {
+            $businessNamesByID[ $business->id ] = $business->business_name;
+        }
+
+        // Load prospect phone resoure by phone_id and assign to prospect object
+        $i = 0;
+        foreach ( $prospects as $prospect ) {
+            if ( $i > 100 ) {
+                break;
+            }
+            $phone = $phoneRepo->getByID( $business->phone_id );
+            $prospect->phone = $phone;
+            $prospect->business_name = $businessNamesByID[ $prospect->business_id ];
+            $i++;
+        }
+
+        $this->view->assign( "prospects", $prospects );
+        $this->view->assign( "businesses", $businesses );
+
         $this->view->setTemplate( "jjs-admin/leads.tpl" );
         $this->view->render( "App/Views/JJSAdmin.php" );
     }
@@ -261,11 +304,17 @@ class JJSAdmin extends Controller
 		$this->view->render( "App/Views/JJSAdmin.php" );
 	}
 
-
 	public function invalidToken()
 	{
 		$this->view->setTemplate( "jjs-admin/invalid-token.tpl" );
 		$this->view->render( "App/Views/JJSAdmin.php" );
+	}
+
+    public function logout()
+	{
+		$userAuth = $this->load( "user-authenticator" );
+		$userAuth->logout();
+		$this->view->redirect( "jjs-admin/sign-in" );
 	}
 
 }

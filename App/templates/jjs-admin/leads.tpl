@@ -1,50 +1,29 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<?php include_once( TEMPLATES . "head/admin-head.php" ); ?>
-		<link rel="stylesheet" type="text/css" href="<?=REL?>css/jjs-admin-leads.css"/>
-	</head>
-	<body>
-		<?php require_once( TEMPLATES . "navigation/admin-login-menu.php" ); ?>
-		<?php include_once( TEMPLATES . "navigation/admin-menu.php" ); ?>
-		<div class="con-cnt-xxlrg inner-box first">
-			<h2 class="h2 title-wrapper first">Leads</h2>
-			<div class="col col-33"><p class="col-title">Total Leads</p></div>
-      <div class="col col-33"><p class="col-title">Generated Leads</p></div>
-      <div class="col col-33"><p class="col-title">Partner Added Leads</p></div>
-      <div class="row-seperator"></div>
-      <div class="col col-33"><p class="col-title"><?=$Leads_data[ "total_leads" ]?></p></div>
-      <div class="col col-33"><p class="col-title"><?=$Leads_data[ "generated_leads" ]?></p></div>
-      <div class="col col-33"><p class="col-title"><?=$Leads_data[ "added_leads" ]?></p></div>
-      <div class="clear"></div>
-		</div>
+{extends file="layouts/jjs-admin-core.tpl"}
 
-		<div class="con-cnt-xxlrg inner-box first">
-			<div class="lead-tag-columns">
-				<p class='col col-5 text-lrg'><b>Id</b></p>
-				<p class='col col-5 text-lrg'><b>Lead onwer</b></p>
-				<p class='col col-5 text-lrg'><b>Name</b></p>
-				<p class='col col-5 text-lrg'><b>@</b></p>
-				<p class='col col-5-last text-lrg'><b>#</b></p>
-				<div class='clear'></div>
-			</div>
-			<div class='row-seperator clear'></div>
-			<?php
-				$Leads = array_reverse( $Leads );
-				foreach ( $Leads as $lead ) {
-					echo ("
-						<a href='" . HOME . "jjs-admin/leads/lead?lead_id=" . $lead[ "id" ] . "' class='lead-tag'>
-							<p class='col col-5 text-med'>" . $lead[ "id" ] . "</p>
-							<p class='col col-5 text-med'>" . $lead[ "gym_name" ] . "</p>
-							<p class='col col-5 text-med'>" . $lead[ "name" ] . "</p>
-							<p class='col col-5 text-med'>" . $lead[ "email" ] . "</p>
-							<p class='col col-5-last text-med'>" . $lead[ "phone_number" ] . "</p>
-							<div class='clear'></div>
-						</a>
-						<div class='row-seperator clear'></div>
-					");
-				}
-			?>
-		</div>
-	</body>
-</html>
+{block name="jjs-admin-head"}{/block}
+
+{block name="jjs-admin-body"}
+	{include file="includes/navigation/admin-menu.tpl"}
+	<div class="con-cnt-xxlrg push-t-med push-b-med">
+		<table style="width: 100%;">
+			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">#</th>
+			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Business</th>
+			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Name</th>
+			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Email</th>
+			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Phone Number</th>
+		{foreach from=$prospects item=prospect name="prospect_loop"}
+			{if $smarty.foreach.prospect_loop.iteration <= 100}
+			<tr style="background: {cycle values='#FFF,#F6F7F9'}">
+				<td style="text-align: center; border: 1px solid #CCC;">{$smarty.foreach.prospect_loop.iteration}</td>
+				<td style="text-align: center; border: 1px solid #CCC;">{$prospect->business_name}</td>
+				<td style="text-align: center; border: 1px solid #CCC;">{$prospect->first_name}{if isset($prospect->last_name)} {$prospect->last_name}{/if}</td>
+				<td style="text-align: center; border: 1px solid #CCC;">{$prospect->email}</td>
+				<td style="text-align: center; border: 1px solid #CCC;">+{$prospect->phone->country_code} {$prospect->phone->national_number}</td>
+			<tr>
+			{/if}
+		{/foreach}
+		</table>
+	</div>
+{/block}
+
+{block name="jjs-admin-footer"}{/block}

@@ -5,7 +5,7 @@
 		<link rel="stylesheet" type="text/css" href="{$HOME}css/partner-sign-in.css"/>
 	</head>
 	<body>
-		{include file='includes/navigation/main-menu.tpl'}
+		{include file='includes/navigation/blank-menu.tpl'}
 		<div>
 			<div class="encapsulation-cnt">
 				<p class="form-title">Sign in</p>
