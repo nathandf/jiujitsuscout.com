@@ -4,7 +4,7 @@ namespace Controllers;
 
 use \Core\Controller;
 
-class JJSAdmin extends Controller
+class JjsAdmin extends Controller
 {
 
     public function before()
