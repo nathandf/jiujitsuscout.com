@@ -1,34 +1,25 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<?php include_once( TEMPLATES . "head/admin-head.php" ); ?>
-    <link rel="stylesheet" type="text/css" href="<?=HOME?>css/jjs-partners.css"/>
-	</head>
-	<body>
-		<?php include_once( TEMPLATES . "navigation/admin-login-menu.php" ); ?>
-		<?php include_once( TEMPLATES . "navigation/admin-menu.php" ); ?>
-		<div class="con-cnt-xxlrg inner-box first">
-      <h2 class="h2 title-wrapper first">Partners</h2>
-      <div class='col-cnt col-90'>
-        <div class="col col-25">
-          <a href="<?=HOME?>jjs-admin/partners/add-partner" class="btn btn-inline">Add Partner</a>
-        </div>
-        <div class="clear"></div>
-      </div>
-      <?php
-        foreach ( $Partners as $partner ) {
-          $partner[ "lpf_gym_name" ] = $Partner_DB_Model->gymNameToLPF( $partner[ "gym_name" ] );
-          $full_logo_path = HOME . "img/uploads/" . $partner[ "logo_path" ];
-          echo( "
-          <a href='" . HOME . "jjs-admin/partners/partner?pid=" . $partner[ "id" ] . "' id='partner" . $partner[ "id" ] . "' class='col-cnt col-75 partner-tag mat-hov'>
-            <div class='col col-25'><img class='img-xsml' src='" . $full_logo_path . "'></div>
+{extends file="layouts/jjs-admin-core.tpl"}
 
-            <div class='col col-75'><p class='col-title'>" . $partner[ "gym_name" ] . "</p></div>
-            <div class='clear'></div>
-          </a>
-          " );
-        }
-      ?>
-		</div>
-	</body>
-</html>
+{block name="jjs-admin-head"}{/block}
+
+{block name="jjs-admin-body"}
+	{include file="includes/navigation/admin-menu.tpl"}
+	<div class="con-cnt-xxlrg push-t-med push-b-med">
+		<table style="width: 100%;">
+			<th class="bg-dark-mint tc-white" style="border: 1px solid #CCC; border: 1px solid #CCC; width: 50px;">#</th>
+			<th class="bg-dark-mint tc-white" style="border: 1px solid #CCC; border: 1px solid #CCC;">Business</th>
+			<th class="bg-dark-mint tc-white" style="border: 1px solid #CCC;">Email</th>
+			<th class="bg-dark-mint tc-white" style="border: 1px solid #CCC;">Phone Number</th>
+		{foreach from=$businesses item=business name="business_loop"}
+			<tr style="background: {cycle values='#FFF,#F6F7F9'}">
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$smarty.foreach.business_loop.iteration}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$business->business_name}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$business->email}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">+{$business->phone->country_code} {$business->phone->national_number}</td>
+			<tr>
+		{/foreach}
+		</table>
+	</div>
+{/block}
+
+{block name="jjs-admin-footer"}{/block}

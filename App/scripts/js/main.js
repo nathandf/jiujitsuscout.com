@@ -3,6 +3,13 @@ $( function() {
         $( this ).hide( );
     } );
 
+    $( ".--c-logout" ).on( "click", function( event ) {
+        confirmation = confirm( "Are you sure you want to logout?" );
+        if ( confirmation === false ) {
+            event.preventDefault();
+        }
+    } );
+
     $( ".--c-trash" ).on( "click", function( event ) {
         confirmation = confirm( "Are you sure you want to delete this?" );
         if ( confirmation === false ) {
