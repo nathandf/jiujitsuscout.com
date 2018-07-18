@@ -14,11 +14,11 @@
 		{foreach from=$prospects item=prospect name="prospect_loop"}
 			{if $smarty.foreach.prospect_loop.iteration <= 100}
 			<tr style="background: {cycle values='#FFF,#F6F7F9'}">
-				<td style="text-align: center; border: 1px solid #CCC; width: 50px">{$smarty.foreach.prospect_loop.iteration}</td>
-				<td style="text-align: center; border: 1px solid #CCC;">{$prospect->business_name}</td>
-				<td style="text-align: center; border: 1px solid #CCC;">{$prospect->first_name}{if isset($prospect->last_name)} {$prospect->last_name}{/if}</td>
-				<td style="text-align: center; border: 1px solid #CCC;">{$prospect->email}</td>
-				<td style="text-align: center; border: 1px solid #CCC;">+{$prospect->phone->country_code} {$prospect->phone->national_number}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC; width: 50px">{$smarty.foreach.prospect_loop.iteration}</td>
+				<td style="overflow: hidden; overflow: hidden; text-align: center; border: 1px solid #CCC;">{$prospect->business_name}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$prospect->first_name}{if isset($prospect->last_name)} {$prospect->last_name}{/if}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$prospect->email}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">+{$prospect->phone->country_code} {$prospect->phone->national_number}</td>
 			<tr>
 			{/if}
 		{/foreach}

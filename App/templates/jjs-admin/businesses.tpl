@@ -12,10 +12,10 @@
 			<th class="bg-dark-mint tc-white" style="border: 1px solid #CCC;">Phone Number</th>
 		{foreach from=$businesses item=business name="business_loop"}
 			<tr style="background: {cycle values='#FFF,#F6F7F9'}">
-				<td style="text-align: center; border: 1px solid #CCC;">{$smarty.foreach.business_loop.iteration}</td>
-				<td style="text-align: center; border: 1px solid #CCC;">{$business->business_name}</td>
-				<td style="text-align: center; border: 1px solid #CCC;">{$business->email}</td>
-				<td style="text-align: center; border: 1px solid #CCC;">+{$business->phone->country_code} {$business->phone->national_number}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$smarty.foreach.business_loop.iteration}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$business->business_name}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$business->email}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">+{$business->phone->country_code} {$business->phone->national_number}</td>
 			<tr>
 		{/foreach}
 		</table>
