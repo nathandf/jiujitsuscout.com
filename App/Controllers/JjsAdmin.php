@@ -122,7 +122,7 @@ class JjsAdmin extends Controller
         $prospectRepo = $this->load( "prospect-repository" );
         $phoneRepo = $this->load( "phone-repository" );
 
-        $prospects = $prospectRepo->getAll();
+        $prospects = array_reverse( $prospectRepo->getAll() );
 
         $businesses = $businessRepo->getAll();
         $businessNamesByID = [];
