@@ -52,7 +52,7 @@ class View extends CoreObject
         // Constants
         $this->templatingEngine->assign( "HOME", HOME );
         $this->templatingEngine->assign( "REL", REL );
-        $this->templatingEngine->assign( "JS_SCRIPTS", "App/scripts/js/" );
+        $this->templatingEngine->assign( "JS_SCRIPTS", "public/js/" );
         $this->templatingEngine->assign( "PHP_SCRIPTS", "App/scripts/php/" );
 
     }
