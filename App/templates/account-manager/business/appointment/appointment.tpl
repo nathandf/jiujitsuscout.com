@@ -70,7 +70,7 @@
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input type="hidden" name="update_status" value="{$csrf_token}">
 					<input type="hidden" name="status" value="showed">
-					<button id="showed" class="btn btn-inline message-btn called"><span class="action-btn-text">Showed</span><i class="fa fa-check" aria-hidden="true"></i></button>
+					<button type="submit" id="showed" class="btn btn-inline message-btn called"><span class="action-btn-text">Showed</span><i class="fa fa-check" aria-hidden="true"></i></button>
 				</form>
 				<form class="inline-form" method="post" action="">
 					<input type="hidden" name="token" value="{$csrf_token}">
