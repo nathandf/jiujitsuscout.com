@@ -138,7 +138,7 @@ class JjsAdmin extends Controller
             if ( $i > 100 ) {
                 break;
             }
-            $phone = $phoneRepo->getByID( $business->phone_id );
+            $phone = $phoneRepo->getByID( $prospect->phone_id );
             $prospect->phone = $phone;
             $prospect->business_name = $businessNamesByID[ $prospect->business_id ];
             $i++;
