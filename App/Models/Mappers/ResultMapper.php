@@ -70,9 +70,8 @@ class ResultMapper extends DataMapper
     public function populateResult( $result, $data )
     {
         $result->id                 = $data[ "id" ];
-        $result->ip                 = $data[ "ip" ];
-        $result->query              = $data[ "query" ];
-        $result->time               = $data[ "time" ];
+        $result->search_id          = $data[ "search_id" ];
+        $result->business_ids       = $data[ "business_ids" ];
     }
 
 }

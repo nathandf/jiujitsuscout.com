@@ -124,6 +124,13 @@ class JjsAdmin extends Controller
 
         $prospects = array_reverse( $prospectRepo->getAll() );
 
+        // Remove all prospects not connected to a business
+        foreach ( $prospects as $key => $prospect ) {
+            if ( $prospect->business_id == 0 ) {
+                unset( $prospects[ $key ] );
+            }
+        }
+
         $businesses = $businessRepo->getAll();
         $businessNamesByID = [];
 
@@ -303,6 +310,27 @@ class JjsAdmin extends Controller
 		$this->view->setTemplate( "jjs-admin/reset-password.tpl" );
 		$this->view->render( "App/Views/JJSAdmin.php" );
 	}
+
+    public function searchResultsAction()
+    {
+        $searchRepo = $this->load( "search-repository" );
+        $resultRepo = $this->load( "result-repository" );
+
+        // Load searches. Order newest to oldest
+        $searches = array_reverse( $searchRepo->getAll() );
+
+        // Load all results for searches
+        foreach ( $searches as $search ) {
+            $result = $resultRepo->getBySearchID( $search->id );
+            $search->result = $result;
+        }
+
+        $this->view->assign( "searches", $searches );
+
+        $this->view->setTemplate( "jjs-admin/searches.tpl" );
+        $this->view->render( "App/Views/JJSAdmin.php" );
+
+    }
 
 	public function invalidToken()
 	{
