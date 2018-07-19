@@ -7,12 +7,11 @@ define( "DS", "/" ); // Directory seperator
 define( 'SITE_PRETTY', 'JiuJitsuScout.com' );
 define( 'SITE', 'jiujitsuscout.com' );
 define( 'EMAIL', 'jiujitsuscout@gmail.com' );
-define( 'PHONE_NUMBER', '(346) 800-7989' );
+define( 'PHONE_NUMBER', '(812) 276-3172' );
 
 // resources **NOTE** Always end the path to the resources with a forward slash
 define( "CONFIGS", "config/" );
-define( "JS_SCRIPTS", "App/scripts/js/" );
-define( "PHP_SCRIPTS", "App/scripts/php/" );
+define( "JS_SCRIPTS", "public/js/" );
 define( "MODELS", "App/models/" );
 define( "VIEWS", "App/Views/" );
 define( "TEMPLATES", VIEWS . "templates/" );
