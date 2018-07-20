@@ -22,6 +22,31 @@ class JjsAdmin extends Controller
 
     public function indexAction()
     {
+        $accountRepo = $this->load( "account-repository" );
+        $userRepo = $this->load( "user-repository" );
+        $businessRepo = $this->load( "business-repository" );
+        $prospectRepo = $this->load( "prospect-repository" );
+        $searchRepo = $this->load( "search-repository" );
+        $resultsRepo = $this->load( "result-repository" );
+
+        $accounts = $accountRepo->getAll();
+        $businesses = $businessRepo->getAll();
+        $prospects = $prospectRepo->getAll();
+        $searches = $searchRepo->getAll();
+        $users = $userRepo->getAll();
+        // Remove all JJS Admin users
+        foreach ( $users as $key => $user ) {
+            if ( $user->user_type == "jjs-admin" ) {
+                unset( $users[ $key ] );
+            }
+        }
+
+        $this->view->assign( "accounts", $accounts );
+        $this->view->assign( "users", $users );
+        $this->view->assign( "businesses", $businesses );
+        $this->view->assign( "prospects", $prospects );
+        $this->view->assign( "searches", $searches );
+
         $this->view->setTemplate( "jjs-admin/home.tpl" );
         $this->view->render( "App/Views/JJSAdmin.php" );
     }

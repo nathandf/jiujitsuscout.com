@@ -13,7 +13,7 @@ class AccountMapper extends DataMapper
             "account",
             [ "account_type_id", "country", "currency", "timezone" ],
             [ $account->account_type_id,  $account->country, $account->currency, $account->timezone ]
-          );
+        );
         $account->id = $id;
 
         return $account;
@@ -25,15 +25,25 @@ class AccountMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $account->id = $resp[ "id" ];
-        $account->account_status = $resp[ "account_status" ];
-        $account->account_type_id = $resp[ "account_type_id" ];
-        $account->currency = $resp[ "currency" ];
-        $account->country = $resp[ "country" ];
-        $account->profile_creation_date = $resp[ "profile_creation_date" ];
-        $account->timezone = $resp[ "timezone" ];
+        $this->populateAccount( $account, $resp );
 
         return $account;
+    }
+
+    public function mapAll()
+    {
+        $entityFactory = $this->container->getService( "entity-factory" );
+        $accounts = [];
+        $sql = $this->DB->prepare( "SELECT * FROM account" );
+        $sql->execute();
+
+        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $account = $entityFactory->build( "Account" );
+            $this->populateAccount( $account, $resp );
+            $accounts[] = $account;
+        }
+
+        return $accounts;
     }
 
     public function getAllEmails()
@@ -52,6 +62,17 @@ class AccountMapper extends DataMapper
     public function updatePrimaryUserIDByID( $user_id, $id )
     {
         $this->update( "account", "primary_user_id", $user_id, "id", $id );
+    }
+
+    private function populateAccount( \Models\Account $account, $data )
+    {
+        $account->id = $data[ "id" ];
+        $account->account_status = $data[ "account_status" ];
+        $account->account_type_id = $data[ "account_type_id" ];
+        $account->currency = $data[ "currency" ];
+        $account->country = $data[ "country" ];
+        $account->profile_creation_date = $data[ "profile_creation_date" ];
+        $account->timezone = $data[ "timezone" ];
     }
 
 }
