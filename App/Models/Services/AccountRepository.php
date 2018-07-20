@@ -30,6 +30,14 @@ class AccountRepository extends Service
         return $account;
     }
 
+    public function getAll()
+    {
+        $accountMapper = new \Models\Mappers\AccountMapper( $this->container );
+        $accounts = $accountMapper->mapAll();
+
+        return $accounts;
+    }
+
     public function getAllEmails()
     {
         $accountMapper = new AccountMapper( $this->container );
