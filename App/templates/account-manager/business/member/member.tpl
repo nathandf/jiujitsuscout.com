@@ -2,7 +2,7 @@
 <html>
 	<head>
 		{include file="includes/head/account-manager-head.tpl"}
-		<link type="text/css" rel="stylesheet" href="{$HOME}css/partner-lead.css">
+		<link type="text/css" rel="stylesheet" href="{$HOME}public/css/partner-lead.css">
 		<script rel="text/javascript" src="{$HOME}{$JS_SCRIPTS}lead.js"></script>
 		<script rel="text/javascript" src="{$HOME}{$JS_SCRIPTS}sms-convo-box.js"></script>
 	</head>

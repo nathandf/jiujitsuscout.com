@@ -2,7 +2,7 @@
 <html>
 	<head>
 		{include file="includes/head/account-manager-head.tpl"}
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/partner-settings.css"/>
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/partner-settings.css"/>
 	</head>
 	<body>
 		{include file="includes/navigation/account-manager-login-menu.tpl"}
@@ -28,7 +28,7 @@
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input type="hidden" name="business_id" value="{$business->id}">
 					<p class="text-med push-b first tc-forest"><b>{$business->business_name}</b></p>
-					<input type="image" class="mat-hov last bg-white" style="width: 100px; box-sizing: border-box; border: 1px solid #CCC;" src="{$HOME}img/{if $business->logo_filename}uploads/{$business->logo_filename}{else}jjslogoiconblack.jpg{/if}" form="business{$smarty.foreach.businesses.index}">
+					<input type="image" class="mat-hov last bg-white" style="width: 100px; box-sizing: border-box; border: 1px solid #CCC;" src="{$HOME}public/img/{if $business->logo_filename}uploads/{$business->logo_filename}{else}jjslogoiconblack.jpg{/if}" form="business{$smarty.foreach.businesses.index}">
 					<div class="clear last"></div>
 				</form>
 			</div>

@@ -10,7 +10,7 @@
 	<div class="main-content">
 		{if $page->headline}<p id="headline" class="title">{$page->headline}</p>{/if}
 		{if $page->image_a}
-		<img id="image_a" class="pic" src="{$HOME}img/uploads/{$page->image_a}">
+		<img id="image_a" class="pic" src="{$HOME}public/img/uploads/{$page->image_a}">
 		{/if}
 		{if $page->text_a}
 		<div class="section">
@@ -27,11 +27,11 @@
 		</div>
 		{/if}
 		{if $page->image_b}
-		<img id="image_b" class="pic" src="{$HOME}img/uploads/{$page->image_b}">
+		<img id="image_b" class="pic" src="{$HOME}public/img/uploads/{$page->image_b}">
 		{/if}
 		{if $page->text_c}<p id="text_c" class="sub-title">{$page->text_c}</p>{/if}
 		{if $page->image_c}
-		<img id="image_c" class="pic" src="{$HOME}img/uploads/{$page->image_c}">
+		<img id="image_c" class="pic" src="{$HOME}public/img/uploads/{$page->image_c}">
 		{/if}
 		<div class="section">
 			<button type="submit" class="cta-button" name="apply">{$page->call_to_action|default:"Reserve your spot"}</button>

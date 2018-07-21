@@ -2,7 +2,7 @@
 <html>
  <head>
    {include file="includes/head/account-manager-head.tpl"}
-   <link rel="stylesheet" type="text/css" href="{$HOME}css/upgrade.css"/>
+   <link rel="stylesheet" type="text/css" href="{$HOME}public/css/upgrade.css"/>
  </head>
  <body>
    <form id="billing-form" action="{$HOME}account-manager/process-upgrade" method="get">

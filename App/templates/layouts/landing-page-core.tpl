@@ -26,8 +26,8 @@
 		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 		<script src="https://use.fontawesome.com/e86aa14892.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<link rel="stylesheet" href="{$HOME}css/main.css" type="text/css">
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/landing-page-main.css"/>
+		<link rel="stylesheet" href="{$HOME}public/css/main.css" type="text/css">
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/landing-page-main.css"/>
 		<script src="{$HOME}{$JS_SCRIPTS}main.js"></script>
 		<script src="{$HOME}{$JS_SCRIPTS}landing-page-main.js"></script>
 		{if $creator_active}
@@ -37,7 +37,7 @@
 		{assign var="creator_active_content_class" value=""}
 		{/if}
 		{if $creator_active}
-		<link rel="stylesheet" href="{$HOME}css/landing-page-creator.css" type="text/css">
+		<link rel="stylesheet" href="{$HOME}public/css/landing-page-creator.css" type="text/css">
 		<script src="{$HOME}{$JS_SCRIPTS}landing-page-creator.js"></script>
 		{/if}
 		{block name="lp-head"}{/block}

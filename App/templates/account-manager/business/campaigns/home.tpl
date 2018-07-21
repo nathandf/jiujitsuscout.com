@@ -2,8 +2,8 @@
 <html>
 	<head>
 		 {include file="includes/head/account-manager-head.tpl"}
-		 <link rel="stylesheet" href="{$HOME}css/campaigns.css">
-		 <link rel="stylesheet" href="{$HOME}css/leads.css">
+		 <link rel="stylesheet" href="{$HOME}public/css/campaigns.css">
+		 <link rel="stylesheet" href="{$HOME}public/css/leads.css">
 	</head>
 	<body>
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
@@ -20,7 +20,7 @@
 				{if $campaigns}
 					{foreach from=$campaigns item=campaign}
 					<a style="padding-left: 10px;" href="{$HOME}account-manager/business/campaign/{$campaign->id}/" id="campaign{$campaign->id}" class="lead-tag first mat-hov">
-						<img src="{$HOME}img/{$campaign->campaign_type->logo_filename}" alt="{$campaign->campaign_type->name}" class="img-xsml push-r floatleft">
+						<img src="{$HOME}public/img/{$campaign->campaign_type->logo_filename}" alt="{$campaign->campaign_type->name}" class="img-xsml push-r floatleft">
 						<div class="lead-data">
 							<p class="lead-name">{$campaign->name|capitalize|truncate:50:"..."}</p>
 							<p class="push-t">{if $campaign->description}{$campaign->description|truncate:75:"..."}{else}Description: N/a{/if}</p>

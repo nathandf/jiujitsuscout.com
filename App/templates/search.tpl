@@ -3,7 +3,7 @@
 	<head>
     	<title>Find Martial Arts near me | BJJ Schools, MMA Gyms and more</title>
 		{include file="includes/head/main-head.tpl"}
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/search.css"/>
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/search.css"/>
 		<script src="{$HOME}{$JS_SCRIPTS}search.js"></script>
 	</head>
 	<body>
@@ -30,7 +30,7 @@
 		<div id="results" class="results-container">
 			{foreach from=$results item=business name="business_listings"}
 				<div class="business-tag mat-hov">
-					<img class="business-logo encapsulate" src="{$HOME}img/uploads/{$business->logo_filename}" />
+					<img class="business-logo encapsulate" src="{$HOME}public/img/uploads/{$business->logo_filename}" />
 					<div class="info_1">
 						<a class="name" href="{$HOME}martial-arts-gyms/{$business->site_slug}/">{$business->business_name}</a>
 						<p>{$business->stars}</p>

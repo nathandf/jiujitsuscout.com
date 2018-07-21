@@ -2,7 +2,7 @@
 <html>
 	<head>
 		{include file="includes/head/account-manager-head.tpl"}
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/partner-settings.css"/>
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/partner-settings.css"/>
 	</head>
 	<body>
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
@@ -11,7 +11,7 @@
 			{include file="includes/navigation/business-assets-menu.tpl"}
 			<div class="con-cnt-xlrg first inner-pad-med">
 				<h2 class="h2">Logo</h2>
-				<img src="{$HOME}img/{if $business->logo_filename}uploads/{$business->logo_filename}{else}jjslogoiconblack.jpg{/if}" class="img-sml encapsulate bg-white first"/>
+				<img src="{$HOME}public/img/{if $business->logo_filename}uploads/{$business->logo_filename}{else}jjslogoiconblack.jpg{/if}" class="img-sml encapsulate bg-white first"/>
 				<div class="clear"></div>
 				{if !empty($error_messages.upload_image)}
 					{foreach from=$error_messages.upload_image item=message}

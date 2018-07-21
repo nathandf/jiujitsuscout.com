@@ -2,8 +2,8 @@
 <html>
 	<head>
 		{include file="includes/head/account-manager-head.tpl"}
-		<link type="text/css" rel="stylesheet" href="{$HOME}css/partner-lead.css">
-		<link type="text/css" rel="stylesheet" href="{$HOME}css/appointment.css">
+		<link type="text/css" rel="stylesheet" href="{$HOME}public/css/partner-lead.css">
+		<link type="text/css" rel="stylesheet" href="{$HOME}public/css/appointment.css">
 		<script rel="text/javascript" src="{$HOME}{$JS_SCRIPTS}appointment.js"></script>
 	</head>
 	<body>
