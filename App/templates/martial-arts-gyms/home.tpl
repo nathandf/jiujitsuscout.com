@@ -32,7 +32,7 @@
 	<div class="clear"></div>
 	{include file="includes/widgets/js-google-map.tpl"}
 	<!-- <div class="content-container-16-9 bg-black">
-		<img class="inner-content-container-fit" src="{$HOME}img/finisher.jpg">
+		<img class="inner-content-container-fit" src="{$HOME}public/img/finisher.jpg">
 	</div> -->
 	<div class="con-cnt-xxlrg">
 		<p class="title-wrapper text-xlrg-heavy push-t-med">Request Information</p>

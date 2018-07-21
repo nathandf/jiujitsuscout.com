@@ -2,8 +2,8 @@
 <html>
 	<head>
 		 {include file="includes/head/account-manager-head.tpl"}
-		 <link rel="stylesheet" type="text/css" href="{$HOME}css/landing-pages.css">
-		 <link rel="stylesheet" type="text/css" href="{$HOME}css/account-manager-main.css">
+		 <link rel="stylesheet" type="text/css" href="{$HOME}public/css/landing-pages.css">
+		 <link rel="stylesheet" type="text/css" href="{$HOME}public/css/account-manager-main.css">
 	</head>
 	<body>
 		{include file="includes/navigation/business-manager-login-menu.tpl"}

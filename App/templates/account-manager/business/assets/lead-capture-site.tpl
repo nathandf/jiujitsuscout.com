@@ -2,7 +2,7 @@
 <html>
 	<head>
 		{include file="includes/head/account-manager-head.tpl"}
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/partner-settings.css"/>
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/partner-settings.css"/>
 		<script src="{$HOME}{$JS_SCRIPTS}site-slug-updater.js" type="text/javascript"></script>
 	</head>
 	<body>

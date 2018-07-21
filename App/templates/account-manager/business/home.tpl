@@ -2,8 +2,8 @@
 <html>
 	<head>
 		{include file="includes/head/account-manager-head.tpl"}
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/user.css"/>
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/account-manager-main.css"/>
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/user.css"/>
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/account-manager-main.css"/>
 		<script rel="text/javascript" src="{$HOME}{$JS_SCRIPTS}lead.js"></script>
 	</head>
 	<body>

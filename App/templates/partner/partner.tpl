@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-    <title>Marketing your BJJ school | Jiu Jitsu Lead Generation</title>
+	    <title>Marketing Your Martial Arts Business | Generate Leads</title>
 		{include file='includes/head/main-head.tpl'}
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/partner.css"/>
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/partner.css"/>
 	</head>
 	<body>
 		{include file='includes/navigation/main-menu.tpl'}

@@ -13,16 +13,16 @@
 			<meta itemprop="contentUrl" content="http://www.jiujitsuscout.com/img/jiujitsuscoutlogo.jpg" />
 			<meta itemprop="encodingFormat" content="image/jpg" />
 		</span>
-		<meta itemprop="url" content="http://www.jiujitsuscout.com/" />
+		<meta itemprop="url" content="https://www.jiujitsuscout.com/" />
 		<meta itemprop="sameAs" content="https://twitter.com/Find_Bjj_Gyms" />
 		<meta itemprop="sameAs" content="https://www.facebook.com/JiuJitsuScout/" />
 		<meta itemprop="mainEntityOfPage" content="http://www.jiujitsuscout.com/" />
 		</span>
 		<span itemscope itemtype="http://schema.org/WebSite" itemid="#amt-website">
-		<meta itemprop="name" content="BJJ School Finder | BJJ near me" />
+		<meta itemprop="name" content="Martial Arts Gym Finder | Martial Arts near me" />
 		<meta itemprop="headline" content="Home" />
-		<meta itemprop="url" content="http://www.jiujitsuscout.com/" />
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/home.css"/>
+		<meta itemprop="url" content="https://www.jiujitsuscout.com/" />
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/home.css"/>
 	    {include file='includes/head/main-head.tpl'}
 	    {include file='includes/tracking-codes/analyticstracking.html'}
 	</head>
@@ -39,7 +39,7 @@
 								<form method="get" action="{$HOME}search">
 			        			<span itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
 			        			<span itemprop="target" itemscope itemtype="http://schema.org/EntryPoint">
-			        			<meta itemprop="urlTemplate" content="http://www.jiujitsuscout.com/search?q={literal}{search_term}{/literal}" /> <!-- serach_term needs curly braces-->
+			        			<meta itemprop="urlTemplate" content="https://www.jiujitsuscout.com/search?q={literal}{search_term}{/literal}" /> <!-- serach_term needs curly braces-->
 			        			</span>
 			        			<span itemprop="query-input" itemscope itemtype="http://schema.org/PropertyValueSpecification">
 			        			<meta itemprop="valueRequired" content="True" />

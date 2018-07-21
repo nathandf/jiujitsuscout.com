@@ -2,7 +2,7 @@
 <html>
 	<head>
 		{include file="includes/head/account-manager-head.tpl"}
-		<link rel="stylesheet" href="{$HOME}css/leads.css">
+		<link rel="stylesheet" href="{$HOME}public/css/leads.css">
 	</head>
 	<body>
 		{include file="includes/navigation/business-manager-login-menu.tpl"}

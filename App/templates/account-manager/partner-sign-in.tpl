@@ -2,14 +2,14 @@
 <html>
 	<head>
 		{include file='includes/head/main-head.tpl'}
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/partner-sign-in.css"/>
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/partner-sign-in.css"/>
 	</head>
 	<body>
 		{include file='includes/navigation/main-menu.tpl'}
 		<div>
 			<div class="encapsulation-cnt">
 				<p class="form-title">Sign in</p>
-				<img class="img-sml" src="{$HOME}img/jjslogoiconwhite.jpg" alt="">
+				<img class="img-sml" src="{$HOME}public/img/jjslogoiconwhite.jpg" alt="">
 				<div class="clear"></div>
 				<span class="text-med"> Not a partner yet? <br><a class="link text-med" href="{$HOME}partner/">Add your business</a></span>
 				<div style="padding-left: 10px;">

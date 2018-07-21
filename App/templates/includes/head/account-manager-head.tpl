@@ -7,6 +7,6 @@
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{$HOME}css/main.css"/>
+<link rel="stylesheet" type="text/css" href="{$HOME}public/css/main.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="{$HOME}{$JS_SCRIPTS}main.js"></script>
