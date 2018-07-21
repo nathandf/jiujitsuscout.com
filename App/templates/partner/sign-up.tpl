@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-    {include file='includes/head/main-head.tpl'}
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/sign-up.css"/>
+		<title>Sign Up</title>
+    	{include file='includes/head/main-head.tpl'}
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/sign-up.css"/>
 	</head>
 	<body>
     {include file='includes/navigation/main-menu.tpl'}

@@ -2,7 +2,7 @@
 
 {block name="head"}
   {include file="includes/head/account-manager-head.tpl"}
-  <link rel="stylesheet" type="text/css" href="{$HOME}css/account-manager-main.css">
+  <link rel="stylesheet" type="text/css" href="{$HOME}public/css/account-manager-main.css">
   {block name="marketing-manager-head"}{/block}
 {/block}
 {block name="body"}

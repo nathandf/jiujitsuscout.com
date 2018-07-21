@@ -1,6 +1,6 @@
 {extends file="layouts/marketing-manager-layout.tpl"}
 {block name="marketing-manager-head"}
-<link rel="stylesheet" type="text/css" href="{$HOME}css/choose-lp-template.css">
+<link rel="stylesheet" type="text/css" href="{$HOME}public/css/choose-lp-template.css">
 {/block}
 {block name="marketing-manager-body"}
   <div class="con-cnt-xlrg push-t-med inner-pad-med">

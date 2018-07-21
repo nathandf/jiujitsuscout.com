@@ -2,7 +2,7 @@
 <html>
 	<head>
 		{include file="includes/head/account-manager-head.tpl"}
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/leads.css"/>
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/leads.css"/>
 		<script src="{$HOME}App/scripts/js/trial-details.js"></script>
 	</head>
 	<body>

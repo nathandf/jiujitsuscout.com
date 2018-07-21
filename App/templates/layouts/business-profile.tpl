@@ -2,7 +2,7 @@
 
 {block name="head"}
 	{include file='includes/head/main-head.tpl'}
-	<link rel="stylesheet" type="text/css" href="{$HOME}css/ma-profile-main.css"/>
+	<link rel="stylesheet" type="text/css" href="{$HOME}public/css/ma-profile-main.css"/>
 	{block name="business-profile-head"}{/block}
 {/block}
 

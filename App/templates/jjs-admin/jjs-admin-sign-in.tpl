@@ -2,14 +2,14 @@
 <html>
 	<head>
 		{include file='includes/head/main-head.tpl'}
-		<link rel="stylesheet" type="text/css" href="{$HOME}css/partner-sign-in.css"/>
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/partner-sign-in.css"/>
 	</head>
 	<body>
 		{include file='includes/navigation/blank-menu.tpl'}
 		<div>
 			<div class="encapsulation-cnt">
 				<p class="form-title">Sign in</p>
-				<img class="img-sml" src="{$HOME}img/jjslogoiconwhite.jpg" alt="">
+				<img class="img-sml" src="{$HOME}public/img/jjslogoiconwhite.jpg" alt="">
 				<div style="padding-left: 10px;">
 					{if !empty($error_messages.sign_in)}
 						{foreach from=$error_messages.sign_in item=message}
