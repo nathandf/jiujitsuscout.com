@@ -15,5 +15,6 @@ $Router->add( "{path:account-manager/business}/{controller:campaign}/{id:[0-9]+}
 $Router->add( "{path:account-manager/business}/{controller:task}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{path:account-manager/business}/{controller:schedule}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{path:account-manager/settings}/{controller:user}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
+$Router->add( "{path:jjs-admin}/{controller:business}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{controller}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{path:[a-zA-Z0-9-/]+}/{controller}/{action:[a-zA-Z0-9-]*}" );
