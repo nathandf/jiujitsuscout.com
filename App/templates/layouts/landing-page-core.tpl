@@ -48,7 +48,7 @@
 		{include file="includes/navigation/business-manager-marketing-menu.tpl"}
 	{/if}
 	{include file="includes/forms/standard-form-hidden.tpl"}
-	<div id="content" class="content{$creator_active_content_class}" style="background: {if $page->image_background}url({$HOME}img/uploads/{$page->image_background}){else}#FFF{/if}; background-attachment: fixed; background-repeat: no-repeat; background-size: 100%, 100%;">
+	<div id="content" class="content{$creator_active_content_class}" style="background: {if $page->image_background}url({$HOME}public/img/uploads/{$page->image_background}){else}#FFF{/if}; background-attachment: fixed; background-repeat: no-repeat; background-size: 100%, 100%;">
 		{if $template_view_active }
 			<div class="con-cnt-lrg template-view-panel">
 				<h2 class="title-wrapper">Choose a template</h2>
