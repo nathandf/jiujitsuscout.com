@@ -52,4 +52,10 @@ class AccountRepository extends Service
         $accountMapper->updatePrimaryUserIDByID( $user_id, $id );
     }
 
+    public function updateAccountTypeIDByID( $account_id, $account_type_id )
+    {
+        $accountMapper = new AccountMapper( $this->container );
+        $accountMapper->updateAccountTypeIDByID( $account_id, $account_type_id );
+    }
+
 }

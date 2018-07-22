@@ -64,6 +64,11 @@ class AccountMapper extends DataMapper
         $this->update( "account", "primary_user_id", $user_id, "id", $id );
     }
 
+    public function updateAccountTypeIDByID( $account_id, $account_type_id )
+    {
+        $this->update( "account", "account_type_id", $account_type_id, "id", $account_id );
+    }
+
     private function populateAccount( \Models\Account $account, $data )
     {
         $account->id = $data[ "id" ];
