@@ -28,12 +28,15 @@ class JjsAdmin extends Controller
         $prospectRepo = $this->load( "prospect-repository" );
         $searchRepo = $this->load( "search-repository" );
         $resultsRepo = $this->load( "result-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
 
         $accounts = $accountRepo->getAll();
         $businesses = $businessRepo->getAll();
         $prospects = $prospectRepo->getAll();
+        $noResultProspects = [];
         $searches = $searchRepo->getAll();
         $users = $userRepo->getAll();
+
         // Remove all JJS Admin users
         foreach ( $users as $key => $user ) {
             if ( $user->user_type == "jjs-admin" ) {
@@ -41,10 +44,19 @@ class JjsAdmin extends Controller
             }
         }
 
+        foreach ( $prospects as $prospect ) {
+            if ( $prospect->business_id == 0 ) {
+                $phone = $phoneRepo->getByID( $prospect->phone_id );
+                $prospect->phone = $phone;
+                $noResultProspects[] = $prospect;
+            }
+        }
+
         $this->view->assign( "accounts", $accounts );
         $this->view->assign( "users", $users );
         $this->view->assign( "businesses", $businesses );
         $this->view->assign( "prospects", $prospects );
+        $this->view->assign( "noResultProspects", $noResultProspects );
         $this->view->assign( "searches", $searches );
 
         $this->view->setTemplate( "jjs-admin/home.tpl" );
