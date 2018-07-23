@@ -30,7 +30,7 @@ class BindingList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid);
+        $this->solution = array('serviceSid' => $serviceSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Bindings';
     }
@@ -38,11 +38,12 @@ class BindingList extends ListResource {
     /**
      * Create a new BindingInstance
      * 
-     * @param string $identity The identity
-     * @param string $bindingType The binding_type
-     * @param string $address The address
+     * @param string $identity The Identity to which this Binding belongs to.
+     * @param string $bindingType The type of the Binding.
+     * @param string $address The address specific to the channel.
      * @param array|Options $options Optional Arguments
      * @return BindingInstance Newly created BindingInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($identity, $bindingType, $address, $options = array()) {
         $options = new Values($options);

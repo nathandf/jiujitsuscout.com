@@ -30,7 +30,7 @@ class StepContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('flowSid' => $flowSid, 'engagementSid' => $engagementSid, 'sid' => $sid);
+        $this->solution = array('flowSid' => $flowSid, 'engagementSid' => $engagementSid, 'sid' => $sid, );
 
         $this->uri = '/Flows/' . rawurlencode($flowSid) . '/Engagements/' . rawurlencode($engagementSid) . '/Steps/' . rawurlencode($sid) . '';
     }
@@ -39,6 +39,7 @@ class StepContext extends InstanceContext {
      * Fetch a StepInstance
      * 
      * @return StepInstance Fetched StepInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());

@@ -40,7 +40,7 @@ class SyncListContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid);
+        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Lists/' . rawurlencode($sid) . '';
     }
@@ -49,6 +49,7 @@ class SyncListContext extends InstanceContext {
      * Fetch a SyncListInstance
      * 
      * @return SyncListInstance Fetched SyncListInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -71,6 +72,7 @@ class SyncListContext extends InstanceContext {
      * Deletes the SyncListInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);

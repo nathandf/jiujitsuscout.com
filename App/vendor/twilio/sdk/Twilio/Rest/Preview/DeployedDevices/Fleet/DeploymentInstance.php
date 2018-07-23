@@ -53,7 +53,7 @@ class DeploymentInstance extends InstanceResource {
             'dateUpdated' => Deserialize::dateTime(Values::array_get($payload, 'date_updated')),
         );
 
-        $this->solution = array('fleetSid' => $fleetSid, 'sid' => $sid ?: $this->properties['sid']);
+        $this->solution = array('fleetSid' => $fleetSid, 'sid' => $sid ?: $this->properties['sid'], );
     }
 
     /**
@@ -81,6 +81,7 @@ class DeploymentInstance extends InstanceResource {
      * Fetch a DeploymentInstance
      * 
      * @return DeploymentInstance Fetched DeploymentInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();
@@ -90,6 +91,7 @@ class DeploymentInstance extends InstanceResource {
      * Deletes the DeploymentInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->proxy()->delete();
@@ -100,6 +102,7 @@ class DeploymentInstance extends InstanceResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return DeploymentInstance Updated DeploymentInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         return $this->proxy()->update($options);

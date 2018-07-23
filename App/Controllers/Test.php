@@ -6,17 +6,15 @@ use \Core\Controller;
 
 class Test extends Controller
 {
+    public function indexAction()
+    {
+        $this->view->setTemplate( "braintree-test.tpl" );
+        $this->view->render( "App/Views/Home.php" );
+    }
 
-  public function before()
-  {
-
-  }
-
-  public function indexAction()
-  {
-    $sequenceManager = $this->load( "sequence-manager" );
-    $sequenceManager->dispatch();
-  }
-
-
+    public function sequenceMangerAction()
+    {
+        $sequenceManager = $this->load( "sequence-manager" );
+        $sequenceManager->dispatch();
+    }
 }

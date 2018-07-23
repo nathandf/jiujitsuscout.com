@@ -59,7 +59,7 @@ class SyncListInstance extends InstanceResource {
             'createdBy' => Values::array_get($payload, 'created_by'),
         );
 
-        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid ?: $this->properties['sid']);
+        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid ?: $this->properties['sid'], );
     }
 
     /**
@@ -85,6 +85,7 @@ class SyncListInstance extends InstanceResource {
      * Fetch a SyncListInstance
      * 
      * @return SyncListInstance Fetched SyncListInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();
@@ -94,6 +95,7 @@ class SyncListInstance extends InstanceResource {
      * Deletes the SyncListInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->proxy()->delete();

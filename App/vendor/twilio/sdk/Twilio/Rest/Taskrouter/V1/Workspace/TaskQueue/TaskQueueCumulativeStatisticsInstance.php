@@ -77,7 +77,7 @@ class TaskQueueCumulativeStatisticsInstance extends InstanceResource {
             'url' => Values::array_get($payload, 'url'),
         );
 
-        $this->solution = array('workspaceSid' => $workspaceSid, 'taskQueueSid' => $taskQueueSid);
+        $this->solution = array('workspaceSid' => $workspaceSid, 'taskQueueSid' => $taskQueueSid, );
     }
 
     /**
@@ -105,6 +105,7 @@ class TaskQueueCumulativeStatisticsInstance extends InstanceResource {
      * @param array|Options $options Optional Arguments
      * @return TaskQueueCumulativeStatisticsInstance Fetched
      *                                               TaskQueueCumulativeStatisticsInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch($options = array()) {
         return $this->proxy()->fetch($options);

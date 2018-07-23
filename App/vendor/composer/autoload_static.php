@@ -13,6 +13,8 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '3f8bdd3b35094c73a26f0106e3c0f8b2' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/SendGrid.php',
         '9dda55337a76a24e949fbcc5d905a2c7' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/helpers/mail/Mail.php',
+        '5d7e2090c9a3b69b2ff2fceddeadca94' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/helpers/contacts/Recipients.php',
+        '04a9a7b26fb79fbd712347cc9bc9d9be' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/helpers/stats/Stats.php',
         'f084d01b0a599f67676cffef638aa95b' => __DIR__ . '/..' . '/smarty/smarty/libs/bootstrap.php',
         'c65d09b6820da036953a371c8c73a9b1' => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook/polyfills.php',
         'a38330d2f51f82a186b58186cfe87a71' => __DIR__ . '/../..' . '/Conf/constants.php',
@@ -71,6 +73,10 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
             'Contracts\\' => 10,
             'Conf\\' => 5,
             'Composites\\' => 11,
+        ),
+        'B' => 
+        array (
+            'Braintree\\' => 10,
         ),
     );
 
@@ -167,6 +173,10 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         array (
             0 => __DIR__ . '/../..' . '/Models/Composites',
         ),
+        'Braintree\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/braintree/braintree_php/lib/Braintree',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -186,6 +196,13 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
             'Google_' => 
             array (
                 0 => __DIR__ . '/..' . '/google/apiclient/src',
+            ),
+        ),
+        'B' => 
+        array (
+            'Braintree' => 
+            array (
+                0 => __DIR__ . '/..' . '/braintree/braintree_php/lib',
             ),
         ),
     );

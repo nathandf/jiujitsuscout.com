@@ -27,7 +27,7 @@ class TollFreeList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid);
+        $this->solution = array('accountSid' => $accountSid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/IncomingPhoneNumbers/TollFree.json';
     }
@@ -129,9 +129,10 @@ class TollFreeList extends ListResource {
     /**
      * Create a new TollFreeInstance
      * 
-     * @param string $phoneNumber The phone_number
+     * @param string $phoneNumber The phone number you want to purchase.
      * @param array|Options $options Optional Arguments
      * @return TollFreeInstance Newly created TollFreeInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($phoneNumber, $options = array()) {
         $options = new Values($options);

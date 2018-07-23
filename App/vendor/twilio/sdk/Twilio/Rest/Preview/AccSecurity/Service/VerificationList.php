@@ -29,7 +29,7 @@ class VerificationList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid);
+        $this->solution = array('serviceSid' => $serviceSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Verifications';
     }
@@ -41,6 +41,7 @@ class VerificationList extends ListResource {
      * @param string $channel sms or call
      * @param array|Options $options Optional Arguments
      * @return VerificationInstance Newly created VerificationInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($to, $channel, $options = array()) {
         $options = new Values($options);

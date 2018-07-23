@@ -27,7 +27,7 @@ class MessageList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid);
+        $this->solution = array('accountSid' => $accountSid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/Messages.json';
     }
@@ -38,6 +38,7 @@ class MessageList extends ListResource {
      * @param string $to The phone number to receive the message
      * @param array|Options $options Optional Arguments
      * @return MessageInstance Newly created MessageInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($to, $options = array()) {
         $options = new Values($options);

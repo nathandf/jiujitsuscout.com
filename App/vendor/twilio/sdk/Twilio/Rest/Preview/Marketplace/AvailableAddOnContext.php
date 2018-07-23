@@ -35,7 +35,7 @@ class AvailableAddOnContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('sid' => $sid);
+        $this->solution = array('sid' => $sid, );
 
         $this->uri = '/AvailableAddOns/' . rawurlencode($sid) . '';
     }
@@ -44,6 +44,7 @@ class AvailableAddOnContext extends InstanceContext {
      * Fetch a AvailableAddOnInstance
      * 
      * @return AvailableAddOnInstance Fetched AvailableAddOnInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());

@@ -94,7 +94,8 @@ $config[ "braintree" ] = [
     "credentials" => [
         "merchant_id" => "kkbwf4n39k6swp8g",
         "public_key" => "3mjf86zmfkgyczzh",
-        "private_key" => "1426beef3362529e126a9dc67a76a8da"
+        "private_key" => "1426beef3362529e126a9dc67a76a8da",
+        "tokenization_key" => "sandbox_vn2nhygr_kkbwf4n39k6swp8g"
     ]
 ];
 

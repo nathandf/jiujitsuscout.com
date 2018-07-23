@@ -31,7 +31,7 @@ class SyncMapItemList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'mapSid' => $mapSid);
+        $this->solution = array('serviceSid' => $serviceSid, 'mapSid' => $mapSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Maps/' . rawurlencode($mapSid) . '/Items';
     }
@@ -42,9 +42,10 @@ class SyncMapItemList extends ListResource {
      * @param string $key The key
      * @param array $data The data
      * @return SyncMapItemInstance Newly created SyncMapItemInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($key, $data) {
-        $data = Values::of(array('Key' => $key, 'Data' => Serialize::jsonObject($data)));
+        $data = Values::of(array('Key' => $key, 'Data' => Serialize::jsonObject($data), ));
 
         $payload = $this->version->create(
             'POST',

@@ -50,7 +50,7 @@ class WorkflowRealTimeStatisticsInstance extends InstanceResource {
             'url' => Values::array_get($payload, 'url'),
         );
 
-        $this->solution = array('workspaceSid' => $workspaceSid, 'workflowSid' => $workflowSid);
+        $this->solution = array('workspaceSid' => $workspaceSid, 'workflowSid' => $workflowSid, );
     }
 
     /**
@@ -78,6 +78,7 @@ class WorkflowRealTimeStatisticsInstance extends InstanceResource {
      * @param array|Options $options Optional Arguments
      * @return WorkflowRealTimeStatisticsInstance Fetched
      *                                            WorkflowRealTimeStatisticsInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch($options = array()) {
         return $this->proxy()->fetch($options);

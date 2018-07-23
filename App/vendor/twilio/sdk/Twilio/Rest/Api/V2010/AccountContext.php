@@ -116,7 +116,7 @@ class AccountContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('sid' => $sid);
+        $this->solution = array('sid' => $sid, );
 
         $this->uri = '/Accounts/' . rawurlencode($sid) . '.json';
     }
@@ -125,6 +125,7 @@ class AccountContext extends InstanceContext {
      * Fetch a AccountInstance
      * 
      * @return AccountInstance Fetched AccountInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -143,6 +144,7 @@ class AccountContext extends InstanceContext {
      * 
      * @param array|Options $options Optional Arguments
      * @return AccountInstance Updated AccountInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         $options = new Values($options);
@@ -195,7 +197,10 @@ class AccountContext extends InstanceContext {
      */
     protected function getAuthorizedConnectApps() {
         if (!$this->_authorizedConnectApps) {
-            $this->_authorizedConnectApps = new AuthorizedConnectAppList($this->version, $this->solution['sid']);
+            $this->_authorizedConnectApps = new AuthorizedConnectAppList(
+                $this->version,
+                $this->solution['sid']
+            );
         }
 
         return $this->_authorizedConnectApps;

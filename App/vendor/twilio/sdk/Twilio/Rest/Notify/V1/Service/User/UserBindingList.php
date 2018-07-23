@@ -31,7 +31,7 @@ class UserBindingList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'identity' => $identity);
+        $this->solution = array('serviceSid' => $serviceSid, 'identity' => $identity, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Users/' . rawurlencode($identity) . '/Bindings';
     }
@@ -43,6 +43,7 @@ class UserBindingList extends ListResource {
      * @param string $address The address
      * @param array|Options $options Optional Arguments
      * @return UserBindingInstance Newly created UserBindingInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($bindingType, $address, $options = array()) {
         $options = new Values($options);

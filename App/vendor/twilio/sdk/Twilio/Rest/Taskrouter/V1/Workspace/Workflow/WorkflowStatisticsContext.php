@@ -28,7 +28,7 @@ class WorkflowStatisticsContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('workspaceSid' => $workspaceSid, 'workflowSid' => $workflowSid);
+        $this->solution = array('workspaceSid' => $workspaceSid, 'workflowSid' => $workflowSid, );
 
         $this->uri = '/Workspaces/' . rawurlencode($workspaceSid) . '/Workflows/' . rawurlencode($workflowSid) . '/Statistics';
     }
@@ -38,6 +38,7 @@ class WorkflowStatisticsContext extends InstanceContext {
      * 
      * @param array|Options $options Optional Arguments
      * @return WorkflowStatisticsInstance Fetched WorkflowStatisticsInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch($options = array()) {
         $options = new Values($options);

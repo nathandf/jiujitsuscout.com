@@ -19,7 +19,8 @@ class MessageList extends ListResource {
      * Construct the MessageList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $serviceSid The service_sid
+     * @param string $serviceSid The unique id of the Service this message belongs
+     *                           to.
      * @param string $channelSid The channel_sid
      * @return \Twilio\Rest\IpMessaging\V1\Service\Channel\MessageList 
      */
@@ -27,7 +28,7 @@ class MessageList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'channelSid' => $channelSid);
+        $this->solution = array('serviceSid' => $serviceSid, 'channelSid' => $channelSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Channels/' . rawurlencode($channelSid) . '/Messages';
     }
@@ -38,6 +39,7 @@ class MessageList extends ListResource {
      * @param string $body The body
      * @param array|Options $options Optional Arguments
      * @return MessageInstance Newly created MessageInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($body, $options = array()) {
         $options = new Values($options);

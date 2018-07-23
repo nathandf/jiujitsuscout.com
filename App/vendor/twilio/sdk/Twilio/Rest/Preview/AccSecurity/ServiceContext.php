@@ -38,7 +38,7 @@ class ServiceContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('sid' => $sid);
+        $this->solution = array('sid' => $sid, );
 
         $this->uri = '/Services/' . rawurlencode($sid) . '';
     }
@@ -47,6 +47,7 @@ class ServiceContext extends InstanceContext {
      * Fetch a ServiceInstance
      * 
      * @return ServiceInstance Fetched ServiceInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -65,11 +66,12 @@ class ServiceContext extends InstanceContext {
      * 
      * @param array|Options $options Optional Arguments
      * @return ServiceInstance Updated ServiceInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         $options = new Values($options);
 
-        $data = Values::of(array('Name' => $options['name'], 'CodeLength' => $options['codeLength']));
+        $data = Values::of(array('Name' => $options['name'], 'CodeLength' => $options['codeLength'], ));
 
         $payload = $this->version->update(
             'POST',

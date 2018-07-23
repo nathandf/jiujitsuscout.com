@@ -20,14 +20,14 @@ class RecordingList extends ListResource {
      * Construct the RecordingList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $accountSid The unique sid that identifies this account
+     * @param string $accountSid The unique SID that identifies this account
      * @return \Twilio\Rest\Api\V2010\Account\RecordingList 
      */
     public function __construct(Version $version, $accountSid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid);
+        $this->solution = array('accountSid' => $accountSid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/Recordings.json';
     }
@@ -96,6 +96,7 @@ class RecordingList extends ListResource {
             'DateCreated' => Serialize::iso8601DateTime($options['dateCreated']),
             'DateCreated>' => Serialize::iso8601DateTime($options['dateCreatedAfter']),
             'CallSid' => $options['callSid'],
+            'ConferenceSid' => $options['conferenceSid'],
             'PageToken' => $pageToken,
             'Page' => $pageNumber,
             'PageSize' => $pageSize,
@@ -129,7 +130,7 @@ class RecordingList extends ListResource {
     /**
      * Constructs a RecordingContext
      * 
-     * @param string $sid Fetch by unique recording Sid
+     * @param string $sid Fetch by unique recording SID
      * @return \Twilio\Rest\Api\V2010\Account\RecordingContext 
      */
     public function getContext($sid) {

@@ -19,14 +19,15 @@ class UserChannelList extends ListResource {
      * 
      * @param Version $version Version that contains the resource
      * @param string $serviceSid The service_sid
-     * @param string $userSid The sid
+     * @param string $userSid A 34 character string that uniquely identifies this
+     *                        resource.
      * @return \Twilio\Rest\Chat\V1\Service\User\UserChannelList 
      */
     public function __construct(Version $version, $serviceSid, $userSid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'userSid' => $userSid);
+        $this->solution = array('serviceSid' => $serviceSid, 'userSid' => $userSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Users/' . rawurlencode($userSid) . '/Channels';
     }

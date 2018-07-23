@@ -29,7 +29,7 @@ class MemberContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'channelSid' => $channelSid, 'sid' => $sid);
+        $this->solution = array('serviceSid' => $serviceSid, 'channelSid' => $channelSid, 'sid' => $sid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Channels/' . rawurlencode($channelSid) . '/Members/' . rawurlencode($sid) . '';
     }
@@ -38,6 +38,7 @@ class MemberContext extends InstanceContext {
      * Fetch a MemberInstance
      * 
      * @return MemberInstance Fetched MemberInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -61,6 +62,7 @@ class MemberContext extends InstanceContext {
      * Deletes the MemberInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);
@@ -71,6 +73,7 @@ class MemberContext extends InstanceContext {
      * 
      * @param array|Options $options Optional Arguments
      * @return MemberInstance Updated MemberInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         $options = new Values($options);

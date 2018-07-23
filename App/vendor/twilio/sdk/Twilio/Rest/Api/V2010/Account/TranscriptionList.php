@@ -25,7 +25,7 @@ class TranscriptionList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid);
+        $this->solution = array('accountSid' => $accountSid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/Transcriptions.json';
     }
@@ -119,7 +119,7 @@ class TranscriptionList extends ListResource {
     /**
      * Constructs a TranscriptionContext
      * 
-     * @param string $sid Fetch by unique transcription Sid
+     * @param string $sid Fetch by unique transcription SID
      * @return \Twilio\Rest\Api\V2010\Account\TranscriptionContext 
      */
     public function getContext($sid) {

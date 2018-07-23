@@ -12,6 +12,8 @@ return array(
     'decc78cc4436b1292c6c0d151b19445c' => $vendorDir . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
     '3f8bdd3b35094c73a26f0106e3c0f8b2' => $vendorDir . '/sendgrid/sendgrid/lib/SendGrid.php',
     '9dda55337a76a24e949fbcc5d905a2c7' => $vendorDir . '/sendgrid/sendgrid/lib/helpers/mail/Mail.php',
+    '5d7e2090c9a3b69b2ff2fceddeadca94' => $vendorDir . '/sendgrid/sendgrid/lib/helpers/contacts/Recipients.php',
+    '04a9a7b26fb79fbd712347cc9bc9d9be' => $vendorDir . '/sendgrid/sendgrid/lib/helpers/stats/Stats.php',
     'f084d01b0a599f67676cffef638aa95b' => $vendorDir . '/smarty/smarty/libs/bootstrap.php',
     'c65d09b6820da036953a371c8c73a9b1' => $vendorDir . '/facebook/graph-sdk/src/Facebook/polyfills.php',
     'a38330d2f51f82a186b58186cfe87a71' => $baseDir . '/Conf/constants.php',

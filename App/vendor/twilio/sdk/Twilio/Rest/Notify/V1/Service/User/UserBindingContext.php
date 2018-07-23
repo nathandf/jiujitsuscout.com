@@ -30,7 +30,7 @@ class UserBindingContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'identity' => $identity, 'sid' => $sid);
+        $this->solution = array('serviceSid' => $serviceSid, 'identity' => $identity, 'sid' => $sid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Users/' . rawurlencode($identity) . '/Bindings/' . rawurlencode($sid) . '';
     }
@@ -39,6 +39,7 @@ class UserBindingContext extends InstanceContext {
      * Fetch a UserBindingInstance
      * 
      * @return UserBindingInstance Fetched UserBindingInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -62,6 +63,7 @@ class UserBindingContext extends InstanceContext {
      * Deletes the UserBindingInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);
