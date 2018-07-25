@@ -81,8 +81,8 @@ class Appointment extends Controller
         $appointmentsAll = $appointmentRepo->getAllByBusinessID( $this->business->id );
         $appointment_ids = [];
 
-        foreach ( $appointmentsAll as $appointment ) {
-            $appointment_ids[] = $appointment->id;
+        foreach ( $appointmentsAll as $_appointment ) {
+            $appointment_ids[] = $_appointment->id;
         }
 
         // Get all notes for this appointment
