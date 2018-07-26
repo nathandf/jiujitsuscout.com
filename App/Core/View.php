@@ -111,7 +111,7 @@ class View extends CoreObject
 
     public function render404()
     {
-        $this->render( "App/Views/404.shtml" );
+        $this->render( "App/templates/404.shtml" );
         exit();
     }
 

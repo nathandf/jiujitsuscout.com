@@ -3,7 +3,7 @@
 	<head>
 		{include file="includes/head/account-manager-head.tpl"}
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/leads.css"/>
-		<script src="{$HOME}App/scripts/js/trial-details.js"></script>
+		<script src="{$HOME}public/js/trial-details.js"></script>
 	</head>
 	<body>
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
