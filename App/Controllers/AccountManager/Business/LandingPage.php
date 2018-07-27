@@ -407,7 +407,7 @@ class LandingPage extends Controller
             $image_names = [];
             foreach ( $image_indices as $index ) {
                 if ( isset( $_FILES[ $index ] ) && !empty( $_FILES[ $index ][ "type" ] ) ) {
-                    $imageManager->saveImageTo( $index, "img/uploads/" );
+                    $imageManager->saveImageTo( $index, "public/img/uploads/" );
                     $image_name = $imageManager->getNewImageFileName();
                     $image_names[ $index ] = $image_name;
                 } else {
