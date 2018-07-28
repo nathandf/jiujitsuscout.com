@@ -8,12 +8,13 @@ class Trials extends Controller
 {
 	public function before()
 	{
-		// TODO log beginning of job
+		$this->logger = $this->load( "logger" );
+		$this->logger->info( "Cron Start: Trials -----------------------" );
 	}
 
 	public function after()
 	{
-		// TODO log end of job
+		$this->logger->info( "Cron End: Trials -------------------------" );
 		die();
 		exit();
 	}
@@ -89,11 +90,14 @@ class Trials extends Controller
 					$mailer->setRecipientName( $business->business_name );
 		            $mailer->setRecipientEmailAddress( $business->email );
 		            $mailer->setSenderName( "JiuJitsuScout" );
-		            $mailer->setSenderEmailAddress( "no_reply@jiujitsuscout.com" );
+		            $mailer->setSenderEmailAddress( "notifcations@jiujitsuscout.com" );
 		            $mailer->setContentType( "text/html" );
 		            $mailer->setEmailSubject( $subject );
 		            $mailer->setEmailBody( $email_body );
 		            $mailer->mail();
+
+					// Log reminder
+					$this->logger->info( "Email Sent: " . $business->email );
 
 					// Update trial remind status for prospect
 					$prospectRepo->updateTrialRemindStatusByID( $prospect->id );

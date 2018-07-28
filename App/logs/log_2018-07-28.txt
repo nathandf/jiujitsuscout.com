@@ -1,0 +1,44 @@
+[2018-07-28 22:44:22.297092] [info] Cron Start: Appointments -----------------------
+[2018-07-28 22:44:22.879415] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 22:44:23.346818] [info] Email Sent: 
+[2018-07-28 22:44:23.751539] [info] Cron End: Appointments -------------------------
+[2018-07-28 22:48:03.498111] [info] Cron Start: Appointments -----------------------
+[2018-07-28 22:51:25.069446] [info] Cron Start: Appointments -----------------------
+[2018-07-28 22:51:25.817755] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 22:51:26.242815] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 22:51:26.468822] [info] Cron End: Appointments -------------------------
+[2018-07-28 23:01:29.111742] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:01:29.786880] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:01:30.183345] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:01:30.349973] [info] Cron End: Appointments -------------------------
+[2018-07-28 23:02:10.863769] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:02:11.005141] [info] Cron End: Appointments -------------------------
+[2018-07-28 23:05:08.352490] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:05:08.493829] [info] Cron End: Appointments -------------------------
+[2018-07-28 23:05:22.584577] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:05:35.112027] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:06:28.776951] [info] Cron Start: Trials -----------------------
+[2018-07-28 23:06:28.893470] [info] Cron End: Trials -------------------------
+[2018-07-28 23:06:30.655642] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:06:48.226002] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:06:48.950651] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:06:49.290244] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:06:49.497380] [info] Cron End: Appointments -------------------------
+[2018-07-28 23:09:40.003077] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:09:40.875133] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:09:41.240936] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:09:41.419648] [info] Cron End: Appointments -------------------------
+[2018-07-28 23:10:05.044215] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:10:05.246413] [info] Cron End: Appointments -------------------------
+[2018-07-28 23:12:52.384732] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:12:52.999790] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:12:53.348054] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:12:54.087579] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:12:54.542830] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:12:54.709661] [info] Cron End: Appointments -------------------------
+[2018-07-28 23:16:51.631927] [info] Cron Start: Appointments -----------------------
+[2018-07-28 23:16:52.361155] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:16:52.751058] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:16:53.452579] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:16:53.810390] [info] Email Sent: yuriglockov101@gmail.com
+[2018-07-28 23:16:53.999183] [info] Cron End: Appointments -------------------------
