@@ -197,7 +197,7 @@ class Appointments extends Controller
 					            </div>
 							';
 				            $mailer->setEmailBody( $userEmailBody );
-				            $mailer->mail();
+				            $mailStatus = $mailer->mail();
 
 							// Log email appointment reminder status for prospect
 							if ( $mailStatus != 202 ) {
