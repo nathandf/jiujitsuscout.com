@@ -33,6 +33,13 @@ $container->register( "templating-engine", function() use ( $container ) {
 	return $templatingEngine;
 } );
 
+$container->register( "logger", function() use ( $container ) {
+	$Config = $container->getService( "config" );
+	$logsDir = $Config::$configs[ "logs_directory" ];
+	$logger = new Katzgrau\KLogger\Logger( $logsDir );
+	return $logger;
+} );
+
 // Database access object
 
 $container->register( "pdo", function() use ( $container ) {

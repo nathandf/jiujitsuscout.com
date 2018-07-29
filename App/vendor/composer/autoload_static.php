@@ -50,6 +50,10 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
             'Models\\' => 7,
             'Mappers\\' => 8,
         ),
+        'K' => 
+        array (
+            'Katzgrau\\KLogger\\' => 17,
+        ),
         'H' => 
         array (
             'Helpers\\' => 8,
@@ -124,6 +128,10 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         'Mappers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Models/Mappers',
+        ),
+        'Katzgrau\\KLogger\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/katzgrau/klogger/src',
         ),
         'Helpers\\' => 
         array (
@@ -210,6 +218,7 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
     public static $classMap = array (
         'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
         'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
+        'Katzgrau\\KLogger\\Logger' => __DIR__ . '/..' . '/katzgrau/klogger/src/Logger.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
