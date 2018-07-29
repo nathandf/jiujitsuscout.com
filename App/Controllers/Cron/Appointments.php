@@ -8,12 +8,13 @@ class Appointments extends Controller
 {
 	public function before()
 	{
-		// TODO log beginning of job
+		$this->logger = $this->load( "logger" );
+		$this->logger->info( "Cron Start: Appointments -----------------------" );
 	}
 
 	public function after()
 	{
-		// TODO log end of job
+		$this->logger->info( "Cron End: Appointments -------------------------" );
 		die();
 		exit();
 	}
@@ -27,6 +28,7 @@ class Appointments extends Controller
 		$prospectRepo = $this->load( "prospect-repository" );
 		$userRepo = $this->load( "user-repository" );
 		$businessRepo = $this->load( "business-repository" );
+		$phoneRepo = $this->load( "phone-repository" );
 		$noteRegistrar = $this->load( "note-registrar" );
 
 		// Set empty appointments array
@@ -65,6 +67,10 @@ class Appointments extends Controller
 				// Get the current business for appointment
 				$business = $businessRepo->getByID( $appointment->business_id );
 
+				// Get phone resource for business
+				$phone = $phoneRepo->getByID( $business->phone_id );
+				$business->phone_number = "+" . $phone->country_code . " " . $phone->national_number;
+
 				// Get UTC DateTimeZone object and DateTimeZone object for businesses timezone
 				$dateTimeZoneServer = new \DateTimeZone( date_default_timezone_get() );
 				$dateTimeZoneBusiness = new \DateTimeZone( $business->timezone );
@@ -84,6 +90,9 @@ class Appointments extends Controller
 
 						// Get prospect and user data
 						$prospect = $prospectRepo->getByID( $appointment->prospect_id );
+						$prospectPhone = $phoneRepo->getByID( $prospect->phone_id );
+						$prospect->phone_number = "+" . $prospectPhone->country_code . " " . $prospectPhone->national_number;
+
 						$user = $userRepo->getByID( $appointment->user_id );
 
 						// Send email if remind prospect is > 0 (true)
@@ -96,10 +105,57 @@ class Appointments extends Controller
 				            $mailer->setSenderEmailAddress( $business->email );
 				            $mailer->setContentType( "text/html" );
 				            $mailer->setEmailSubject( "Confirm Your Appointment" );
-				            $mailer->setEmailBody( "
-								You have a martial arts appointment at {$nice_time} on {$nice_date} at {$business->business_name}
-							" );
-				            $mailer->mail();
+							// Prospect email body
+							$prospectEmailBody = '
+							<div style="width: 100%;">
+								<h2>You have a martial arts appointment!</h2>
+								<table cellspacing=0 style="width: 300px; background: #FFFFFF; border-collapse: collapse; table-layout: fixed; border: 1px solid #EEE; box-sizing: border-box; padding: 15px; display: block;">
+									<tr>
+										<td style="font-weight: bold; padding: 20px;">Where:</td>
+										<td>' . $business->business_name . '</td>
+									</tr>
+									<tr>
+										<td style="font-weight: bold; padding: 20px;">When:</td>
+										<td>' . $nice_date . ' ' . $nice_time . '</td>
+									</tr>
+									<tr>
+										<td style="font-weight: bold; padding: 20px;">Address:</td>
+										<td>' . $business->address_1 . ' ' . $business->city . ', ' . $business->region . ' ' . $business->postal_code . '</td>
+									</tr>
+									<tr>
+										<td style="font-weight: bold; padding: 20px;">Phone Number:</td>
+										<td>' . $business->phone_number . '</td>
+									</tr>
+								</table>
+								<table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-top: 20px;">
+									<tr>
+										<td><a href="https://www.jiujitsuscout.com/webhooks/email/appointment-confirmation/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">Confirm Appointment</a></td>
+									</tr>
+									<tr>
+										<td><a href="https://www.jiujitsuscout.com/webhooks/email/appointment-confirmation/" style="background: #FA8072; margin-top: 8px; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">Reschedule Appointment</a></td>
+									</tr>
+								</table>
+								<table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-top: 50px;">
+									<tr>
+										<td style="width: 300px; text-align: center;"><span style="font-weight: 600; color: #C0C0C0;">Powered by <a href="https://www.jiujitsuscout.com/" style="text-decoration: underline; color: #C0C0C0;">JiuJitsuScout</a></span></td>
+									</tr>
+								</table>
+								<table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-top: 50px;">
+									<tr>
+										<td style="width: 300px; text-align: center;"><span style="font-size: 12px; font-weight: 600; color: #BBBBBB;">One click <a href="https://www.jiujitsuscout.com/webhooks/unsubscribe/" style="text-decoration: underline; color: #C0C0C0;">unsubscribe</a></span></td>
+									</tr>
+								</table>
+							</div>';
+				            $mailer->setEmailBody( $prospectEmailBody );
+				            $mailStatus = $mailer->mail();
+
+							// Log email appointment reminder status for prospect
+							if ( $mailStatus != 202 ) {
+								$this->logger->info( "Email Not Sent" );
+							} else {
+								$this->logger->info( "Email Sent: " . $prospect->email );
+							}
+
 						}
 
 						// Send email if remind user is > 0 (true)
@@ -109,13 +165,46 @@ class Appointments extends Controller
 							$mailer->setRecipientName( $user->first_name );
 				            $mailer->setRecipientEmailAddress( $user->email );
 				            $mailer->setSenderName( "JiuJitsuScout" );
-				            $mailer->setSenderEmailAddress( "no_reply@jiujitsuscout.com" );
+				            $mailer->setSenderEmailAddress( "notifications@jiujitsuscout.com" );
 				            $mailer->setContentType( "text/html" );
-				            $mailer->setEmailSubject( "Lead Appointment Reminder for {$prospect->first_name}" );
-				            $mailer->setEmailBody( "
-								You have an appointment with " . ucfirst( $prospect->first_name ) . " at {$nice_time} on {$nice_date}
-							" );
+				            $mailer->setEmailSubject( "Appointment Reminder for {$prospect->first_name}" );
+							$userEmailBody = '
+								<div>
+									<h2 style="margin-top: 15px; margin-bottom: 25px;">You have an appointment today with ' . $prospect->first_name . ' @ ' . $nice_date . ' ' . $nice_time . '</h2>
+					                <table cellspacing=0 style="width: 300px; background: #f6f7f9; border-collapse: collapse; table-layout: fixed; border: 1px solid #CCCCCC; box-sizing: border-box; padding: 15px; display: block; margin-left: 20px;">
+					                    <tr>
+					                        <td style="font-weight: bold; padding: 15px;">Name:</td>
+					                        <td>' . $prospect->first_name . '</td>
+					                    </tr>
+					                    <tr>
+					                        <td style="font-weight: bold; padding: 15px;">Email:</td>
+					                        <td>' . $prospect->email . '</td>
+					                    </tr>
+					                    <tr>
+					                        <td style="font-weight: bold; padding: 15px;">Phone Number:</td>
+					                        <td>' . $prospect->phone_number . '</td>
+					                    </tr>
+					                    <tr>
+					                        <td style="font-weight: bold; padding: 15px;">Source:</td>
+					                        <td><p sytle="max-width: 50ch;">' . $prospect->source . '</p></td>
+					                    </tr>
+					                </table>
+					                <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
+					                    <tr>
+					                        <td><a href="https://www.jiujitsuscout.com/account-manager/business/lead/' . $prospect->id . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+					                    </tr>
+					                </table>
+					            </div>
+							';
+				            $mailer->setEmailBody( $userEmailBody );
 				            $mailer->mail();
+
+							// Log email appointment reminder status for prospect
+							if ( $mailStatus != 202 ) {
+								$this->logger->info( "Email Not Sent" );
+							} else {
+								$this->logger->info( "Email Sent: " . $user->email );
+							}
 						}
 
 						// Update remind status for appointment

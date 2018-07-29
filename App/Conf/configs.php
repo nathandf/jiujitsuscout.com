@@ -6,6 +6,9 @@ $config[ "facebook" ][ "pixel_id" ] = '1842001532752101';
 $config[ "max_upload_filesize" ] = "2MB";
 $config[ "default_logo" ] = "jjslogoiconwhite.jpg";
 
+// Logging
+$config[ "logs_directory" ] = "App/logs/";
+
 // Email Settings
 $config[ "email_settings" ] = [
     "development" => [

@@ -17,6 +17,7 @@ return array(
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Models\\' => array($baseDir . '/Models'),
     'Mappers\\' => array($baseDir . '/Models/Mappers'),
+    'Katzgrau\\KLogger\\' => array($vendorDir . '/katzgrau/klogger/src'),
     'Helpers\\' => array($baseDir . '/Helpers'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
