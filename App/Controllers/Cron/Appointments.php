@@ -168,32 +168,33 @@ class Appointments extends Controller
 				            $mailer->setSenderEmailAddress( "notifications@jiujitsuscout.com" );
 				            $mailer->setContentType( "text/html" );
 				            $mailer->setEmailSubject( "Appointment Reminder for {$prospect->first_name}" );
-							$userEmailBody = '<div>
-								<h2 style="margin-top: 15px; margin-bottom: 25px;">You have an appointment today with ' . $prospect->first_name . ' @ ' . $nice_date . ' ' . $nice_time . '</h2>
-				                <table cellspacing=0 style="width: 300px; background: #f6f7f9; border-collapse: collapse; table-layout: fixed; border: 1px solid #CCCCCC; box-sizing: border-box; padding: 15px; display: block; margin-left: 20px;">
-				                    <tr>
-				                        <td style="font-weight: bold; padding: 15px;">Name:</td>
-				                        <td>' . $prospect->first_name . '</td>
-				                    </tr>
-				                    <tr>
-				                        <td style="font-weight: bold; padding: 15px;">Email:</td>
-				                        <td>' . $prospect->email . '</td>
-				                    </tr>
-				                    <tr>
-				                        <td style="font-weight: bold; padding: 15px;">Phone Number:</td>
-				                        <td>' . $prospect->phone_number . '</td>
-				                    </tr>
-				                    <tr>
-				                        <td style="font-weight: bold; padding: 15px;">Source:</td>
-				                        <td><p sytle="max-width: 50ch;">' . $prospect->source . '</p></td>
-				                    </tr>
-				                </table>
-				                <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
-				                    <tr>
-				                        <td><a href="https://www.jiujitsuscout.com/account-manager/business/lead/' . $prospect->id . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
-				                    </tr>
-				                </table>
-				            </div>
+							$userEmailBody = '
+								<div>
+									<h2 style="margin-top: 15px; margin-bottom: 25px;">You have an appointment today with ' . $prospect->first_name . ' @ ' . $nice_date . ' ' . $nice_time . '</h2>
+					                <table cellspacing=0 style="width: 300px; background: #f6f7f9; border-collapse: collapse; table-layout: fixed; border: 1px solid #CCCCCC; box-sizing: border-box; padding: 15px; display: block; margin-left: 20px;">
+					                    <tr>
+					                        <td style="font-weight: bold; padding: 15px;">Name:</td>
+					                        <td>' . $prospect->first_name . '</td>
+					                    </tr>
+					                    <tr>
+					                        <td style="font-weight: bold; padding: 15px;">Email:</td>
+					                        <td>' . $prospect->email . '</td>
+					                    </tr>
+					                    <tr>
+					                        <td style="font-weight: bold; padding: 15px;">Phone Number:</td>
+					                        <td>' . $prospect->phone_number . '</td>
+					                    </tr>
+					                    <tr>
+					                        <td style="font-weight: bold; padding: 15px;">Source:</td>
+					                        <td><p sytle="max-width: 50ch;">' . $prospect->source . '</p></td>
+					                    </tr>
+					                </table>
+					                <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
+					                    <tr>
+					                        <td><a href="https://www.jiujitsuscout.com/account-manager/business/lead/' . $prospect->id . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+					                    </tr>
+					                </table>
+					            </div>
 							';
 				            $mailer->setEmailBody( $userEmailBody );
 				            $mailer->mail();

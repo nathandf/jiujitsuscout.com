@@ -27,6 +27,7 @@ class Trials extends Controller
 		$prospectRepo = $this->load( "prospect-repository" );
 		$businessRepo = $this->load( "business-repository" );
 		$noteRegistrar = $this->load( "note-registrar" );
+		$phoneRepo = $this->load( "phone-repository" );
 
 		// Set empty trials array
 		$trials = [];
@@ -57,6 +58,11 @@ class Trials extends Controller
 
 			foreach ( $prospects as $prospect ) {
 
+				// Get prospects phone resource
+				$phone = $phoneRepo->getByID( $prospect->phone_id );
+
+				$prospect->phone_number = "+" . $phone->country_code . " " . $phone->national_number;
+
 				// Set nicely formatted time and date
 				// Start
 				$nice_time_start = date( "g:iA", $prospect->trial_start );
@@ -84,7 +90,38 @@ class Trials extends Controller
 
 					// Email subject
 					$subject = "Trial ending for " . $prospect->first_name . " " . $prospect->last_name;
-					$email_body = "Trial for " . $prospect->first_name . " " . $prospect->last_name . " will end on {$nice_date_end}" ;
+					$businessEmailBody = '
+						<div>
+							<h2 style="margin-top: 15px; margin-bottom: 25px;">Trial ending soon for ' . $prospect->first_name . '</h2>
+							<table cellspacing=0 style="width: 300px; background: #f6f7f9; border-collapse: collapse; table-layout: fixed; border: 1px solid #CCCCCC; box-sizing: border-box; padding: 15px; display: block;">
+							<tr>
+								<td style="font-weight: bold; padding: 15px;">Trial End:</td>
+								<td>' . date( "Y-m-d", $prospect->trial_end ) . '</td>
+							</tr>
+								<tr>
+									<td style="font-weight: bold; padding: 15px;">Name:</td>
+									<td>' . $prospect->first_name . '</td>
+								</tr>
+								<tr>
+									<td style="font-weight: bold; padding: 15px;">Email:</td>
+									<td>' . $prospect->email . '</td>
+								</tr>
+								<tr>
+									<td style="font-weight: bold; padding: 15px;">Phone Number:</td>
+									<td>' . $prospect->phone_number . '</td>
+								</tr>
+								<tr>
+									<td style="font-weight: bold; padding: 15px;">Source:</td>
+									<td><p sytle="max-width: 50ch;">' . $prospect->source . '</p></td>
+								</tr>
+							</table>
+							<table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-top: 20px;">
+								<tr>
+									<td><a href="https://www.jiujitsuscout.com/account-manager/business/lead/' . $prospect->id . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+								</tr>
+							</table>
+						</div>
+					';
 
 					// Set email details
 					$mailer->setRecipientName( $business->business_name );
@@ -93,11 +130,15 @@ class Trials extends Controller
 		            $mailer->setSenderEmailAddress( "notifcations@jiujitsuscout.com" );
 		            $mailer->setContentType( "text/html" );
 		            $mailer->setEmailSubject( $subject );
-		            $mailer->setEmailBody( $email_body );
-		            $mailer->mail();
+		            $mailer->setEmailBody( $businessEmailBody );
+		            $mailStatus = $mailer->mail();
 
-					// Log reminder
-					$this->logger->info( "Email Sent: " . $business->email );
+					// Log email trial reminder
+					if ( $mailStatus != 202 ) {
+						$this->logger->info( "Email Not Sent" );
+					} else {
+						$this->logger->info( "Email Sent: " . $business->email );
+					}
 
 					// Update trial remind status for prospect
 					$prospectRepo->updateTrialRemindStatusByID( $prospect->id );
