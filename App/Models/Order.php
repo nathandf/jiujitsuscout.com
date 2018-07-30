@@ -6,8 +6,6 @@ namespace Models;
 class Order
 {
     public $id;
-    public $account_id;
     public $customer_id;
     public $paid;
-    public $total;
 }

@@ -571,6 +571,9 @@ class AccountManager extends Controller
 	{
 		$input = $this->load( "input" );
 		$inputValidator = $this->load( "input-validator" );
+		$businessRepo = $this->load( "business-repository" );
+		$customerRpeo = $this->load( "customer-repository" );
+		$productRepo = $this->load( "product-repository" );
 		$orderRepo = $this->load( "order-repository" );
 		$orderProductRepo = $this->load( "order-product-repository" );
 
@@ -583,15 +586,56 @@ class AccountManager extends Controller
 						"equalls-hidden" => $this->session->getSession( "csrf-token" ),
 						"required" => true
 					],
-					"product" => [
+					"product_ids" => [
 						"required" => true,
-						"in_array" => [ "1", "2" ]
+						"is_array" => true
 					]
 				],
 
 				"upgrade_account" /* error index */
 			) )
 		{
+			// Verify that all product ids returned are valid products
+			$all_product_ids = [];
+			$all_products = $productRepo->getAll();
+			$product_ids = $input->get( "product_ids" );
+
+
+			// Create a list of valid product ids
+			foreach ( $all_products as $_product ) {
+				$all_product_ids[] = $_product->id;
+			}
+
+			// Redirect back to the upgrade page if any submitted product ids
+			// are invalid
+			foreach ( $product_ids as $_product_id ) {
+				if ( !in_array( $_product_id, $all_product_ids ) ) {
+					$this->view->redirect( "account-manager/upgrade" );
+				}
+			}
+
+			// Get all businesses associated with this account. The quantity
+			// of the orderProducts will reflect the number of businesses
+			// returned
+			$businesses = $businessRepo->getAllByAccountID( $this->account->id );
+			$quantity = count( $businesses );
+
+			// Get customer resource if one exists.
+			$customer = $customerRepo->getByAccountID( $this->account->id );
+
+			// If no valid customer is returned, create a new one
+			if ( is_null( $customer->id ) ) {
+				$customer = $customerRepo->create( $this->account->id );
+			}
+
+			// Create an order for this customer
+			$order = $orderRepo->create( $customer->id, $paid = 0 );
+
+			// Create orderProducts for this order
+			foreach ( $product_ids as $product_id ) {
+				$orderProductRepo->create( $order->id, $product_id, $quantity );
+			}
+
 			$this->view->redirect( "cart/" );
 		}
 

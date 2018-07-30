@@ -53,7 +53,7 @@
        <div class="billing-plan-section">
          <p class="price">$49<span class="billing-frequency">/ gym / month</span></p>
          <p class="billing-plan-description">Run your business like a PRO</p>
-         <button type="submit" name="product" value="1" class="btn billing-plan-button">Purchase</button>
+         <button type="submit" name="product_ids[]" value="1" class="btn billing-plan-button">Purchase</button>
        </div>
        <div class="feature-section">
          <p class="feature-section-title">ALL FREE FEATURES, PLUS:</p>
@@ -82,7 +82,7 @@
        <div class="billing-plan-section">
          <p class="price">$99<span class="billing-frequency">/ gym / month</span></p>
          <p class="billing-plan-description">Get all the support you need to scale your gym</p>
-         <button type="submit" name="product" value="2" class="btn billing-plan-button">Purchase</button>
+         <button type="submit" name="product_ids[]" value="2" class="btn billing-plan-button">Purchase</button>
        </div>
        <div class="feature-section">
          <p class="feature-section-title">ALL PRO FEATURES, PLUS:</p>

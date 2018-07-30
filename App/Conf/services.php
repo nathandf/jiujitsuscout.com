@@ -125,6 +125,11 @@ $container->register( "currency-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "customer-repository", function() use ( $container ) {
+	$repo = new \Models\Services\CustomerRepository( $container );
+	return $repo;
+} );
+
 $container->register( "discipline-repository", function() use ( $container ) {
 	$repo = new \Models\Services\DisciplineRepository( $container );
 	return $repo;
