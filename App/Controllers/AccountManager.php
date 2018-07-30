@@ -569,6 +569,35 @@ class AccountManager extends Controller
 
 	public function upgradeAction()
 	{
+		$input = $this->load( "input" );
+		$inputValidator = $this->load( "input-validator" );
+		$orderRepo = $this->load( "order-repository" );
+		$orderProductRepo = $this->load( "order-product-repository" );
+
+		if ( $input->exists() && $inputValidator->validate(
+
+				$input,
+
+				[
+					"token" => [
+						"equalls-hidden" => $this->session->getSession( "csrf-token" ),
+						"required" => true
+					],
+					"product" => [
+						"required" => true,
+						"in_array" => [ "1", "2" ]
+					]
+				],
+
+				"upgrade_account" /* error index */
+			) )
+		{
+			$this->view->redirect( "cart/" );
+		}
+
+		$this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+	    $this->view->setErrorMessages( $inputValidator->getErrors() );
+
 		$this->view->setTemplate( "account-manager/upgrade.tpl" );
 		$this->view->render( "App/Views/AccountManager.php" );
 	}

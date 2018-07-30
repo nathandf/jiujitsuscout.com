@@ -4,9 +4,7 @@ namespace Models;
 
 class ProductType
 {
-
-  public $id;
-  public $name;
-  public $description;
-
+    public $id;
+    public $name;
+    public $description;
 }

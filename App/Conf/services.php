@@ -185,6 +185,16 @@ $container->register( "note-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "order-repository", function() use ( $container ) {
+	$repo = new \Models\Services\OrderRepository( $container );
+	return $repo;
+} );
+
+$container->register( "order-product-repository", function() use ( $container ) {
+	$repo = new \Models\Services\OrderProductRepository( $container );
+	return $repo;
+} );
+
 $container->register( "password-reset-repository", function() use ( $container ) {
 	$repo = new \Models\Services\PasswordResetRepository( $container );
 	return $repo;
@@ -402,6 +412,13 @@ $container->register( "image-manager", function() {
 	return $imageManager;
 } );
 
+// API Services
+
+$container->register( "braintree-gateway-initializer", function() use ( $container ) {
+	$initializer = new \Models\Services\BraintreeGatewayInitializer( $container->getService( "config" ) );
+	return $initializer;
+} );
+
 // Quarantine
 
 $container->register( "paypal-api-initializer", function() use ( $container ) {
@@ -430,7 +447,7 @@ $container->register( "payment-manager", function() use ( $container ) {
 } );
 
 $container->register( "sequence-dispatcher", function() use ( $container ) {
-	$manager = new \Models\Services\SequenceManager(
+	$manager = new \Models\Services\SequenceDispatcher(
 		$container->getService( "sequence-repository" ),
 		$container->getService( "event-dispatcher" )
 	);

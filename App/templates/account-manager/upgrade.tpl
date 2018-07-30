@@ -5,16 +5,9 @@
    <link rel="stylesheet" type="text/css" href="{$HOME}public/css/upgrade.css"/>
  </head>
  <body>
-   <form id="billing-form" action="{$HOME}account-manager/process-upgrade" method="get">
+   <form id="billing-form" action="" method="post">
+        <input type="hidden" name="token" value="{$csrf_token}">
    <p class="upgrade-title">Upgrade your JiuJitsuScout account</p>
-   <div class="con-cnt-med-plus">
-     <p>Choose the gyms you want to be upgraded</p>
-     <br>
-     {foreach from=$businesses item=business}
-       <input type="checkbox" id="bid-cb-{$business->id}" name="business_ids[]" value="{$business->id}" checked="checked"> <label class="checkbox-business-label" for="bid-cb-{$business->id}">{$business->business_name}</label>
-       <div class="clear"></div>
-     {/foreach}
-   </div>
    <div class="con-cnt-fit billing-type-section">
      <input type="radio" name="billing-interval" value="yearly" checked="checked" required="required"><label class="billing-type-labels">Billed Yearly - 1 month free</label>
      <input type="radio" name="billing-interval" value="monthly" required="required"><label class="billing-type-labels">Billed Monthly</label>
@@ -58,9 +51,9 @@
      <div class="col col-3 inner-box mat-hov pricing-tier featured-tier">
        <p class="pricing-title">PRO</p>
        <div class="billing-plan-section">
-         <p class="price">$19<span class="billing-frequency">/ gym / month</span></p>
+         <p class="price">$49<span class="billing-frequency">/ gym / month</span></p>
          <p class="billing-plan-description">Run your business like a PRO</p>
-         <input type="submit" name="pro" class="btn billing-plan-button" value="Purchase">
+         <button type="submit" name="product" value="1" class="btn billing-plan-button">Purchase</button>
        </div>
        <div class="feature-section">
          <p class="feature-section-title">ALL FREE FEATURES, PLUS:</p>
@@ -87,9 +80,9 @@
      <div class="col col-3-last inner-box mat-hov pricing-tier">
        <p class="pricing-title">Business</p>
        <div class="billing-plan-section">
-         <p class="price">$49<span class="billing-frequency">/ gym / month</span></p>
+         <p class="price">$99<span class="billing-frequency">/ gym / month</span></p>
          <p class="billing-plan-description">Get all the support you need to scale your gym</p>
-         <input type="submit" name="business" class="btn billing-plan-button" value="Purchase">
+         <button type="submit" name="product" value="2" class="btn billing-plan-button">Purchase</button>
        </div>
        <div class="feature-section">
          <p class="feature-section-title">ALL PRO FEATURES, PLUS:</p>
@@ -100,7 +93,7 @@
          <p class="feature">Unlimited users</p>
          <div class="clear"></div>
          <div class="feature-check"><i class="fa fa-check" aria-hidden="true"></i></div>
-         <p class="feature">Send mass messages to all your memebers</p>
+         <p class="feature">Send broadcast messages to all your memebers</p>
          <div class="feature-check"><i class="fa fa-check" aria-hidden="true"></i></div>
          <p class="feature">5 landing pages / gym / month, yours to use forever</p>
          <div class="clear"></div>
