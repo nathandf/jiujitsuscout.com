@@ -44,6 +44,20 @@ class Cart extends Controller
 
     public function indexAction()
     {
+        $customerRepo = $this->load( "customer-repository" );
+        $orderRepo = $this->load( "order-repository" );
+
+        $customer = $customerRepo->getByAccountID( $this->account->id );
+        $order = $orderRepo->getByCustomerID( $customer->id );
+
+        printr( $order );
+
+        $this->view->setTemplate( "cart/order-confirmation.tpl" );
+        $this->view->render( "App/Views/AccountManager.php" );
+    }
+
+    public function payAction()
+    {
         $braintreeGatewayInit = $this->load( "braintree-gateway-initializer" );
 
         // Use api credentials stored in configs to create a gateway object
@@ -57,7 +71,7 @@ class Cart extends Controller
         // Pass braintree client token to view for use in a Javascript API call
         $this->view->assign( "client_token", $clientToken );
 
-        $this->view->setTemplate( "account-manager/cart/pay.tpl" );
+        $this->view->setTemplate( "cart/pay.tpl" );
         $this->view->render( "App/Views/AccountManager.php" );
     }
 

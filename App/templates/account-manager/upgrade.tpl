@@ -9,8 +9,8 @@
         <input type="hidden" name="token" value="{$csrf_token}">
    <p class="upgrade-title">Upgrade your JiuJitsuScout account</p>
    <div class="con-cnt-fit billing-type-section">
-     <input type="radio" name="billing-interval" value="yearly" checked="checked" required="required"><label class="billing-type-labels">Billed Yearly - 1 month free</label>
-     <input type="radio" name="billing-interval" value="monthly" required="required"><label class="billing-type-labels">Billed Monthly</label>
+     <input type="radio" name="billing_interval" value="yearly" checked="checked" required="required"><label class="billing-type-labels">Billed Yearly - 1 month free</label>
+     <input type="radio" name="billing_interval" value="monthly" required="required"><label class="billing-type-labels">Billed Monthly</label>
      <div class="clear"></div>
    </div>
    <div class="clear"></div>

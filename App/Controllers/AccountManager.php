@@ -572,7 +572,7 @@ class AccountManager extends Controller
 		$input = $this->load( "input" );
 		$inputValidator = $this->load( "input-validator" );
 		$businessRepo = $this->load( "business-repository" );
-		$customerRpeo = $this->load( "customer-repository" );
+		$customerRepo = $this->load( "customer-repository" );
 		$productRepo = $this->load( "product-repository" );
 		$orderRepo = $this->load( "order-repository" );
 		$orderProductRepo = $this->load( "order-product-repository" );
@@ -589,6 +589,10 @@ class AccountManager extends Controller
 					"product_ids" => [
 						"required" => true,
 						"is_array" => true
+					],
+					"billing_interval" => [
+						"required" => true,
+						"in_array" => [ "yearly", "monthly" ]
 					]
 				],
 
@@ -630,7 +634,7 @@ class AccountManager extends Controller
 
 			// Create an order for this customer
 			$order = $orderRepo->create( $customer->id, $paid = 0 );
-
+			
 			// Create orderProducts for this order
 			foreach ( $product_ids as $product_id ) {
 				$orderProductRepo->create( $order->id, $product_id, $quantity );

@@ -40,7 +40,18 @@ class OrderMapper extends DataMapper
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
         $this->populateOrder( $order, $resp );
-        
+
+        return $order;
+    }
+
+    public function mapFromCustomerID( \Models\Order $order, $customer_id )
+    {
+        $sql = $this->DB->prepare( "SELECT * FROM `order` WHERE customer_id = :customer_id" );
+        $sql->bindParam( ":customer_id", $customer_id );
+        $sql->execute();
+        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
+        $this->populateOrder( $order, $resp );
+
         return $order;
     }
 

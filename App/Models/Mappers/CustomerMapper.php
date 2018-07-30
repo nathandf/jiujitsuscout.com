@@ -57,9 +57,8 @@ class CustomerMapper extends DataMapper
 
     private function populateCustomer( \Models\Customer $customer, $data )
     {
-        $customer->id          = $data[ "id" ];
-        $customer->customer_id = $data[ "customer_id" ];
-        $customer->paid        = $data[ "paid" ];
+        $customer->id         = $data[ "id" ];
+        $customer->account_id = $data[ "account_id" ];
     }
 
 }

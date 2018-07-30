@@ -6,13 +6,13 @@ class OrderRepository extends Service
 {
     public function create( $customer_id, $paid = 0 )
     {
-        $orderProduct = new \Models\OrderProduct();
-        $orderProductMapper = new \Models\Mappers\OrderProductMapper( $this->container );
-        $orderProduct->customer_id = $customer_id;
-        $orderProduct->paid = $paid;
-        $orderProductMapper->create( $orderProduct );
+        $order = new \Models\Order();
+        $orderMapper = new \Models\Mappers\OrderMapper( $this->container );
+        $order->customer_id = $customer_id;
+        $order->paid = $paid;
+        $orderMapper->create( $order );
 
-        return $orderProduct;
+        return $order;
     }
 
     public function getAll()
@@ -28,6 +28,15 @@ class OrderRepository extends Service
         $order = new \Models\Order();
         $orderMapper = new \Models\Mappers\OrderMapper( $this->container );
         $orderMapper->mapFromID( $order, $id );
+
+        return $order;
+    }
+
+    public function getByCustomerID( $customer_id )
+    {
+        $order = new \Models\Order();
+        $orderMapper = new \Models\Mappers\OrderMapper( $this->container );
+        $orderMapper->mapFromCustomerID( $order, $customer_id );
 
         return $order;
     }

@@ -4,7 +4,7 @@ namespace Models\Services;
 
 class OrderProductRepository extends Service
 {
-    public function create( $order_id, $product_id, $quanity )
+    public function create( $order_id, $product_id, $quantity )
     {
         $orderProduct = new \Models\OrderProduct();
         $orderProductMapper = new \Models\Mappers\OrderProductMapper( $this->container );
