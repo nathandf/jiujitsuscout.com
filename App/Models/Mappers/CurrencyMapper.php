@@ -35,6 +35,20 @@ class CurrencyMapper extends DataMapper
         return $currency;
     }
 
+    public function mapFromCode( $code )
+    {
+        $entityFactory = $this->container->getService( "entity-factory" );
+
+        $sql = $this->DB->prepare( "SELECT * FROM currency WHERE code = :code" );
+        $sql->bindParam( ":code", $code );
+        $sql->execute();
+        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
+        $currency = $entityFactory->build( "Currency" );
+        $this->populateCurrency( $currency, $resp );
+
+        return $currency;
+    }
+
     public function populateCurrency( $currency, $data )
     {
         $currency->country          = $data[ "country" ];

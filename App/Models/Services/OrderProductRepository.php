@@ -24,6 +24,14 @@ class OrderProductRepository extends Service
         return $orderProducts;
     }
 
+    public function getAllByOrderID( $order_id )
+    {
+        $orderProductMapper = new \Models\Mappers\OrderProductMapper( $this->container );
+        $orderProducts = $orderProductMapper->mapAllFromOrderID( $order_id );
+
+        return $orderProducts;
+    }
+
     public function getByID( $id )
     {
         $orderProduct = new \Models\OrderProduct();

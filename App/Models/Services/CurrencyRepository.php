@@ -21,6 +21,14 @@ class CurrencyRepository extends Service
         return $currency;
     }
 
+    public function getByCode( $code )
+    {
+        $currencyMapper = new \Models\Mappers\CurrencyMapper( $this->container );
+        $currency = $currencyMapper->mapFromCode( $code );
+
+        return $currency;
+    }
+
     public function getByName( $name )
     {
         $currencyMapper = new \Models\Mappers\CurrencyMapper( $this->container );

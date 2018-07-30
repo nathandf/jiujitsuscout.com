@@ -46,11 +46,33 @@ class Cart extends Controller
     {
         $customerRepo = $this->load( "customer-repository" );
         $orderRepo = $this->load( "order-repository" );
+        $orderProductRepo = $this->load( "order-product-repository" );
+        $productRepo = $this->load( "product-repository" );
+        $currencyRepo = $this->load( "currency-repository" );
+
+        $transaction_total = 0;
 
         $customer = $customerRepo->getByAccountID( $this->account->id );
         $order = $orderRepo->getByCustomerID( $customer->id );
 
-        printr( $order );
+        $orderProducts = $orderProductRepo->getAllByOrderID( $order->id );
+
+        // Set default currency symbol to USD
+        $currency_symbol = "$";
+
+        // Assign product data to orderProduct
+        foreach ( $orderProducts as $_orderProduct ) {
+            $product = $productRepo->getByID( $_orderProduct->product_id );
+            $currency = $currencyRepo->getByCode( $product->currency );
+            $product->currency_symbol = $currency->symbol;
+            $_orderProduct->product = $product;
+            $transaction_total = $transaction_total + ( $_orderProduct->product->price * $_orderProduct->quantity );
+            $currency_symbol = $currency->symbol;
+        }
+
+        $this->view->assign( "currency_symbol", $currency_symbol );
+        $this->view->assign( "transaction_total", $transaction_total );
+        $this->view->assign( "orderProducts", $orderProducts );
 
         $this->view->setTemplate( "cart/order-confirmation.tpl" );
         $this->view->render( "App/Views/AccountManager.php" );
@@ -58,7 +80,27 @@ class Cart extends Controller
 
     public function payAction()
     {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
         $braintreeGatewayInit = $this->load( "braintree-gateway-initializer" );
+
+        if ( $input->exists() && $inputValidator->validate(
+
+                $input,
+
+                [
+                    "total" => [
+                        "required" => true,
+                    ]
+                ],
+
+                "pay" /* error index */
+            ) )
+        {
+
+        } else {
+            $this->view->redirect( "cart/" );
+        }
 
         // Use api credentials stored in configs to create a gateway object
         // to establish communication with the braintree API.
@@ -70,6 +112,7 @@ class Cart extends Controller
 
         // Pass braintree client token to view for use in a Javascript API call
         $this->view->assign( "client_token", $clientToken );
+        $this->view->assign( "total", $input->get( "total" ) );
 
         $this->view->setTemplate( "cart/pay.tpl" );
         $this->view->render( "App/Views/AccountManager.php" );
@@ -89,6 +132,9 @@ class Cart extends Controller
                 [
                     "payment_method_nonce" => [
                         "required" => true
+                    ],
+                    "total" => [
+                        "required" => true
                     ]
                 ],
 
@@ -100,7 +146,7 @@ class Cart extends Controller
             $gateway = $braintreeGatewayInit->init();
 
             $result = $gateway->transaction()->sale( [
-                'amount' => '10.00',
+                'amount' => $input->get( "total" ),
                 'paymentMethodNonce' => $input->get( "payment_method_nonce" ),
                 'options' => [
                     'submitForSettlement' => True
@@ -108,6 +154,8 @@ class Cart extends Controller
             ] );
 
             $groupRepo->create( 45, "transaction status", json_encode( $result ) );
+        } else {
+            $this->view->redirect( "cart/" );
         }
     }
 

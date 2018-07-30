@@ -22,7 +22,23 @@ class OrderProductMapper extends DataMapper
     {
         $entityFactory = $this->container->getService( "entity-factory" );
         $orderProducts = [];
-        $sql = $this->DB->prepare( "SELECT * FROM orderProduct" );
+        $sql = $this->DB->prepare( "SELECT * FROM order_product" );
+        $sql->execute();
+        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $orderProduct = $entityFactory->build( "OrderProduct" );
+            $this->populateOrderProduct( $orderProduct, $resp );
+            $orderProducts[] = $orderProduct;
+        }
+
+        return $orderProducts;
+    }
+
+    public function mapAllFromOrderID( $order_id )
+    {
+        $entityFactory = $this->container->getService( "entity-factory" );
+        $orderProducts = [];
+        $sql = $this->DB->prepare( "SELECT * FROM order_product WHERE order_id = :order_id" );
+        $sql->bindParam( ":order_id", $order_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $orderProduct = $entityFactory->build( "OrderProduct" );
@@ -35,7 +51,7 @@ class OrderProductMapper extends DataMapper
 
     public function mapFromID( \Models\OrderProduct $orderProduct, $id )
     {
-        $sql = $this->DB->prepare( "SELECT * FROM orderProduct WHERE id = :id" );
+        $sql = $this->DB->prepare( "SELECT * FROM order_product WHERE id = :id" );
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
@@ -47,7 +63,7 @@ class OrderProductMapper extends DataMapper
     private function populateOrderProduct( \Models\OrderProduct $orderProduct, $data )
     {
         $orderProduct->id          = $data[ "id" ];
-        $orderProduct->customer_id = $data[ "order_id" ];
+        $orderProduct->order_id    = $data[ "order_id" ];
         $orderProduct->product_id  = $data[ "product_id" ];
         $orderProduct->quantity    = $data[ "quantity" ];
     }

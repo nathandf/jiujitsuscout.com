@@ -631,10 +631,10 @@ class AccountManager extends Controller
 			if ( is_null( $customer->id ) ) {
 				$customer = $customerRepo->create( $this->account->id );
 			}
-
+			
 			// Create an order for this customer
 			$order = $orderRepo->create( $customer->id, $paid = 0 );
-			
+
 			// Create orderProducts for this order
 			foreach ( $product_ids as $product_id ) {
 				$orderProductRepo->create( $order->id, $product_id, $quantity );

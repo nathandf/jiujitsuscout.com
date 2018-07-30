@@ -16,7 +16,10 @@
 		}, function (createErr, instance) {
 			button.addEventListener('click', function () {
 				instance.requestPaymentMethod(function (err, payload) {
-					$.post( "generate-transaction", {payment_method_nonce:payload.nonce}, function () {
+					$.post( "generate-transaction", {
+						payment_method_nonce:payload.nonce,
+						total:{/literal}{$total}{literal}
+					}, function () {
 
 					} ).done( function() {
 						$( "#output" ).html( "<h2>Payment Successful</h2><br>" );
