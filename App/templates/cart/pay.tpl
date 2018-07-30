@@ -23,6 +23,7 @@
 
 					} ).done( function() {
 						$( "#output" ).html( "<h2>Payment Successful</h2><br>" );
+						window.location.replace("{/literal}{$HOME}{literal}cart/thank-you");
 					} ).fail( function () {
 						alert( "There was an error" );
 					} );

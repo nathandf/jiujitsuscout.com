@@ -157,6 +157,14 @@ class Cart extends Controller
         } else {
             $this->view->redirect( "cart/" );
         }
+
+    }
+
+    public function thankYou()
+    {
+        // TODO add facbook pixel
+        $this->view->setTemplate( "thank-you.tpl" );
+        $this->view->render( "App/Views/Home.php" );
     }
 
 }
