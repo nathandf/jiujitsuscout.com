@@ -118,7 +118,7 @@ class Cart extends Controller
         $this->view->render( "App/Views/AccountManager.php" );
     }
 
-    public function generateTransaction()
+    public function processPayment()
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
@@ -154,16 +154,21 @@ class Cart extends Controller
             ] );
 
             $groupRepo->create( 45, "transaction status", json_encode( $result ) );
-        } else {
-            $this->view->redirect( "cart/" );
         }
 
     }
 
-    public function thankYou()
+    public function paymentSuccess()
     {
         // TODO add facbook pixel
-        $this->view->setTemplate( "thank-you.tpl" );
+        $this->view->setTemplate( "cart/payment-success.tpl" );
+        $this->view->render( "App/Views/Home.php" );
+    }
+
+    public function paymentFailure()
+    {
+        // TODO add facbook pixel
+        $this->view->setTemplate( "cart/payment-failure.tpl" );
         $this->view->render( "App/Views/Home.php" );
     }
 

@@ -1010,6 +1010,10 @@ td {
     color: #000000;
 }
 
+.tc-error {
+    color: #B00020;
+}
+
 .tc-dark-mint {
     color: #37BF91;
 }

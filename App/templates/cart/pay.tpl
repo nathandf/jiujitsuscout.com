@@ -16,14 +16,18 @@
 		}, function (createErr, instance) {
 			button.addEventListener('click', function () {
 				instance.requestPaymentMethod(function (err, payload) {
-					$.post( "generate-transaction", {
+					$.post( "{/literal}{$HOME}cart/{literal}process-payment", {
 						payment_method_nonce:payload.nonce,
 						total:{/literal}{$total}{literal}
 					}, function () {
-
+						//
 					} ).done( function() {
-						$( "#output" ).html( "<h2>Payment Successful</h2><br>" );
-						window.location.replace("{/literal}{$HOME}{literal}cart/thank-you");
+						if () {
+							window.location.replace("{/literal}{$HOME}{literal}cart/payment-success");
+						} else {
+							window.location.replace("{/literal}{$HOME}{literal}cart/payment-failure");
+						}
+
 					} ).fail( function () {
 						alert( "There was an error" );
 					} );
