@@ -15,8 +15,8 @@
 		{/foreach}
 		{if $orderProducts|@count > 0}
 			<h2>Total: {$currency_symbol}{$transaction_total}</h2>
-			<form action="pay" method="post">
-				<input type="hidden" name="total" value="{$transaction_total}">
+			<form action="{$HOME}cart/pay" method="post">
+				<input type="hidden" name="token" value="{$csrf_token}">
 				<button type="submit" class="btn btn-inline bg-dark-mint tc-white push-t-med" href="{$HOME}cart/pay">Checkout</button>
 			</form>
 		{else}

@@ -40,4 +40,21 @@ class OrderRepository extends Service
 
         return $order;
     }
+
+    public function getUnpaidOrderByCustomerID( $customer_id )
+    {
+        $order = new \Models\Order();
+        $orderMapper = new \Models\Mappers\OrderMapper( $this->container );
+        $orderMapper->mapFromCustomerIDAndPaid( $order, $customer_id, 0 );
+
+        return $order;
+    }
+
+    public function updatePaidByID( $id, $paid )
+    {
+        $orderMapper = new \Models\Mappers\OrderMapper( $this->container );
+        $orderMapper->updatePaidByID( $id, $paid );
+
+        return true;
+    }
 }

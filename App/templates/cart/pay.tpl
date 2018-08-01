@@ -17,19 +17,13 @@
 			button.addEventListener('click', function () {
 				instance.requestPaymentMethod(function (err, payload) {
 					$.post( "{/literal}{$HOME}cart/{literal}process-payment", {
-						payment_method_nonce:payload.nonce,
-						total:{/literal}{$total}{literal}
+						payment_method_nonce:payload.nonce
 					}, function () {
 						//
 					} ).done( function() {
-						if () {
-							window.location.replace("{/literal}{$HOME}{literal}cart/payment-success");
-						} else {
-							window.location.replace("{/literal}{$HOME}{literal}cart/payment-failure");
-						}
-
+						window.location.replace("{/literal}{$HOME}{literal}cart/payment-success");
 					} ).fail( function () {
-						alert( "There was an error" );
+						alert( "There was an error processing your payment. Please reload the page and try again" );
 					} );
 				} );
 			} );

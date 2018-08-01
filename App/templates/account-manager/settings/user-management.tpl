@@ -12,7 +12,7 @@
 			<div class="con-cnt-xlrg">
 				<div class="inner-pad-med">
 					<h2 class="h2 first last">User Management</h2>
-					<p class="last first"><span class="text-sml">Max Users: </span>{if $account_type->max_users > 998}Unlimted{else}{$account_type->max_users} - <a class="link text-med tc-mango" href="#"><b>Extend User Limit</b></a>{/if}</p>
+					<p class="last first"><span class="text-sml">Max Users: </span>{if $account_type->max_users > 998}Unlimted{else}{$account_type->max_users} - <a class="link text-med tc-mango" href="{$HOME}account-manager/upgrade"><b>Extend User Limit</b></a>{/if}</p>
 					{if $users|@count < $account_type->max_users}
 					<a href="{$HOME}account-manager/settings/add-user" class="btn btn-inline leads first mat-hov"><span class="text-med">Add User <i class="fa fa-plus" aria-hidden="true"></i></span></a>
 					{/if}

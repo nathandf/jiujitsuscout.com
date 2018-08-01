@@ -55,6 +55,23 @@ class OrderMapper extends DataMapper
         return $order;
     }
 
+    public function mapFromCustomerIDAndPaid( \Models\Order $order, $customer_id, $paid )
+    {
+        $sql = $this->DB->prepare( "SELECT * FROM `order` WHERE customer_id = :customer_id AND paid = :paid" );
+        $sql->bindParam( ":customer_id", $customer_id );
+        $sql->bindParam( ":paid", $paid );
+        $sql->execute();
+        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
+        $this->populateOrder( $order, $resp );
+
+        return $order;
+    }
+
+    public function updatePaidByID( $id, $paid )
+    {
+        $this->update( "`order`", "paid", $paid, "id", $id );
+    }
+
     private function populateOrder( \Models\Order $order, $data )
     {
         $order->id          = $data[ "id" ];
