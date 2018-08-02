@@ -168,7 +168,7 @@ class Cart extends Controller
         // Grab account details
         $account = $accountRepo->getByID( $accountUser->account_id );
 
-        if ( $input->exists("get") && $inputValidator->validate(
+        if ( $input->exists() && $inputValidator->validate(
 
                 $input,
 
@@ -220,7 +220,9 @@ class Cart extends Controller
                 ]
             ] );
 
-            // If they payment was approved, update the 'paid' status of the
+            $logger->info("Braintree Transaction: " . $result->transaction->id . " | Response Code: " . $result->transaction->processorResponseCode . " | Response Text: " . $result->transaction->processorResponseText );
+
+            // If the payment was approved, update the 'paid' status of the
             // order and save the processor response text in $message. If the
             // payment was declined or did no go through for any reason, save the
             // failure message provided in the braintree result object in $message
@@ -234,21 +236,27 @@ class Cart extends Controller
             // Create a braintreeTransaction object and save the transaction
             // data provided by braintree to the database.
             $braintreeTransaction = $braintreeTransactionRepo->create([
-                "braintree_transaction_id" => $result->transaction->id,
-                "braintree_transaction_status" => $result->transaction->status,
-                "braintree_transaction_type" => $result->transaction->type,
-                "braintree_transaction_currency_iso_code" => $result->transaction->currencyIsoCode,
-                "braintree_transaction_amount" => $result->transaction->amount,
-                "braintree_message" => $message,
-                "braintree_merchant_account_id" => $result->transaction->merchantAccountId,
-                "braintree_sub_merchant_account_id" => $result->transaction->subMerchantAccountId,
-                "braintree_master_merchant_account_id" => $result->transaction->masterMerchantAccountId,
-                "braintree_order_id" => $result->transaction->orderId,
-                "braintree_processor_response_code" => $result->transaction->processorResponseCode
+                "transaction_id" => $result->transaction->id,
+                "transaction_status" => $result->transaction->status,
+                "transaction_type" => $result->transaction->type,
+                "transaction_currency_iso_code" => $result->transaction->currencyIsoCode,
+                "transaction_amount" => $result->transaction->amount,
+                "message" => $message,
+                "merchant_account_id" => $result->transaction->merchantAccountId,
+                "sub_merchant_account_id" => $result->transaction->subMerchantAccountId,
+                "master_merchant_account_id" => $result->transaction->masterMerchantAccountId,
+                "order_id" => $result->transaction->orderId,
+                "processor_response_code" => $result->transaction->processorResponseCode,
+                "full_transaction_data" => json_encode( $result )
             ]);
 
+            $logger->info( json_encode( $braintreeTransaction ) );
+
             // Create a transaction object
-            $transactionRepo->create( $customer->id, $order->id, $braintreeTransaction->braintree_transaction_status, $braintreeTransaction->braintree_transaction_type, $transaction_total );
+            $transaction = $transactionRepo->create( $customer->id, $order->id, $braintreeTransaction->braintree_transaction_status, $braintreeTransaction->braintree_transaction_type, $transaction_total );
+
+            $logger->info( json_encode( $transaction ) );
+
         }
     }
 

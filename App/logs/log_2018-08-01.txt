@@ -1,0 +1,180 @@
+[2018-08-01 8:25:12.091022] [info]
+{
+"success":true,
+"transaction": {
+		"id":"83ce71c6",
+		"status":"submitted_for_settlement",
+		"type":"sale",
+		"currencyIsoCode":"USD",
+		"amount":"198.00",
+		"merchantAccountId":"jiujitsuscoutllc",
+		"subMerchantAccountId":null,
+		"masterMerchantAccountId":null,
+		"orderId":null,
+		"createdAt": {
+			"date":"2018-08-01 08:25:12.000000",
+			"timezone_type":3,
+			"timezone":"UTC"
+		},
+		"updatedAt": {
+			"date":"2018-08-01 08:25:12.000000",
+			"timezone_type":3,
+			"timezone":"UTC"
+		},
+		"customer":
+		{
+			"id":null,
+			"firstName":null,
+			"lastName":null,
+			"company":null,
+			"email":null,
+			"website":null,
+			"phone":null,
+			"fax":null
+		},
+		"billing":
+		{
+			"id":null,
+			"firstName":null,
+			"lastName":null,
+			"company":null,
+			"streetAddress":null,
+			"extendedAddress":null,
+			"locality":null,
+			"region":null,
+			"postalCode":null,
+			"countryName":null,
+			"countryCodeAlpha2":null,
+			"countryCodeAlpha3":null,
+			"countryCodeNumeric":null
+		},
+		"refundId":null,
+		"refundIds":[],
+		"refundedTransactionId":null,
+		"partialSettlementTransactionIds":[],
+		"authorizedTransactionId":null,
+		"settlementBatchId":null,
+		"shipping":
+		{
+			"id":null,
+			"firstName":null,
+			"lastName":null,
+			"company":null,
+			"streetAddress":null,
+			"extendedAddress":null,
+			"locality":null,
+			"region":null,
+			"postalCode":null,
+			"countryName":null,
+			"countryCodeAlpha2":null,
+			"countryCodeAlpha3":null,
+			"countryCodeNumeric":null
+		},
+		"customFields":null,
+		"avsErrorResponseCode":null,
+		"avsPostalCodeResponseCode":"I",
+		"avsStreetAddressResponseCode":"I",
+		"cvvResponseCode":"I",
+		"gatewayRejectionReason":null,
+		"processorAuthorizationCode":"YXGC81",
+		"processorResponseCode":"1000",
+		"processorResponseText":"Approved",
+		"additionalProcessorResponse":null,
+		"voiceReferralNumber":null,
+		"purchaseOrderNumber":null,
+		"taxAmount":null,
+		"taxExempt":false,
+		"creditCard":
+		{
+			"token":null,
+			"bin":"411111",
+			"last4":"1111",
+			"cardType":"Visa",
+			"expirationMonth":"09",
+			"expirationYear":"2022",
+			"customerLocation":"US",
+			"cardholderName":null,
+			"imageUrl":"https:\/\/assets.braintreegateway.com\/payment_method_logo\/visa.png?environment=sandbox",
+			"prepaid":"Unknown",
+			"healthcare":"Unknown",
+			"debit":"Unknown",
+			"durbinRegulated":"Unknown",
+			"commercial":"Unknown",
+			"payroll":"Unknown",
+			"issuingBank":"Unknown",
+			"countryOfIssuance":"Unknown",
+			"productId":"Unknown",
+			"uniqueNumberIdentifier":null,
+			"venmoSdk":false
+		},
+		"statusHistory":[{},{}],
+		"planId":null,
+		"subscriptionId":null,
+		"subscription":
+		{
+			"billingPeriodEndDate":null,
+			"billingPeriodStartDate":null
+		},
+		"addOns":[],
+		"discounts":[],
+		"descriptor":{},
+		"recurring":false,
+		"channel":null,
+		"serviceFeeAmount":null,
+		"escrowStatus":null,
+		"disbursementDetails":{},
+		"disputes":[],
+		"authorizationAdjustments":[],
+		"paymentInstrumentType":"credit_card",
+		"processorSettlementResponseCode":null,
+		"processorSettlementResponseText":null,
+		"threeDSecureInfo":null,
+		"shipsFromPostalCode":null,
+		"shippingAmount":null,
+		"discountAmount":null,
+		"networkTransactionId":"020180801082512",
+		"creditCardDetails":{},
+		"customerDetails":{},
+		"billingDetails":{},
+		"shippingDetails":{},
+		"subscriptionDetails":{}
+	}
+}
+[2018-08-01 9:23:52.887892] [info]
+{
+	"errors":{},
+	"params":{
+		"transaction":{
+			"type":"sale",
+			"amount":"2000",
+			"paymentMethodNonce":"tokencc_bd_vd3jxt_ssccmg_z3xzy4_xnzj8t_zny",
+			"options":{
+				"submitForSettlement":"true"
+			}
+		}
+	},
+	"message":"Do Not Honor",
+	"transaction":{
+		"id":"cqkfn6pr",
+		"status":"processor_declined",
+		"type":"sale",
+		"currencyIsoCode":"USD",
+		"amount":"2000.00",
+		"merchantAccountId":"jiujitsuscoutllc",
+		"subMerchantAccountId":null,
+		"masterMerchantAccountId":null,
+		"orderId":null,
+		"createdAt":{"date":"2018-08-01 09:23:53.000000","timezone_type":3,"timezone":"UTC"},
+		"updatedAt":{"date":"2018-08-01 09:23:53.000000","timezone_type":3,"timezone":"UTC"},"customer":{"id":null,"firstName":null,"lastName":null,"company":null,"email":null,"website":null,"phone":null,"fax":null},"billing":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"refundId":null,"refundIds":[],"refundedTransactionId":null,"partialSettlementTransactionIds":[],"authorizedTransactionId":null,"settlementBatchId":null,"shipping":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"customFields":null,"avsErrorResponseCode":null,"avsPostalCodeResponseCode":"I","avsStreetAddressResponseCode":"I","cvvResponseCode":"I","gatewayRejectionReason":null,"processorAuthorizationCode":null,"processorResponseCode":"2000","processorResponseText":"Do Not Honor","additionalProcessorResponse":"2000 : Do Not Honor","voiceReferralNumber":null,"purchaseOrderNumber":null,"taxAmount":null,"taxExempt":false,"creditCard":{"token":null,"bin":"400011","last4":"1115","cardType":"Visa","expirationMonth":"09","expirationYear":"2022","customerLocation":"US","cardholderName":null,"imageUrl":"https:\/\/assets.braintreegateway.com\/payment_method_logo\/visa.png?environment=sandbox","prepaid":"Unknown","healthcare":"Unknown","debit":"Unknown","durbinRegulated":"Unknown","commercial":"Unknown","payroll":"Unknown","issuingBank":"Unknown","countryOfIssuance":"Unknown","productId":"Unknown","uniqueNumberIdentifier":null,"venmoSdk":false},"statusHistory":[{}],"planId":null,"subscriptionId":null,"subscription":{"billingPeriodEndDate":null,"billingPeriodStartDate":null},"addOns":[],"discounts":[],"descriptor":{},"recurring":false,"channel":null,"serviceFeeAmount":null,"escrowStatus":null,"disbursementDetails":{},"disputes":[],"authorizationAdjustments":[],"paymentInstrumentType":"credit_card","processorSettlementResponseCode":null,"processorSettlementResponseText":null,"threeDSecureInfo":null,"shipsFromPostalCode":null,"shippingAmount":null,"discountAmount":null,"networkTransactionId":"020180801092353","creditCardDetails":{},"customerDetails":{},"billingDetails":{},"shippingDetails":{},"subscriptionDetails":{}},"creditCardVerification":null,"subscription":null,"merchantAccount":null,"verification":null}
+
+[2018-08-01 9:32:52.383037] [info] {
+"errors":{},"params":{"transaction":{"type":"sale","amount":"2000","paymentMethodNonce":"tokencc_bd_t824wt_fg24tv_dn8j8g_zk4jtc_ps4","options":{"submitForSettlement":"true"}}},"message":"Do Not Honor","transaction":{"id":"e137h7d1","status":"processor_declined","type":"sale","currencyIsoCode":"USD","amount":"2000.00","merchantAccountId":"jiujitsuscoutllc","subMerchantAccountId":null,"masterMerchantAccountId":null,"orderId":null,"createdAt":{"date":"2018-08-01 09:32:53.000000","timezone_type":3,"timezone":"UTC"},"updatedAt":{"date":"2018-08-01 09:32:53.000000","timezone_type":3,"timezone":"UTC"},"customer":{"id":null,"firstName":null,"lastName":null,"company":null,"email":null,"website":null,"phone":null,"fax":null},"billing":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"refundId":null,"refundIds":[],"refundedTransactionId":null,"partialSettlementTransactionIds":[],"authorizedTransactionId":null,"settlementBatchId":null,"shipping":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"customFields":null,"avsErrorResponseCode":null,"avsPostalCodeResponseCode":"I","avsStreetAddressResponseCode":"I","cvvResponseCode":"I","gatewayRejectionReason":null,"processorAuthorizationCode":null,"processorResponseCode":"2000","processorResponseText":"Do Not Honor","additionalProcessorResponse":"2000 : Do Not Honor","voiceReferralNumber":null,"purchaseOrderNumber":null,"taxAmount":null,"taxExempt":false,"creditCard":{"token":null,"bin":"411111","last4":"1111","cardType":"Visa","expirationMonth":"09","expirationYear":"2022","customerLocation":"US","cardholderName":null,"imageUrl":"https:\/\/assets.braintreegateway.com\/payment_method_logo\/visa.png?environment=sandbox","prepaid":"Unknown","healthcare":"Unknown","debit":"Unknown","durbinRegulated":"Unknown","commercial":"Unknown","payroll":"Unknown","issuingBank":"Unknown","countryOfIssuance":"Unknown","productId":"Unknown","uniqueNumberIdentifier":null,"venmoSdk":false},"statusHistory":[{}],"planId":null,"subscriptionId":null,"subscription":{"billingPeriodEndDate":null,"billingPeriodStartDate":null},"addOns":[],"discounts":[],"descriptor":{},"recurring":false,"channel":null,"serviceFeeAmount":null,"escrowStatus":null,"disbursementDetails":{},"disputes":[],"authorizationAdjustments":[],"paymentInstrumentType":"credit_card","processorSettlementResponseCode":null,"processorSettlementResponseText":null,"threeDSecureInfo":null,"shipsFromPostalCode":null,"shippingAmount":null,"discountAmount":null,"networkTransactionId":"020180801093253","creditCardDetails":{},"customerDetails":{},"billingDetails":{},"shippingDetails":{},"subscriptionDetails":{}},"creditCardVerification":null,"subscription":null,"merchantAccount":null,"verification":null}
+
+[2018-08-01 9:33:06.935761] [info] {"success":true,"transaction":{"id":"anx5b83r","status":"submitted_for_settlement","type":"sale","currencyIsoCode":"USD","amount":"1001.00","merchantAccountId":"jiujitsuscoutllc","subMerchantAccountId":null,"masterMerchantAccountId":null,"orderId":null,"createdAt":{"date":"2018-08-01 09:33:07.000000","timezone_type":3,"timezone":"UTC"},"updatedAt":{"date":"2018-08-01 09:33:08.000000","timezone_type":3,"timezone":"UTC"},"customer":{"id":null,"firstName":null,"lastName":null,"company":null,"email":null,"website":null,"phone":null,"fax":null},"billing":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"refundId":null,"refundIds":[],"refundedTransactionId":null,"partialSettlementTransactionIds":[],"authorizedTransactionId":null,"settlementBatchId":null,"shipping":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"customFields":null,"avsErrorResponseCode":null,"avsPostalCodeResponseCode":"I","avsStreetAddressResponseCode":"I","cvvResponseCode":"I","gatewayRejectionReason":null,"processorAuthorizationCode":"ZGW9F7","processorResponseCode":"1000","processorResponseText":"Approved","additionalProcessorResponse":null,"voiceReferralNumber":null,"purchaseOrderNumber":null,"taxAmount":null,"taxExempt":false,"creditCard":{"token":null,"bin":"411111","last4":"1111","cardType":"Visa","expirationMonth":"09","expirationYear":"2022","customerLocation":"US","cardholderName":null,"imageUrl":"https:\/\/assets.braintreegateway.com\/payment_method_logo\/visa.png?environment=sandbox","prepaid":"Unknown","healthcare":"Unknown","debit":"Unknown","durbinRegulated":"Unknown","commercial":"Unknown","payroll":"Unknown","issuingBank":"Unknown","countryOfIssuance":"Unknown","productId":"Unknown","uniqueNumberIdentifier":null,"venmoSdk":false},"statusHistory":[{},{}],"planId":null,"subscriptionId":null,"subscription":{"billingPeriodEndDate":null,"billingPeriodStartDate":null},"addOns":[],"discounts":[],"descriptor":{},"recurring":false,"channel":null,"serviceFeeAmount":null,"escrowStatus":null,"disbursementDetails":{},"disputes":[],"authorizationAdjustments":[],"paymentInstrumentType":"credit_card","processorSettlementResponseCode":null,"processorSettlementResponseText":null,"threeDSecureInfo":null,"shipsFromPostalCode":null,"shippingAmount":null,"discountAmount":null,"networkTransactionId":"020180801093307","creditCardDetails":{},"customerDetails":{},"billingDetails":{},"shippingDetails":{},"subscriptionDetails":{}}}
+
+[2018-08-01 9:33:30.134830] [info] {"success":true,"transaction":{"id":"8wkr13gt","status":"submitted_for_settlement","type":"sale","currencyIsoCode":"USD","amount":"3001.00","merchantAccountId":"jiujitsuscoutllc","subMerchantAccountId":null,"masterMerchantAccountId":null,"orderId":null,"createdAt":{"date":"2018-08-01 09:33:31.000000","timezone_type":3,"timezone":"UTC"},"updatedAt":{"date":"2018-08-01 09:33:31.000000","timezone_type":3,"timezone":"UTC"},"customer":{"id":null,"firstName":null,"lastName":null,"company":null,"email":null,"website":null,"phone":null,"fax":null},"billing":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"refundId":null,"refundIds":[],"refundedTransactionId":null,"partialSettlementTransactionIds":[],"authorizedTransactionId":null,"settlementBatchId":null,"shipping":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"customFields":null,"avsErrorResponseCode":null,"avsPostalCodeResponseCode":"I","avsStreetAddressResponseCode":"I","cvvResponseCode":"I","gatewayRejectionReason":null,"processorAuthorizationCode":"1WQ9CB","processorResponseCode":"1000","processorResponseText":"Approved","additionalProcessorResponse":null,"voiceReferralNumber":null,"purchaseOrderNumber":null,"taxAmount":null,"taxExempt":false,"creditCard":{"token":null,"bin":"411111","last4":"1111","cardType":"Visa","expirationMonth":"09","expirationYear":"2022","customerLocation":"US","cardholderName":null,"imageUrl":"https:\/\/assets.braintreegateway.com\/payment_method_logo\/visa.png?environment=sandbox","prepaid":"Unknown","healthcare":"Unknown","debit":"Unknown","durbinRegulated":"Unknown","commercial":"Unknown","payroll":"Unknown","issuingBank":"Unknown","countryOfIssuance":"Unknown","productId":"Unknown","uniqueNumberIdentifier":null,"venmoSdk":false},"statusHistory":[{},{}],"planId":null,"subscriptionId":null,"subscription":{"billingPeriodEndDate":null,"billingPeriodStartDate":null},"addOns":[],"discounts":[],"descriptor":{},"recurring":false,"channel":null,"serviceFeeAmount":null,"escrowStatus":null,"disbursementDetails":{},"disputes":[],"authorizationAdjustments":[],"paymentInstrumentType":"credit_card","processorSettlementResponseCode":null,"processorSettlementResponseText":null,"threeDSecureInfo":null,"shipsFromPostalCode":null,"shippingAmount":null,"discountAmount":null,"networkTransactionId":"020180801093331","creditCardDetails":{},"customerDetails":{},"billingDetails":{},"shippingDetails":{},"subscriptionDetails":{}}}
+
+[2018-08-01 9:33:52.121747] [info] {"success":true,"transaction":{"id":"3as8jqp2","status":"submitted_for_settlement","type":"sale","currencyIsoCode":"USD","amount":"4001.00","merchantAccountId":"jiujitsuscoutllc","subMerchantAccountId":null,"masterMerchantAccountId":null,"orderId":null,"createdAt":{"date":"2018-08-01 09:33:52.000000","timezone_type":3,"timezone":"UTC"},"updatedAt":{"date":"2018-08-01 09:33:53.000000","timezone_type":3,"timezone":"UTC"},"customer":{"id":null,"firstName":null,"lastName":null,"company":null,"email":null,"website":null,"phone":null,"fax":null},"billing":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"refundId":null,"refundIds":[],"refundedTransactionId":null,"partialSettlementTransactionIds":[],"authorizedTransactionId":null,"settlementBatchId":null,"shipping":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"customFields":null,"avsErrorResponseCode":null,"avsPostalCodeResponseCode":"I","avsStreetAddressResponseCode":"I","cvvResponseCode":"I","gatewayRejectionReason":null,"processorAuthorizationCode":"6JZGPM","processorResponseCode":"1000","processorResponseText":"Approved","additionalProcessorResponse":null,"voiceReferralNumber":null,"purchaseOrderNumber":null,"taxAmount":null,"taxExempt":false,"creditCard":{"token":null,"bin":"411111","last4":"1111","cardType":"Visa","expirationMonth":"09","expirationYear":"2022","customerLocation":"US","cardholderName":null,"imageUrl":"https:\/\/assets.braintreegateway.com\/payment_method_logo\/visa.png?environment=sandbox","prepaid":"Unknown","healthcare":"Unknown","debit":"Unknown","durbinRegulated":"Unknown","commercial":"Unknown","payroll":"Unknown","issuingBank":"Unknown","countryOfIssuance":"Unknown","productId":"Unknown","uniqueNumberIdentifier":null,"venmoSdk":false},"statusHistory":[{},{}],"planId":null,"subscriptionId":null,"subscription":{"billingPeriodEndDate":null,"billingPeriodStartDate":null},"addOns":[],"discounts":[],"descriptor":{},"recurring":false,"channel":null,"serviceFeeAmount":null,"escrowStatus":null,"disbursementDetails":{},"disputes":[],"authorizationAdjustments":[],"paymentInstrumentType":"credit_card","processorSettlementResponseCode":null,"processorSettlementResponseText":null,"threeDSecureInfo":null,"shipsFromPostalCode":null,"shippingAmount":null,"discountAmount":null,"networkTransactionId":"020180801093353","creditCardDetails":{},"customerDetails":{},"billingDetails":{},"shippingDetails":{},"subscriptionDetails":{}}}
+
+[2018-08-01 9:34:17.876938] [info] {"errors":{},"params":{"transaction":{"type":"sale","amount":"5001","paymentMethodNonce":"tokencc_bd_qz8wgy_x5pzpp_m38kw7_3qfgdp_rpz","options":{"submitForSettlement":"true"}}},"message":"Gateway Rejected: application_incomplete","transaction":{"id":"k94x1d05","status":"gateway_rejected","type":"sale","currencyIsoCode":"USD","amount":"5001.00","merchantAccountId":"jiujitsuscoutllc","subMerchantAccountId":null,"masterMerchantAccountId":null,"orderId":null,"createdAt":{"date":"2018-08-01 09:34:18.000000","timezone_type":3,"timezone":"UTC"},"updatedAt":{"date":"2018-08-01 09:34:18.000000","timezone_type":3,"timezone":"UTC"},"customer":{"id":null,"firstName":null,"lastName":null,"company":null,"email":null,"website":null,"phone":null,"fax":null},"billing":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"refundId":null,"refundIds":[],"refundedTransactionId":null,"partialSettlementTransactionIds":[],"authorizedTransactionId":null,"settlementBatchId":null,"shipping":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"customFields":null,"avsErrorResponseCode":null,"avsPostalCodeResponseCode":null,"avsStreetAddressResponseCode":null,"cvvResponseCode":null,"gatewayRejectionReason":"application_incomplete","processorAuthorizationCode":null,"processorResponseCode":null,"processorResponseText":"Unknown ()","additionalProcessorResponse":null,"voiceReferralNumber":null,"purchaseOrderNumber":null,"taxAmount":null,"taxExempt":false,"creditCard":{"token":null,"bin":"411111","last4":"1111","cardType":"Visa","expirationMonth":"09","expirationYear":"2022","customerLocation":"US","cardholderName":null,"imageUrl":"https:\/\/assets.braintreegateway.com\/payment_method_logo\/visa.png?environment=sandbox","prepaid":"Unknown","healthcare":"Unknown","debit":"Unknown","durbinRegulated":"Unknown","commercial":"Unknown","payroll":"Unknown","issuingBank":"Unknown","countryOfIssuance":"Unknown","productId":"Unknown","uniqueNumberIdentifier":null,"venmoSdk":false},"statusHistory":[{}],"planId":null,"subscriptionId":null,"subscription":{"billingPeriodEndDate":null,"billingPeriodStartDate":null},"addOns":[],"discounts":[],"descriptor":{},"recurring":false,"channel":null,"serviceFeeAmount":null,"escrowStatus":null,"disbursementDetails":{},"disputes":[],"authorizationAdjustments":[],"paymentInstrumentType":"credit_card","processorSettlementResponseCode":null,"processorSettlementResponseText":null,"threeDSecureInfo":null,"shipsFromPostalCode":null,"shippingAmount":null,"discountAmount":null,"networkTransactionId":null,"creditCardDetails":{},"customerDetails":{},"billingDetails":{},"shippingDetails":{},"subscriptionDetails":{}},"creditCardVerification":null,"subscription":null,"merchantAccount":null,"verification":null}
+[2018-08-01 21:50:26.346309] [info] {"success":true,"transaction":{"id":"qa366h96","status":"submitted_for_settlement","type":"sale","currencyIsoCode":"USD","amount":"49.00","merchantAccountId":"jiujitsuscoutllc","subMerchantAccountId":null,"masterMerchantAccountId":null,"orderId":null,"createdAt":{"date":"2018-08-01 21:50:25.000000","timezone_type":3,"timezone":"UTC"},"updatedAt":{"date":"2018-08-01 21:50:25.000000","timezone_type":3,"timezone":"UTC"},"customer":{"id":null,"firstName":null,"lastName":null,"company":null,"email":null,"website":null,"phone":null,"fax":null},"billing":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"refundId":null,"refundIds":[],"refundedTransactionId":null,"partialSettlementTransactionIds":[],"authorizedTransactionId":null,"settlementBatchId":null,"shipping":{"id":null,"firstName":null,"lastName":null,"company":null,"streetAddress":null,"extendedAddress":null,"locality":null,"region":null,"postalCode":null,"countryName":null,"countryCodeAlpha2":null,"countryCodeAlpha3":null,"countryCodeNumeric":null},"customFields":null,"avsErrorResponseCode":null,"avsPostalCodeResponseCode":"I","avsStreetAddressResponseCode":"I","cvvResponseCode":"I","gatewayRejectionReason":null,"processorAuthorizationCode":"C5LGZX","processorResponseCode":"1000","processorResponseText":"Approved","additionalProcessorResponse":null,"voiceReferralNumber":null,"purchaseOrderNumber":null,"taxAmount":null,"taxExempt":false,"creditCard":{"token":null,"bin":"411111","last4":"1111","cardType":"Visa","expirationMonth":"09","expirationYear":"2022","customerLocation":"US","cardholderName":null,"imageUrl":"https:\/\/assets.braintreegateway.com\/payment_method_logo\/visa.png?environment=sandbox","prepaid":"Unknown","healthcare":"Unknown","debit":"Unknown","durbinRegulated":"Unknown","commercial":"Unknown","payroll":"Unknown","issuingBank":"Unknown","countryOfIssuance":"Unknown","productId":"Unknown","uniqueNumberIdentifier":null,"venmoSdk":false},"statusHistory":[{},{}],"planId":null,"subscriptionId":null,"subscription":{"billingPeriodEndDate":null,"billingPeriodStartDate":null},"addOns":[],"discounts":[],"descriptor":{},"recurring":false,"channel":null,"serviceFeeAmount":null,"escrowStatus":null,"disbursementDetails":{},"disputes":[],"authorizationAdjustments":[],"paymentInstrumentType":"credit_card","processorSettlementResponseCode":null,"processorSettlementResponseText":null,"threeDSecureInfo":null,"shipsFromPostalCode":null,"shippingAmount":null,"discountAmount":null,"networkTransactionId":"020180801215025","creditCardDetails":{},"customerDetails":{},"billingDetails":{},"shippingDetails":{},"subscriptionDetails":{}}}

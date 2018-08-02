@@ -4,7 +4,7 @@ namespace Models\Services;
 
 class BraintreeTransactionRepository extends Service
 {
-    public function create( array $braintree_trasaction_data = [] )
+    public function create( array $braintree_transaction_data )
     {
         $braintreeTransaction = new \Models\BraintreeTransaction();
         $braintreeTransactionMapper = new \Models\Mappers\BraintreeTransactionMapper( $this->container );
@@ -19,6 +19,7 @@ class BraintreeTransactionRepository extends Service
         $braintreeTransaction->braintree_master_merchant_account_id = $braintree_transaction_data[ "master_merchant_account_id" ];
         $braintreeTransaction->braintree_processor_response_code = $braintree_transaction_data[ "processor_response_code" ];
         $braintreeTransaction->braintree_order_id = $braintree_transaction_data[ "order_id" ];
+        $braintreeTransaction->full_transaction_data = $braintree_transaction_data[ "full_transaction_data" ];
 
         $braintreeTransactionMapper->create( $braintreeTransaction );
 

@@ -16,4 +16,5 @@ class BraintreeTransaction
     public $braintree_sub_merchant_account_id;
     public $braintree_master_merchant_account_id;
     public $braintree_order_id;
+    public $full_transaction_data;
 }

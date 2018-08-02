@@ -1,0 +1,2 @@
+[2018-08-02 9:47:41.229794] [info] Braintree Transaction: dwnha45d | Response Code: 1000 | Response Text: Approved
+[2018-08-02 9:53:52.585438] [info] Braintree Transaction: 8epf8xxh | Response Code: 1000 | Response Text: Approved
