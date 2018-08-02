@@ -582,18 +582,18 @@ class AccountManager extends Controller
 				$input,
 
 				[
-					"token" => [
-						"equalls-hidden" => $this->session->getSession( "csrf-token" ),
-						"required" => true
-					],
+					// "token" => [
+					// 	"equalls-hidden" => $this->session->getSession( "csrf-token" ),
+					// 	"required" => true
+					// ],
 					"product_ids" => [
 						"required" => true,
 						"is_array" => true
 					],
-					"billing_interval" => [
-						"required" => true,
-						"in_array" => [ "yearly", "monthly" ]
-					]
+					// "billing_interval" => [
+					// 	"required" => true,
+					// 	"in_array" => [ "yearly", "monthly" ]
+					// ]
 				],
 
 				"upgrade_account" /* error index */
@@ -631,7 +631,7 @@ class AccountManager extends Controller
 			if ( is_null( $customer->id ) ) {
 				$customer = $customerRepo->create( $this->account->id );
 			}
-			
+
 			// Create an order for this customer
 			$order = $orderRepo->create( $customer->id, $paid = 0 );
 

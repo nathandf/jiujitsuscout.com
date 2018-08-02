@@ -90,6 +90,11 @@ $container->register( "appointment-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "braintree-transaction-repository", function() use ( $container ) {
+	$repo = new \Models\Services\BraintreeTransactionRepository( $container );
+	return $repo;
+} );
+
 $container->register( "business-repository", function() use ( $container ) {
 	$repo = new \Models\Services\BusinessRepository( $container );
 	return $repo;
@@ -262,6 +267,11 @@ $container->register( "task-repository", function() use ( $container ) {
 
 $container->register( "text-message-repository", function() use ( $container ) {
 	$repo = new \Models\Services\TextMessageRepository( $container );
+	return $repo;
+} );
+
+$container->register( "transaction-repository", function() use ( $container ) {
+	$repo = new \Models\Services\TransactionRepository( $container );
 	return $repo;
 } );
 

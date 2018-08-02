@@ -5,6 +5,13 @@
    <link rel="stylesheet" type="text/css" href="{$HOME}public/css/upgrade.css"/>
  </head>
  <body>
+     {if !empty($error_messages.upgrade_account)}
+         {foreach from=$error_messages.upgrade_account item=message}
+             <div class="con-message-failure mat-hov cursor-pt --c-hide">
+                 <p class="user-message-body">{$message}</p>
+             </div>
+         {/foreach}
+     {/if}
    <form id="billing-form" action="" method="post">
         <input type="hidden" name="token" value="{$csrf_token}">
    <p class="upgrade-title">Upgrade your JiuJitsuScout account</p>
