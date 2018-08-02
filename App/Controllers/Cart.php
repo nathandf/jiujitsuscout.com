@@ -220,7 +220,7 @@ class Cart extends Controller
                 ]
             ] );
 
-            $logger->info("Braintree Transaction: " . $result->transaction->id . " | Response Code: " . $result->transaction->processorResponseCode . " | Response Text: " . $result->transaction->processorResponseText );
+            $logger->info( "Braintree Transaction: " . $result->transaction->id . " | Response Code: " . $result->transaction->processorResponseCode . " | Response Text: " . $result->transaction->processorResponseText );
 
             // If the payment was approved, update the 'paid' status of the
             // order and save the processor response text in $message. If the
@@ -232,6 +232,8 @@ class Cart extends Controller
             } elseif ( !$result->success ) {
                 $message = $result->message;
             }
+
+            $logger->info( "Message: " . $message );
 
             // Create a braintreeTransaction object and save the transaction
             // data provided by braintree to the database.
@@ -247,7 +249,7 @@ class Cart extends Controller
                 "master_merchant_account_id" => $result->transaction->masterMerchantAccountId,
                 "order_id" => $result->transaction->orderId,
                 "processor_response_code" => $result->transaction->processorResponseCode,
-                "full_transaction_data" => json_encode( $result )
+                "full_transaction_data" => json_encode( $result ),
             ]);
 
             $logger->info( json_encode( $braintreeTransaction ) );

@@ -30,6 +30,8 @@ class TransactionMapper extends DataMapper
             ]
         );
 
+        $transaction->created_at = $now;
+        $transaction->updaged_at = $now;
         $transaction->id = $id;
 
         return $transaction;
