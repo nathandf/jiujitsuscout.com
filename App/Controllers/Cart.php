@@ -125,7 +125,7 @@ class Cart extends Controller
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 	    $this->view->setErrorMessages( $inputValidator->getErrors() );
 
-        $this->view->setTemplate( "cart/pay.tpl" );
+        $this->view->setTemplate( "cart/pay-redirect.tpl" );
         $this->view->render( "App/Views/AccountManager.php" );
     }
 
@@ -168,7 +168,7 @@ class Cart extends Controller
         // Grab account details
         $account = $accountRepo->getByID( $accountUser->account_id );
 
-        if ( $input->exists() && $inputValidator->validate(
+        if ( $input->exists( "get" ) && $inputValidator->validate(
 
                 $input,
 
@@ -226,10 +226,14 @@ class Cart extends Controller
             // order and save the processor response text in $message. If the
             // payment was declined or did no go through for any reason, save the
             // failure message provided in the braintree result object in $message
+            $payment_redirect_url = "cart/";
+
             if ( $result->success ) {
+                $payment_redirect_url = $payment_redirect_url . "payment-confirmation";
                 $orderRepo->updatePaidByID( $order->id, 1 );
                 $message = $result->transaction->processorResponseText;
             } elseif ( !$result->success ) {
+                $payment_redirect_url = $payment_redirect_url . "?error=payment_failure";
                 $message = $result->message;
             }
 
@@ -252,17 +256,14 @@ class Cart extends Controller
                 "full_transaction_data" => json_encode( $result ),
             ]);
 
-            $logger->info( json_encode( $braintreeTransaction ) );
-
             // Create a transaction object
             $transaction = $transactionRepo->create( $customer->id, $order->id, $braintreeTransaction->braintree_transaction_status, $braintreeTransaction->braintree_transaction_type, $transaction_total );
 
-            $logger->info( json_encode( $transaction ) );
-
+            $this->view->redirect( $payment_redirect_url );
         }
     }
 
-    public function paymentSuccess()
+    public function paymentConfirmation()
     {
         // TODO add facbook pixel
         $this->view->setTemplate( "cart/payment-success.tpl" );
