@@ -52,8 +52,8 @@ class InputValidator
 								}
 								break;
 							case "phone":
-								if ( preg_match( "/[^0-9.\-() +]/", $value ) ) {
-									$this->addError( $error_index, "{$field_name} only allows for numbers and following characters \"+ . ( )\"" );
+								if ( preg_match( "/[^0-9.-() +]/", $value ) ) {
+									$this->addError( $error_index, "{$field_name} only allows for numbers and following characters \"+ . - ( )\"" );
 								}
 								break;
 							case "strict-alpha-numeric":

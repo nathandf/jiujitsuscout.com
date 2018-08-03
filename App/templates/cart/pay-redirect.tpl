@@ -5,7 +5,7 @@
 	<div class="con-cnt-med-plus-plus push-t-med">
 		<div id="output"></div>
 		<div id="braintree-dropin-container"></div>
-		<button class="btn btn-inline bg-dark-mint tc-white push-t" id="submit-button">Request payment method</button>
+		<button class="btn btn-inline bg-approved-green tc-white push-t" id="submit-button">Request payment method</button>
 	</div>
 	{literal}
 	<script>

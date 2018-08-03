@@ -7,9 +7,16 @@
 	<div class="con-cnt-xlrg push-t-lrg">
 		{foreach from=$orderProducts item=orderProduct}
 		<div class="push-t">
+			<form action="" method="post">
+				<input type="hidden" name="token" value="{$csrf_token}">
+				<input type="hidden" name="delete" value="{$csrf_token}">
+				<input type="hidden" name="order_id" value="{$orderProduct->order_id}">
+				<input type="hidden" name="order_product_id" value="{$orderProduct->id}">
+				<button type="submit" class="tc-error-red text-lrg-heavy cursor-pt floatright" style="background: none;">x</button>
+			</form>
 			<h3>{$orderProduct->product->name}</h3>
-			<p>Price: {$orderProduct->product->currency_symbol}{$orderProduct->product->price}</p>
-			<p>Quantity: {$orderProduct->quantity}</p>
+			<p><span class="text-sml">Price: </span>{$orderProduct->product->currency_symbol}{$orderProduct->product->price}</p>
+			<p><span class="text-sml">Qty: </span>{$orderProduct->quantity}</p>
 			<div class="hr-sml"></div>
 		</div>
 		{/foreach}

@@ -72,6 +72,13 @@ class OrderMapper extends DataMapper
         $this->update( "`order`", "paid", $paid, "id", $id );
     }
 
+    public function delete( $id )
+    {
+        $sql = $this->DB->prepare( "DELETE FROM `order` WHERE id = :id" );
+        $sql->bindParam( ":id", $id );
+        $sql->execute();
+    }
+
     private function populateOrder( \Models\Order $order, $data )
     {
         $order->id          = $data[ "id" ];

@@ -40,4 +40,10 @@ class OrderProductRepository extends Service
 
         return $orderProduct;
     }
+
+    public function removeByID( $id )
+    {
+        $orderProductMapper = new \Models\Mappers\OrderProductMapper( $this->container );
+        $orderProductMapper->delete( $id );
+    }
 }

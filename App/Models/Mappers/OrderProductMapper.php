@@ -60,6 +60,13 @@ class OrderProductMapper extends DataMapper
         return $orderProduct;
     }
 
+    public function delete( $id )
+    {
+        $sql = $this->DB->prepare( "DELETE FROM order_product WHERE id = :id" );
+        $sql->bindParam( ":id", $id );
+        $sql->execute();
+    }
+
     private function populateOrderProduct( \Models\OrderProduct $orderProduct, $data )
     {
         $orderProduct->id          = $data[ "id" ];

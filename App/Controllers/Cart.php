@@ -59,6 +59,7 @@ class Cart extends Controller
         $order = $orderRepo->getUnpaidOrderByCustomerID( $customer->id );
 
         $orderProducts = $orderProductRepo->getAllByOrderID( $order->id );
+        $order_product_ids = [];
 
         // Set default currency symbol to USD
         $currency_symbol = "$";
@@ -69,7 +70,45 @@ class Cart extends Controller
             $currency = $currencyRepo->getByCode( $product->currency );
             $product->currency_symbol = $currency->symbol;
             $_orderProduct->product = $product;
+            $order_product_ids[] = $_orderProduct->id;
             $transaction_total = $transaction_total + ( $_orderProduct->product->price * $_orderProduct->quantity );
+        }
+
+        if ( $input->exists() && $input->issetField( "delete" ) && $inputValidator->validate(
+
+                $input,
+
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "order_id" => [
+                        "required" => true,
+                        "equals" => $order->id
+                    ],
+                    "order_product_id" => [
+                        "required" => true,
+                        "in_array" => $order_product_ids
+                    ]
+                ],
+
+                "delete" /* error index */
+            ) )
+        {
+            if ( count( $orderProducts ) < 1 ) {
+                // If there is only one product in the cart, delete product from
+                // the order, then delete the order itself
+                $orderProductRepo->deleteByID( $input->get( "order_product_id" ) );
+                $orderRepo->removeByID( $order->id );
+            } else {
+                // If there's more than one item in the cart, simply delete that
+                // item
+                $orderProductRepo->removeByID( $input->get( "order_product_id" ) );
+            }
+
+            // Go back to the cart
+            $this->view->redirect( "cart/" );
         }
 
         $this->view->assign( "currency_symbol", $currency_symbol );

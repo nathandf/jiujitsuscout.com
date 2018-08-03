@@ -57,4 +57,10 @@ class OrderRepository extends Service
 
         return true;
     }
+
+    public function removeByID( $id )
+    {
+        $orderMapper = new \Models\Mappers\OrderMapper( $this->container );
+        $orderMapper->delete( $id );
+    }
 }
