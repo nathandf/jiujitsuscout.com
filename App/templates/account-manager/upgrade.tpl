@@ -2,6 +2,7 @@
 <html>
  <head>
    {include file="includes/head/account-manager-head.tpl"}
+   <script src="{$HOME}{$JS_SCRIPTS}upgrade.js"></script>
    <link rel="stylesheet" type="text/css" href="{$HOME}public/css/upgrade.css"/>
  </head>
  <body>
@@ -14,10 +15,10 @@
      {/if}
    <form id="billing-form" action="" method="post">
         <input type="hidden" name="token" value="{$csrf_token}">
-   <p class="upgrade-title">Upgrade your JiuJitsuScout account</p>
+   <p class="upgrade-title">Upgrade your account</p>
    <div class="con-cnt-fit billing-type-section">
-     <input type="radio" name="billing_interval" value="yearly" required="required"><label class="billing-type-labels">Billed Yearly - 1 month free</label>
-     <input type="radio" name="billing_interval" value="monthly" checked="checked" required="required"><label class="billing-type-labels">Billed Monthly</label>
+     <input type="radio" id="billing-interval-yearly" name="billing_interval" value="yearly" required="required"><label class="text-med push-l push-r">Billed Yearly - 1 month free</label>
+     <input type="radio" id="billing-interval-monthly" name="billing_interval" value="monthly" checked="checked" required="required"><label class="text-med push-l push-r">Billed Monthly</label>
      <div class="clear"></div>
    </div>
    <div class="clear"></div>
@@ -58,9 +59,9 @@
      <div class="col col-3 inner-box mat-hov pricing-tier featured-tier">
        <p class="pricing-title">PRO</p>
        <div class="billing-plan-section">
-         <p class="price">$49<span class="billing-frequency">/ gym / month</span></p>
+         <p class="price">$<span id="pro-price">49</span><span class="billing-frequency">/ gym / <span class="interval">month</span></span></p>
          <p class="billing-plan-description">Run your business like a PRO</p>
-         <button type="submit" name="product_ids[]" value="1" class="btn billing-plan-button">Purchase</button>
+         <button id="pro-product" type="submit" name="product_ids[]" value="1" class="btn billing-plan-button">Purchase</button>
        </div>
        <div class="feature-section">
          <p class="feature-section-title">ALL FREE FEATURES, PLUS:</p>
@@ -87,9 +88,9 @@
      <div class="col col-3-last inner-box mat-hov pricing-tier">
        <p class="pricing-title">Business</p>
        <div class="billing-plan-section">
-         <p class="price">$99<span class="billing-frequency">/ gym / month</span></p>
+         <p class="price">$ <span id="business-price">99</span><span class="billing-frequency">/ gym / <span class="interval">month</span></span></p>
          <p class="billing-plan-description">Get all the support you need to scale your gym</p>
-         <button type="submit" name="product_ids[]" value="2" class="btn billing-plan-button">Purchase</button>
+         <button id="business-product" type="submit" name="product_ids[]" value="2" class="btn billing-plan-button">Purchase</button>
        </div>
        <div class="feature-section">
          <p class="feature-section-title">ALL PRO FEATURES, PLUS:</p>

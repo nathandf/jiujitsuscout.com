@@ -130,6 +130,11 @@ $container->register( "currency-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "customer-braintree-customer-repository", function() use ( $container ) {
+	$repo = new \Models\Services\CustomerBraintreeCustomerRepository( $container );
+	return $repo;
+} );
+
 $container->register( "customer-repository", function() use ( $container ) {
 	$repo = new \Models\Services\CustomerRepository( $container );
 	return $repo;

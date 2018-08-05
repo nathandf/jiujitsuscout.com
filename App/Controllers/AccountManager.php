@@ -590,10 +590,6 @@ class AccountManager extends Controller
 						"required" => true,
 						"is_array" => true
 					],
-					// "billing_interval" => [
-					// 	"required" => true,
-					// 	"in_array" => [ "yearly", "monthly" ]
-					// ]
 				],
 
 				"upgrade_account" /* error index */
@@ -632,9 +628,13 @@ class AccountManager extends Controller
 				$customer = $customerRepo->create( $this->account->id );
 			}
 
-			// Create an order for this customer
-			$order = $orderRepo->create( $customer->id, $paid = 0 );
-
+			// Check for an upaid order for this customer. If one exists, add
+			// the products to the order. If not, create an order
+			$order = $orderRepo->getUnpaidOrderByCustomerID( $customer->id );
+			if ( is_null( $order->id ) ) {
+				$order = $orderRepo->create( $customer->id, $paid = 0 );
+			}
+			
 			// Create orderProducts for this order
 			foreach ( $product_ids as $product_id ) {
 				$orderProductRepo->create( $order->id, $product_id, $quantity );

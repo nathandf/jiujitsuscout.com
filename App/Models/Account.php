@@ -17,6 +17,7 @@ class Account
   public $country;
   public $profile_creation_date;
   public $timezone;
+  public $primary_user_id;
 
   public function setType( $type )
   {
