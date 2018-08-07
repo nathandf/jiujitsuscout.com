@@ -582,24 +582,43 @@ class AccountManager extends Controller
 				$input,
 
 				[
-					// "token" => [
-					// 	"equalls-hidden" => $this->session->getSession( "csrf-token" ),
-					// 	"required" => true
-					// ],
-					"product_ids" => [
-						"required" => true,
-						"is_array" => true
+					"token" => [
+						"equals-hidden" => $this->session->getSession( "csrf-token" ),
+						"required" => true
+					],
+					"product_id" => [
+						"required" => true
 					],
 				],
 
 				"upgrade_account" /* error index */
 			) )
 		{
+			// Get all businesses associated with this account. The quantity
+			// of the orderProducts will reflect the number of businesses
+			// returned
+			$businesses = $businessRepo->getAllByAccountID( $this->account->id );
+
 			// Verify that all product ids returned are valid products
+			$product_ids = [];
+			$products = [];
 			$all_product_ids = [];
 			$all_products = $productRepo->getAll();
-			$product_ids = $input->get( "product_ids" );
+			$product_id = $input->get( "product_id" );
 
+			// Subscriptions will be processed as seperate transactions.
+			// Quantity of each product will be set to one
+			$quantity = 1;
+
+			// Add multiple instances of the same product to the
+			// product ids array.Create an array of the products and
+			// dynamically add a description with the related businesses
+			foreach ( $businesses as $business ) {
+				$product_ids[] = $product_id;
+				$product = $productRepo->getByID( $product_id );
+				$product->description = $business->business_name . " - " . $product->description;
+				$products[] = $product;
+			}
 
 			// Create a list of valid product ids
 			foreach ( $all_products as $_product ) {
@@ -607,18 +626,12 @@ class AccountManager extends Controller
 			}
 
 			// Redirect back to the upgrade page if any submitted product ids
-			// are invalid
+			// are invalid. Someone's messin' about.
 			foreach ( $product_ids as $_product_id ) {
 				if ( !in_array( $_product_id, $all_product_ids ) ) {
 					$this->view->redirect( "account-manager/upgrade" );
 				}
 			}
-
-			// Get all businesses associated with this account. The quantity
-			// of the orderProducts will reflect the number of businesses
-			// returned
-			$businesses = $businessRepo->getAllByAccountID( $this->account->id );
-			$quantity = count( $businesses );
 
 			// Get customer resource if one exists.
 			$customer = $customerRepo->getByAccountID( $this->account->id );
@@ -629,15 +642,20 @@ class AccountManager extends Controller
 			}
 
 			// Check for an upaid order for this customer. If one exists, add
-			// the products to the order. If not, create an order
+			// the products to the order. If not, create an new order
 			$order = $orderRepo->getUnpaidOrderByCustomerID( $customer->id );
 			if ( is_null( $order->id ) ) {
 				$order = $orderRepo->create( $customer->id, $paid = 0 );
 			}
-			
+
 			// Create orderProducts for this order
-			foreach ( $product_ids as $product_id ) {
-				$orderProductRepo->create( $order->id, $product_id, $quantity );
+			foreach ( $products as $product ) {
+				$orderProductRepo->create(
+					$order->id,
+					$product->id,
+					$quantity,
+					$description = $product->description
+				);
 			}
 
 			$this->view->redirect( "cart/" );

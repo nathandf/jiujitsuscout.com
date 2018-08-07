@@ -9,8 +9,8 @@ class OrderProductMapper extends DataMapper
     {
         $id = $this->insert(
             "order_product",
-            [ "order_id", "product_id", "quantity" ],
-            [ $orderProduct->order_id, $orderProduct->product_id, $orderProduct->quantity ]
+            [ "order_id", "product_id", "quantity", "description" ],
+            [ $orderProduct->order_id, $orderProduct->product_id, $orderProduct->quantity, $orderProduct->description ]
         );
 
         $orderProduct->id = $id;
@@ -73,6 +73,7 @@ class OrderProductMapper extends DataMapper
         $orderProduct->order_id    = $data[ "order_id" ];
         $orderProduct->product_id  = $data[ "product_id" ];
         $orderProduct->quantity    = $data[ "quantity" ];
+        $orderProduct->description = $data[ "description" ];
     }
 
 }

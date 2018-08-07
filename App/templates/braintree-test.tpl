@@ -10,10 +10,9 @@
 			<p>Price: {$product->price}</p>
 			<p>Quantity: 1</p>
 			<form action="{$HOME}account-manager/upgrade" method="post">
-				<!-- <input type="hidden" name="billing_frequency" value="monthly">
-				<input type="hidden" name="token" value="{$csrf_token}"> -->
-				<input type="hidden" name="product_ids[]" value="{$product->id}">
-				<button type="submit" class="btn btn-inline bg-dark-mint tc-white push-t-med" href="{$HOME}cart/pay">Add</button>
+				<input type="hidden" name="token" value="{$csrf_token}">
+				<input type="hidden" name="product_id" value="{$product->id}">
+				<button type="submit" class="btn btn-inline bg-dark-mint tc-white push-t-med" href="{$HOME}cart/pay">Add to cart</button>
 			</form>
 			<div class="hr-sml"></div>
 		</div>

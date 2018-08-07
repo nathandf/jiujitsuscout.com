@@ -18,6 +18,7 @@
 				<h3>{$orderProduct->product->name}</h3>
 				<p><span class="text-sml">Price: </span>{$orderProduct->product->currency_symbol}{$orderProduct->product->price}</p>
 				<p><span class="text-sml">Qty: </span>{$orderProduct->quantity}</p>
+				{if !is_null( $orderProduct->description )}<p><span class="text-sml">Description: </span>{$orderProduct->description}</p>{/if}
 				<div class="hr-sml"></div>
 			</div>
 			{/foreach}

@@ -173,40 +173,22 @@ class Cart extends Controller
         NOTE "before" and "after" methods will not be called when a method with
         the suffix "Action" is invoked via ajax request
     */
-    public function processPayment()
+    public function processPaymentAction()
     {
         // Loading services
-        $userAuth = $this->load( "user-authenticator" );
-        $accountRepo = $this->load( "account-repository" );
-        $accountUserRepo = $this->load( "account-user-repository" );
-        $currencyRepo = $this->load( "currency-repository" );
-        $userRepo = $this->load( "user-repository" );
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $userRepo = $this->load( "user-repository" );
+        $currencyRepo = $this->load( "currency-repository" );
         $orderRepo = $this->load( "order-repository" );
         $orderProductRepo = $this->load( "order-product-repository" );
         $productRepo = $this->load( "product-repository" );
         $customerRepo = $this->load( "customer-repository" );
         $braintreeGatewayInit = $this->load( "braintree-gateway-initializer" );
-        $groupRepo = $this->load( "group-repository" );
         $transactionRepo = $this->load( "transaction-repository" );
         $braintreeTransactionRepo = $this->load( "braintree-transaction-repository" );
         $phoneRepo = $this->load( "phone-repository" );
         $logger = $this->load( "logger" );
-
-        // If user not validated with session or cookie, send them to sign in
-        if ( !$userAuth->userValidate() ) {
-            $this->view->redirect( "account-manager/sign-in" );
-        }
-
-        // User is logged in. Get the user object from the UserAuthenticator service
-        $user = $userAuth->getUser();
-
-        // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $user->id );
-
-        // Grab account details
-        $account = $accountRepo->getByID( $accountUser->account_id );
 
         if ( $input->exists( "get" ) && $inputValidator->validate(
 
@@ -223,15 +205,20 @@ class Cart extends Controller
         {
 
             // Get customer associated with this account
-            $customer = $customerRepo->getByAccountID( $account->id );
+            $customer = $customerRepo->getByAccountID( $this->account->id );
 
             // Get primary user data
-            $primary_user = $userRepo->getByID( $account->primary_user_id );
+            //TODO Change this from primary user to user role "owner"
+            $primary_user = $userRepo->getByID( $this->account->primary_user_id );
             $phone = $phoneRepo->getByID( $primary_user->phone_id );
             $primary_user->phone_number = $phone->country_code . " " . $phone->national_number;
 
             // Get the current order of this customer
             $order = $orderRepo->getUnpaidOrderByCustomerID( $customer->id );
+            // Redirect if no unpaid order exists
+            if ( is_null( $order->id ) ) {
+                $this->view->redirect( "cart/" );
+            }
 
             // Get orderProducts
             $orderProducts = $orderProductRepo->getAllByOrderID( $order->id );
@@ -240,13 +227,14 @@ class Cart extends Controller
             $transaction_total = 0;
 
             // Flag for subscription
-            $isSubscription = false;
+            $hasSubscription = false;
 
             // Flag for storing payment method in braintree vault on success
             $storeInVaultOnSuccess = false;
 
             // Subscription product number
             $subscriptionProductID = null;
+            $subscriptionProductIDs = [];
 
             // Default post-payment redirect url
             $payment_redirect_url = "cart/";
@@ -257,9 +245,12 @@ class Cart extends Controller
             // Assign product data to orderProduct
             foreach ( $orderProducts as $_orderProduct ) {
                 $product = $productRepo->getByID( $_orderProduct->product_id );
+
+                // All Products with a product type of 1 are subscriptions.
                 if ( $product->product_type_id == 1 ) {
-                    $isSubscription = true;
+                    $hasSubscription = true;
                     $subscriptionProductID = $product->id;
+                    $subscriptionProductIDs[] = $product->id;
                 }
                 $currency = $currencyRepo->getByCode( $product->currency );
                 $product->currency_symbol = $currency->symbol;
@@ -279,7 +270,7 @@ class Cart extends Controller
             try {
                 $braintreeCustomer = $gateway->customer()->find( $customer->id );
             } catch (\Exception $e) {
-                $logger->info( "Braintree customer with id of " . $customer->id . " does not exists. Creating a new one" );
+                $logger->info( "Braintree customer with id of " . $customer->id . " does not exists. Creating a new customer." );
             }
 
             if ( !$braintreeCustomer ) {
@@ -300,7 +291,8 @@ class Cart extends Controller
                 if ( $braintreeCustomerCreationResult->success ) {
                     $braintreeCustomer = $braintreeCustomerCreationResult->customer;
                 } else {
-                    throw new \Exception( "Error Processing Request" );
+                    $logger->error( "Could not create new customer" );
+                    throw new \Exception( "Could not create new customer" );
                 }
             }
 
@@ -310,64 +302,56 @@ class Cart extends Controller
             // Get braintree customer payment method token
             $braintreePaymentMethodToken = $braintreeCustomerPaymentMethods[ 0 ]->token;
 
-            // If subscription flag is true, create a braintree subscription
-            // which will create also create a transaction. Otherwise, just
-            // process the transaction
-            if ( $isSubscription ) {
-                $subscriptionResult = $gateway->subscription()->create([
-                    "paymentMethodToken" => $braintreePaymentMethodToken,
-                    "planId" => $subscriptionProductID
-                ]);
+            // Process payment as normal using customer id
+            $braintreeSaleResult = $gateway->transaction()->sale( [
+                "amount" => $transaction_total,
+                "customerId" => $braintreeCustomer->id,
+                "options" => [
+                    "submitForSettlement" => true,
+                    'storeInVaultOnSuccess' => $storeInVaultOnSuccess
+                ]
+            ] );
 
-                // braintree transaction object to be used later
-                $braintreeTransactionResult = $subscriptionResult->subscription->transactions[ 0 ];
+            // braintree transaction object to be used later
+            $braintreeTransactionResult = $braintreeSaleResult->transaction;
 
-                // Log subscription and transaction data
-                $logger->info( "Braintree Subscription Details: " . json_encode( $subscriptionResult ) );
-                $logger->info( "Braintree Transaction: " . $braintreeTransactionResult->id . " | Response Code: " . $braintreeTransactionResult->processorResponseCode . " | Response Text: " . $braintreeTransactionResult->processorResponseText );
+            // Log transaction data
+            $logger->info( "Braintree Transaction: " . $braintreeTransactionResult->id . " | Response Code: " . $braintreeTransactionResult->processorResponseCode . " | Response Text: " . $braintreeTransactionResult->processorResponseText );
 
-                // If the payment was approved, update the 'paid' status of the
-                // order and save the processor response text in $message. If the
-                // payment was declined or did no go through for any reason, save the
-                // failure message provided in the braintree result object in $message
-                if ( $subscriptionResult->success ) {
-                    $payment_redirect_url = $payment_redirect_url . "payment-confirmation";
-                    $orderRepo->updatePaidByID( $order->id, 1 );
-                    $message = $braintreeTransactionResult->processorResponseText;
-                } elseif ( !$subscriptionResult->success ) {
-                    $payment_redirect_url = $payment_redirect_url . "?error=subscription_failure";
-                    $message = $subscriptionResult->message;
+            // If the payment was approved, update the 'paid' status of the
+            // order, save the processor response text in $message, and create
+            // any subscriptions purchased by this trasnsaction. If the payment
+            // was declined or did no go through for any reason, save the failure
+            // message provided in the braintree result object in $message
+            if ( $braintreeSaleResult->success ) {
+                $payment_redirect_url = $payment_redirect_url . "payment-confirmation";
+                $orderRepo->updatePaidByID( $order->id, 1 );
+                $message = $braintreeSaleResult->transaction->processorResponseText;
+
+                // If subscription flag is true and trasnaction was successful,
+                // create braintree subscriptions
+                if ( $hasSubscription ) {
+
+                    // Create a datetime object representing the same date next month
+                    // This object will be used to specify the first billing date
+                    $num_of_days = cal_days_in_month( CAL_GREGORIAN, date( "m" ), date( "Y" ) );
+                    $modifier = "now + " . $num_of_days . " days";
+                    $next_month = new \DateTime( $modifier );
+                    $next_month->setTime( 0, 0, 0 );
+
+                    $subscriptionResult = $gateway->subscription()->create([
+                        "paymentMethodToken" => $braintreePaymentMethodToken,
+                        "planId" => $subscriptionProductID,
+                        'firstBillingDate' => $next_month
+                    ]);
+
+                    // Log subscription and transaction data
+                    $logger->info( "Braintree Subscription Created | " . "Subscription ID: " . $subscriptionResult->subscription->subscriptionId );
                 }
 
-            } else {
-                // Process payment as normal using customer id
-                $braintreeSaleResult = $gateway->transaction()->sale( [
-                    "amount" => $transaction_total,
-                    "customerId" => $braintreeCustomer->id,
-                    "options" => [
-                        "submitForSettlement" => true,
-                        'storeInVaultOnSuccess' => $storeInVaultOnSuccess
-                    ]
-                ] );
-
-                // braintree transaction object to be used later
-                $braintreeTransactionResult = $braintreeSaleResult->transaction;
-
-                // Log transaction data
-                $logger->info( "Braintree Transaction: " . $braintreeTransactionResult->id . " | Response Code: " . $braintreeTransactionResult->processorResponseCode . " | Response Text: " . $braintreeTransactionResult->processorResponseText );
-
-                // If the payment was approved, update the 'paid' status of the
-                // order and save the processor response text in $message. If the
-                // payment was declined or did no go through for any reason, save the
-                // failure message provided in the braintree result object in $message
-                if ( $braintreeSaleResult->success ) {
-                    $payment_redirect_url = $payment_redirect_url . "payment-confirmation";
-                    $orderRepo->updatePaidByID( $order->id, 1 );
-                    $message = $braintreeSaleResult->transaction->processorResponseText;
-                } elseif ( !$braintreeSaleResult->success ) {
-                    $payment_redirect_url = $payment_redirect_url . "?error=payment_failure";
-                    $message = $braintreeSaleResult->message;
-                }
+            } elseif ( !$braintreeSaleResult->success ) {
+                $payment_redirect_url = $payment_redirect_url . "?error=payment_failure";
+                $message = $braintreeSaleResult->message;
             }
 
             $logger->info( "Message: " . $message );
