@@ -232,9 +232,8 @@ class Cart extends Controller
             // Flag for storing payment method in braintree vault on success
             $storeInVaultOnSuccess = false;
 
-            // Subscription product number
-            $subscriptionProductID = null;
-            $subscriptionProductIDs = [];
+            // Subscription orderProducts
+            $subscriptionOrderProducts = [];
 
             // Default post-payment redirect url
             $payment_redirect_url = "cart/";
@@ -244,17 +243,21 @@ class Cart extends Controller
 
             // Assign product data to orderProduct
             foreach ( $orderProducts as $_orderProduct ) {
+                // Get the product associated with this order product
                 $product = $productRepo->getByID( $_orderProduct->product_id );
+                // Get the currency for this order product and add the currency
+                // symbol as a dynamically added property of the product object
+                $currency = $currencyRepo->getByCode( $product->currency );
+                $product->currency_symbol = $currency->symbol;
+                // Dynamically assign product as 'product' property of orderProduct
+                $_orderProduct->product = $product;
 
                 // All Products with a product type of 1 are subscriptions.
                 if ( $product->product_type_id == 1 ) {
                     $hasSubscription = true;
-                    $subscriptionProductID = $product->id;
-                    $subscriptionProductIDs[] = $product->id;
+                    $subscriptionOrderProducts[] = $_orderProduct;
                 }
-                $currency = $currencyRepo->getByCode( $product->currency );
-                $product->currency_symbol = $currency->symbol;
-                $_orderProduct->product = $product;
+
                 $transaction_total = $transaction_total + ( $_orderProduct->product->price * $_orderProduct->quantity );
             }
 
@@ -330,7 +333,7 @@ class Cart extends Controller
 
                 // If subscription flag is true and trasnaction was successful,
                 // create braintree subscriptions
-                if ( $hasSubscription ) {
+                if ( $hasSubscription && count( $subscriptionOrderProducts ) > 0 ) {
 
                     // Create a datetime object representing the same date next month
                     // This object will be used to specify the first billing date
@@ -339,16 +342,29 @@ class Cart extends Controller
                     $next_month = new \DateTime( $modifier );
                     $next_month->setTime( 0, 0, 0 );
 
-                    $subscriptionResult = $gateway->subscription()->create([
-                        "paymentMethodToken" => $braintreePaymentMethodToken,
-                        "planId" => $subscriptionProductID,
-                        'firstBillingDate' => $next_month
-                    ]);
+                    foreach ( $subscriptionOrderProducts as $subscriptionOrderProduct ) {
+                        // Build subscription request array.
+                        $subscriptionRequest = [
+                            "paymentMethodToken" => $braintreePaymentMethodToken,
+                            "planId" => $subscriptionOrderProduct->product->id,
+                            'firstBillingDate' => $next_month
+                        ];
 
-                    // Log subscription and transaction data
-                    $logger->info( "Braintree Subscription Created | " . "Subscription ID: " . $subscriptionResult->subscription->subscriptionId );
+                        // If there is more than one subscription of the same
+                        // type being ordered, update the price when creating the
+                        // subscription
+                        if ( $subscriptionOrderProduct->quantity > 1 ) {
+                            $updated_price = ( $subscriptionOrderProduct->product->price * $subscriptionOrderProduct->quantity );
+                            // Add new price to the subscription request
+                            $subscriptionRequest[ "price" ] = $updated_price;
+                        }
+
+                        $subscriptionResult = $gateway->subscription()->create( $subscriptionRequest );
+
+                        // Log subscription and transaction data
+                        $logger->info( "Braintree Subscription Created | " . "Subscription ID: " . $subscriptionResult->subscription->id );
+                    }
                 }
-
             } elseif ( !$braintreeSaleResult->success ) {
                 $payment_redirect_url = $payment_redirect_url . "?error=payment_failure";
                 $message = $braintreeSaleResult->message;

@@ -605,18 +605,27 @@ class AccountManager extends Controller
 			$all_product_ids = [];
 			$all_products = $productRepo->getAll();
 			$product_id = $input->get( "product_id" );
+			$product_ids[] = $product_id;
 
-			// Subscriptions will be processed as seperate transactions.
-			// Quantity of each product will be set to one
-			$quantity = 1;
+			// Quantity will be number of businesses
+			$quantity = count( $businesses );
 
 			// Add multiple instances of the same product to the
 			// product ids array.Create an array of the products and
 			// dynamically add a description with the related businesses
-			foreach ( $businesses as $business ) {
-				$product_ids[] = $product_id;
+			foreach ( $product_ids as $product_id ) {
 				$product = $productRepo->getByID( $product_id );
-				$product->description = $business->business_name . " - " . $product->description;
+				$orginal_description = $product->description;
+				// Reset product description
+				$product->description = null;
+
+				// Add business anes to product description
+				foreach ( $businesses as $business ) {
+					$product->description = $product->description . " | " . $business->business_name;
+				}
+
+				// Append orginal product description
+				$product->description = $product->description . $orginal_descirption;
 				$products[] = $product;
 			}
 
