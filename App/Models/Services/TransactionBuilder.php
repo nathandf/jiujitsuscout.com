@@ -2,113 +2,166 @@
 
 namespace Models\Services;
 
-use Models\Composites\Item;
-use Models\Composites\ItemList;
-use Models\Composites\TransactionDetails;
-use Models\Composites\Amount;
-use Models\Composites\Transaction;
-
 class TransactionBuilder
 {
+    // Customer order
+    public $order;
+    // orderProducts related to customer order;
+    public $orderProducts;
+    // Transaction Total default
+    public $transaction_total = 0;
+    // Flag for subscription
+    public $hasSubscription = false;
+    // Transaction currency symbol - Default: $
+    public $currency_symbol = "$";
+    // Subscription orderProducts
+    public $subscriptionOrderProducts = [];
+    // Default post-payment redirect url
+    public $payment_redirect_url;
 
-  public $productRepo;
-  public $itemList;
-  public $transactionDetails;
-  public $amount;
-  public $transaction;
-
-  public function __construct( \Models\Services\ProductRepository $productRepo )
-  {
-    $this->productRepo = $productRepo;
-  }
-
-  public function buildItems( array $product_data )
-  {
-    $items = [];
-    $item_id = 1;
-
-    foreach ( $product_data as $data ) {
-      $product = $this->productRepo->getByID( $data[ "product_id" ] );
-      $quantity = $data[ "quantity" ];
-      // Create Item from Product
-      $item = new Item( $product, $quantity );
-      $item->setID( $item_id );
-      $items[] = $item;
-      $item_id++;
+    public function __construct( \Models\Services\TransactionRepository $transactionRepo, \Models\Services\OrderRepository $orderRepo, \Models\Services\OrderProductRepository $orderProductRepo, \Models\Services\ProductRepository $productRepo, \Models\Services\CurrencyRepository $currencyRepo )
+    {
+        $this->transactionRepo = $transactionRepo;
+        $this->orderRepo = $orderRepo;
+        $this->orderProductRepo = $orderProductRepo;
+        $this->productRepo = $productRepo;
+        $this->currencyRepo = $currencyRepo;
     }
 
-    return $items;
-  }
+    public function buildTransaction( $customer_id )
+    {
+        if ( $this->buildOrder( $customer_id ) )  {
+            return true;
+        }
 
-  public function buildItemList( array $items )
-  {
-    $itemList = new ItemList( $items );
-    $this->setItemList( $itemList );
-
-    return $itemList;
-  }
-
-  public function setItemList( $itemList )
-  {
-    $this->itemList = $itemList;
-  }
-
-  public function buildTransactionDetails( $itemList, $discount )
-  {
-    $sub_total = 0;
-    $transactionDetails = new TransactionDetails;
-    foreach ( $itemList->getItems() as $item ) {
-      $sub_total = ( $sub_total + $item->price ) * $item->quantity;
+        return false;
     }
-    $transactionDetails->setSubTotal( $sub_total );
-    $transactionDetails->setDiscount( $discount );
 
-    $this->setTransactionDetails( $transactionDetails );
+    public function buildOrder( $customer_id )
+    {
+        // Get order
+        $order = $this->orderRepo->getUnpaidOrderByCustomerID( $customer_id );
+        if ( !is_null( $order->id ) ) {
+            $this->setOrder( $order );
 
-    return $transactionDetails;
-  }
+            // Get orderProducts
+            $orderProducts = $this->orderProductRepo->getAllByOrderID( $order->id );
 
-  private function setTransactionDetails( $transactionDetails )
-  {
-    $this->transactionDetails = $transactionDetails;
-  }
+            // Populate orderProducts with respective Product object
+            $this->populateOrderProducts( $orderProducts );
 
-  public function buildAmount( $transactionDetails, $currency )
-  {
-    $amount = new Amount( $transactionDetails );
-    $amount->setCurrency( $currency );
+            $this->setOrderProducts( $orderProducts );
 
-    $this->setAmount( $amount );
+            return true;
+        }
 
-    return $amount;
-  }
-
-  private function setAmount( $amount )
-  {
-    $this->amount = $amount;
-  }
-
-  public function buildTransaction( array $product_data, $currency, $discount )
-  {
-    $items = $this->buildItems( $product_data );
-    $itemList = $this->buildItemList( $items );
-    $this->validateItemCurrencies( $itemList, $currency );
-    $transactionDetails = $this->buildTransactionDetails( $itemList, $discount );
-    $amount = $this->buildAmount( $transactionDetails, $currency );
-
-    $transaction = new Transaction( $itemList, $transactionDetails, $amount );
-
-    return $transaction;
-  }
-
-  private function validateItemCurrencies( $itemList, $currency )
-  {
-    // Verify that the currencies of the items match that of the transaction as a whole
-    foreach ( $itemList->getItems() as $item ) {
-      if ( $item->currency != $currency ) {
-        throw new \Exception( "One or more of the item's currencies did not match the transaction currency" );
-      }
+        return false;
     }
-  }
 
+    private function setOrder( \Models\Order $order )
+    {
+        $this->order = $order;
+    }
+
+    public function getOrder()
+    {
+        if ( isset( $this->order ) ) {
+            return $this->order;
+        }
+    }
+
+    private function setOrderProducts( array $orderProducts )
+    {
+        foreach ( $orderProducts as $orderProduct ) {
+            if ( !is_a( $orderProduct, "\Models\OrderProduct" ) ) {
+                return false;
+            }
+        }
+
+        $this->orderProducts = $orderProducts;
+    }
+
+    public function getOrderProducts()
+    {
+        if ( isset( $this->orderProducts ) ) {
+            return $this->orderProducts;
+        }
+    }
+
+    private function populateOrderProducts( array $orderProducts )
+    {
+        // Assign product data to orderProduct
+        foreach ( $orderProducts as $_orderProduct ) {
+            // Get the product associated with this order product
+            $product = $this->productRepo->getByID( $_orderProduct->product_id );
+            // Get the currency for this order product and add the currency
+            // symbol as a dynamically added property of the product object
+            $currency = $this->currencyRepo->getByCode( $product->currency );
+            $product->currency_symbol = $currency->symbol;
+            // Dynamically assign product as 'product' property of orderProduct
+            $_orderProduct->product = $product;
+
+            // All Products with a product type of 1 are subscriptions.
+            if ( $_orderProduct->product->product_type_id == 1 ) {
+                $this->addSubscriptionOrderProduct( $_orderProduct );
+            }
+
+            $this->addToTransactionTotal( ( $_orderProduct->product->price * $_orderProduct->quantity ) );
+        }
+
+    }
+
+    private function addSubscriptionOrderProduct( \Models\OrderProduct $orderProduct )
+    {
+        // Update hasSubscription flag
+        if ( !$this->hasSubscription ) {
+            $this->hasSubscription = true;
+        }
+
+        $this->subscriptionOrderProducts[] = $orderProduct;
+    }
+
+    public function getTransactionTotal()
+    {
+        return $this->transaction_total;
+    }
+
+    public function hasSubscription()
+    {
+        return $this->hasSubscription;
+    }
+
+    public function markOrderAsPaid()
+    {
+        $this->orderRepo->updatePaidByID( $this->order->id, 1 );
+    }
+
+    public function setPaymentRedirectURL( $url )
+    {
+        $this->payment_redirect_url = $url;
+    }
+
+    public function getPaymentRedirectURL()
+    {
+        return $this->payment_redirect_url;
+    }
+
+    public function saveTransaction( $customer_id, $status, $transaction_type )
+    {
+        $order = $this->getOrder();
+        // Create a transaction object
+        $transaction = $this->transactionRepo->create( $customer_id, $order->id, $status, $transaction_type, $this->getTransactionTotal() );
+
+        return $transaction;
+    }
+
+    private function addToTransactionTotal( $amount )
+    {
+        $this->transaction_total = $this->transaction_total + $amount;
+    }
+
+    public function getSubscriptionOrderProducts()
+    {
+        return $this->subscriptionOrderProducts;
+    }
 }

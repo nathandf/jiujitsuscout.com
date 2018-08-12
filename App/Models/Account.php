@@ -18,6 +18,7 @@ class Account
   public $profile_creation_date;
   public $timezone;
   public $primary_user_id;
+  public $credit;
 
   public function setType( $type )
   {

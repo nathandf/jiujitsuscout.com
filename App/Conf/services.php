@@ -61,7 +61,13 @@ $container->register( "dao", function() use ( $container ) {
 // Services
 
 $container->register( "transaction-builder", function() use ( $container ) {
-	$transactionBuilder = new \Models\Services\TransactionBuilder( $container->getService( "product-repository" ) );
+	$transactionBuilder = new \Models\Services\TransactionBuilder(
+		$container->getService( "transaction-repository" ),
+		$container->getService( "order-repository" ),
+		$container->getService( "order-product-repository" ),
+		$container->getService( "product-repository" ),
+		$container->getService( "currency-repository" )
+	);
 	return $transactionBuilder;
 } );
 
@@ -88,6 +94,13 @@ $container->register( "account-user-repository", function() use ( $container ) {
 $container->register( "appointment-repository", function() use ( $container ) {
 	$repo = new \Models\Services\AppointmentRepository( $container );
 	return $repo;
+} );
+
+$container->register( "braintree-api-manager", function() use ( $container ) {
+	$transactionBuilder = new \Models\Services\BraintreeAPIManager(
+		$container->getService( "braintree-gateway-initializer" )
+	);
+	return $transactionBuilder;
 } );
 
 $container->register( "braintree-transaction-repository", function() use ( $container ) {
