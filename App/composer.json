@@ -17,10 +17,9 @@
         "Helpers\\": "Helpers/",
         "Controllers\\": "Controllers/",
         "Views\\": "Views/",
-        "Models\\": "Models/",
-        "Mappers\\": "Models/Mappers/",
-        "Services\\": "Models/Services/",
-        "Composites\\": "Models/Composites/"
+        "Model\\": "Model/",
+        "Mappers\\": "Model/Mappers/",
+        "Services\\": "Model/Services/"
       },
       "files": [
             "Conf/constants.php"

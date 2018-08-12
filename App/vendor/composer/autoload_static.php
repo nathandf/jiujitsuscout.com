@@ -47,7 +47,7 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         'M' => 
         array (
             'Monolog\\' => 8,
-            'Models\\' => 7,
+            'Model\\' => 6,
             'Mappers\\' => 8,
         ),
         'K' => 
@@ -76,7 +76,6 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
             'Controllers\\' => 12,
             'Contracts\\' => 10,
             'Conf\\' => 5,
-            'Composites\\' => 11,
         ),
         'B' => 
         array (
@@ -99,7 +98,7 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         ),
         'Services\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/Models/Services',
+            0 => __DIR__ . '/../..' . '/Model/Services',
         ),
         'SendGrid\\' => 
         array (
@@ -121,13 +120,13 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'Models\\' => 
+        'Model\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/Models',
+            0 => __DIR__ . '/../..' . '/Model',
         ),
         'Mappers\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/Models/Mappers',
+            0 => __DIR__ . '/../..' . '/Model/Mappers',
         ),
         'Katzgrau\\KLogger\\' => 
         array (
@@ -176,10 +175,6 @@ class ComposerStaticInit04230038f8a96dea69f5754e7cd78d2a
         'Conf\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Conf',
-        ),
-        'Composites\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/Models/Composites',
         ),
         'Braintree\\' => 
         array (
