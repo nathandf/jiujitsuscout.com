@@ -1,9 +1,9 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
-use Models\CourseSchedule;
-use Models\Mappers\CourseScheduleMapper;
+use Model\CourseSchedule;
+use Model\Mappers\CourseScheduleMapper;
 
 class CourseScheduleRepository extends Service
 {
@@ -30,7 +30,7 @@ class CourseScheduleRepository extends Service
 
     public function getAllByCourseID( $course_id )
     {
-        $courseScheduleMapper = new \Models\Mappers\CourseScheduleMapper( $this->container );
+        $courseScheduleMapper = new \Model\Mappers\CourseScheduleMapper( $this->container );
         $courseSchedules = $courseScheduleMapper->mapAllFromCourseID( $course_id );
 
         return $courseSchedules;
@@ -38,7 +38,7 @@ class CourseScheduleRepository extends Service
 
     public function getAllByScheduleID( $schedule_id )
     {
-        $courseScheduleMapper = new \Models\Mappers\CourseScheduleMapper( $this->container );
+        $courseScheduleMapper = new \Model\Mappers\CourseScheduleMapper( $this->container );
         $courseSchedules = $courseScheduleMapper->mapAllFromScheduleID( $schedule_id );
 
         return $courseSchedules;
@@ -46,19 +46,19 @@ class CourseScheduleRepository extends Service
 
     public function removeByID( $id )
     {
-        $courseScheduleMapper = new \Models\Mappers\CourseScheduleMapper( $this->container );
+        $courseScheduleMapper = new \Model\Mappers\CourseScheduleMapper( $this->container );
         $courseScheduleMapper->deleteByID( $id );
     }
 
     public function removeByScheduleID( $schedule_id )
     {
-        $courseScheduleMapper = new \Models\Mappers\CourseScheduleMapper( $this->container );
+        $courseScheduleMapper = new \Model\Mappers\CourseScheduleMapper( $this->container );
         $courseScheduleMapper->deleteByScheduleID( $schedule_id );
     }
     
     public function removeByCourseID( $id )
     {
-        $courseScheduleMapper = new \Models\Mappers\CourseScheduleMapper( $this->container );
+        $courseScheduleMapper = new \Model\Mappers\CourseScheduleMapper( $this->container );
         $courseScheduleMapper->deleteByCourseID( $id );
     }
 

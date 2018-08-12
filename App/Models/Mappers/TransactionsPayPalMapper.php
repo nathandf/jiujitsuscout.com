@@ -3,7 +3,7 @@
 * PayPal Transactions
 */
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class TransactionsPayPalStore extends DataMappers
 {

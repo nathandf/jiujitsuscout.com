@@ -1,9 +1,9 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
-use Models\User;
-use Models\Mappers\UserMapper;
+use Model\User;
+use Model\Mappers\UserMapper;
 
 class UserRepository extends Service
 {
@@ -28,7 +28,7 @@ class UserRepository extends Service
 
   public function getAll()
   {
-    $userMapper = new \Models\Mappers\UserMapper( $this->container );
+    $userMapper = new \Model\Mappers\UserMapper( $this->container );
     $users = $userMapper->mapAll();
     return $users;
   }
@@ -45,7 +45,7 @@ class UserRepository extends Service
 
     public function getAllByAccountID( $id )
     {
-        $userMapper = new \Models\Mappers\UserMapper( $this->container );
+        $userMapper = new \Model\Mappers\UserMapper( $this->container );
         $users = $userMapper->mapAllFromAccountID( $id );
 
         return $users;
@@ -94,9 +94,9 @@ class UserRepository extends Service
     return true;
   }
 
-  public function updateUserByID( $id, \Models\User $user )
+  public function updateUserByID( $id, \Model\User $user )
   {
-    $userMapper = new \Models\Mappers\UserMapper( $this->container );
+    $userMapper = new \Model\Mappers\UserMapper( $this->container );
     $userMapper->updateUserByID( $id, $user );
   }
 

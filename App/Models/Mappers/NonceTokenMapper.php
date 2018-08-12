@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class NonceTokenMapper extends DataMapper
 {
 
-    public function create( \Models\NonceToken $nonceToken )
+    public function create( \Model\NonceToken $nonceToken )
     {
         $id = $this->insert(
             "nonce_token",
@@ -34,7 +34,7 @@ class NonceTokenMapper extends DataMapper
         return $nonceTokens;
     }
 
-    public function mapFromID( \Models\NonceToken $nonceToken, $id )
+    public function mapFromID( \Model\NonceToken $nonceToken, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM nonce_token WHERE id = :id" );
         $sql->bindParam( ":id", $id );
@@ -45,7 +45,7 @@ class NonceTokenMapper extends DataMapper
         return $nonceToken;
     }
 
-    public function mapFromValue( \Models\NonceToken $nonceToken, $value )
+    public function mapFromValue( \Model\NonceToken $nonceToken, $value )
     {
         $sql = $this->DB->prepare( "SELECT * FROM nonce_token WHERE value = :value" );
         $sql->bindParam( ":value", $value );
@@ -63,7 +63,7 @@ class NonceTokenMapper extends DataMapper
         $sql->execute();
     }
 
-    private function populateNonceToken( \Models\NonceToken $nonceToken, $data )
+    private function populateNonceToken( \Model\NonceToken $nonceToken, $data )
     {
         $nonceToken->id         = $data[ "id" ];
         $nonceToken->value      = $data[ "value" ];

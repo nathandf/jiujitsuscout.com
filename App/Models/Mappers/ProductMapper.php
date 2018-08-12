@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class ProductMapper extends DataMapper
 {
@@ -20,7 +20,7 @@ class ProductMapper extends DataMapper
     return $products;
   }
 
-  public function mapFromID( \Models\Product $product, $id )
+  public function mapFromID( \Model\Product $product, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM product WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -30,7 +30,7 @@ class ProductMapper extends DataMapper
     return $product;
   }
 
-  private function populateProduct( \Models\Product $product, $data )
+  private function populateProduct( \Model\Product $product, $data )
   {
     $product->id                = $data[ "id" ];
     $product->product_type_id   = $data[ "product_type_id" ];

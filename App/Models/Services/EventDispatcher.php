@@ -1,17 +1,17 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
-use Models\Services\EventRepository;
-use Models\Services\EventEmailDispatcher;
-use Models\Services\EventTextMessageDispatcher;
+use Model\Services\EventRepository;
+use Model\Services\EventEmailDispatcher;
+use Model\Services\EventTextMessageDispatcher;
 
 /**
-* @package Models\Services
+* @package Model\Services
 *
-* @property Models\Services\EventRepository
-* @property Models\Services\EventEmailDispatcher
-* @property Models\Services\EventTextMessageDispatcher
+* @property Model\Services\EventRepository
+* @property Model\Services\EventEmailDispatcher
+* @property Model\Services\EventTextMessageDispatcher
 */
 
 class EventDispatcher

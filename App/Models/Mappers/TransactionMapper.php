@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class TransactionMapper extends DataMapper
 {
 
-    public function create( \Models\Transaction $transaction )
+    public function create( \Model\Transaction $transaction )
     {
         $now = time();
         $id = $this->insert(
@@ -52,7 +52,7 @@ class TransactionMapper extends DataMapper
         return $transactions;
     }
 
-    public function mapFromID( \Models\Transaction $transaction, $id )
+    public function mapFromID( \Model\Transaction $transaction, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM transaction WHERE id = :id" );
         $sql->bindParam( ":id", $id );
@@ -63,7 +63,7 @@ class TransactionMapper extends DataMapper
         return $transaction;
     }
 
-    public function mapFromCustomerID( \Models\Transaction $transaction, $customer_id )
+    public function mapFromCustomerID( \Model\Transaction $transaction, $customer_id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM transaction WHERE customer_id = :customer_id" );
         $sql->bindParam( ":customer_id", $customer_id );
@@ -74,7 +74,7 @@ class TransactionMapper extends DataMapper
         return $transaction;
     }
 
-    private function populateTransaction( \Models\Transaction $transaction, $data )
+    private function populateTransaction( \Model\Transaction $transaction, $data )
     {
         $transaction->id          = $data[ "id" ];
         $transaction->customer_id = $data[ "customer_id" ];

@@ -1,8 +1,8 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Prospect;
+use Model\Prospect;
 
 class ProspectMapper extends DataMapper
 {
@@ -162,7 +162,7 @@ class ProspectMapper extends DataMapper
         $this->update( "prospect", "trial_remind_status", $status, "id", $id );
     }
 
-  private function populateProspect( \Models\Prospect $prospect, $data )
+  private function populateProspect( \Model\Prospect $prospect, $data )
   {
     $prospect->id                      = $data[ "id" ];
     $prospect->type                    = $data[ "type" ];

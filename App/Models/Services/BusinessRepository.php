@@ -1,14 +1,14 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class BusinessRepository extends Service
 {
 
     public function create( $account_id, $business_name, $contact_name, $phone_id, $email, $country, $timezone )
     {
-        $business = new \Models\Business();
-        $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+        $business = new \Model\Business();
+        $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
         $business->account_id = $account_id;
         $business->business_name = $business_name;
         $business->contact_name = $contact_name;
@@ -23,7 +23,7 @@ class BusinessRepository extends Service
 
     public function getAllBusinessIDs()
     {
-        $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+        $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
         $business_ids = $businessMapper->getAllBusinessIDs();
 
         return $business_ids;
@@ -31,7 +31,7 @@ class BusinessRepository extends Service
 
   public function getAllByDisciplineID( $discipline_id )
   {
-      $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+      $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
       $businesses = $businessMapper->mapAllFromDisciplineID( $discipline_id );
 
       return $businesses;
@@ -39,38 +39,38 @@ class BusinessRepository extends Service
 
   public function getByBusinessName( $business_name )
   {
-    $business = new \Models\Business();
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $business = new \Model\Business();
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $businessMapper->mapFromBusinessName( $business, $business_name );
     return $business;
   }
 
   public function getByID( $id )
   {
-    $business = new \Models\Business();
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $business = new \Model\Business();
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $businessMapper->mapFromID( $business, $id );
     return $business;
   }
 
   public function getBySiteSlug( $slug )
   {
-    $business = new \Models\Business();
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $business = new \Model\Business();
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $businessMapper->mapFromSiteSlug( $business, $slug );
     return $business;
   }
 
     public function getAllByAccountID( $id )
     {
-        $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+        $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
         $businesses = $businessMapper->mapAllFromAccountID( $id );
         return $businesses;
     }
 
     public function getAll()
     {
-        $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+        $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
         $businesses = $businessMapper->mapAll();
 
         return $businesses;
@@ -80,8 +80,8 @@ class BusinessRepository extends Service
   public function updateSiteSlugByID( $id, $slug )
   {
     if ( $this->checkSiteSlugAvailability( $slug ) ) {
-      $business = new \Models\Business();
-      $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+      $business = new \Model\Business();
+      $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
       $slug = $business->formatSiteSlug( $slug );
       $businessMapper->updateSiteSlugByID( $id, $slug );
 
@@ -94,69 +94,69 @@ class BusinessRepository extends Service
   public function updateDisciplinesByID( $id, array $disciplines )
   {
     $disciplines = implode( ",", $disciplines );
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $businessMapper->updateDisciplinesByID( $id, $disciplines );
   }
 
   public function updateProgramsByID( $id, array $programs )
   {
     $programs = implode( ",", $programs );
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $businessMapper->updateProgramsByID( $id, $programs );
   }
 
   public function updateLocationByID( $id, array $location_details )
   {
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $businessMapper->updateLocationByID( $id, $location_details );
   }
 
     public function updateLatitudeLongitudeByID( $id, $latitude, $longitude )
     {
-        $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+        $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
         $businessMapper->updateLatitudeLongitudeByID( $id, $latitude, $longitude );
     }
 
   public function updateEmailByID( $id, $email )
   {
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $businessMapper->updateEmailByID( $id, $email );
   }
 
   public function updateSiteMessageByID( $id, $title, $message )
   {
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $businessMapper->updateSiteMessageByID( $id, $title, $message );
   }
 
   public function updateVideoByID( $id, $video_link )
   {
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $businessMapper->updateVideoByID( $id, $video_link );
   }
 
     public function updateFacebookPixelIDBYID( $facebook_pixel_id, $id )
     {
-        $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+        $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
         $businessMapper->updateFacebookPixelIDByID( $id, $facebook_pixel_id );
     }
 
   public function updateLogoByID( $id, $logo_filename )
   {
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $businessMapper->updateLogoByID( $id, $logo_filename );
   }
 
     public function updateUserNotificationRecipientIDsByID( $id, array $user_ids )
     {
         $user_ids = implode( ",", $user_ids );
-        $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+        $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
         $businessMapper->updateUserNotificationRecipientIDsByID( $id, $user_ids );
     }
 
   public function getAllSiteSlugs()
   {
-    $businessMapper = new \Models\Mappers\BusinessMapper( $this->container );
+    $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
     $slugs = $businessMapper->getAllSiteSlugs();
     return $slugs;
   }

@@ -1,14 +1,14 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class CampaignRepository extends Service
 {
 
   public function create( $account_id, $business_id, $campaign_type_id, $status, $name, $description, $start_date, $end_date, $recur_date )
   {
-    $campaign = new \Models\Campaign();
-    $campaignMapper = new \Models\Mappers\CampaignMapper( $this->container );
+    $campaign = new \Model\Campaign();
+    $campaignMapper = new \Model\Mappers\CampaignMapper( $this->container );
     $campaign->account_id = $account_id;
     $campaign->business_id = $business_id;
     $campaign->campaign_type_id = $campaign_type_id;
@@ -25,23 +25,23 @@ class CampaignRepository extends Service
 
   public function getByBusinessID( $id )
   {
-    $campaign = new \Models\Campaign();
-    $campaignMapper = new \Models\Mappers\CampaignMapper( $this->container );
+    $campaign = new \Model\Campaign();
+    $campaignMapper = new \Model\Mappers\CampaignMapper( $this->container );
     $campaignMapper->mapFromBusinessID( $campaign, $id );
     return $campaign;
   }
 
   public function getByID( $id )
   {
-    $campaign = new \Models\Campaign();
-    $campaignMapper = new \Models\Mappers\CampaignMapper( $this->container );
+    $campaign = new \Model\Campaign();
+    $campaignMapper = new \Model\Mappers\CampaignMapper( $this->container );
     $campaignMapper->mapFromID( $campaign, $id );
     return $campaign;
   }
 
   public function getAllByBusinessID( $business_id )
   {
-    $campaignMapper = new \Models\Mappers\CampaignMapper( $this->container );
+    $campaignMapper = new \Model\Mappers\CampaignMapper( $this->container );
     $campaigns = $campaignMapper->mapAllFromBusinessID( $business_id );
 
     return $campaigns;

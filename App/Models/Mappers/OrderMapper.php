@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class OrderMapper extends DataMapper
 {
 
-    public function create( \Models\Order $order )
+    public function create( \Model\Order $order )
     {
         $id = $this->insert(
             "`order`",
@@ -33,7 +33,7 @@ class OrderMapper extends DataMapper
         return $orders;
     }
 
-    public function mapFromID( \Models\Order $order, $id )
+    public function mapFromID( \Model\Order $order, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM `order` WHERE id = :id" );
         $sql->bindParam( ":id", $id );
@@ -44,7 +44,7 @@ class OrderMapper extends DataMapper
         return $order;
     }
 
-    public function mapFromCustomerID( \Models\Order $order, $customer_id )
+    public function mapFromCustomerID( \Model\Order $order, $customer_id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM `order` WHERE customer_id = :customer_id" );
         $sql->bindParam( ":customer_id", $customer_id );
@@ -55,7 +55,7 @@ class OrderMapper extends DataMapper
         return $order;
     }
 
-    public function mapFromCustomerIDAndPaid( \Models\Order $order, $customer_id, $paid )
+    public function mapFromCustomerIDAndPaid( \Model\Order $order, $customer_id, $paid )
     {
         $sql = $this->DB->prepare( "SELECT * FROM `order` WHERE customer_id = :customer_id AND paid = :paid" );
         $sql->bindParam( ":customer_id", $customer_id );
@@ -79,7 +79,7 @@ class OrderMapper extends DataMapper
         $sql->execute();
     }
 
-    private function populateOrder( \Models\Order $order, $data )
+    private function populateOrder( \Model\Order $order, $data )
     {
         $order->id          = $data[ "id" ];
         $order->customer_id = $data[ "customer_id" ];

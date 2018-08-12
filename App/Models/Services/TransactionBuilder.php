@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class TransactionBuilder
 {
@@ -19,7 +19,7 @@ class TransactionBuilder
     // Default post-payment redirect url
     public $payment_redirect_url;
 
-    public function __construct( \Models\Services\TransactionRepository $transactionRepo, \Models\Services\OrderRepository $orderRepo, \Models\Services\OrderProductRepository $orderProductRepo, \Models\Services\ProductRepository $productRepo, \Models\Services\CurrencyRepository $currencyRepo )
+    public function __construct( \Model\Services\TransactionRepository $transactionRepo, \Model\Services\OrderRepository $orderRepo, \Model\Services\OrderProductRepository $orderProductRepo, \Model\Services\ProductRepository $productRepo, \Model\Services\CurrencyRepository $currencyRepo )
     {
         $this->transactionRepo = $transactionRepo;
         $this->orderRepo = $orderRepo;
@@ -58,7 +58,7 @@ class TransactionBuilder
         return false;
     }
 
-    private function setOrder( \Models\Order $order )
+    private function setOrder( \Model\Order $order )
     {
         $this->order = $order;
     }
@@ -73,7 +73,7 @@ class TransactionBuilder
     private function setOrderProducts( array $orderProducts )
     {
         foreach ( $orderProducts as $orderProduct ) {
-            if ( !is_a( $orderProduct, "\Models\OrderProduct" ) ) {
+            if ( !is_a( $orderProduct, "\Model\OrderProduct" ) ) {
                 return false;
             }
         }
@@ -111,7 +111,7 @@ class TransactionBuilder
 
     }
 
-    private function addSubscriptionOrderProduct( \Models\OrderProduct $orderProduct )
+    private function addSubscriptionOrderProduct( \Model\OrderProduct $orderProduct )
     {
         // Update hasSubscription flag
         if ( !$this->hasSubscription ) {

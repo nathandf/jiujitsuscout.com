@@ -1,18 +1,18 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
-use Models\Services\SequenceRepository;
-use Models\Services\EventDispatcher;
+use Model\Services\SequenceRepository;
+use Model\Services\EventDispatcher;
 
 /**
 * Class SequenceManager
 *
-* @package Models\Services
+* @package Model\Services
 *
-* @property array \Models\Sequence
-* @property \Models\Services\SequenceRepository
-* @property \Models\Services\EventDispatcher
+* @property array \Model\Sequence
+* @property \Model\Services\SequenceRepository
+* @property \Model\Services\EventDispatcher
 */
 
 class SequenceDispatcher

@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Course;
+use Model\Course;
 
 class CourseScheduleMapper extends DataMapper
 {
 
-    public function create( \Models\CourseSchedule $courseSchedule )
+    public function create( \Model\CourseSchedule $courseSchedule )
     {
         $id = $this->insert(
             "course_schedule",
@@ -84,7 +84,7 @@ class CourseScheduleMapper extends DataMapper
         $sql->execute();
     }
 
-    private function populateCourseSchedule( \Models\CourseSchedule $courseSchedule, $data )
+    private function populateCourseSchedule( \Model\CourseSchedule $courseSchedule, $data )
     {
         $courseSchedule->id                      = $data[ "id" ];
         $courseSchedule->course_id               = $data[ "course_id" ];

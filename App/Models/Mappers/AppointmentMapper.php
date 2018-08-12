@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Appointment;
+use Model\Appointment;
 
 class AppointmentMapper extends DataMapper
 {
 
-  public function create( \Models\Appointment $appointment )
+  public function create( \Model\Appointment $appointment )
   {
     $id = $this->insert(
                     "appointment",

@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class EmailMapper extends DataMapper
 {
@@ -18,7 +18,7 @@ class EmailMapper extends DataMapper
     return $emails;
   }
 
-  public function mapFromID( \Models\Email $email, $id )
+  public function mapFromID( \Model\Email $email, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM email WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -28,7 +28,7 @@ class EmailMapper extends DataMapper
     return $email;
   }
 
-  private function populateEmail( \Models\Email $email, $data )
+  private function populateEmail( \Model\Email $email, $data )
   {
     $email->id            = $data[ "id" ];
     $email->body          = $data[ "body" ];

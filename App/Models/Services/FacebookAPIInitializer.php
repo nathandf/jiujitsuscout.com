@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 use Facebook\Facebook;
 use Facebook\Api;

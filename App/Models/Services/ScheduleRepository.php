@@ -1,9 +1,9 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
-use Models\Schedule;
-use Models\Mappers\ScheduleMapper;
+use Model\Schedule;
+use Model\Mappers\ScheduleMapper;
 
 class ScheduleRepository extends Service
 {
@@ -31,7 +31,7 @@ class ScheduleRepository extends Service
 
     public function getAllByBusinessID( $business_id )
     {
-        $scheduleMapper = new \Models\Mappers\ScheduleMapper( $this->container );
+        $scheduleMapper = new \Model\Mappers\ScheduleMapper( $this->container );
         $schedules = $scheduleMapper->mapAllFromBusinessID( $business_id );
 
         return $schedules;
@@ -39,7 +39,7 @@ class ScheduleRepository extends Service
 
     public function updateByID( $schedule_id, $name, $description )
     {
-        $scheduleMapper = new \Models\Mappers\ScheduleMapper( $this->container );
+        $scheduleMapper = new \Model\Mappers\ScheduleMapper( $this->container );
         $scheduleMapper->updateByID( $schedule_id, $name, $description );
 
         return true;
@@ -47,7 +47,7 @@ class ScheduleRepository extends Service
 
     public function removeByID( $id )
     {
-        $scheduleMapper = new \Models\Mappers\ScheduleMapper( $this->container );
+        $scheduleMapper = new \Model\Mappers\ScheduleMapper( $this->container );
         $scheduleMapper->deleteByID( $id );
     }
 

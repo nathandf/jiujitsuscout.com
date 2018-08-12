@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class TextMessageMapper extends DataMapper
 {
@@ -18,7 +18,7 @@ class TextMessageMapper extends DataMapper
     return $textMessages;
   }
 
-  public function mapFromID( \Models\TextMessage $textMessage, $id )
+  public function mapFromID( \Model\TextMessage $textMessage, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM text_message WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -28,7 +28,7 @@ class TextMessageMapper extends DataMapper
     return $textMessage;
   }
 
-  private function populateTextMessage( \Models\TextMessage $textMessage, $data )
+  private function populateTextMessage( \Model\TextMessage $textMessage, $data )
   {
     $textMessage->id                  = $data[ "id" ];
     $textMessage->body                = $data[ "body" ];

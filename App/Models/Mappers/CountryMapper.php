@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class CountryMapper extends DataMapper
 {

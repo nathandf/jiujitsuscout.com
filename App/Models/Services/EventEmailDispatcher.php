@@ -1,16 +1,16 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
-use Models\Services\EventEmailRepository;
-use Models\Services\EmailRepository;
+use Model\Services\EventEmailRepository;
+use Model\Services\EmailRepository;
 use Contracts\MailerInterface;
 
 /**
-* @package Models\Services
+* @package Model\Services
 *
-* @property Models\Services\EventEmailRepository
-* @property Models\Services\EmailRepository
+* @property Model\Services\EventEmailRepository
+* @property Model\Services\EmailRepository
 * @property Contracts\MailerInterface
 */
 

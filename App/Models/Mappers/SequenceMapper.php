@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class SequenceMapper extends DataMapper
 {
@@ -40,7 +40,7 @@ class SequenceMapper extends DataMapper
     $this->update( "sequence", "checked_out", $checked_out, "id", $id );
   }
 
-  private function populateSequence( \Models\Sequence $sequence, $data )
+  private function populateSequence( \Model\Sequence $sequence, $data )
   {
     $sequence->id          = $data[ "id" ];
     $sequence->name        = $data[ "name" ];

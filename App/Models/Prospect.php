@@ -1,9 +1,9 @@
 <?php
 
-namespace Models;
+namespace Model;
 
 use Contracts\EntityInterface;
-use Models\Person;
+use Model\Person;
 
 class Prospect extends Person implements EntityInterface
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class ReviewRepository extends Service
 {
 
     public function create( $business_id, $name, $email, $review_body, $rating, $datetime )
     {
-        $review = new \Models\Review();
-        $reviewMapper = new \Models\Mappers\ReviewMapper( $this->container );
+        $review = new \Model\Review();
+        $reviewMapper = new \Model\Mappers\ReviewMapper( $this->container );
         $review->business_id = $business_id;
         $review->name = $name;
         $review->email = $email;
@@ -22,8 +22,8 @@ class ReviewRepository extends Service
 
     public function getByID( $id )
     {
-        $review = new \Models\Review();
-        $reviewMapper = new \Models\Mappers\ReviewMapper( $this->container );
+        $review = new \Model\Review();
+        $reviewMapper = new \Model\Mappers\ReviewMapper( $this->container );
         $reviewMapper->mapFromID( $review, $id );
 
         return $review;
@@ -31,7 +31,7 @@ class ReviewRepository extends Service
 
     public function getAllByBusinessID( $id )
     {
-        $reviewMapper = new \Models\Mappers\ReviewMapper( $this->container );
+        $reviewMapper = new \Model\Mappers\ReviewMapper( $this->container );
         $reviews = $reviewMapper->mapAllFromBusinessID( $id );
         return $reviews;
     }

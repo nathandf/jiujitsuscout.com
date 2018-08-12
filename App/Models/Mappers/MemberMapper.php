@@ -1,8 +1,8 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Member;
+use Model\Member;
 
 class MemberMapper extends DataMapper
 {
@@ -82,7 +82,7 @@ class MemberMapper extends DataMapper
     return $members;
   }
 
-  private function populateMember( \Models\Member $member, $data )
+  private function populateMember( \Model\Member $member, $data )
   {
     $member->id                      = $data[ "id" ];
     $member->business_id             = $data[ "business_id" ];

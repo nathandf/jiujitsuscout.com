@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class FacebookLogin
 {
 
-	public function __construct( \Models\Services\FacebookAPIInitializer $FacebookAPIInitializer )
+	public function __construct( \Model\Services\FacebookAPIInitializer $FacebookAPIInitializer )
 	{
 		$this->fb = $FacebookAPIInitializer->init();
 	}

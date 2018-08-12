@@ -1,14 +1,14 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class LandingPageRepository extends Service
 {
 
   public function create( $slug, $name, $business_id, array $group_ids, $facebook_pixel_id, $call_to_action, $call_to_action_form, $headline, $text_a, $text_b, $text_c, $text_form, $image_background, $image_a, $image_b, $image_c, $template_file )
   {
-    $landingPage = new \Models\LandingPage();
-    $landingPageMapper = new \Models\Mappers\LandingPageMapper( $this->container );
+    $landingPage = new \Model\LandingPage();
+    $landingPageMapper = new \Model\Mappers\LandingPageMapper( $this->container );
     $landingPage->name = $name;
     $landingPage->slug = $landingPage->formatSlug( $slug );
     $landingPage->business_id = $business_id;
@@ -33,8 +33,8 @@ class LandingPageRepository extends Service
 
   public function getByID( $id )
   {
-    $landingPage = new \Models\LandingPage();
-    $landingPageMapper = new \Models\Mappers\LandingPageMapper( $this->container );
+    $landingPage = new \Model\LandingPage();
+    $landingPageMapper = new \Model\Mappers\LandingPageMapper( $this->container );
     $landingPageMapper->mapFromID( $landingPage, $id );
 
     return $landingPage;
@@ -42,7 +42,7 @@ class LandingPageRepository extends Service
 
   public function getAllByBusinessID( $business_id )
   {
-    $landingPageMapper = new \Models\Mappers\LandingPageMapper( $this->container );
+    $landingPageMapper = new \Model\Mappers\LandingPageMapper( $this->container );
     $landingPages = $landingPageMapper->mapAllFromBusinessID( $business_id );
 
     return $landingPages;
@@ -50,8 +50,8 @@ class LandingPageRepository extends Service
 
   public function getBySlugAndBusinessID( $slug, $business_id )
   {
-    $landingPage = new \Models\LandingPage();
-    $landingPageMapper = new \Models\Mappers\LandingPageMapper( $this->container );
+    $landingPage = new \Model\LandingPage();
+    $landingPageMapper = new \Model\Mappers\LandingPageMapper( $this->container );
     $landingPageMapper->mapFromSlugAndBusinessID( $landingPage, $slug, $business_id );
 
     return $landingPage;
@@ -59,15 +59,15 @@ class LandingPageRepository extends Service
 
   public function getAllSlugsByBusinessID( $business_id )
   {
-    $landingPageMapper = new \Models\Mappers\LandingPageMapper( $this->container );
+    $landingPageMapper = new \Model\Mappers\LandingPageMapper( $this->container );
     $slugs = $landingPageMapper->mapAllSlugsFromBusinessID( $business_id );
     return $slugs;
   }
 
   public function modifySlug( $slug, $landing_page_id, $business_id )
   {
-    $landingPage = new \Models\LandingPage();
-    $landingPageMapper = new \Models\Mappers\LandingPageMapper( $this->container );
+    $landingPage = new \Model\LandingPage();
+    $landingPageMapper = new \Model\Mappers\LandingPageMapper( $this->container );
     $slug = $this->formatSlug( $slug );
     if ( $this->checkSlugAvailability( $slug, $business_id ) ) {
       $landingPageMapper->updateSlugByID( $slug, $landing_page_id );
@@ -77,19 +77,19 @@ class LandingPageRepository extends Service
 
   public function updateNameByID( $name, $id )
   {
-    $landingPageMapper = new \Models\Mappers\LandingPageMapper( $this->container );
+    $landingPageMapper = new \Model\Mappers\LandingPageMapper( $this->container );
     $landingPageMapper->updateNameByID( $name, $id );
   }
 
   public function updateGroupIDsByID( $group_ids, $id )
   {
-    $landingPageMapper = new \Models\Mappers\LandingPageMapper( $this->container );
+    $landingPageMapper = new \Model\Mappers\LandingPageMapper( $this->container );
     $landingPageMapper->updateGroupIDsByID( $group_ids, $id );
   }
 
   public function updateFacebookPixelIDByID( $facebook_pixel_id, $id )
   {
-    $landingPageMapper = new \Models\Mappers\LandingPageMapper( $this->container );
+    $landingPageMapper = new \Model\Mappers\LandingPageMapper( $this->container );
     $landingPageMapper->updateFacebookPixelIDByID( $facebook_pixel_id, $id );
   }
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Business;
+use Model\Business;
 
 class BusinessMapper extends DataMapper
 {
 
-  public function create( \Models\Business $business )
+  public function create( \Model\Business $business )
   {
     $id = $this->insert(
                     "business",
@@ -185,7 +185,7 @@ class BusinessMapper extends DataMapper
     return $slugs;
   }
 
-    private function populateBusiness( \Models\Business $business, $data )
+    private function populateBusiness( \Model\Business $business, $data )
     {
         $business->id                      = $data[ "id" ];
         $business->business_name           = $data[ "business_name" ];

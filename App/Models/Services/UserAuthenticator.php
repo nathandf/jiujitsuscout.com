@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 use Core\Session;
 
@@ -133,7 +133,7 @@ class UserAuthenticator extends Service
     return $this->current_business_id;
   }
 
-  private function setUser( \Models\User $user )
+  private function setUser( \Model\User $user )
   {
     $this->user = $user;
   }

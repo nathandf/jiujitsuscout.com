@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class OrderProductMapper extends DataMapper
 {
 
-    public function create( \Models\OrderProduct $orderProduct )
+    public function create( \Model\OrderProduct $orderProduct )
     {
         $id = $this->insert(
             "order_product",
@@ -49,7 +49,7 @@ class OrderProductMapper extends DataMapper
         return $orderProducts;
     }
 
-    public function mapFromID( \Models\OrderProduct $orderProduct, $id )
+    public function mapFromID( \Model\OrderProduct $orderProduct, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM order_product WHERE id = :id" );
         $sql->bindParam( ":id", $id );
@@ -67,7 +67,7 @@ class OrderProductMapper extends DataMapper
         $sql->execute();
     }
 
-    private function populateOrderProduct( \Models\OrderProduct $orderProduct, $data )
+    private function populateOrderProduct( \Model\OrderProduct $orderProduct, $data )
     {
         $orderProduct->id          = $data[ "id" ];
         $orderProduct->order_id    = $data[ "order_id" ];

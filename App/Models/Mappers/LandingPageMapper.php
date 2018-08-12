@@ -1,8 +1,8 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\LandingPage;
+use Model\LandingPage;
 
 class LandingPageMapper extends DataMapper
 {
@@ -88,7 +88,7 @@ class LandingPageMapper extends DataMapper
     $this->update( "landing_page", "group_ids", $group_ids, "id", $id );
   }
 
-  private function populateLandingPage( \Models\LandingPage $landingPage, $data )
+  private function populateLandingPage( \Model\LandingPage $landingPage, $data )
   {
     $landingPage->id                         = $data[ "id" ];
     $landingPage->name                       = $data[ "name" ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class UserProspectInteractionMapper extends DataMapper
 {
@@ -26,7 +26,7 @@ class UserProspectInteractionMapper extends DataMapper
     return $userProspectInteractions;
   }
 
-  public function mapFromID( \Models\UserProspectInteraction $userProspectInteraction, $id )
+  public function mapFromID( \Model\UserProspectInteraction $userProspectInteraction, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM user_prospect_interaction WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -36,7 +36,7 @@ class UserProspectInteractionMapper extends DataMapper
     return $userProspectInteraction;
   }
 
-  public function mapFromUserID( \Models\UserProspectInteraction $userProspectInteraction, $user_id )
+  public function mapFromUserID( \Model\UserProspectInteraction $userProspectInteraction, $user_id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM user_prospect_interaction WHERE user_id = :user_id" );
     $sql->bindParam( ":user_id", $user_id );
@@ -46,7 +46,7 @@ class UserProspectInteractionMapper extends DataMapper
     return $userProspectInteraction;
   }
 
-  public function mapFromMemberID( \Models\UserMemberInteraction $userMemberInteraction, $prospect_id )
+  public function mapFromMemberID( \Model\UserMemberInteraction $userMemberInteraction, $prospect_id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM user_prospect_interaction WHERE prospect_id = :prospect_id" );
     $sql->bindParam( ":prospect_id", $prospect_id );
@@ -56,7 +56,7 @@ class UserProspectInteractionMapper extends DataMapper
     return $userMemberInteraction;
   }
 
-  private function populateUserProspectInteraction( \Models\UserProspectInteraction $userProspectInteraction, $data )
+  private function populateUserProspectInteraction( \Model\UserProspectInteraction $userProspectInteraction, $data )
   {
     $userProspectInteraction->id                  = $data[ "id" ];
     $userProspectInteraction->user_id             = $data[ "user_id" ];

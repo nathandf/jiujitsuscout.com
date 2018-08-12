@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 use PayPal\Api\Payer as PP_Payer;
 use PayPal\Api\Item as PP_Item;
@@ -20,12 +20,12 @@ class PayPalPaymentManager
   public $redirect_url;
   public $error_redirect_url = "account-manager/checkout/error";
 
-  public function __construct( \Models\Services\PayPalApiInitializer $paypal_api_initializer )
+  public function __construct( \Model\Services\PayPalApiInitializer $paypal_api_initializer )
   {
     $this->setApiContext( $paypal_api_initializer->init() );
   }
 
-  public function setTransaction( \Models\Transaction $transaction )
+  public function setTransaction( \Model\Transaction $transaction )
   {
     $this->transaction = $transaction;
   }

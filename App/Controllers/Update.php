@@ -16,7 +16,7 @@ class Update extends Controller
         // $businessRepo = $this->load( "business-repository" );
         // $reviewRepo = $this->load( "review-repository" );
         //
-        // $dm = new \Models\Mappers\DataMapperTEMP($this->container);
+        // $dm = new \Model\Mappers\DataMapperTEMP($this->container);
         //
         // $ratings_reviews = $dm->getAll( "ratings_reviews" );
         // $leads = $dm->getAll( "leads" );

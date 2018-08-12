@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class EventEmailMapper extends DataMapper
 {
@@ -20,7 +20,7 @@ class EventEmailMapper extends DataMapper
     return $eventEmails;
   }
 
-  public function mapFromID( \Models\EventEmail $eventEmail, $id )
+  public function mapFromID( \Model\EventEmail $eventEmail, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM event_email WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -30,7 +30,7 @@ class EventEmailMapper extends DataMapper
     return $eventEmail;
   }
 
-  public function mapFromEventID( \Models\EventEmail $eventEmail, $id )
+  public function mapFromEventID( \Model\EventEmail $eventEmail, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM event_email WHERE event_id = :id" );
     $sql->bindParam( ":id", $id );
@@ -40,7 +40,7 @@ class EventEmailMapper extends DataMapper
     return $eventEmail;
   }
 
-  private function populateEventEmail( \Models\EventEmail $eventEmail, $data )
+  private function populateEventEmail( \Model\EventEmail $eventEmail, $data )
   {
     $eventEmail->id                = $data[ "id" ];
     $eventEmail->event_id          = $data[ "event_id" ];

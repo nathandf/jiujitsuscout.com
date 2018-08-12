@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class CustomerMapper extends DataMapper
 {
 
-    public function create( \Models\Customer $customer )
+    public function create( \Model\Customer $customer )
     {
         $id = $this->insert(
             "customer",
@@ -33,7 +33,7 @@ class CustomerMapper extends DataMapper
         return $customers;
     }
 
-    public function mapFromID( \Models\Customer $customer, $id )
+    public function mapFromID( \Model\Customer $customer, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM customer WHERE id = :id" );
         $sql->bindParam( ":id", $id );
@@ -44,7 +44,7 @@ class CustomerMapper extends DataMapper
         return $customer;
     }
 
-    public function mapFromAccountID( \Models\Customer $customer, $account_id )
+    public function mapFromAccountID( \Model\Customer $customer, $account_id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM customer WHERE account_id = :account_id" );
         $sql->bindParam( ":account_id", $account_id );
@@ -55,7 +55,7 @@ class CustomerMapper extends DataMapper
         return $customer;
     }
 
-    private function populateCustomer( \Models\Customer $customer, $data )
+    private function populateCustomer( \Model\Customer $customer, $data )
     {
         $customer->id         = $data[ "id" ];
         $customer->account_id = $data[ "account_id" ];

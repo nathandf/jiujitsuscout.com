@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class UserRegistrar
 {
@@ -10,7 +10,7 @@ class UserRegistrar
     public $mailer;
     public $user;
 
-    public function __construct( \Models\Services\UserRepository $userRepo, \Models\Services\AccountUserRepository $accountUserRepo, \Models\Services\UserMailer $mailer )
+    public function __construct( \Model\Services\UserRepository $userRepo, \Model\Services\AccountUserRepository $accountUserRepo, \Model\Services\UserMailer $mailer )
     {
         $this->userRepo = $userRepo;
         $this->mailer = $mailer;

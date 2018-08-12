@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class SMSMessageMapper extends DataMapper
 {
@@ -31,7 +31,7 @@ class SMSMessageMapper extends DataMapper
     return $smsMessages;
   }
 
-  public function saveSMS( \Models\SMSMessage $sms )
+  public function saveSMS( \Model\SMSMessage $sms )
   {
     $this->insert( "sms_message",
                   [

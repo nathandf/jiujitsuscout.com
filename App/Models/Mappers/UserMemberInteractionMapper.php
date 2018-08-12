@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class UserMemberInteractionMapper extends DataMapper
 {
@@ -26,7 +26,7 @@ class UserMemberInteractionMapper extends DataMapper
     return $userMemberInteractions;
   }
 
-  public function mapFromID( \Models\UserMemberInteraction $userMemberInteraction, $id )
+  public function mapFromID( \Model\UserMemberInteraction $userMemberInteraction, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM user_member_interaction WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -36,7 +36,7 @@ class UserMemberInteractionMapper extends DataMapper
     return $userMemberInteraction;
   }
 
-  public function mapFromUserID( \Models\UserMemberInteraction $userMemberInteraction, $user_id )
+  public function mapFromUserID( \Model\UserMemberInteraction $userMemberInteraction, $user_id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM user_member_interaction WHERE user_id = :user_id" );
     $sql->bindParam( ":user_id", $user_id );
@@ -46,7 +46,7 @@ class UserMemberInteractionMapper extends DataMapper
     return $userMemberInteraction;
   }
 
-  public function mapFromMemberID( \Models\UserMemberInteraction $userMemberInteraction, $member_id )
+  public function mapFromMemberID( \Model\UserMemberInteraction $userMemberInteraction, $member_id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM user_member_interaction WHERE member_id = :member_id" );
     $sql->bindParam( ":member_id", $member_id );
@@ -56,7 +56,7 @@ class UserMemberInteractionMapper extends DataMapper
     return $userMemberInteraction;
   }
 
-  private function populateUserMemberInteraction( \Models\UserMemberInteraction $userMemberInteraction, $data )
+  private function populateUserMemberInteraction( \Model\UserMemberInteraction $userMemberInteraction, $data )
   {
     $userMemberInteraction->id                  = $data[ "id" ];
     $userMemberInteraction->user_id             = $data[ "user_id" ];

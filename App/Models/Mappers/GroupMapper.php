@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Group;
+use Model\Group;
 
 class GroupMapper extends DataMapper
 {
 
-    public function create( \Models\Group $group )
+    public function create( \Model\Group $group )
     {
         $id = $this->insert(
             "`group`",

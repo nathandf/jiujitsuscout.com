@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class PhoneMapper extends DataMapper
 {
 
-    public function create( \Models\Phone $phone )
+    public function create( \Model\Phone $phone )
     {
         if ( isset( $phone->country_code ) === false || $phone->country_code == "" ) {
             $phone->country_code = null;
@@ -25,7 +25,7 @@ class PhoneMapper extends DataMapper
         return $phone;
     }
 
-    public function updateByID( \Models\Phone $phone, $id )
+    public function updateByID( \Model\Phone $phone, $id )
     {
         if ( isset( $phone->country_code ) === false || $phone->country_code == "") {
             $phone->country_code = null;
@@ -52,7 +52,7 @@ class PhoneMapper extends DataMapper
         return $phones;
     }
 
-    public function mapFromID( \Models\Phone $phone, $id )
+    public function mapFromID( \Model\Phone $phone, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM phone WHERE id = :id" );
         $sql->bindParam( ":id", $id );
@@ -62,7 +62,7 @@ class PhoneMapper extends DataMapper
         return $phone;
     }
 
-    private function populatePhone( \Models\Phone $phone, $data )
+    private function populatePhone( \Model\Phone $phone, $data )
     {
         $phone->id                = $data[ "id" ];
         $phone->setCountryCode( $data[ "country_code" ] );

@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class SMSMessageRepository extends Service
 {
@@ -9,12 +9,12 @@ class SMSMessageRepository extends Service
   {
     $mdn_pair_1 = $mdn_1 . ":" . $mdn_2;
     $mdn_pair_2 = $mdn_2 . ":" . $mdn_1;
-    $smsMessageMapper = new \Models\Mappers\SMSMessageMapper( $this->container );
+    $smsMessageMapper = new \Model\Mappers\SMSMessageMapper( $this->container );
     $smsMessages = $smsMessageMapper->mapAllFromMDNPair( $mdn_pair_1, $mdn_pair_2 );
     return $smsMessages;
   }
 
-  public function save( \Models\SMSMessage $smsMessage, array $sms_data )
+  public function save( \Model\SMSMessage $smsMessage, array $sms_data )
   {
     $smsMessage->setSenderCountryCode( $sms_data[ "sender_country_code" ] );
     $smsMessage->setSenderPhoneNumber( $sms_data[ "sender_phone_number" ] );
@@ -23,7 +23,7 @@ class SMSMessageRepository extends Service
     $smsMessage->setMDNPair( $smsMessage->getSenderPhoneNumber(), $smsMessage->getRecipientPhoneNumber() );
     $smsMessage->setMessageBody( $sms_data[ "sms_body" ] );
     $smsMessage->setUTCTimeSent( $sms_data[ "utc_time_sent" ] );
-    $smsMessageMapper = new \Models\Mappers\SMSMessageMapper( $this->container );
+    $smsMessageMapper = new \Model\Mappers\SMSMessageMapper( $this->container );
     $smsMessageMapper->saveSMS( $smsMessage );
   }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class InteractionTypeMapper extends DataMapper
 {
@@ -20,7 +20,7 @@ class InteractionTypeMapper extends DataMapper
     return $interactionTypes;
   }
 
-  public function mapFromID( \Models\InteractionType $interactionType, $id )
+  public function mapFromID( \Model\InteractionType $interactionType, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM interaction_type WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -30,7 +30,7 @@ class InteractionTypeMapper extends DataMapper
     return $interactionType;
   }
 
-  private function populateInteractionType( \Models\InteractionType $interactionType, $data )
+  private function populateInteractionType( \Model\InteractionType $interactionType, $data )
   {
     $interactionType->id                = $data[ "id" ];
     $interactionType->name              = $data[ "name" ];

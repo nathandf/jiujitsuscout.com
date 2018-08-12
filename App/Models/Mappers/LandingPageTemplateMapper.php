@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class LandingPageTemplateMapper extends DataMapper
 {
@@ -20,7 +20,7 @@ class LandingPageTemplateMapper extends DataMapper
     return $landingPageTemplates;
   }
 
-  public function mapFromID( \Models\LandingPageTemplate $landingPageTemplate, $id )
+  public function mapFromID( \Model\LandingPageTemplate $landingPageTemplate, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM landing_page_template WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -30,7 +30,7 @@ class LandingPageTemplateMapper extends DataMapper
     return $landingPageTemplate;
   }
 
-  private function populateLandingPageTemplate( \Models\LandingPageTemplate $landingPageTemplate, $data )
+  private function populateLandingPageTemplate( \Model\LandingPageTemplate $landingPageTemplate, $data )
   {
     $landingPageTemplate->id                = $data[ "id" ];
     $landingPageTemplate->name              = $data[ "name" ];

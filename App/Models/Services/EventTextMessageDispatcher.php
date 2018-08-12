@@ -1,15 +1,15 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
-use Models\Services\EventTextMessageRepository;
-use Models\Services\TextMessageRepository;
+use Model\Services\EventTextMessageRepository;
+use Model\Services\TextMessageRepository;
 use Contracts\SMSMessagerInterface;
 /**
- * @package Models\Services
+ * @package Model\Services
  *
- * @property Models\Services\EventTextMessageRepository
- * @property Models\Services\TextMessageRepository
+ * @property Model\Services\EventTextMessageRepository
+ * @property Model\Services\TextMessageRepository
  * @property Contracts\SMSMessagerInterface
  */
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\User;
+use Model\User;
 
 class UserMapper extends DataMapper
 {
@@ -161,7 +161,7 @@ class UserMapper extends DataMapper
 		}
 	}
 
-    private function populateUser( \Models\User $user, $data )
+    private function populateUser( \Model\User $user, $data )
     {
         $user->id = $data[ "id" ];
         $user->user_type = $data[ "user_type" ];

@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Account;
+use Model\Account;
 
 class AccountMapper extends DataMapper
 {
 
-    public function create( \Models\Account $account )
+    public function create( \Model\Account $account )
     {
         $id = $this->insert(
             "account",
@@ -69,7 +69,7 @@ class AccountMapper extends DataMapper
         $this->update( "account", "account_type_id", $account_type_id, "id", $account_id );
     }
 
-    private function populateAccount( \Models\Account $account, $data )
+    private function populateAccount( \Model\Account $account, $data )
     {
         $account->id = $data[ "id" ];
         $account->account_status = $data[ "account_status" ];

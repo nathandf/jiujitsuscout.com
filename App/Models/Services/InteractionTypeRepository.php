@@ -1,21 +1,21 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class InteractionTypeRepository extends Service
 {
 
   public function getAll()
   {
-    $interactionTypeMapper = new \Models\Mappers\InteractionTypeMapper( $this->container );
+    $interactionTypeMapper = new \Model\Mappers\InteractionTypeMapper( $this->container );
     $interactionTypes = $interactionTypeMapper->mapAll();
     return $interactionTypes;
   }
 
   public function getByID( $id )
   {
-    $interactionType = new \Models\InteractionType();
-    $interactionTypeMapper = new \Models\Mappers\InteractionTypeMapper( $this->container );
+    $interactionType = new \Model\InteractionType();
+    $interactionTypeMapper = new \Model\Mappers\InteractionTypeMapper( $this->container );
     $interactionTypeMapper->mapFromID( $interactionType, $id );
 
     return $interactionType;

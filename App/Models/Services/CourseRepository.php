@@ -1,9 +1,9 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
-use Models\Course;
-use Models\Mappers\CourseMapper;
+use Model\Course;
+use Model\Mappers\CourseMapper;
 
 class CourseRepository extends Service
 {
@@ -35,7 +35,7 @@ class CourseRepository extends Service
 
     public function getAllByBusinessID( $business_id )
     {
-        $courseMapper = new \Models\Mappers\CourseMapper( $this->container );
+        $courseMapper = new \Model\Mappers\CourseMapper( $this->container );
         $courses = $courseMapper->mapAllFromBusinessID( $business_id );
 
         return $courses;
@@ -43,7 +43,7 @@ class CourseRepository extends Service
 
     public function removeByID( $id )
     {
-        $courseMapper = new \Models\Mappers\CourseMapper( $this->container );
+        $courseMapper = new \Model\Mappers\CourseMapper( $this->container );
         $courseMapper->deleteByID( $id );
     }
 

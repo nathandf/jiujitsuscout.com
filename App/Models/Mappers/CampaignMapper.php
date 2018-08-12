@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Campaign;
+use Model\Campaign;
 
 class CampaignMapper extends DataMapper
 {
 
-  public function create( \Models\Campaign $campaign )
+  public function create( \Model\Campaign $campaign )
   {
     $id = $this->insert(
                     "campaign",

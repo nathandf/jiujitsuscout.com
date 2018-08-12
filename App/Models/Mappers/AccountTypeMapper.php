@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class AccountTypeMapper extends DataMapper
 {
@@ -20,7 +20,7 @@ class AccountTypeMapper extends DataMapper
         return $accountTypes;
     }
 
-    public function mapFromID( \Models\AccountType $accountType, $id )
+    public function mapFromID( \Model\AccountType $accountType, $id )
     {
 
         $sql = $this->DB->prepare( "SELECT * FROM account_type WHERE id = :id" );

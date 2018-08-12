@@ -1,9 +1,9 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 use Core\DI_Container;
-use Models\Mappers\DataMapper;
+use Model\Mappers\DataMapper;
 
 abstract class Service
 {

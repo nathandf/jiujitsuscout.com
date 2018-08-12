@@ -1,21 +1,21 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class EventTextMessageRepository extends Service
 {
 
   public function getAll()
   {
-    $eventTextMessageMapper = new \Models\Mappers\EventTextMessageMapper( $this->container );
+    $eventTextMessageMapper = new \Model\Mappers\EventTextMessageMapper( $this->container );
     $eventTextMessages = $eventTextMessageMapper->mapAll();
     return $eventTextMessages;
   }
 
   public function getByID( $id )
   {
-    $eventTextMessage = new \Models\EventTextMessage();
-    $eventTextMessageMapper = new \Models\Mappers\EventTextMessageMapper( $this->container );
+    $eventTextMessage = new \Model\EventTextMessage();
+    $eventTextMessageMapper = new \Model\Mappers\EventTextMessageMapper( $this->container );
     $eventTextMessageMapper->mapFromID( $eventTextMessage, $id );
 
     return $eventTextMessage;
@@ -23,8 +23,8 @@ class EventTextMessageRepository extends Service
 
   public function getByEventID( $event_id )
   {
-    $eventTextMessage = new \Models\EventTextMessage();
-    $eventTextMessageMapper = new \Models\Mappers\EventTextMessageMapper( $this->container );
+    $eventTextMessage = new \Model\EventTextMessage();
+    $eventTextMessageMapper = new \Model\Mappers\EventTextMessageMapper( $this->container );
     $eventTextMessageMapper->mapFromEventID( $eventTextMessage, $event_id );
 
     return $eventTextMessage;

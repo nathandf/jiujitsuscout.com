@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class EntityFactory
 {
 
-  public function build( $type, $namespace = "\\Models\\" )
+  public function build( $type, $namespace = "\\Model\\" )
   {
     if ( $type == "" ) {
       throw new \Exception( "Invalid Entity Type: \"$type\"." );

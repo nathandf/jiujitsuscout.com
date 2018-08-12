@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class EventTextMessageMapper extends DataMapper
 {
@@ -20,7 +20,7 @@ class EventTextMessageMapper extends DataMapper
     return $eventTextMessages;
   }
 
-  public function mapFromID( \Models\EventTextMessage $eventTextMessage, $id )
+  public function mapFromID( \Model\EventTextMessage $eventTextMessage, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM event_text_message WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -30,7 +30,7 @@ class EventTextMessageMapper extends DataMapper
     return $eventTextMessage;
   }
 
-  public function mapFromEventID( \Models\EventTextMessage $eventTextMessage, $id )
+  public function mapFromEventID( \Model\EventTextMessage $eventTextMessage, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM event_text_message WHERE event_id = :id" );
     $sql->bindParam( ":id", $id );
@@ -40,7 +40,7 @@ class EventTextMessageMapper extends DataMapper
     return $eventTextMessage;
   }
 
-  private function populateEventTextMessage( \Models\EventTextMessage $eventTextMessage, $data )
+  private function populateEventTextMessage( \Model\EventTextMessage $eventTextMessage, $data )
   {
     $eventTextMessage->id                = $data[ "id" ];
     $eventTextMessage->event_id          = $data[ "event_id" ];

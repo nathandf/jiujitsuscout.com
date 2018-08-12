@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class AddressMapper extends DataMapper
 {
@@ -20,7 +20,7 @@ class AddressMapper extends DataMapper
     return $addresss;
   }
 
-  public function mapFromID( \Models\Address $address, $id )
+  public function mapFromID( \Model\Address $address, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM address WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -30,7 +30,7 @@ class AddressMapper extends DataMapper
     return $address;
   }
 
-  private function populateAddress( \Models\Address $address, $data )
+  private function populateAddress( \Model\Address $address, $data )
   {
     $address->id                = $data[ "id" ];
     $address->address_1         = $data[ "address_1" ];

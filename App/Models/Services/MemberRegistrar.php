@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class MemberRegistrar
 {
@@ -11,7 +11,7 @@ class MemberRegistrar
     $this->memberRepo = $repo;
   }
 
-    public function register( \Models\Member $member )
+    public function register( \Model\Member $member )
     {
         // Save member and get new id
         $member_id = $this->memberRepo->save( $member );
@@ -20,7 +20,7 @@ class MemberRegistrar
         return $member;
     }
 
-    public function registerProspect( \Models\Member $member, \Models\Prospect $prospect )
+    public function registerProspect( \Model\Member $member, \Model\Prospect $prospect )
     {
         $member->prospect_id            = $prospect->id;
         $member->status                 = "active";

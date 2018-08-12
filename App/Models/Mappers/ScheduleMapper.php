@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Schedule;
+use Model\Schedule;
 
 class ScheduleMapper extends DataMapper
 {
 
-    public function create( \Models\Schedule $schedule )
+    public function create( \Model\Schedule $schedule )
     {
         $id = $this->insert(
             "schedule",
@@ -60,7 +60,7 @@ class ScheduleMapper extends DataMapper
         $sql->execute();
     }
 
-    private function populateSchedule( \Models\Schedule $schedule, $data )
+    private function populateSchedule( \Model\Schedule $schedule, $data )
     {
         $schedule->id                      = $data[ "id" ];
         $schedule->business_id             = $data[ "business_id" ];

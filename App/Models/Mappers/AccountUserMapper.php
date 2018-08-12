@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class AccountUserMapper extends DataMapper
 {
@@ -26,7 +26,7 @@ class AccountUserMapper extends DataMapper
     return $accountUsers;
   }
 
-  public function mapFromID( \Models\AccountUser $accountUser, $id )
+  public function mapFromID( \Model\AccountUser $accountUser, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM account_user WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -36,7 +36,7 @@ class AccountUserMapper extends DataMapper
     return $accountUser;
   }
 
-  public function mapFromUserID( \Models\AccountUser $accountUser, $user_id )
+  public function mapFromUserID( \Model\AccountUser $accountUser, $user_id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM account_user WHERE user_id = :user_id" );
     $sql->bindParam( ":user_id", $user_id );
@@ -63,7 +63,7 @@ class AccountUserMapper extends DataMapper
         return $accountUsers;
     }
 
-  private function populateAccountUser( \Models\AccountUser $accountUser, $data )
+  private function populateAccountUser( \Model\AccountUser $accountUser, $data )
   {
     $accountUser->id                = $data[ "id" ];
     $accountUser->account_id        = $data[ "account_id" ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class EventMapper extends DataMapper
 {
@@ -46,7 +46,7 @@ class EventMapper extends DataMapper
     return $events;
   }
 
-  public function mapFromID( \Models\Event $event, $id )
+  public function mapFromID( \Model\Event $event, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM event WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -56,7 +56,7 @@ class EventMapper extends DataMapper
     return $event;
   }
 
-  private function populateEvent( \Models\Event $event, $data )
+  private function populateEvent( \Model\Event $event, $data )
   {
     $event->id            = $data[ "id" ];
     $event->business_id   = $data[ "business_id" ];

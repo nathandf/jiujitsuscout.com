@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Course;
+use Model\Course;
 
 class CourseMapper extends DataMapper
 {
 
-    public function create( \Models\Course $course )
+    public function create( \Model\Course $course )
     {
         $id = $this->insert(
             "course",
@@ -54,7 +54,7 @@ class CourseMapper extends DataMapper
         $sql->execute();
     }
 
-    private function populateCourse( \Models\Course $course, $data )
+    private function populateCourse( \Model\Course $course, $data )
     {
         $course->id                      = $data[ "id" ];
         $course->business_id             = $data[ "business_id" ];

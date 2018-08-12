@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class BraintreeTransactionMapper extends DataMapper
 {
 
-    public function create( \Models\BraintreeTransaction $braintreeTransaction )
+    public function create( \Model\BraintreeTransaction $braintreeTransaction )
     {
         $now = time();
         $id = $this->insert(
@@ -60,7 +60,7 @@ class BraintreeTransactionMapper extends DataMapper
         return $braintreeTransactions;
     }
 
-    public function mapFromID( \Models\BraintreeTransaction $braintreeTransaction, $id )
+    public function mapFromID( \Model\BraintreeTransaction $braintreeTransaction, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM braintree_transaction WHERE id = :id" );
         $sql->bindParam( ":id", $id );
@@ -71,7 +71,7 @@ class BraintreeTransactionMapper extends DataMapper
         return $braintreeTransaction;
     }
 
-    public function mapFromBraintreeTransactionID( \Models\BraintreeTransaction $braintreeTransaction, $braintree_transaction_id )
+    public function mapFromBraintreeTransactionID( \Model\BraintreeTransaction $braintreeTransaction, $braintree_transaction_id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM braintree_transaction WHERE braintree_transaction_id = :braintree_transaction_id" );
         $sql->bindParam( ":braintree_transaction_id", $braintree_transaction_id );
@@ -82,7 +82,7 @@ class BraintreeTransactionMapper extends DataMapper
         return $braintreeTransaction;
     }
 
-    private function populateBraintreeTransaction( \Models\BraintreeTransaction $braintreeTransaction, $data )
+    private function populateBraintreeTransaction( \Model\BraintreeTransaction $braintreeTransaction, $data )
     {
         $braintreeTransaction->id                                   = $data[ "id" ];
         $braintreeTransaction->braintree_transaction_id             = $data[ "braintree_transaction_id" ];

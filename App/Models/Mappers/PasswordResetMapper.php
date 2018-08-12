@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class PasswordResetMapper extends DataMapper
 {
 
-    public function create( \Models\PasswordReset $passwordReset )
+    public function create( \Model\PasswordReset $passwordReset )
     {
         $id = $this->insert(
             "password_reset",
@@ -34,7 +34,7 @@ class PasswordResetMapper extends DataMapper
         return $passwordResets;
     }
 
-    public function mapFromID( \Models\PasswordReset $passwordReset, $id )
+    public function mapFromID( \Model\PasswordReset $passwordReset, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM password_reset WHERE id = :id" );
         $sql->bindParam( ":id", $id );
@@ -45,7 +45,7 @@ class PasswordResetMapper extends DataMapper
         return $passwordReset;
     }
 
-    public function mapFromNonceTokenID( \Models\PasswordReset $passwordReset, $nonce_token_id )
+    public function mapFromNonceTokenID( \Model\PasswordReset $passwordReset, $nonce_token_id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM password_reset WHERE nonce_token_id = :nonce_token_id" );
         $sql->bindParam( ":nonce_token_id", $nonce_token_id );
@@ -56,7 +56,7 @@ class PasswordResetMapper extends DataMapper
         return $passwordReset;
     }
 
-    private function populatePasswordReset( \Models\PasswordReset $passwordReset, $data )
+    private function populatePasswordReset( \Model\PasswordReset $passwordReset, $data )
     {
         $passwordReset->id             = $data[ "id" ];
         $passwordReset->email          = $data[ "email" ];

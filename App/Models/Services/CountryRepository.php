@@ -1,27 +1,27 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class CountryRepository extends Service
 {
 
   public function getAll()
   {
-    $countryMapper = new \Models\Mappers\CountryMapper( $this->container );
+    $countryMapper = new \Model\Mappers\CountryMapper( $this->container );
     $countries = $countryMapper->mapAll();
     return $countries;
   }
 
   public function getByISO( $iso )
   {
-    $countryMapper = new \Models\Mappers\CountryMapper( $this->container );
+    $countryMapper = new \Model\Mappers\CountryMapper( $this->container );
     $country = $countryMapper->mapFromISO( $iso );
     return $country;
   }
 
   public function getByName( $name )
   {
-    $countryMapper = new \Models\Mappers\CountryMapper( $this->container );
+    $countryMapper = new \Model\Mappers\CountryMapper( $this->container );
     $country = $countryMapper->mapFromName( $name );
     return $country;
   }

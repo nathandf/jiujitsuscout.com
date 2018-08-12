@@ -1,9 +1,9 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
-use Models\Account;
-use Models\Mappers\AccountMapper;
+use Model\Account;
+use Model\Mappers\AccountMapper;
 
 class AccountRepository extends Service
 {
@@ -32,7 +32,7 @@ class AccountRepository extends Service
 
     public function getAll()
     {
-        $accountMapper = new \Models\Mappers\AccountMapper( $this->container );
+        $accountMapper = new \Model\Mappers\AccountMapper( $this->container );
         $accounts = $accountMapper->mapAll();
 
         return $accounts;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
-use Models\AccountType;
-use Models\Mappers\AccountTypeMapper;
+use Model\AccountType;
+use Model\Mappers\AccountTypeMapper;
 
 class AccountTypeRepository extends Service
 {
@@ -11,7 +11,7 @@ class AccountTypeRepository extends Service
     public function getAll()
     {
 
-        $accountTypeMapper = new \Models\Mappers\AccountTypeMapper( $this->container );
+        $accountTypeMapper = new \Model\Mappers\AccountTypeMapper( $this->container );
         $accountTypes = $accountTypeMapper->mapAll();
 
         return $accountTypes;

@@ -1,21 +1,21 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class UserMemberInteractionRepository extends Service
 {
 
   public function getAll()
   {
-    $userProspectInteractionMapper = new \Models\Mappers\UserProspectInteractionMapper( $this->container );
+    $userProspectInteractionMapper = new \Model\Mappers\UserProspectInteractionMapper( $this->container );
     $userProspectInteractions = $userProspectInteractionMapper->mapAll();
     return $userProspectInteractions;
   }
 
   public function getByID( $id )
   {
-    $userProspectInteraction = new \Models\UserProspectInteraction();
-    $userProspectInteractionMapper = new \Models\Mappers\UserProspectInteractionMapper( $this->container );
+    $userProspectInteraction = new \Model\UserProspectInteraction();
+    $userProspectInteractionMapper = new \Model\Mappers\UserProspectInteractionMapper( $this->container );
     $userProspectInteractionMapper->mapFromID( $userProspectInteraction, $id );
 
     return $userProspectInteraction;
@@ -23,8 +23,8 @@ class UserMemberInteractionRepository extends Service
 
   public function getByUserID( $id )
   {
-    $userProspectInteraction = new \Models\UserProspectInteraction();
-    $userProspectInteractionMapper = new \Models\Mappers\UserProspectInteractionMapper( $this->container );
+    $userProspectInteraction = new \Model\UserProspectInteraction();
+    $userProspectInteractionMapper = new \Model\Mappers\UserProspectInteractionMapper( $this->container );
     $userProspectInteractionMapper->mapFromUserID( $userProspectInteraction, $id );
 
     return $userProspectInteraction;
@@ -32,8 +32,8 @@ class UserMemberInteractionRepository extends Service
 
   public function getByMemberID( $id )
   {
-    $userProspectInteraction = new \Models\UserProspectInteraction();
-    $userProspectInteractionMapper = new \Models\Mappers\UserProspectInteractionMapper( $this->container );
+    $userProspectInteraction = new \Model\UserProspectInteraction();
+    $userProspectInteractionMapper = new \Model\Mappers\UserProspectInteractionMapper( $this->container );
     $userProspectInteractionMapper->mapFromMemberID( $userProspectInteraction, $id );
 
     return $userProspectInteraction;

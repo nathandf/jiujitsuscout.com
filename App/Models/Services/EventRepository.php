@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class EventRepository extends Service
 {
 
     public function getAll()
     {
-        $eventMapper = new \Models\Mappers\EventMapper( $this->container );
+        $eventMapper = new \Model\Mappers\EventMapper( $this->container );
         $events = $eventMapper->mapAll();
 
         return $events;
@@ -15,7 +15,7 @@ class EventRepository extends Service
 
     public function getAllFromSequenceID( $sequence_id )
     {
-        $eventMapper = new \Models\Mappers\EventMapper( $this->container );
+        $eventMapper = new \Model\Mappers\EventMapper( $this->container );
         $events = $eventMapper->mapAllFromSequenceID( $sequence_id );
 
         return $events;
@@ -23,7 +23,7 @@ class EventRepository extends Service
 
     public function getAllFromBusinessID( $business_id )
     {
-        $eventMapper = new \Models\Mappers\EventMapper( $this->container );
+        $eventMapper = new \Model\Mappers\EventMapper( $this->container );
         $events = $eventMapper->mapAllFromBusinessID( $business_id );
 
         return $events;
@@ -31,8 +31,8 @@ class EventRepository extends Service
 
     public function getByID( $id )
     {
-        $event = new \Models\Event();
-        $eventMapper = new \Models\Mappers\EventMapper( $this->container );
+        $event = new \Model\Event();
+        $eventMapper = new \Model\Mappers\EventMapper( $this->container );
         $eventMapper->mapFromID( $event, $id );
 
         return $event;

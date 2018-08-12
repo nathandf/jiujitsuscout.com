@@ -1,21 +1,21 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class LandingPageTemplateRepository extends Service
 {
 
   public function getAll()
   {
-    $landingPageTemplateMapper = new \Models\Mappers\LandingPageTemplateMapper( $this->container );
+    $landingPageTemplateMapper = new \Model\Mappers\LandingPageTemplateMapper( $this->container );
     $landingPageTemplates = $landingPageTemplateMapper->mapAll();
     return $landingPageTemplates;
   }
 
   public function getByID( $id )
   {
-    $landingPageTemplate = new \Models\LandingPageTemplate();
-    $landingPageTemplateMapper = new \Models\Mappers\LandingPageTemplateMapper( $this->container );
+    $landingPageTemplate = new \Model\LandingPageTemplate();
+    $landingPageTemplateMapper = new \Model\Mappers\LandingPageTemplateMapper( $this->container );
     $landingPageTemplateMapper->mapFromID( $landingPageTemplate, $id );
 
     return $landingPageTemplate;

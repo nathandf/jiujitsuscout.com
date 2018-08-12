@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class ProspectRegistrar
 {
@@ -11,7 +11,7 @@ class ProspectRegistrar
         $this->factory = $factory;
     }
 
-    public function register( \Models\Prospect $prospect )
+    public function register( \Model\Prospect $prospect )
     {
         $id = $this->repo->save( $prospect );
         $prospect->id = $id;

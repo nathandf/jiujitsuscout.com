@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Task;
+use Model\Task;
 
 class TaskMapper extends DataMapper
 {
 
-    public function create( \Models\Task $task )
+    public function create( \Model\Task $task )
     {
         $id = $this->insert(
             "task",

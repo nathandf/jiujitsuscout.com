@@ -1,11 +1,11 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class ResultMapper extends DataMapper
 {
 
-    public function create( \Models\Result $result )
+    public function create( \Model\Result $result )
     {
         $id = $this->insert(
 
@@ -26,7 +26,7 @@ class ResultMapper extends DataMapper
         return $result;
     }
 
-    public function mapFromID( \Models\Result $result, $id )
+    public function mapFromID( \Model\Result $result, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM `result` WHERE id = :id" );
         $sql->bindParam( ":id", $id );
@@ -37,7 +37,7 @@ class ResultMapper extends DataMapper
         return $result;
     }
 
-    public function mapFromSearchID( \Models\Result $result, $search_id )
+    public function mapFromSearchID( \Model\Result $result, $search_id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM `result` WHERE search_id = :search_id" );
         $sql->bindParam( ":search_id", $search_id );

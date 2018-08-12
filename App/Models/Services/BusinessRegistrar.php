@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class BusinessRegistrar
 {
@@ -9,7 +9,7 @@ class BusinessRegistrar
     public $groupRepo;
     public $phoneRepo;
 
-    public function __construct( \Models\Services\BusinessRepository $businessRepo, \Models\Services\GroupRepository $groupRepo, \Models\Services\PhoneRepository $phoneRepo )
+    public function __construct( \Model\Services\BusinessRepository $businessRepo, \Model\Services\GroupRepository $groupRepo, \Model\Services\PhoneRepository $phoneRepo )
     {
         $this->setBusinessRepo( $businessRepo );
         $this->setGroupRepo( $groupRepo );
@@ -51,7 +51,7 @@ class BusinessRegistrar
         $this->groupRepo->create( $business->id, "Members", "Default group for members that you import, add manually, or convert from leads" );
     }
 
-    public function setBusiness( \Models\Business $business )
+    public function setBusiness( \Model\Business $business )
     {
         $this->business = $business;
     }

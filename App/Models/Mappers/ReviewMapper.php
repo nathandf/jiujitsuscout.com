@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Review;
+use Model\Review;
 
 class ReviewMapper extends DataMapper
 {
 
-  public function create( \Models\Review $review )
+  public function create( \Model\Review $review )
   {
     $id = $this->insert(
                     "review",
@@ -44,7 +44,7 @@ class ReviewMapper extends DataMapper
         return $reviews;
     }
 
-  private function populateReview( \Models\Review $review, $data )
+  private function populateReview( \Model\Review $review, $data )
   {
     $review->id                      = $data[ "id" ];
     $review->business_id             = $data[ "business_id" ];

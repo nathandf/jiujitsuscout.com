@@ -1,6 +1,6 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
 class CampaignTypeMapper extends DataMapper
 {
@@ -20,7 +20,7 @@ class CampaignTypeMapper extends DataMapper
     return $campaignTypes;
   }
 
-  public function mapFromID( \Models\CampaignType $campaignType, $id )
+  public function mapFromID( \Model\CampaignType $campaignType, $id )
   {
     $sql = $this->DB->prepare( "SELECT * FROM campaign_type WHERE id = :id" );
     $sql->bindParam( ":id", $id );
@@ -30,7 +30,7 @@ class CampaignTypeMapper extends DataMapper
     return $campaignType;
   }
 
-  private function populateCampaignType( \Models\CampaignType $campaignType, $data )
+  private function populateCampaignType( \Model\CampaignType $campaignType, $data )
   {
     $campaignType->id                = $data[ "id" ];
     $campaignType->name              = $data[ "name" ];

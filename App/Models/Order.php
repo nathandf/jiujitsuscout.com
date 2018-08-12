@@ -1,6 +1,6 @@
 <?php
 
-namespace Models;
+namespace Model;
 
 // NOTE - order is an SQL keyword. Use tic marks in queries - " `order` "
 class Order

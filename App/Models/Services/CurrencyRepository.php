@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class CurrencyRepository extends Service
 {
 
     public function getAll()
     {
-        $currencyMapper = new \Models\Mappers\CurrencyMapper( $this->container );
+        $currencyMapper = new \Model\Mappers\CurrencyMapper( $this->container );
         $currencies = $currencyMapper->mapAll();
 
         return $currencies;
@@ -15,7 +15,7 @@ class CurrencyRepository extends Service
 
     public function getByCountry( $country )
     {
-        $currencyMapper = new \Models\Mappers\CurrencyMapper( $this->container );
+        $currencyMapper = new \Model\Mappers\CurrencyMapper( $this->container );
         $currency = $currencyMapper->mapFromCountry( $country );
 
         return $currency;
@@ -23,7 +23,7 @@ class CurrencyRepository extends Service
 
     public function getByCode( $code )
     {
-        $currencyMapper = new \Models\Mappers\CurrencyMapper( $this->container );
+        $currencyMapper = new \Model\Mappers\CurrencyMapper( $this->container );
         $currency = $currencyMapper->mapFromCode( $code );
 
         return $currency;
@@ -31,7 +31,7 @@ class CurrencyRepository extends Service
 
     public function getByName( $name )
     {
-        $currencyMapper = new \Models\Mappers\CurrencyMapper( $this->container );
+        $currencyMapper = new \Model\Mappers\CurrencyMapper( $this->container );
         $currency = $currencyMapper->mapFromName( $name );
 
         return $currency;

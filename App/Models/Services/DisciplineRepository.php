@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class DisciplineRepository extends Service
 {
 
     public function getAll()
     {
-        $disciplineMapper = new \Models\Mappers\DisciplineMapper( $this->container );
+        $disciplineMapper = new \Model\Mappers\DisciplineMapper( $this->container );
         $disciplines = $disciplineMapper->mapAll();
 
         return $disciplines;
@@ -15,7 +15,7 @@ class DisciplineRepository extends Service
 
     public function getByID( $id )
     {
-        $disciplineMapper = new \Models\Mappers\DisciplineMapper( $this->container );
+        $disciplineMapper = new \Model\Mappers\DisciplineMapper( $this->container );
         $discipline = $disciplineMapper->mapFromID( $id );
 
         return $discipline;
@@ -23,7 +23,7 @@ class DisciplineRepository extends Service
 
     public function getByName( $name )
     {
-        $disciplineMapper = new \Models\Mappers\DisciplineMapper( $this->container );
+        $disciplineMapper = new \Model\Mappers\DisciplineMapper( $this->container );
         $discipline = $disciplineMapper->mapFromName( $name );
 
         return $discipline;

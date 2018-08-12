@@ -1,13 +1,13 @@
 <?php
 
-namespace Models\Services;
+namespace Model\Services;
 
 class AccountRegistrar
 {
 
     public $accountRepo;
 
-    public function __construct( \Models\Services\AccountRepository $accountRepo )
+    public function __construct( \Model\Services\AccountRepository $accountRepo )
     {
         $this->setAccountRepo( $accountRepo );
     }
@@ -41,7 +41,7 @@ class AccountRegistrar
         }
     }
 
-    public function setAccount( \Models\Account $account )
+    public function setAccount( \Model\Account $account )
     {
         $this->account = $account;
     }

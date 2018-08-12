@@ -1,8 +1,8 @@
 <?php
 
-namespace Models\Mappers;
+namespace Model\Mappers;
 
-use Models\Note;
+use Model\Note;
 
 class NoteMapper extends DataMapper
 {
@@ -90,7 +90,7 @@ class NoteMapper extends DataMapper
         }
     }
 
-  private function populateNote( \Models\Note $note, $data )
+  private function populateNote( \Model\Note $note, $data )
   {
     $note->id                      = $data[ "id" ];
     $note->business_id             = $data[ "business_id" ];
