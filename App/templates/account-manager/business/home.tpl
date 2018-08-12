@@ -19,7 +19,7 @@
 				<tr class="bg-white">
 					<td class="text-center">{$account_type->name|capitalize}{if $account_type->id != 4}<br><a class="link text-sml tc-mango" target="_blank" href="{$HOME}account-manager/upgrade"><b>Upgrade</b></a>{/if}</p></td>
 					<td class="text-center">{$leads|@count}</td>
-					<td class="text-center">{if $account_type->id != 1}Updgraded{else}Free{/if}</td>
+					<td class="text-center">{if $account_type->id != 1}Upgraded{else}Free{/if}</td>
 				</tr>
 			</table>
 			<div class="con-half-min-320 cnt-640 floatleft">
