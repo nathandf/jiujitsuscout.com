@@ -673,7 +673,12 @@ class AccountManager extends Controller
 		$this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 	    $this->view->setErrorMessages( $inputValidator->getErrors() );
 
-		$this->view->setTemplate( "account-manager/upgrade.tpl" );
+		if ( in_array( $this->accountType->id, [ 1, 2, 3 ] ) ) {
+			$this->view->setTemplate( "account-manager/upgrade-business.tpl" );
+		} else {
+			$this->view->setTemplate( "account-manager/upgrade-enterprise.tpl" );
+		}
+
 		$this->view->render( "App/Views/AccountManager.php" );
 	}
 

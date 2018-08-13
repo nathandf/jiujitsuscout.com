@@ -79,6 +79,7 @@ class AccountMapper extends DataMapper
         $account->profile_creation_date = $data[ "profile_creation_date" ];
         $account->timezone = $data[ "timezone" ];
         $account->primary_user_id = $data[ "primary_user_id" ];
+        $account->credit = $data[ "credit" ];
     }
 
 }

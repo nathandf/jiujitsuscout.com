@@ -2,35 +2,63 @@
 
 namespace Model\Services;
 
+use Model\Services\TransactionRepository;
+use Model\Services\OrderRepository;
+use Model\Services\OrderProductRepository;
+use Model\Services\CurrencyRepository;
+use Model\Services\ProductRepository;
+use Model\Order;
+
 class TransactionBuilder
+
 {
+    // Repos
+    public $transactionRepo;
+    public $orderRepo;
+    public $orderProductRepo;
+    public $productRepo;
+    public $customerRepo;
+    public $currencyRepo;
+
     // Customer order
     public $order;
+
     // orderProducts related to customer order;
     public $orderProducts;
+
     // Transaction Total default
     public $transaction_total = 0;
+
     // Flag for subscription
     public $hasSubscription = false;
+
     // Transaction currency symbol - Default: $
     public $currency_symbol = "$";
+
     // Subscription orderProducts
     public $subscriptionOrderProducts = [];
+
     // Default post-payment redirect url
     public $payment_redirect_url;
 
-    public function __construct( \Model\Services\TransactionRepository $transactionRepo, \Model\Services\OrderRepository $orderRepo, \Model\Services\OrderProductRepository $orderProductRepo, \Model\Services\ProductRepository $productRepo, \Model\Services\CurrencyRepository $currencyRepo )
+    public function __construct( TransactionRepository $transactionRepo, OrderRepository $orderRepo, OrderProductRepository $orderProductRepo, ProductRepository $productRepo, CustomerRepository $customerRepo, CurrencyRepository $currencyRepo )
     {
         $this->transactionRepo = $transactionRepo;
         $this->orderRepo = $orderRepo;
         $this->orderProductRepo = $orderProductRepo;
         $this->productRepo = $productRepo;
+        $this->customerRepo = $customerRepo;
         $this->currencyRepo = $currencyRepo;
     }
 
-    public function buildTransaction( $customer_id )
+    public function setupTransaction( $account_id )
     {
-        if ( $this->buildOrder( $customer_id ) )  {
+        // Get customer associated with this account
+        $customer = $this->customerRepo->getByAccountID( $account_id );
+
+        $this->setCustomer( $customer );
+
+        if ( $this->buildOrder( $customer->id ) )  {
             return true;
         }
 
@@ -58,7 +86,7 @@ class TransactionBuilder
         return false;
     }
 
-    private function setOrder( \Model\Order $order )
+    private function setOrder( Order $order )
     {
         $this->order = $order;
     }
@@ -163,5 +191,19 @@ class TransactionBuilder
     public function getSubscriptionOrderProducts()
     {
         return $this->subscriptionOrderProducts;
+    }
+
+    public function setCustomer( $customer )
+    {
+        $this->customer = $customer;
+    }
+
+    public function getCustomer()
+    {
+        if ( isset( $this->customer ) ) {
+            return $this->customer;
+        }
+
+        return null;
     }
 }

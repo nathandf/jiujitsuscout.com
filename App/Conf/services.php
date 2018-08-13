@@ -66,6 +66,7 @@ $container->register( "transaction-builder", function() use ( $container ) {
 		$container->getService( "order-repository" ),
 		$container->getService( "order-product-repository" ),
 		$container->getService( "product-repository" ),
+		$container->getService( "customer-repository" ),
 		$container->getService( "currency-repository" )
 	);
 	return $transactionBuilder;

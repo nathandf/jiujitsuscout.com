@@ -52,7 +52,17 @@ class Cart extends Controller
         $orderProductRepo = $this->load( "order-product-repository" );
         $productRepo = $this->load( "product-repository" );
         $currencyRepo = $this->load( "currency-repository" );
+        $braintreeGatewayInit = $this->load( "braintree-gateway-initializer" );
 
+        // Use api credentials stored in configs to create a gateway object
+        // to establish communication with the braintree API.
+        $gateway = $braintreeGatewayInit->init();
+
+        // Generate a client token to begin making client-side request using the
+        // braintree Dropin UI
+        $clientToken = $gateway->clientToken()->generate();
+
+        // Prepare order details
         $transaction_total = 0;
 
         $customer = $customerRepo->getByAccountID( $this->account->id );
@@ -115,56 +125,13 @@ class Cart extends Controller
         $this->view->assign( "transaction_total", $transaction_total );
         $this->view->assign( "orderProducts", $orderProducts );
         $this->view->assign( "order_id", $order->id );
+        // Pass braintree client token to view for use in a Javascript API call
+        $this->view->assign( "client_token", $clientToken );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 	    $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setTemplate( "cart/order-confirmation.tpl" );
-        $this->view->render( "App/Views/AccountManager.php" );
-    }
-
-    public function payAction()
-    {
-        $input = $this->load( "input" );
-        $inputValidator = $this->load( "input-validator" );
-        $braintreeGatewayInit = $this->load( "braintree-gateway-initializer" );
-
-        if ( $input->exists() && $inputValidator->validate(
-
-                $input,
-
-                [
-                    "token" => [
-                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                        "required" => true
-                    ],
-                ],
-
-                "pay" /* error index */
-            ) )
-        {
-
-        } else {
-            $this->view->redirect( "cart/" );
-        }
-
-        // Use api credentials stored in configs to create a gateway object
-        // to establish communication with the braintree API.
-        $gateway = $braintreeGatewayInit->init();
-
-        // Generate a client token to begin making client-side request using the
-        // braintree Dropin UI
-        $clientToken = $gateway->clientToken()->generate();
-
-        // Pass braintree client token to view for use in a Javascript API call
-        $this->view->assign( "client_token", $clientToken );
-        $this->view->assign( "total", $input->get( "total" ) );
-        $this->view->assign( "order_id", $input->get( "order_id" ) );
-
-        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
-	    $this->view->setErrorMessages( $inputValidator->getErrors() );
-
-        $this->view->setTemplate( "cart/pay-redirect.tpl" );
         $this->view->render( "App/Views/AccountManager.php" );
     }
 
@@ -182,6 +149,9 @@ class Cart extends Controller
         $transactionBuilder = $this->load( "transaction-builder" );
         $logger = $this->load( "logger" );
 
+        // Set payment redirect url
+        $payment_redirect_url = "cart/";
+
         if ( $input->exists( "get" ) && $inputValidator->validate(
 
                 $input,
@@ -195,21 +165,15 @@ class Cart extends Controller
                 null /* error index */
             ) )
         {
-            // Get customer associated with this account
-            $customer = $customerRepo->getByAccountID( $this->account->id );
-
-            // Set payment redirect url
-            $transactionBuilder->setPaymentRedirectURL( "cart/" );
-
-            // If buildTransaction fails to build the transaction, redirect
-            // to the cart
-            if ( !$transactionBuilder->buildTransaction( $customer->id ) ) {
-                $this->view->redirect( $transactionBuilder->getPaymentRedirectURL() );
+            // If there is no open order, redirect back to cart
+            if ( !$transactionBuilder->setupTransaction( $this->account->id ) ) {
+                $this->view->redirect( $payment_redirect_url );
             }
 
-            // Prepare braintree customer
+            // Customer for this transaction
+            $customer = $transactionBuilder->getCustomer();
+
             // Get primary user data
-            //TODO Change this from primary user to user role "owner"
             $primary_user = $userRepo->getByID( $this->account->primary_user_id );
             $phone = $phoneRepo->getByID( $primary_user->phone_id );
             $primary_user->phone_number = $phone->country_code . " " . $phone->national_number;
@@ -227,27 +191,22 @@ class Cart extends Controller
                 $customer_details
             );
 
-            #############
-            // Get braintree payment methods of braintree customer
-            $braintreeCustomerPaymentMethods = $braintreeCustomer->paymentMethods;
-
-            // Get braintree customer payment method token
-            $braintreePaymentMethodToken = $braintreeCustomerPaymentMethods[ 0 ]->token;
-            #############
-
-            // Process payment as normal using customer id
-            $braintreeAPIManager->processSale( $transactionBuilder->getTransactionTotal() );
+            // Charge the customer's payment method for the transaction total
+            $braintreeAPIManager->processTransaction( $transactionBuilder->getTransactionTotal() );
 
             // If the payment was approved, update the 'paid' status of the
             // order, save the processor response text in $message, and create
             // any subscriptions purchased by this transsaction. If the payment
             // was declined or did no go through for any reason, save the failure
             // message provided in the braintree result object in $message
-            $braintreeSaleResult = $braintreeAPIManager->getSaleResult();
-            if ( $braintreeSaleResult->success ) {
-                $transactionBuilder->setPaymentRedirectURL( "cart/payment-confirmation" );
+            $braintreeTransactionResponseObject = $braintreeAPIManager->getTransactionResponseObject();
+            if ( $braintreeTransactionResponseObject->success ) {
+
+                // Update payment redirect url
+                $payment_redirect_url = "cart/payment-confirmation";
+
+                // Process events upon succesful transaction
                 $transactionBuilder->markOrderAsPaid();
-                $message = $braintreeSaleResult->transaction->processorResponseText;
 
                 // If subscription flag is true and transaction was successful,
                 // create braintree subscriptions
@@ -264,41 +223,31 @@ class Cart extends Controller
                         if ( $subscriptionOrderProduct->quantity > 1 ) {
                             $subscription_price = ( $subscriptionOrderProduct->product->price * $subscriptionOrderProduct->quantity );
                             // Create subscription with new price
-                            $braintreeAPIManager->createSubscription( $subscriptionOrderProduct->product->id, $braintreePaymentMethodToken, $subscription_price );
+                            $braintreeAPIManager->createSubscription(
+                                $subscriptionOrderProduct->product->id,
+                                $braintreeAPIManager->getPaymentMethodToken(),
+                                $subscription_price
+                            );
                         } else {
                             // Create subscription with defualt price
-                            $braintreeAPIManager->createSubscription( $subscriptionOrderProduct->product->id, $braintreePaymentMethodToken );
+                            $braintreeAPIManager->createSubscription(
+                                $subscriptionOrderProduct->product->id,
+                                $braintreeAPIManager->getPaymentMethodToken()
+                            );
                         }
                     }
                 }
-            } elseif ( !$braintreeSaleResult->success ) {
-                $transactionBuilder->setPaymentRedirectURL( "cart/?error=payment_failure" );
-                $message = $braintreeSaleResult->message;
+            } elseif ( !$braintreeTransactionResponseObject->success ) {
+                $payment_redirect_url = "cart/?error=payment_failure";
             }
 
-            $logger->info( "Message: " . $message );
+            $transactionBuilder->saveTransaction(
+                $customer->id,
+                $braintreeTransactionResponseObject->transaction->status,
+                $braintreeTransactionResponseObject->transaction->type
+            );
 
-            $braintreeTransactionResult = $braintreeSaleResult->transaction;
-            // Create a braintreeTransaction object and save the transaction
-            // data provided by braintree to the database.
-            $braintreeTransaction = $braintreeTransactionRepo->create([
-                "transaction_id" => $braintreeTransactionResult->id,
-                "transaction_status" => $braintreeTransactionResult->status,
-                "transaction_type" => $braintreeTransactionResult->type,
-                "transaction_currency_iso_code" => $braintreeTransactionResult->currencyIsoCode,
-                "transaction_amount" => $braintreeTransactionResult->amount,
-                "message" => $message,
-                "merchant_account_id" => $braintreeTransactionResult->merchantAccountId,
-                "sub_merchant_account_id" => $braintreeTransactionResult->subMerchantAccountId,
-                "master_merchant_account_id" => $braintreeTransactionResult->masterMerchantAccountId,
-                "order_id" => $braintreeTransactionResult->orderId,
-                "processor_response_code" => $braintreeTransactionResult->processorResponseCode,
-                "full_transaction_data" => json_encode( $braintreeTransactionResult ),
-            ]);
-
-            $transactionBuilder->saveTransaction( $customer->id, $braintreeTransaction->braintree_transaction_status, $braintreeTransaction->braintree_transaction_type );
-
-            $this->view->redirect( $transactionBuilder->getPaymentRedirectURL() );
+            $this->view->redirect( $payment_redirect_url );
         }
     }
 

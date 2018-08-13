@@ -8,12 +8,22 @@ class BraintreeAPIManager
 {
     // Gateway object for interfacing with braintree payments API
     public $gateway;
+
     // Flag for storing payment method in braintree vault on success
     public $storeInVaultOnSuccess = false;
+
     // Braintree customer
     public $customer = false;
+
+    // Braintree customer's payment method
+    public $paymentMethods;
+
+    // Payment method token to be used
+    public $pyamentMethodToken;
+
     // Braintree sale result
-    public $saleResult = false;
+    public $transactionResponseObject = false;
+
     // Subscription result
     public $subscriptionResults = false;
 
@@ -67,6 +77,8 @@ class BraintreeAPIManager
         }
 
         $this->setCustomer( $customer );
+        $this->setPaymentMethods( $customer->paymentMethods );
+        $this->setPaymentMethodToken( $customer->paymentMethods[ 0 ]->token );
 
         return $customer;
     }
@@ -94,10 +106,10 @@ class BraintreeAPIManager
         $this->customer = $customer;
     }
 
-    public function processSale( $transactionTotal )
+    public function processTransaction( $transactionTotal )
     {
         if ( !$this->customer ) {
-            throw new \Exception( "No customer exists. Cannot process payment" );
+            return false;
         }
         // Process payment as normal using customer id
         $result = $this->gateway->transaction()->sale( [
@@ -109,25 +121,23 @@ class BraintreeAPIManager
             ]
         ] );
 
-        $this->setSaleResult( $result );
-
-        if ( !$result->success ) {
-            return false;
-        }
+        $this->setTransactionResponseObject( $result );
 
         return true;
     }
 
-    public function setSaleResult( $result )
+    public function setTransactionResponseObject( $result )
     {
-        $this->saleResult = $result;
+        $this->transactionResponseObject = $result;
     }
 
-    public function getSaleResult()
+    public function getTransactionResponseObject()
     {
-        if ( $this->saleResult !== false ) {
-            return $this->saleResult;
+        if ( isset( $this->transactionResponseObject ) ) {
+            return $this->transactionResponseObject;
         }
+
+        return null;
     }
 
     public function createSubscription( $plan_id, $paymentMethodToken, $price = null, $startImmediately = false )
@@ -178,5 +188,33 @@ class BraintreeAPIManager
         if ( $this->subscriptionResult !== false ) {
             return $this->subscriptionResult;
         }
+    }
+
+    public function setPaymentMethods( $paymentMethods )
+    {
+        $this->paymentMethods = $paymentMethods;
+    }
+
+    public function getPaymentMethods()
+    {
+        if ( isset( $this->paymentMethods ) ) {
+            return $this->paymentMethods;
+        }
+
+        return null;
+    }
+
+    public function setPaymentMethodToken( $paymentMethodToken )
+    {
+        $this->paymentMethodToken = $paymentMethodToken;
+    }
+
+    public function getPaymentMethodToken()
+    {
+        if ( isset( $this->paymentMethodToken ) ) {
+            return $this->paymentMethodToken;
+        }
+
+        return null;
     }
 }
