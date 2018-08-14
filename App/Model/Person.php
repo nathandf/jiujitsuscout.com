@@ -39,6 +39,15 @@ abstract class Person
         $this->email = $email;
     }
 
+	public function getFullName()
+	{
+		if ( isset( $this->first_name, $this->last_name ) ) {
+			return $this->first_name . " " . $this->last_name;
+		}
+
+		return $first_name;
+	}
+
     public function setPhoneNumber( $country_code, $national_number )
     {
         if ( isset( $country_code, $national_number ) && !is_null( $country_code ) && !is_null( $national_number ) && $country_code != "" && $national_number != "" ) {
