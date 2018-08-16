@@ -114,15 +114,16 @@ class UserMailer
 
     public function sendAppointmentConfirmationNotification( $user_name, $user_email, $appointment_timestamp, $prospect_info = [] )
     {
+        $prospect_name = ucwords( $prospect_info[ "name" ] );
         $this->mailer->setRecipientName( $user_name );
         $this->mailer->setRecipientEmailAddress( $user_email );
-        $this->mailer->setSenderName( "JiuJitsuScout" );
+        $this->mailer->setSenderName( $prospect_name );
         $this->mailer->setSenderEmailAddress( "noreply@jiujitsuscout.com" );
         $this->mailer->setContentType( "text/html" );
         $this->mailer->setEmailSubject( $prospect_info[ "name" ] . " Confirmed Their Appointment" );
         $this->mailer->setEmailBody( '
             <div>
-                <h2 style="margin-bottom: 20px;">' . $prospect_info[ "name" ] . ' has confirmed their appointment for ' . date( "l, M jS @ g:iA", $appointment_timestamp ) . '.</h2>
+                <h2 style="margin-bottom: 20px;">' . $prospect_name . ' has confirmed their appointment for ' . date( "l, M jS @ g:iA", $appointment_timestamp ) . '.</h2>
                 <table cellspacing=0 style="width: 300px; background: #f6f7f9; border-collapse: collapse; table-layout: fixed; border: 1px solid #CCCCCC; box-sizing: border-box; padding: 15px; display: block; margin-left: 20px;">
                     <tr>
                         <td style="font-weight: bold; padding: 15px;">Name:</td>

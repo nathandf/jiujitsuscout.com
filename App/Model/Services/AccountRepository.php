@@ -52,6 +52,18 @@ class AccountRepository extends Service
         $accountMapper->updatePrimaryUserIDByID( $user_id, $id );
     }
 
+    public function addAccountCreditByID( $id, $amount )
+    {
+        $accountMapper = new AccountMapper( $this->container );
+        $accountMapper->addAccountCreditByID( $id, $amount );
+    }
+
+    public function subtractAccountCreditByID( $id, $amount )
+    {
+        $accountMapper = new AccountMapper( $this->container );
+        $accountMapper->addAccountCreditByID( $id, $amount );
+    }
+
     public function updateAccountTypeIDByID( $account_id, $account_type_id )
     {
         $accountMapper = new AccountMapper( $this->container );

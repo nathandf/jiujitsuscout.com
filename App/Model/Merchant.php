@@ -4,8 +4,6 @@ namespace Model;
 
 class Merchant
 {
-
-  public $id;
-  public $merchant_type_id;
-
+    public $id;
+    public $merchant_type_id;
 }

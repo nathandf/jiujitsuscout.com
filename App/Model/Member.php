@@ -18,5 +18,4 @@ class Member extends Person implements EntityInterface
     public $native_review;
     public $google_review;
     public $email_unsubscribe;
-
 }

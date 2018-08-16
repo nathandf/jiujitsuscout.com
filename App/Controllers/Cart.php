@@ -140,6 +140,7 @@ class Cart extends Controller
         // Loading services
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $accountRepo = $this->load( "account-repository" );
         $userRepo = $this->load( "user-repository" );
         $customerRepo = $this->load( "customer-repository" );
         $braintreeGatewayInit = $this->load( "braintree-gateway-initializer" );
@@ -192,7 +193,9 @@ class Cart extends Controller
             );
 
             // Charge the customer's payment method for the transaction total
-            $braintreeAPIManager->processTransaction( $transactionBuilder->getTransactionTotal() );
+            $braintreeAPIManager->processTransaction(
+                $transactionBuilder->getTransactionTotal()
+            );
 
             // If the payment was approved, update the 'paid' status of the
             // order, save the processor response text in $message, and create
@@ -217,7 +220,7 @@ class Cart extends Controller
 
                     foreach ( $subscriptionOrderProducts as $subscriptionOrderProduct ) {
 
-                        // If there is more than one subscription of the same
+                        // If there's more than one subscription of the same
                         // type being ordered, update the price when creating the
                         // subscription
                         if ( $subscriptionOrderProduct->quantity > 1 ) {
@@ -228,15 +231,46 @@ class Cart extends Controller
                                 $braintreeAPIManager->getPaymentMethodToken(),
                                 $subscription_price
                             );
-                        } else {
-                            // Create subscription with defualt price
-                            $braintreeAPIManager->createSubscription(
-                                $subscriptionOrderProduct->product->id,
-                                $braintreeAPIManager->getPaymentMethodToken()
-                            );
+
+                            continue;
                         }
+                        // Create subscription with defualt price
+                        $braintreeAPIManager->createSubscription(
+                            $subscriptionOrderProduct->product->id,
+                            $braintreeAPIManager->getPaymentMethodToken()
+                        );
                     }
                 }
+
+                // Handle all events related to the orderProducts that were purchased.
+                // orderPoducts will have the related product object dynamically
+                // added to it in the transaction builder. Dispatch events according
+                // to product type
+                $orderProducts = $transactionBuilder->getOrderProducts();
+                foreach ( $orderProducts as $orderProduct ) {
+                    switch ( $orderProduct->product->product_type_id ) {
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            $event = new \Model\Events\AccountCreditPurchased(
+                                $accountRepo,
+                                $this->account->id,
+                                ( $orderProduct->product->price * $orderProduct->quantity )
+                            );
+
+                            $event->attach(
+                                new \Model\Handlers\AddCreditToAccount
+                            );
+                            
+                            $event->dispatch();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
             } elseif ( !$braintreeTransactionResponseObject->success ) {
                 $payment_redirect_url = "cart/?error=payment_failure";
             }

@@ -4,9 +4,7 @@ namespace Model;
 
 class MerchantType
 {
-
-  public $id;
-  public $name;
-  public $description;
-
+    public $id;
+    public $name;
+    public $description;
 }

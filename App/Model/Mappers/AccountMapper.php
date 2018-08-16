@@ -64,6 +64,22 @@ class AccountMapper extends DataMapper
         $this->update( "account", "primary_user_id", $user_id, "id", $id );
     }
 
+    public function addAccountCreditByID( $id, $amount )
+    {
+        $sql = $this->DB->prepare( "UPDATE account SET credit = credit + :credit WHERE id = :id" );
+        $sql->bindParam( ":credit", $amount );
+        $sql->bindParam( ":id", $id );
+        $sql->execute();
+    }
+
+    public function subtractAccountCreditByID( $id, $amount )
+    {
+        $sql = $this->DB->prepare( "UPDATE account SET credit = credit - :credit WHERE id = :id" );
+        $sql->bindParam( ":credit", $amount );
+        $sql->bindParam( ":id", $id );
+        $sql->execute();
+    }
+
     public function updateAccountTypeIDByID( $account_id, $account_type_id )
     {
         $this->update( "account", "account_type_id", $account_type_id, "id", $account_id );

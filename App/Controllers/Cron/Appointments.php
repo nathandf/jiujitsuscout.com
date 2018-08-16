@@ -9,12 +9,12 @@ class Appointments extends Controller
 	public function before()
 	{
 		$this->logger = $this->load( "logger" );
-		$this->logger->info( "Cron Start: Appointments -----------------------" );
+		$this->logger->info( "Cron Start: Appointments" );
 	}
 
 	public function after()
 	{
-		$this->logger->info( "Cron End: Appointments -------------------------" );
+		$this->logger->info( "Cron End: Appointment" );
 		die();
 		exit();
 	}
@@ -153,7 +153,7 @@ class Appointments extends Controller
 							</div>';
 				            $mailer->setEmailBody( $prospectEmailBody );
 				            $mailStatus = $mailer->mail();
-							
+
 							// Log email appointment reminder status for prospect
 							if ( $mailStatus != 202 ) {
 								$this->logger->info( "Email Not Sent" );
