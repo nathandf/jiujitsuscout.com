@@ -70,9 +70,9 @@ class Assets extends Controller
             ) )
         {
             if ( $this->business->logo_filename == $config::$configs[ "default_logo" ] ) {
-                $imageManager->saveImageTo( "image", "img/uploads/" );
+                $imageManager->saveImageTo( "image", "public/img/uploads/" );
             } else {
-                $imageManager->overwriteImage( "image", "img/uploads/", "img/uploads/" . $this->business->logo_filename );
+                $imageManager->overwriteImage( "image", "public/img/uploads/", "public/img/uploads/" . $this->business->logo_filename );
             }
 
             $this->businessRepo->updateLogoByID( $this->business->id, $imageManager->getNewImageFileName() );
