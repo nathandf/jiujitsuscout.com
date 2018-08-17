@@ -10,8 +10,7 @@ class AccountTypeRepository extends Service
 
     public function getAll()
     {
-
-        $accountTypeMapper = new \Model\Mappers\AccountTypeMapper( $this->container );
+        $accountTypeMapper = new AccountTypeMapper( $this->container );
         $accountTypes = $accountTypeMapper->mapAll();
 
         return $accountTypes;

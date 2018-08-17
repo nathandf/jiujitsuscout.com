@@ -244,6 +244,11 @@ $container->register( "product-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "product-account-type-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ProductAccountTypeRepository( $container );
+	return $repo;
+} );
+
 $container->register( "program-repository", function() use ( $container ) {
 	$repo = new \Model\Services\ProgramRepository( $container );
 	return $repo;

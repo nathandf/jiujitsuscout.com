@@ -148,6 +148,7 @@ class Cart extends Controller
         $braintreeTransactionRepo = $this->load( "braintree-transaction-repository" );
         $phoneRepo = $this->load( "phone-repository" );
         $transactionBuilder = $this->load( "transaction-builder" );
+        $productAccountTypeRepo = $this->load( "product-account-type-repository" );
         $logger = $this->load( "logger" );
 
         // Set payment redirect url
@@ -242,16 +243,34 @@ class Cart extends Controller
                     }
                 }
 
-                // Handle all events related to the orderProducts that were purchased.
+                // Handle all events related to the products that were purchased
+                // such as account credit, upgrades, and access to digital material.
                 // orderPoducts will have the related product object dynamically
                 // added to it in the transaction builder. Dispatch events according
                 // to product type
                 $orderProducts = $transactionBuilder->getOrderProducts();
                 foreach ( $orderProducts as $orderProduct ) {
                     switch ( $orderProduct->product->product_type_id ) {
+                        // Case of 1 maps to a product_type_id of 1. Subscription
                         case 1:
+                            $productAccountType = $productAccountTypeRepo->getByProductID(
+                                $orderProduct->product->id
+                            );
+
+                            $event = new \Model\Events\AccountUpgradePurchased(
+                                $accountRepo,
+                                $this->account->id,
+                                $productAccountType->account_type_id
+                            );
+
+                            $event->attach(
+                                new \Model\Handlers\UpgradeAccount
+                            );
+                            $event->dispatch();
                             break;
+                        // Case of 2 maps to a product_type_id of 2. Service
                         case 2:
+                        // Case of 3 maps to a product_type_id of 3. Credit
                             break;
                         case 3:
                             $event = new \Model\Events\AccountCreditPurchased(
@@ -263,10 +282,8 @@ class Cart extends Controller
                             $event->attach(
                                 new \Model\Handlers\AddCreditToAccount
                             );
-                            
+
                             $event->dispatch();
-                            break;
-                        default:
                             break;
                     }
                 }
