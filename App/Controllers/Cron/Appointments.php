@@ -106,7 +106,7 @@ class Appointments extends Controller
 							// Set email details
 							$mailer->setRecipientName( $prospect->first_name );
 				            $mailer->setRecipientEmailAddress( $prospect->email );
-				            $mailer->setSenderName( $business->business_name );
+				            $mailer->setSenderName( html_entity_decode( $business->business_name, ENT_COMPAT, "UTF-8" ) );
 				            $mailer->setSenderEmailAddress( $business->email );
 				            $mailer->setContentType( "text/html" );
 				            $mailer->setEmailSubject( "Confirm Your Appointment" );

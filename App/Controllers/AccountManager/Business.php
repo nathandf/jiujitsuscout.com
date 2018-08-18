@@ -375,7 +375,7 @@ class Business extends Controller
             if ( $input->issetField( "schedule_appointment" ) && $input->get( "schedule_appointment" ) == "true" ) {
                 $this->view->redirect( "account-manager/business/appointment/schedule?prospect_id=" . $prospect_id );
             }
-
+            
             $this->view->redirect( "account-manager/business/lead/" . $prospect_id . "/" );
         }
 

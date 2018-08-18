@@ -615,7 +615,7 @@ class AccountManager extends Controller
 			// dynamically add a description with the related businesses
 			foreach ( $product_ids as $product_id ) {
 				$product = $productRepo->getByID( $product_id );
-				$orginal_description = $product->description;
+				$original_description = $product->description;
 				// Reset product description
 				$product->description = null;
 
@@ -625,7 +625,7 @@ class AccountManager extends Controller
 				}
 
 				// Append orginal product description
-				$product->description = $product->description . $orginal_descirption;
+				$product->description = $product->description . $original_description;
 				$products[] = $product;
 			}
 
@@ -649,7 +649,7 @@ class AccountManager extends Controller
 			if ( is_null( $customer->id ) ) {
 				$customer = $customerRepo->create( $this->account->id );
 			}
-
+			
 			// Check for an upaid order for this customer. If one exists, add
 			// the products to the order. If not, create an new order
 			$order = $orderRepo->getUnpaidOrderByCustomerID( $customer->id );
