@@ -7,5 +7,5 @@ class BraintreeTransaction
     public $id;
     public $transaction_id;
     public $braintree_transaction_id;
-    public $full_transaction_data;
+    public $data;
 }
