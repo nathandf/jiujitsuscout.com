@@ -2,7 +2,6 @@
 
 {block name="head"}
 	{include file='includes/head/main-head.tpl'}
-
 {/block}
 
 {block name="body"}

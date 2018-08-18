@@ -14,6 +14,7 @@
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/main.css"/>
 		<script src="{$HOME}{$JS_SCRIPTS}main.js"></script>
 		{block name="head"}{/block}
+		{$facebook_pixel|default:null}
 	</head>
 	<body>
 		{block name="body"}{/block}

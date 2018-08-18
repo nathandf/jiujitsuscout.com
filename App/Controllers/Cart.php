@@ -53,6 +53,9 @@ class Cart extends Controller
         $productRepo = $this->load( "product-repository" );
         $currencyRepo = $this->load( "currency-repository" );
         $braintreeGatewayInit = $this->load( "braintree-gateway-initializer" );
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelID = $Config::$configs[ "facebook" ][ "jjs_pixel_id" ];
 
         // Use api credentials stored in configs to create a gateway object
         // to establish communication with the braintree API.
@@ -121,6 +124,18 @@ class Cart extends Controller
             $this->view->redirect( "cart/" );
         }
 
+        // Setup facebook pixel
+        $facebookPixelBuilder->setPixelID( $facebookPixelID );
+
+        // Add InitiateCheckout Event if there are products in the cart
+        if ( count( $orderProducts ) > 0 ) {
+            $facebookPixelBuilder->addEvent([
+                "InitiateCheckout"
+            ]);
+        }
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
         $this->view->assign( "currency_symbol", $currency_symbol );
         $this->view->assign( "transaction_total", $transaction_total );
         $this->view->assign( "orderProducts", $orderProducts );
@@ -150,6 +165,7 @@ class Cart extends Controller
         $transactionBuilder = $this->load( "transaction-builder" );
         $productAccountTypeRepo = $this->load( "product-account-type-repository" );
         $logger = $this->load( "logger" );
+        $salesAgentMailer = $this->load( "sales-agent-mailer" );
 
         // Set payment redirect url
         $payment_redirect_url = "cart/";
@@ -251,6 +267,7 @@ class Cart extends Controller
                 $orderProducts = $transactionBuilder->getOrderProducts();
                 foreach ( $orderProducts as $orderProduct ) {
                     switch ( $orderProduct->product->product_type_id ) {
+
                         // Case of 1 maps to a product_type_id of 1. Subscription
                         case 1:
                             $productAccountType = $productAccountTypeRepo->getByProductID(
@@ -266,12 +283,28 @@ class Cart extends Controller
                             $event->attach(
                                 new \Model\Handlers\UpgradeAccount
                             );
+
                             $event->dispatch();
+
                             break;
+
                         // Case of 2 maps to a product_type_id of 2. Service
                         case 2:
-                        // Case of 3 maps to a product_type_id of 3. Credit
+                            $event = new \Model\Events\ServicePurchased(
+                                $salesAgentMailer,
+                                $this->account->id,
+                                $orderProduct->product->name
+                            );
+
+                            $event->attach(
+                                new \Model\Handlers\SendServiceOrderNotification
+                            );
+
+                            $event->dispatch();
+
                             break;
+
+                        // Case of 3 maps to a product_type_id of 3. Credit
                         case 3:
                             $event = new \Model\Events\AccountCreditPurchased(
                                 $accountRepo,
@@ -284,6 +317,7 @@ class Cart extends Controller
                             );
 
                             $event->dispatch();
+
                             break;
                     }
                 }
@@ -304,14 +338,35 @@ class Cart extends Controller
 
     public function paymentConfirmation()
     {
-        // TODO add facbook pixel
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelID = $Config::$configs[ "facebook" ][ "jjs_pixel_id" ];
+
+        // Setup facebook pixel
+        $facebookPixelBuilder->setPixelID( $facebookPixelID );
+
+        // Add InitiateCheckout Event if there are products in the cart
+        $facebookPixelBuilder->addEvent([
+            "Purchase"
+        ]);
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
         $this->view->setTemplate( "cart/payment-success.tpl" );
         $this->view->render( "App/Views/Home.php" );
     }
 
     public function paymentFailure()
     {
-        // TODO add facbook pixel
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelID = $Config::$configs[ "facebook" ][ "jjs_pixel_id" ];
+
+        // Setup facebook pixel
+        $facebookPixelBuilder->setPixelID( $facebookPixelID );
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
         $this->view->setTemplate( "cart/payment-failure.tpl" );
         $this->view->render( "App/Views/Home.php" );
     }

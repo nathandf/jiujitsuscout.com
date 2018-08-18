@@ -416,6 +416,11 @@ $container->register( "input-validator", function() {
     return $obj;
 } );
 
+$container->register( "facebook-pixel-builder", function() {
+	$helper = new \Helpers\FacebookPixelBuilder;
+	return $helper;
+} );
+
 $container->register( "google-geocoder", function() use ( $container ) {
 	$GoogleGeocoder = new \Helpers\GoogleGeocoder( $container->getService( "config" ) );
 	return $GoogleGeocoder;
