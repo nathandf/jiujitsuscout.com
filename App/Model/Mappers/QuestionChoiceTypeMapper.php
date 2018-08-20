@@ -26,7 +26,7 @@ class QuestionChoiceTypeMapper extends DataMapper
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $question_choice_type = $entityFactory->build( "QuestionChoiceType" );
-            $this->populateQuestion( $question_choice_type, $resp );
+            $this->populateQuestionChoiceType( $question_choice_type, $resp );
             $question_choice_types[] = $question_choice_type;
         }
 
@@ -39,7 +39,7 @@ class QuestionChoiceTypeMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateQuestion( $question_choice_type, $resp );
+        $this->populateQuestionChoiceType( $question_choice_type, $resp );
 
         return $question_choice_type;
     }

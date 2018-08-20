@@ -525,6 +525,18 @@ $container->register( "payment-manager", function() use ( $container ) {
 	return $paymentManager;
 } );
 
+$container->register( "questionnaire-dispatcher", function() use ( $container ) {
+	$dispatcher = new \Model\Services\QuestionnaireDispatcher(
+		$container->getService( "questionnaire-repository" ),
+		$container->getService( "question-repository" ),
+		$container->getService( "question-choice-repository" ),
+		$container->getService( "question-choice-type-repository" ),
+		$container->getService( "respondent-repository" ),
+		$container->getService( "respondent-question-answer-repository" )
+	);
+	return $dispatcher;
+} );
+
 $container->register( "sequence-dispatcher", function() use ( $container ) {
 	$manager = new \Model\Services\SequenceDispatcher(
 		$container->getService( "sequence-repository" ),

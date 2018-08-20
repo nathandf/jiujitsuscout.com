@@ -26,7 +26,7 @@ class QuestionnaireMapper extends DataMapper
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $questionnaire = $entityFactory->build( "Questionnaire" );
-            $this->populateQuestion( $questionnaire, $resp );
+            $this->populateQuestionnaire( $questionnaire, $resp );
             $questionnaires[] = $questionnaire;
         }
 
@@ -39,7 +39,7 @@ class QuestionnaireMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateQuestion( $questionnaire, $resp );
+        $this->populateQuestionnaire( $questionnaire, $resp );
 
         return $questionnaire;
     }

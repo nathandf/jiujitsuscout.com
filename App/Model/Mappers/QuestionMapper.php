@@ -44,15 +44,20 @@ class QuestionMapper extends DataMapper
         return $question;
     }
 
-    public function mapFromQuestionnaireID( \Model\Question $question, $questionnaire_id )
+    public function mapAllFromQuestionnaireID( $questionnaire_id )
     {
-        $sql = $this->DB->prepare( "SELECT * FROM question WHERE questionnaire_id = :questionnaire_id" );
+        $entityFactory = $this->container->getService( "entity-factory" );
+        $questions = [];
+        $sql = $this->DB->prepare( "SELECT * FROM question WHERE questionnaire_id = :questionnaire_id ORDER BY placement ASC" );
         $sql->bindParam( ":questionnaire_id", $questionnaire_id );
         $sql->execute();
-        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateQuestion( $question, $resp );
+        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $question = $entityFactory->build( "Question" );
+            $this->populateQuestion( $question, $resp );
+            $questions[] = $question;
+        }
 
-        return $question;
+        return $questions;
     }
 
     private function populateQuestion( \Model\Question $question, $data )

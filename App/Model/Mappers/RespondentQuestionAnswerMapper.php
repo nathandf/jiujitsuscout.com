@@ -26,7 +26,7 @@ class RespondentMapper extends DataMapper
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $respondent = $entityFactory->build( "Respondent" );
-            $this->populateRespondent( $respondent, $resp );
+            $this->populateRespondentQuestionAnswer( $respondent, $resp );
             $respondents[] = $respondent;
         }
 
@@ -39,7 +39,7 @@ class RespondentMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateRespondent( $respondent, $resp );
+        $this->populateRespondentQuestionAnswer( $respondent, $resp );
 
         return $respondent;
     }
@@ -50,7 +50,7 @@ class RespondentMapper extends DataMapper
         $sql->bindParam( ":question_id", $question_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateRespondent( $respondent, $resp );
+        $this->populateRespondentQuestionAnswer( $respondent, $resp );
 
         return $respondent;
     }
@@ -61,12 +61,12 @@ class RespondentMapper extends DataMapper
         $sql->bindParam( ":question_choice_id", $question_choice_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateRespondent( $respondent, $resp );
+        $this->populateRespondentQuestionAnswer( $respondent, $resp );
 
         return $respondent;
     }
 
-    private function populateRespondent( \Model\Respondent $respondent, $data )
+    private function populateRespondentQuestionAnswer( \Model\Respondent $respondent, $data )
     {
         $respondent->id                 = $data[ "id" ];
         $respondent->respondent_id      = $data[ "respondent_id" ];

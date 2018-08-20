@@ -26,7 +26,7 @@ class QuestionChoiceMapper extends DataMapper
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $questionChoice = $entityFactory->build( "QuestionChoice" );
-            $this->populateQuestion( $questionChoice, $resp );
+            $this->populateQuestionChoice( $questionChoice, $resp );
             $questionChoices[] = $questionChoice;
         }
 
@@ -39,20 +39,25 @@ class QuestionChoiceMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateQuestion( $questionChoice, $resp );
+        $this->populateQuestionChoice( $questionChoice, $resp );
 
         return $questionChoice;
     }
 
-    public function mapFromQuestionID( \Model\QuestionChoice $questionChoice, $question_id )
+    public function mapAllFromQuestionID( $question_id )
     {
+        $entityFactory = $this->container->getService( "entity-factory" );
+        $questionChoices = [];
         $sql = $this->DB->prepare( "SELECT * FROM question_choice WHERE question_id = :question_id" );
         $sql->bindParam( ":question_id", $question_id );
         $sql->execute();
-        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateQuestion( $questionChoice, $resp );
+        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $questionChoice = $entityFactory->build( "QuestionChoice" );
+            $this->populateQuestionChoice( $questionChoice, $resp );
+            $questionChoices[] = $questionChoice;
+        }
 
-        return $questionChoice;
+        return $questionChoices;
     }
 
     private function populateQuestionChoice( \Model\QuestionChoice $questionChoice, $data )

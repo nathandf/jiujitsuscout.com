@@ -33,12 +33,11 @@ class QuestionChoiceRepository extends Service
         return $questionChoice;
     }
 
-    public function getByQuestionID( $question_id )
+    public function getAllByQuestionID( $question_id )
     {
-        $questionChoice = new \Model\QuestionChoice();
         $questionChoiceMapper = new \Model\Mappers\QuestionChoiceMapper( $this->container );
-        $questionChoiceMapper->mapFromQuestionID( $questionChoice, $question_id );
+        $questionChoices = $questionChoiceMapper->mapAllFromQuestionID( $question_id );
 
-        return $questionChoice;
+        return $questionChoices;
     }
 }

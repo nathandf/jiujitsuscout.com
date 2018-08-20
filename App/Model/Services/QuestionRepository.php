@@ -33,12 +33,11 @@ class QuestionRepository extends Service
         return $question;
     }
 
-    public function getByQuestionnaireID( $questionnaire_id )
+    public function getAllByQuestionnaireID( $questionnaire_id )
     {
-        $question = new \Model\Question();
         $questionMapper = new \Model\Mappers\QuestionMapper( $this->container );
-        $questionMapper->mapFromQuestionnaireID( $question, $questionnaire_id );
+        $questions = $questionMapper->mapAllFromQuestionnaireID( $questionnaire_id );
 
-        return $question;
+        return $questions;
     }
 }

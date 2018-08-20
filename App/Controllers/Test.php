@@ -23,32 +23,21 @@ class Test extends Controller
 		$this->view->render( "App/Views/Home.php" );
 	}
 
-    public function sequenceManagerAction()
+    public function sequenceDispatcherAction()
     {
         $sequenceManager = $this->load( "sequence-dispatcher" );
         $sequenceManager->dispatch();
     }
 
-    public function transactions()
+    public function QuestionnaireDispatcher()
     {
-        $transactionRepo = $this->load( "transaction-repository" );
-        $braintreeTransactionRepo = $this->load( "braintree-transaction-repository" );
+        $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
+        $questionnaireDispatcher->dispatch( 1 );
+        $questionnaire = $questionnaireDispatcher->getQuestionnaire();
 
-        $transactionRepo->create( 0,0,0,0,0 );
-        $braintreeTransactionRepo->create([
-            "transaction_id" => 0,
-            "transaction_status" => 0,
-            "transaction_type" => 0,
-            "transaction_currency_iso_code" => 0,
-            "transaction_amount" => 0,
-            "message" => 0,
-            "merchant_account_id" => 0,
-            "sub_merchant_account_id" => 0,
-            "master_merchant_account_id" => 0,
-            "order_id" => 0,
-            "processor_response_code" => 0,
-            "full_transaction_data" => json_encode( 0 )
-        ]);
+        $this->view->assign( "questionnaire", $questionnaire );
 
+        $this->view->setTemplate( "test/questionnaire.tpl" );
+		$this->view->render( "App/Views/Home.php" );
     }
 }
