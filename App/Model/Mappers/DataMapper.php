@@ -24,7 +24,6 @@ abstract class DataMapper implements DataMapperInterface
         // check if the number of values in the values_array is == the number of columns in the columns array
         if ( $columns_count != $values_count ) {
             throw new \Exception( "Number of columns and values does not match.\nColumns ($columns_count) | Values ($values_count)" );
-            return false;
         }
 
         foreach ( $columns_array as $column ) {

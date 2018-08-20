@@ -38,6 +38,13 @@ class Home extends Controller
         $inputValidator = $this->load( "input-validator" );
         $disciplineRepo = $this->load( "discipline-repository" );
 
+        $questionRepo = $this->load( "question-repository" );
+        $questionChoiceTypeRepo = $this->load( "question-choice-type-repository" );
+        $questionChoiceRepo = $this->load( "question-choice-repository" );
+        $questionnaireRepo = $this->load( "questionnaire-repository" );
+        $repspondentRepo = $this->load( "respondent-repository" );
+        $repspondentQuestionAnswerRepo = $this->load( "respondent-question-answer-repository" );
+
         $disciplines = $disciplineRepo->getAll();
         $discipline_names = [];
         foreach ( $disciplines as $discipline ) {
@@ -85,6 +92,13 @@ class Home extends Controller
         $entityFactory = $this->load( "entity-factory" );
         $phoneRepo = $this->load( "phone-repository" );
         $noteRegistrar = $this->load( "note-registrar" );
+
+        $questionRepo = $this->load( "question-repository" );
+        $questionChoiceTypeRepo = $this->load( "question-choice-type-repository" );
+        $questionChoiceRepo = $this->load( "question-choice-repository" );
+        $questionnaireRepo = $this->load( "questionnaire-repository" );
+        $repspondentRepo = $this->load( "respondent-repository" );
+        $repspondentQuestionAnswerRepo = $this->load( "respondent-question-answer-repository" );
 
         // html star builder helper
         require_once( "App/Helpers/fa-return-stars.php" );

@@ -259,6 +259,36 @@ $container->register( "prospect-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "question-choice-repository", function() use ( $container ) {
+	$repo = new \Model\Services\QuestionChoiceRepository( $container );
+	return $repo;
+} );
+
+$container->register( "question-choice-type-repository", function() use ( $container ) {
+	$repo = new \Model\Services\QuestionChoiceTypeRepository( $container );
+	return $repo;
+} );
+
+$container->register( "questionnaire-repository", function() use ( $container ) {
+	$repo = new \Model\Services\QuestionnaireRepository( $container );
+	return $repo;
+} );
+
+$container->register( "question-repository", function() use ( $container ) {
+	$repo = new \Model\Services\QuestionRepository( $container );
+	return $repo;
+} );
+
+$container->register( "respondent-repository", function() use ( $container ) {
+	$repo = new \Model\Services\RespondentRepository( $container );
+	return $repo;
+} );
+
+$container->register( "respondent-question-answer-repository", function() use ( $container ) {
+	$repo = new \Model\Services\RespondentQuestionAnswerRepository( $container );
+	return $repo;
+} );
+
 $container->register( "review-repository", function() use ( $container ) {
 	$repo = new \Model\Services\ReviewRepository( $container );
 	return $repo;
