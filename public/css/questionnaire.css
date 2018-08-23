@@ -1,0 +1,48 @@
+.questionnaire {
+	border-radius: 3px;
+	border: 3px solid #DDDDDD;
+}
+
+.questionnaire-question {
+	display: block;
+	margin: 0 auto;
+	width: 90%;
+	box-sizing: border-box;
+	margin-bottom: 35px;
+}
+
+.inactive-question {
+	display: none;
+}
+
+.active-question {
+	display: block;
+}
+
+.questionnaire-question-choice {
+	display: block;
+	margin: 0 auto;
+	width: 90%;
+	box-sizing: border-box;
+	border-radius: 3px;
+	border: 2px solid #DDDDDD;
+	margin-top: 15px;
+}
+
+input[type=radio]:checked + .questionnaire-question-choice {
+    border: 2px solid #37BF91;
+	background: #37BF91;
+	color: #FFFFFF;
+}
+
+.questionnaire-wrapper {
+	display: block;
+	margin: 0 auto;
+	width: 90%;
+	box-sizing: border-box;
+}
+
+.questionnaire-submit {
+	float: left;
+	font-weight: 600;
+}

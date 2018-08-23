@@ -38,14 +38,19 @@ class QuestionnaireDispatcher
 		$this->respondentRepo = $respondentQuestionAnswerRepo;
 	}
 
-	public function dispatch( $questionnaire_id )
+	public function dispatch( $questionnaire_id, $start_question_id = null )
 	{
 		$questionnaire = $this->questionnaireRepo->getByID( $questionnaire_id );
 
 		if ( !is_null( $questionnaire->id ) ) {
+
 			$questionnaire->questions = $this->questionRepo->getAllByQuestionnaireID( $questionnaire->id );
 
+			// Dynamically add a question_ids property
+			$questionnaire->question_ids = [];
+
 			foreach ( $questionnaire->questions as $question ) {
+				$questionnaire->question_ids[] = $question->id;
 				$question->question_choices = $this->questionChoiceRepo->getAllByQuestionID( $question->id );
 				foreach ( $question->question_choices as $question_choice ) {
 					$question_choice->question_choice_type = $this->questionChoiceTypeRepo->getByID( $question_choice->question_choice_type_id );
@@ -54,16 +59,16 @@ class QuestionnaireDispatcher
 
 			$this->setQuestionnaire( $questionnaire );
 
+			$questionnaire->current_question_id = $questionnaire->questions[ 0 ]->id;
+
+			if ( !is_null( $start_question_id ) ) {
+				$questionnaire->current_question_id = $start_question_id;
+			}
+
 			return;
 		}
 
 		throw new \Exception( "Questionnaire '{$questionnaire_id}' does not exist" );
-
-	}
-
-	public function setRespondentToken( $token )
-	{
-		$this->respondent_token = $token;
 	}
 
 	private function setQuestionnaire( $questionnaire )

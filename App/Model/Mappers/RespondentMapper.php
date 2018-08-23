@@ -8,9 +8,9 @@ class RespondentMapper extends DataMapper
     public function create( \Model\Respondent $respondent )
     {
         $id = $this->insert(
-            "question",
-            [ "questionnaire_id", "last_question_id", "token" ],
-            [ $respondent->questionnaire_id, $respondent->last_question_id, $respondent->token ]
+            "respondent",
+            [ "questionnaire_id", "token" ],
+            [ $respondent->questionnaire_id, $respondent->token ]
         );
 
         $respondent->id = $id;
@@ -66,11 +66,16 @@ class RespondentMapper extends DataMapper
         return $respondent;
     }
 
+    public function updateLastQuestionIDByID( $id, $question_id )
+    {
+        $this->update( "respondent", "last_question_id", $question_id, "id", $id );
+    }
+
     private function populateRespondent( \Model\Respondent $respondent, $data )
     {
         $respondent->id                      = $data[ "id" ];
         $respondent->questionnaire_id        = $data[ "questionnaire_id" ];
-        $respondent->questionnaire_completed = $data[ "questionnaire_completed" ];
+        $respondent->questionnaire_complete  = $data[ "questionnaire_complete" ];
         $respondent->last_question_id        = $data[ "last_question_id" ];
         $respondent->prospect_id             = $data[ "prospect_id" ];
         $respondent->token                   = $data[ "token" ];

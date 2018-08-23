@@ -4,13 +4,11 @@ namespace Model\Services;
 
 class RespondentRepository extends Service
 {
-    public function create( $questionnaire_id, $last_question_id )
+    public function create( $questionnaire_id, $token )
     {
-        $token = md5( $questionnaire_id . microtime() );
         $respondent = new \Model\Respondent();
         $respondentMapper = new \Model\Mappers\RespondentMapper( $this->container );
         $respondent->questionnaire_id = $questionnaire_id;
-        $respondent->last_question_id = $last_question_id;
         $respondent->token = $token;
         $respondentMapper->create( $respondent );
 
@@ -50,5 +48,11 @@ class RespondentRepository extends Service
         $respondentMapper->mapFromToken( $respondent, $token );
 
         return $respondent;
+    }
+
+    public function updateLastQuestionIDByID( $id, $question_id )
+    {
+        $respondentMapper = new \Model\Mappers\RespondentMapper( $this->container );
+        $respondentMapper->updateLastQuestionIDByID( $id, $question );
     }
 }
