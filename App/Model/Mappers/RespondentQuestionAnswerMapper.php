@@ -2,77 +2,77 @@
 
 namespace Model\Mappers;
 
-class RespondentMapper extends DataMapper
+class RespondentQuestionAnswerMapper extends DataMapper
 {
 
-    public function create( \Model\Respondent $respondent )
+    public function create( \Model\RespondentQuestionAnswer $respondentQuestionAnswer )
     {
         $id = $this->insert(
-            "question",
+            "respondent_question_answer",
             [ "respondent_id", "question_id", "question_choice_id", "text" ],
-            [ $respondent->respondent_id, $respondent->question_id, $respondent->question_choice_id, $respondent->text ]
+            [ $respondentQuestionAnswer->respondent_id, $respondentQuestionAnswer->question_id, $respondentQuestionAnswer->question_choice_id, $respondentQuestionAnswer->text ]
         );
 
-        $respondent->id = $id;
+        $respondentQuestionAnswer->id = $id;
 
-        return $respondent;
+        return $respondentQuestionAnswer;
     }
 
     public function mapAll()
     {
         $entityFactory = $this->container->getService( "entity-factory" );
-        $respondents = [];
-        $sql = $this->DB->prepare( "SELECT * FROM respondent" );
+        $respondentQuestionAnswers = [];
+        $sql = $this->DB->prepare( "SELECT * FROM respondent_question_answer" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $respondent = $entityFactory->build( "Respondent" );
-            $this->populateRespondentQuestionAnswer( $respondent, $resp );
-            $respondents[] = $respondent;
+            $respondentQuestionAnswer = $entityFactory->build( "RespondentQuestionAnswer" );
+            $this->populateRespondentQuestionAnswer( $respondentQuestionAnswer, $resp );
+            $respondentQuestionAnswers[] = $respondentQuestionAnswer;
         }
 
-        return $respondents;
+        return $respondentQuestionAnswers;
     }
 
-    public function mapFromID( \Model\Respondent $respondent, $id )
+    public function mapFromID( \Model\RespondentQuestionAnswer $respondentQuestionAnswer, $id )
     {
-        $sql = $this->DB->prepare( "SELECT * FROM respondent WHERE id = :id" );
+        $sql = $this->DB->prepare( "SELECT * FROM respondent_question_answer WHERE id = :id" );
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateRespondentQuestionAnswer( $respondent, $resp );
+        $this->populateRespondentQuestionAnswer( $respondentQuestionAnswer, $resp );
 
-        return $respondent;
+        return $respondentQuestionAnswer;
     }
 
-    public function mapFromQuestionID( \Model\Respondent $respondent, $question_id )
+    public function mapFromQuestionID( \Model\RespondentQuestionAnswer $respondentQuestionAnswer, $question_id )
     {
-        $sql = $this->DB->prepare( "SELECT * FROM respondent WHERE question_id = :question_id" );
+        $sql = $this->DB->prepare( "SELECT * FROM respondent_question_answer WHERE question_id = :question_id" );
         $sql->bindParam( ":question_id", $question_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateRespondentQuestionAnswer( $respondent, $resp );
+        $this->populateRespondentQuestionAnswer( $respondentQuestionAnswer, $resp );
 
-        return $respondent;
+        return $respondentQuestionAnswer;
     }
 
-    public function mapFromQuestionChoiceID( \Model\Respondent $respondent, $question_choice_id )
+    public function mapFromQuestionChoiceID( \Model\RespondentQuestionAnswer $respondentQuestionAnswer, $question_choice_id )
     {
-        $sql = $this->DB->prepare( "SELECT * FROM respondent WHERE question_choice_id = :question_choice_id" );
+        $sql = $this->DB->prepare( "SELECT * FROM respondent_question_answer WHERE question_choice_id = :question_choice_id" );
         $sql->bindParam( ":question_choice_id", $question_choice_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateRespondentQuestionAnswer( $respondent, $resp );
+        $this->populateRespondentQuestionAnswer( $respondentQuestionAnswer, $resp );
 
-        return $respondent;
+        return $respondentQuestionAnswer;
     }
 
-    private function populateRespondentQuestionAnswer( \Model\Respondent $respondent, $data )
+    private function populateRespondentQuestionAnswer( \Model\RespondentQuestionAnswer $respondentQuestionAnswer, $data )
     {
-        $respondent->id                 = $data[ "id" ];
-        $respondent->respondent_id      = $data[ "respondent_id" ];
-        $respondent->question_id        = $data[ "question_id" ];
-        $respondent->question_choice_id = $data[ "question_choice_id" ];
-        $respondent->text               = $data[ "text" ];
+        $respondentQuestionAnswer->id                 = $data[ "id" ];
+        $respondentQuestionAnswer->respondent_id      = $data[ "respondent_id" ];
+        $respondentQuestionAnswer->question_id        = $data[ "question_id" ];
+        $respondentQuestionAnswer->question_choice_id = $data[ "question_choice_id" ];
+        $respondentQuestionAnswer->text               = $data[ "text" ];
     }
 
 }

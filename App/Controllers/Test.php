@@ -76,10 +76,10 @@ class Test extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
-        $respondentRepo = $this->load( "respondent-repo" );
-        $respndentQuestionAnswerRepo = $this->load( "respondent-question-answer-repo" );
+        $respondentRepo = $this->load( "respondent-repository" );
+        $respondentQuestionAnswerRepo = $this->load( "respondent-question-answer-repository" );
 
-        if ( $input->exists() && $input->issetField( "" ) && $inputValidator->validate(
+        if ( $input->exists() && $inputValidator->validate(
             $input,
             [
                 "respondent_id" => [
@@ -89,13 +89,22 @@ class Test extends Controller
                     "required" => true
                 ],
                 "question_choice_id" => [
-                    "required" => true
+
+                ],
+                "text" => [
+                    "min" => 1,
+                    "max" => 1023
                 ]
             ],
             "questionnaire" /* error index */
             ) )
         {
-            //
+            $respondentQuestionAnswerRepo->create(
+                $input->get( "respondent_id" ),
+                $input->get( "question_id" ),
+                $input->get( "question_choice_id" ),
+                $text = $input->get( "text" )
+            );
         }
     }
 }

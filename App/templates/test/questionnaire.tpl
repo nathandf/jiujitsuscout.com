@@ -2,19 +2,43 @@
 
 {block name="head"}
 	<link rel="stylesheet" href="{HOME}public/css/questionnaire.css">
-	<script src="{$HOME}{$JS_SCRIPTS}questionnaire.js"></script>
 	<script>
 		{literal}
 		$( function() {
 			var question_ids = {/literal}{$questionnaire->question_ids|@json_encode}{literal};
+			var total_questions = question_ids.length;
 			var current_question_id = {/literal}{$questionnaire->current_question_id}{literal};
+			// Question ids are of type string because the array was a json_encoded php array
 			var current_question_index = question_ids.indexOf( current_question_id.toString() );
 			var active_question_html_id;
 
 			$( ".questionnaire-submit" ).on( "click", function () {
 				active_question_html_id = "#question_" + question_ids[ current_question_index ];
+				active_form_html_id = "#question_form_" + question_ids[ current_question_index ];
+				$( active_form_html_id ).submit( function( e ) {
+					e.preventDefault();
+	                $.ajax({
+	                    type : "POST",
+	                    url : "questionnaires",
+	                    data : $( active_form_html_id ).serialize(),
+	                    beforeSend : function() {
+							//
+	                    },
+	                    success : function(response) {
+	                   		//
+	                    },
+						error : function() {
+							alert( "Something went wrong." );
+	                    }
+	                });
+	                e.preventDefault();
+			    });
 				$( active_question_html_id ).toggle();
 				current_question_index++;
+				if ( current_question_index == total_questions ) {
+					$( ".questionnaire" ).toggle();
+					window.location.replace( "" );
+				}
 				active_question_html_id = "#question_" + question_ids[ current_question_index ];
 				$( active_question_html_id ).toggle();
 			} );
@@ -30,7 +54,7 @@
 			<div class="questionnaire-wrapper">
 				<p class="text-sml push-b-sml">Question {$smarty.foreach.question_loop.iteration} of {$questionnaire->questions|@count}</p>
 			</div>
-			<form action="" method="get">
+			<form id="question_form_{$question->id}" action="" method="post">
 				<input type="hidden" name="respondent_id" value="{$respondent->id}">
 				<input type="hidden" name="question_id" value="{$question->id}">
 				<h2 class="questionnaire-question">{$question->text}</h2>
@@ -41,7 +65,7 @@
 					{/foreach}
 				</div>
 				<div class="questionnaire-wrapper">
-					<button id="question_submit_{$question->id}" type="button" class="questionnaire-submit btn push-t-med"><span class="text-xlrg">Continue</span></button>
+					<button id="question_submit_{$question->id}" type="submit" class="questionnaire-submit btn push-t-med"><span class="text-xlrg">Continue</span></button>
 					<div class="clear"></div>
 				</div>
 			</form>
