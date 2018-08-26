@@ -88,8 +88,8 @@ class Test extends Controller
                 "question_id" => [
                     "required" => true
                 ],
-                "question_choice_id" => [
-
+                "question_choice_ids" => [
+                    "is_array" => true
                 ],
                 "text" => [
                     "min" => 1,
@@ -99,12 +99,16 @@ class Test extends Controller
             "questionnaire" /* error index */
             ) )
         {
-            $respondentQuestionAnswerRepo->create(
-                $input->get( "respondent_id" ),
-                $input->get( "question_id" ),
-                $input->get( "question_choice_id" ),
-                $text = $input->get( "text" )
-            );
+            $question_choice_ids = $input->get( "question_choice_ids" );
+
+            foreach ( $question_choice_ids as $question_choice_id ) {
+                $respondentQuestionAnswerRepo->create(
+                    $input->get( "respondent_id" ),
+                    $input->get( "question_id" ),
+                    $question_choice_id,
+                    $text = $input->get( "text" )
+                );
+            }
         }
     }
 }

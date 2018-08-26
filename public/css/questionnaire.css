@@ -35,6 +35,12 @@ input[type=radio]:checked + .questionnaire-question-choice {
 	color: #FFFFFF;
 }
 
+input[type=checkbox]:checked + .questionnaire-question-choice {
+    border: 2px solid #37BF91;
+	background: #37BF91;
+	color: #FFFFFF;
+}
+
 .questionnaire-wrapper {
 	display: block;
 	margin: 0 auto;
