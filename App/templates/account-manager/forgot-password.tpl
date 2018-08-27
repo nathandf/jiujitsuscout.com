@@ -6,7 +6,6 @@
 	</head>
 	<body>
 		{include file='includes/navigation/main-menu.tpl'}
-    	{include file='includes/navigation/main-menu-mobile.tpl'}
 		<div>
 			<div class="encapsulation-cnt">
 				<p class="form-title">Recover password</p>
