@@ -71,6 +71,11 @@ class RespondentMapper extends DataMapper
         $this->update( "respondent", "last_question_id", $question_id, "id", $id );
     }
 
+    public function updateQuestionnaireCompleteByID( $id, $value )
+    {
+        $this->update( "respondent", "questionnaire_complete", $value, "id", $id );
+    }
+
     private function populateRespondent( \Model\Respondent $respondent, $data )
     {
         $respondent->id                      = $data[ "id" ];

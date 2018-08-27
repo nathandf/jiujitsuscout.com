@@ -55,4 +55,10 @@ class RespondentRepository extends Service
         $respondentMapper = new \Model\Mappers\RespondentMapper( $this->container );
         $respondentMapper->updateLastQuestionIDByID( $id, $question_id );
     }
+
+    public function markQuestionnaireCompleteByID( $id )
+    {
+        $respondentMapper = new \Model\Mappers\RespondentMapper( $this->container );
+        $respondentMapper->updateQuestionnaireCompleteByID( $id, 1 );
+    }
 }

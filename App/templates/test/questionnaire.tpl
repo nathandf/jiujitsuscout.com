@@ -16,7 +16,7 @@
 			} );
 
 			$( ".questionnaire-submit" ).on( "click", function () {
-				QuestionnaireDispatcher.submitQuestionAnswer( "questionnaires" );
+				QuestionnaireDispatcher.submitQuestionAnswer( "submit-question" );
 			} );
 		} );
 		{/literal}
@@ -31,6 +31,9 @@
 				<p class="text-sml push-b-sml">Question {$smarty.foreach.question_loop.iteration} of {$questionnaire->questions|@count}</p>
 			</div>
 			<form id="question_form_{$question->id}" action="" method="post">
+				{if $smarty.foreach.question_loop.last}
+				<input type="hidden" name="questionnaire_complete" value="true">
+				{/if}
 				<input type="hidden" name="respondent_id" value="{$respondent->id}">
 				<input type="hidden" name="question_id" value="{$question->id}">
 				<h2 class="questionnaire-question">{$question->text}</h2>
@@ -41,7 +44,7 @@
 					{/foreach}
 				</div>
 				<div class="questionnaire-wrapper">
-					<button style="display: none;" id="question_submit_{$question->id}" type="submit" class="questionnaire-submit btn push-t-med"><span class="text-xlrg">Continue</span></button>
+					<button style="display: none;" id="question_submit_{$question->id}" type="submit" class="questionnaire-submit btn push-t-med"><span class="text-xlrg">{if $smarty.foreach.question_loop.last}Complete{else}Continue{/if}</span></button>
 					<div class="clear"></div>
 				</div>
 			</form>
