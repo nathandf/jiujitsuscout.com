@@ -41,29 +41,22 @@ class Test extends Controller
         $respondent_token = $this->session->getSession( "respondent-token" );
 
         if ( is_null( $respondent_token ) ) {
-
             // Generate a new token
             $respondent_token = $this->session->generateToken();
 
             // Set the session with the new respondent token
             $this->session->setSession( "respondent-token", $respondent_token );
 
-            // Dispatch the questionnaire and return the questionnaire object
-            $questionnaireDispatcher->dispatch( 1 );
-            $questionnaire = $questionnaireDispatcher->getQuestionnaire();
-
             // Create a respondent with this questionnaire_id and respondent token
-            $respondent = $respondentRepo->create( $questionnaire->id, $respondent_token );
-        } else {
-
-            // Load the respondent object
-            $respondent = $respondentRepo->getByToken( $respondent_token );
-
-            // Dispatch the questionnaire using the last_question_di and return
-            // the questionnaire object
-            $questionnaireDispatcher->dispatch( 1, $respondent->last_question_id );
-            $questionnaire = $questionnaireDispatcher->getQuestionnaire();
+            $respondentRepo->create( $questionnaire->id, $respondent_token );
         }
+
+        // Load the respondent object
+        $respondent = $respondentRepo->getByToken( $respondent_token );
+
+        // Dispatch the questionnaire and return the questionnaire object
+        $questionnaireDispatcher->dispatch( 1 );
+        $questionnaire = $questionnaireDispatcher->getQuestionnaire();
 
         $this->view->assign( "questionnaire", $questionnaire );
         $this->view->assign( "respondent", $respondent );
@@ -109,6 +102,11 @@ class Test extends Controller
                     $text = $input->get( "text" )
                 );
             }
+
+            $respondentRepo->updateLastQuestionIDByID(
+                $input->get( "respondent_id" ),
+                $input->get( "question_id" )
+            );
         }
     }
 }

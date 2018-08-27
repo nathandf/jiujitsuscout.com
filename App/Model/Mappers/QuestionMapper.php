@@ -60,6 +60,11 @@ class QuestionMapper extends DataMapper
         return $questions;
     }
 
+    public function updateLastQuestionIDByID( $id, $question_id )
+    {
+        $this->update( "respondent", "last_question_id", $question_id, "id", $id );
+    }
+
     private function populateQuestion( \Model\Question $question, $data )
     {
         $question->id               = $data[ "id" ];

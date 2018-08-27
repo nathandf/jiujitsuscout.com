@@ -53,6 +53,6 @@ class RespondentRepository extends Service
     public function updateLastQuestionIDByID( $id, $question_id )
     {
         $respondentMapper = new \Model\Mappers\RespondentMapper( $this->container );
-        $respondentMapper->updateLastQuestionIDByID( $id, $question );
+        $respondentMapper->updateLastQuestionIDByID( $id, $question_id );
     }
 }

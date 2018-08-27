@@ -49,6 +49,6 @@ input[type=checkbox]:checked + .questionnaire-question-choice {
 }
 
 .questionnaire-submit {
-	float: left;
+	float: right;
 	font-weight: 600;
 }

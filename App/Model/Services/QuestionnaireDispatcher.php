@@ -38,7 +38,7 @@ class QuestionnaireDispatcher
 		$this->respondentRepo = $respondentQuestionAnswerRepo;
 	}
 
-	public function dispatch( $questionnaire_id, $start_question_id = null )
+	public function dispatch( $questionnaire_id )
 	{
 		$questionnaire = $this->questionnaireRepo->getByID( $questionnaire_id );
 
@@ -58,12 +58,6 @@ class QuestionnaireDispatcher
 			}
 
 			$this->setQuestionnaire( $questionnaire );
-
-			$questionnaire->current_question_id = $questionnaire->questions[ 0 ]->id;
-
-			if ( !is_null( $start_question_id ) ) {
-				$questionnaire->current_question_id = $start_question_id;
-			}
 
 			return;
 		}
