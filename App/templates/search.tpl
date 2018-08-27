@@ -4,9 +4,12 @@
     	<title>Find Martial Arts near me | BJJ Schools, MMA Gyms and more</title>
 		{include file="includes/head/main-head.tpl"}
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/search.css"/>
+		<link rel="stylesheet" href="{HOME}public/css/questionnaire.css">
+		<script src="{$HOME}{$JS_SCRIPTS}QuestionnaireDispatcher.js"></script>
 		<script src="{$HOME}{$JS_SCRIPTS}search.js"></script>
 	</head>
 	<body>
+		{include file="includes/widgets/questionnaire.tpl"}
 		{include file="includes/navigation/main-menu.tpl"}
 		<div class="clear"></div>
 	    <div class="results-header">

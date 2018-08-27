@@ -85,6 +85,7 @@ class Home extends Controller
         $entityFactory = $this->load( "entity-factory" );
         $phoneRepo = $this->load( "phone-repository" );
         $noteRegistrar = $this->load( "note-registrar" );
+        $respondentRepo = $this->load( "respondent-repository" );
         $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
 
         // html star builder helper
@@ -265,8 +266,35 @@ class Home extends Controller
                 return ( $business_a->distance < $business_b->distance ) ? -1 : ( ( $business_a->distance > $business_b->distance ) ? 1 : 0 );
             } );
 
-            // TODO Sort the distance-sorted results by premium, featured, and standard listing types
+            // Dispatch questionnaire
 
+            // Check session for a respondent token. If one doesnt exit, create a
+            // new respondent and dispatch the questionnaire. If a respondent does
+            // exist, load the respodent and pass through the last question id to
+            // start the questionnaire where that respondent left off.
+            $respondent_token = $this->session->getSession( "respondent-token" );
+            // unset( $_SESSION[ "respondent-token" ] );
+            // vdumpd( $respondent_token );
+            if ( is_null( $respondent_token ) ) {
+                // Generate a new token
+                $respondent_token = $this->session->generateToken();
+
+                // Set the session with the new respondent token
+                $this->session->setSession( "respondent-token", $respondent_token );
+
+                // Create a respondent with this questionnaire_id and respondent token
+                $respondentRepo->create( 1, $respondent_token );
+            }
+
+            // Load the respondent object
+            $respondent = $respondentRepo->getByToken( $respondent_token );
+
+            // Dispatch the questionnaire and return the questionnaire object
+            $questionnaireDispatcher->dispatch( 1 );
+            $questionnaire = $questionnaireDispatcher->getQuestionnaire();
+
+            $this->view->assign( "questionnaire", $questionnaire );
+            $this->view->assign( "respondent", $respondent );
             $this->view->assign( "results", $results );
             $this->view->assign( "total_results", count( $results ) );
             $this->view->assign( "query", trim( $input->get( "q" ) ) );
