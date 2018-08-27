@@ -244,7 +244,7 @@ class JjsAdmin extends Controller
 					<br><br>
 					Click the link below to reset your password.
 					<br>
-					<a href='https://jiujitsuscout.com/jjs-admin/password-reset-validation?reset_token={$nonceToken->value}'>localhost/develop.jiujitsuscout.com/jjs-admin/password-reset-validation?reset_token={$nonceToken->value}</a>
+					<a href='https://jiujitsuscout.com/jjs-admin/password-reset-validation?reset_token={$nonceToken->value}'>https://www.jiujitsuscout.com/jjs-admin/password-reset-validation?reset_token={$nonceToken->value}</a>
 					<br><br>
 					If you did not send a password reset request, ignore this message.
 				" );

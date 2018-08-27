@@ -456,7 +456,7 @@ class AccountManager extends Controller
 					<br><br>
 					Click the link below to reset your password.
 					<br>
-					<a href='https://jiujitsuscout.com/jjs-admin/password-reset-validation?reset_token={$nonceToken->value}'>localhost/develop.jiujitsuscout.com/account-manager/password-reset-validation?reset_token={$nonceToken->value}</a>
+					<a href='https://jiujitsuscout.com/jjs-admin/password-reset-validation?reset_token={$nonceToken->value}'>https://www.jiujitsuscout.com/account-manager/password-reset-validation?reset_token={$nonceToken->value}</a>
 					<br><br>
 					If you did not send a password reset request, ignore this message.
 				" );
@@ -649,7 +649,7 @@ class AccountManager extends Controller
 			if ( is_null( $customer->id ) ) {
 				$customer = $customerRepo->create( $this->account->id );
 			}
-			
+
 			// Check for an upaid order for this customer. If one exists, add
 			// the products to the order. If not, create an new order
 			$order = $orderRepo->getUnpaidOrderByCustomerID( $customer->id );
