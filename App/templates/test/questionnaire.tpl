@@ -24,7 +24,7 @@
 {/block}
 
 {block name="body"}
-	<div class="con-cnt-med-plus-plus bg-white mat-box-shadow inner-pad-med push-t-lrg questionnaire">
+	<div style="display: none;" class="con-cnt-med-plus-plus bg-white mat-box-shadow inner-pad-med push-t-lrg questionnaire">
 		{foreach from=$questionnaire->questions item=question name=question_loop}
 		<div id="question_{$question->id}" class="inactive-question">
 			<div class="questionnaire-wrapper">

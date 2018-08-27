@@ -39,7 +39,7 @@ class Test extends Controller
         // exist, load the respodent and pass through the last question id to
         // start the questionnaire where that respondent left off.
         $respondent_token = $this->session->getSession( "respondent-token" );
-
+        
         if ( is_null( $respondent_token ) ) {
             // Generate a new token
             $respondent_token = $this->session->generateToken();

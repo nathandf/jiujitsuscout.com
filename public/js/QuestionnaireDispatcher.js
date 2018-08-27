@@ -12,23 +12,21 @@ var QuestionnaireDispatcher  = {
 	dispatch: function ( question_ids, last_question_id ) {
         this.setQuestionIDs( question_ids );
         this.setTotalQuestions();
-
-        if ( this.question_ids.indexOf( last_question_id.toString() ) >= this.total_questions - 1 ) {
-            this.hideQuestionnaire();
-            
-            return;
-        }
-
         if ( last_question_id == null ) {
             this.setCurrentQuestionID( this.question_ids[ 0 ] );
             this.setCurrentQuestionIndex();
         } else {
+            if ( this.question_ids.indexOf( last_question_id.toString() ) >= this.total_questions - 1 || this.question_ids.indexOf( last_question_id.toString() ) == -1 ) {
+                return;
+            }
+
             last_question_index = this.question_ids.indexOf( last_question_id.toString() );
             this.current_question_index = last_question_index + 1;
             current_question_id = this.question_ids[ this.current_question_index ];
             this.setCurrentQuestionID( current_question_id );
         }
 
+        this.showQuestionnaire();
         this.setActiveQuestionHTMLID();
         this.showQuestion();
         this.setActiveQuestionChoiceLabelClass();
@@ -86,6 +84,10 @@ var QuestionnaireDispatcher  = {
     hideQuestion: function () {
         // Hide the answered question
         $( this.active_question_html_id ).hide();
+    },
+
+    showQuestionnaire: function () {
+        $( ".questionnaire" ).show();
     },
 
     hideQuestionnaire: function () {
