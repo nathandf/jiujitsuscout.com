@@ -2,23 +2,27 @@
 	padding-top: 25px;
 	padding-bottom: 25px;
 	padding-left: 100px;
-	margin-bottom: 25px;
 	background: #FFF;
 	color: #444;
 	border-bottom: 1px solid #e6e6e6;
 }
 
-.results-container {
-	width: 60%;
-	float: left;
-	padding: 100px;
-	padding-right: 25px;
-	padding-top: 0px;
+.results-body {
+	display: block;
+	height: 100%;
 }
-.results_side_bar {
 
-	background: #ddd;
-	float: left;
+.results-container {
+	padding: 25px;
+	box-sizing: border-box;
+	width: 80%;
+}
+.results-side-bar {
+	display: block;
+	width: 20%;
+	height: 100%;
+	border-right: 1px solid #DDDDDD;
+	box-sizing: border-box;
 }
 
 .search_bar {
@@ -28,26 +32,37 @@
 	margin-bottom: 20px;
 	box-shadow: 0px 3px 5px #ddd;
 }
-.search_button {
+.find-gym-button {
 	height: 35px;
 	width: 100px;
 	margin-bottom: 20px;
 	box-shadow: 0px 3px 5px #ddd;
 	color: #fff;
-	background: #cc1100;
 	font-weight: 600;
 }
-.search_button:hover {
+.find-gym-button:hover {
 	cursor: pointer;
 }
 
-.business-tag {
+.listing {
+	display: block;
 	background: #FFF;
 	box-sizing: border-box;
 	font-family: 'Roboto', sans-serif;
 	padding: 10px;
-	margin-bottom: 20px;
-	/* border: 1px solid #BBB; */
+	border-bottom: 1px solid #DDDDDD;
+	width: 80%;
+	margin: 0 auto;
+	margin-top: 15px;
+	padding-bottom: 15px;
+}
+
+.view-profile-button {
+	text-decoration: none;
+	border-radius: 5px;
+	padding: 10px;
+	box-sizing: border-box;
+	display: inline-block;
 }
 
 .request-schedule-btn {
@@ -96,34 +111,31 @@
 	color: blue;
 }
 
+.business-logo-container {
+
+}
+
 .business-logo {
 	float: left;
-	width: 75px;
-	height: 75px;
-	border-radius: 0px;
+	width: 140px;
+	max-height: 140px;
+	border-radius: 5px;
 }
 .name {
-	font-family: arial;
-	font-weight: 400;
+	font-weight: 600;
 	font-size: 18px;
 	text-decoration: none;
+	color: #333;
 }
-	.name:hover{
-		text-decoration: underline;
-	}
-.info_1 {
-	padding-left: 15px;
-	float: left;
-	color: #444;
+
+.name:hover{
+	text-decoration: underline;
 }
-	.star{
-		color: #E7711B;
-	}
-.info_2 {
-	text-align: right;
-	float: right;
-	color: #444;
+
+.star{
+	color: #E7711B;
 }
+
 .cta_btn {
 	display: inline-block;
 	font-family: arial;
@@ -174,20 +186,8 @@
 display: block;
 }
 
-@media screen and (max-width: 960px){
-
-	.l-txt {
-		float: none;
-		width: 100%;
-		margin: 0 auto;
-	}
-
-	.r-txt {
-		float: none;
-		width: 100%;
-
-		margin: 0 auto;
-		}
+.view-profile-button-container {
+	float: right;
 }
 
 @media screen and (max-width: 800px){
@@ -211,23 +211,14 @@ display: block;
 		font-size: 18px;
 		text-decoration: none;
 	}
-		.name:hover{
-			text-decoration: underline;
-		}
-	.info_1 {
-		padding-left: 15px;
-		float: left;
-		color: #444;
+	.name:hover{
+		text-decoration: underline;
 	}
-		.star{
-			color: #E7711B;
-		}
-	.info_2 {
-		text-align: right;
-		padding-right: 15px;
-		float: right;
-		color: #444;
+
+	.star{
+		color: #E7711B;
 	}
+
 	.cta_btn {
 		display: inline-block;
 		font-family: arial;
@@ -268,13 +259,23 @@ display: block;
 
 @media screen and (max-width: 450px) {
 
+	.business-logo {
+		width: 75px;
+		height: 75px;
+	}
+
+	.view-profile-button-container {
+		margin-top: 10px;
+		float: left;
+	}
+
 	.search_bar {
 		display: block;
 		margin: 0 auto;
 		margin-bottom: 8px;
 	}
 
-	.search_button {
+	.find-gym-button {
 		display: block;
 		width: 300px;
 		margin: 0 auto;

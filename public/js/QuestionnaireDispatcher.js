@@ -9,10 +9,10 @@ var QuestionnaireDispatcher  = {
     active_question_choice_label_class: null,
     active_question_choice_input_class: null,
 
-	dispatch: function ( question_ids, last_question_id ) {
+	dispatch: function ( question_ids, last_question_id, url ) {
         this.setQuestionIDs( question_ids );
         this.setTotalQuestions();
-        if ( last_question_id == null ) {
+        if ( last_question_id == null || last_question_id == 0 ) {
             this.setCurrentQuestionID( this.question_ids[ 0 ] );
             this.setCurrentQuestionIndex();
         } else {
@@ -33,6 +33,14 @@ var QuestionnaireDispatcher  = {
         this.setActiveQuestionChoiceInputClass();
         this.setActiveFormHTMLID();
         this.setActiveSubmitButtonID();
+
+        $( ".questionnaire-question-choice" ).on( "click", function ( event ) {
+			QuestionnaireDispatcher.toggleSubmitButton( event );
+		} );
+
+		$( ".questionnaire-submit" ).on( "click", function () {
+			QuestionnaireDispatcher.submitQuestionAnswer( url );
+		} );
 	},
 
     setQuestionIDs: function ( question_ids ) {

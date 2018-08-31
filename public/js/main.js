@@ -38,6 +38,17 @@ $( function() {
         }
     } );
 
+    $( ".--clickable" ).on( "click", function( event ) {
+        $.post(
+            "./tracking/record-click",
+            {
+                "business_id": this.dataset.b_id,
+                "property": this.dataset.property,
+                "ip": this.dataset.ip
+            }
+        );
+    } );
+
     $( "#nav-dropdown-button" ).on( "click", function() {
         $( "#nav-items-container" ).slideToggle( 250 );
         $( "#nav-items-container" ).scrollTop();

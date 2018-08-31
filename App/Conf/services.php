@@ -129,6 +129,11 @@ $container->register( "campaign-type-repository", function() use ( $container ) 
 	return $repo;
 } );
 
+$container->register( "click-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ClickRepository( $container );
+	return $repo;
+} );
+
 $container->register( "country-repository", function() use ( $container ) {
 	$repo = new \Model\Services\CountryRepository( $container );
 	return $repo;
@@ -307,6 +312,17 @@ $container->register( "schedule-repository", function() use ( $container ) {
 $container->register( "search-repository", function() use ( $container ) {
 	$repo = new \Model\Services\SearchRepository( $container );
 	return $repo;
+} );
+
+$container->register( "search-results-dispatcher", function() use ( $container ) {
+	$dispatcher = new \Model\Services\SearchResultsDispatcher(
+		$container->getService( "account-repository" ),
+		$container->getService( "business-repository" ),
+		$container->getService( "review-repository" ),
+		$container->getService( "geocoder" ),
+		$container->getService( "geometry" )
+	);
+	return $dispatcher;
 } );
 
 $container->register( "sequence-repository", function() use ( $container ) {
@@ -497,8 +513,6 @@ $container->register( "braintree-gateway-initializer", function() use ( $contain
 	$initializer = new \Model\Services\BraintreeGatewayInitializer( $container->getService( "config" ) );
 	return $initializer;
 } );
-
-// Quarantine
 
 $container->register( "paypal-api-initializer", function() use ( $container ) {
 	$pp_initializer = new \Model\Services\PayPalAPIInitializer( $container->getService( "config" ) );

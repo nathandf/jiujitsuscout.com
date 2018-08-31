@@ -24,7 +24,6 @@
 }
 
 .questionnaire-question-choice-container {
-	min-height: 275px;
 	max-height: 275px;
 	overflow-y: scroll;
 	padding-bottom: 20px;
