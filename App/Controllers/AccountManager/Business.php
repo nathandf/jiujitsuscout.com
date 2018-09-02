@@ -48,6 +48,7 @@ class Business extends Controller
         $prospectRepo = $this->load( "prospect-repository" );
         $memberRepo = $this->load( "member-repository" );
         $appointmentRepo = $this->load( "appointment-repository" );
+        $clickRepo = $this->load( "click-repository" );
 
         // Get pending leads and leads on trial
         $leads = $prospectRepo->getAllByStatusAndBusinessID( "pending", $this->business->id );
@@ -65,10 +66,13 @@ class Business extends Controller
             }
         }
 
+        $listing_clicks = $clickRepo->getAllByBusinessIDAndProperty( $this->business->id, "listing" );
+
         $this->view->assign( "leads", $leads );
         $this->view->assign( "appointments", $appointments );
         $this->view->assign( "trials", $trials );
         $this->view->assign( "members", $members );
+        $this->view->assign( "lisiting_clicks", $listing_clicks );
 
         $this->view->setTemplate( "account-manager/business/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
@@ -375,7 +379,7 @@ class Business extends Controller
             if ( $input->issetField( "schedule_appointment" ) && $input->get( "schedule_appointment" ) == "true" ) {
                 $this->view->redirect( "account-manager/business/appointment/schedule?prospect_id=" . $prospect_id );
             }
-            
+
             $this->view->redirect( "account-manager/business/lead/" . $prospect_id . "/" );
         }
 

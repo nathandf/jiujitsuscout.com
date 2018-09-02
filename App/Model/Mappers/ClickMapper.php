@@ -43,25 +43,37 @@ class ClickMapper extends DataMapper
         return $click;
     }
 
-    public function mapFromBusinessID( \Model\Click $click, $business_id )
+    public function mapAllFromBusinessID( $business_id )
     {
+        $entityFactory = $this->container->getService( "entity-factory" );
+        $clicks = [];
         $sql = $this->DB->prepare( "SELECT * FROM click WHERE business_id = :business_id" );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
-        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateClick( $click, $resp );
-        return $click;
+        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $click = $entityFactory->build( "Click" );
+            $this->populateClick( $click, $resp );
+            $clicks[] = $click;
+        }
+
+        return $clicks;
     }
 
-    public function mapFromBusinessIDAndProperty( \Model\Click $click, $business_id, $property )
+    public function mapAllFromBusinessIDAndProperty( $business_id, $property )
     {
+        $entityFactory = $this->container->getService( "entity-factory" );
+        $clicks = [];
         $sql = $this->DB->prepare( "SELECT * FROM click WHERE business_id = :business_id AND property = :property" );
         $sql->bindParam( ":business_id", $business_id );
         $sql->bindParam( ":property", $property );
         $sql->execute();
-        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateClick( $click, $resp );
-        return $click;
+        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $click = $entityFactory->build( "Click" );
+            $this->populateClick( $click, $resp );
+            $clicks[] = $click;
+        }
+
+        return $clicks;
     }
 
     private function populateClick( \Model\Click $click, $data )
@@ -70,7 +82,7 @@ class ClickMapper extends DataMapper
         $click->business_id = $data[ "business_id" ];
         $click->ip = $data[ "ip" ];
         $click->property = $data[ "property" ];
-        $click->timestamp = $data[ "timepstamp" ];
+        $click->timestamp = $data[ "timestamp" ];
     }
 
 }

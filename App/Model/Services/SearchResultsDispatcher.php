@@ -5,6 +5,7 @@ namespace Model\Services;
 use Model\Services\AccountRepository,
     Model\Services\BusinessRepository,
     Model\Services\ReviewRepository,
+    Model\Services\DisciplineRepository,
     Contracts\GeocoderInterface,
     Helpers\Geometry;
 
@@ -14,6 +15,7 @@ class SearchResultsDispatcher
     public $accountRepo;
     public $businessRepo;
     public $reviewRepo;
+    public $disciplineRepo;
     public $geocoder;
     public $geometry;
     public $results = [];
@@ -27,6 +29,7 @@ class SearchResultsDispatcher
         AccountRepository $accountRepo,
         BusinessRepository $businessRepo,
         ReviewRepository $reviewRepo,
+        DisciplineRepository $disciplineRepo,
         GeocoderInterface $geocoder,
         Geometry $geometry
     )
@@ -34,6 +37,7 @@ class SearchResultsDispatcher
         $this->accountRepo = $accountRepo;
         $this->businessRepo = $businessRepo;
         $this->reviewRepo = $reviewRepo;
+        $this->disciplineRepo = $disciplineRepo;
         $this->geocoder = $geocoder;
         $this->geometry = $geometry;
     }
@@ -88,6 +92,18 @@ class SearchResultsDispatcher
 
                 // If distance of businesses is less than search distance, populate results
                 if ( $distance <= $this->search_radius ) {
+
+                    // Set disciplines to business object
+                    $business->disciplines = [];
+                    $business_discipline_ids = [];
+                    if ( !is_null( $business->discipline_ids ) ) {
+                        $business_discipline_ids = explode( ",", $business->discipline_ids );
+                    }
+
+                    foreach ( $business_discipline_ids as $business_discipline_id ) {
+                        $discipline = $this->disciplineRepo->getByID( $business_discipline_id );
+                        $business->disciplines[] = $discipline;
+                    }
 
                     // Set distance and unit from searched location to businesses address
                     $business->distance = $distance;

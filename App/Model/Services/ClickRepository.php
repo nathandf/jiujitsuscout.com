@@ -34,22 +34,20 @@ class ClickRepository extends Service
         return $click;
     }
 
-    public function getByBusinessID( $busienss_id )
+    public function getByAllBusinessID( $business_id )
     {
-        $click = new \Model\Click();
         $clickMapper = new \Model\Mappers\ClickMapper( $this->container );
-        $clickMapper->mapFromBusienssID( $click, $busienss_id );
+        $clicks = $clickMapper->mapAllFromBusienssID( $business_id );
 
         return $click;
     }
 
-    public function getByBusinessIDAndProperty( $busienss_id, $property )
+    public function getAllByBusinessIDAndProperty( $business_id, $property )
     {
-        $click = new \Model\Click();
         $clickMapper = new \Model\Mappers\ClickMapper( $this->container );
-        $clickMapper->mapFromBusinessIDAndProperty( $click, $busienss_id, $property );
+        $clicks = $clickMapper->mapAllFromBusinessIDAndProperty( $business_id, $property );
 
-        return $click;
+        return $clicks;
     }
 
 }

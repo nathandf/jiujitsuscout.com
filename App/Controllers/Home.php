@@ -348,11 +348,6 @@ class Home extends Controller
         $this->view->render( "App/Views/Home.php" );
     }
 
-    public function studentRegistration()
-    {
-        // TODO Student Registration
-    }
-
     public function aboutUs()
     {
         $this->view->setTemplate( "about-us.tpl" );

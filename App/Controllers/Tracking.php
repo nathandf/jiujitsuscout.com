@@ -20,13 +20,6 @@ class Tracking extends Controller
             $business_ids[] = $business->id;
         }
 
-        $clickRepo->create(
-            0,
-            0,
-            0,
-            time()
-        );
-
         if ( $input->exists() && $inputValidator->validate(
             $input,
             [

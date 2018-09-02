@@ -319,6 +319,7 @@ $container->register( "search-results-dispatcher", function() use ( $container )
 		$container->getService( "account-repository" ),
 		$container->getService( "business-repository" ),
 		$container->getService( "review-repository" ),
+		$container->getService( "discipline-repository" ),
 		$container->getService( "geocoder" ),
 		$container->getService( "geometry" )
 	);
