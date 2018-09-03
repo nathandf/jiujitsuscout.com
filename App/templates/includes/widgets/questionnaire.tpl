@@ -6,11 +6,18 @@
 			// the questionnaire right away
 			if ( $( ".--q-trigger" ).length ) {
 				$( ".--q-trigger" ).on( "click", function () {
-					QuestionnaireDispatcher.dispatch(
-						{/literal}{$questionnaire->question_ids|@json_encode}{literal},
-						{/literal}{$respondent->last_question_id|default:0}{literal},
-						"{/literal}{$HOME}{literal}questionnaire/submit-question"
-					);
+					// If questionnaire dispatched, show questonnaire, else,
+					// dispatch questionnaire
+					if ( QuestionnaireDispatcher.questionnaire_dispatched ) {
+						$( ".questionnaire" ).show();
+					} else {
+						QuestionnaireDispatcher.dispatch(
+							{/literal}{$questionnaire->question_ids|@json_encode}{literal},
+							{/literal}{$respondent->last_question_id|default:0}{literal},
+							"{/literal}{$HOME}{literal}questionnaire/submit-question"
+						);
+					}
+
 				} );
 			} else {
 				QuestionnaireDispatcher.dispatch(
@@ -18,12 +25,11 @@
 					{/literal}{$respondent->last_question_id|default:0}{literal},
 					"{/literal}{$HOME}{literal}questionnaire/submit-question"
 				);
-
 			}
 
 			$( ".questionnaire-close" ).on( "click", function () {
-				$( ".questionnaire" ).hide();
-			} );
+	            $( ".questionnaire" ).hide();
+	        } );
 		} );
 	{/literal}
 </script>

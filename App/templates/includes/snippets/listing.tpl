@@ -5,7 +5,7 @@
 		<p>{$business->stars} <span class="text-sml">{if $business->reviews|@count < 1}Not rated{else}({$business->reviews|@count}){/if}</span></p>
 		<p class="text-sml">Distance: {$business->distance|round:2}{$business->unit}</p>
 		{foreach from=$business->disciplines item=discipline name="business_discipline_loop"}
-			<span class="--clickable --q-trigger tc-gun-metal push-t-sml text-sml cursor-pt" style="border-radius: 2px; border: 1px solid #CCC; padding: 1px; box-sizing: border-box;" data-property="listing" data-b_id="{$business->id}" data-ip="{$ip}">{$discipline->nice_name}</span>
+			<span class="--clickable --q-trigger tc-gun-metal push-t text-sml cursor-pt" style="border-radius: 2px; border: 1px solid #CCC; padding: 1px; box-sizing: border-box;" data-property="listing" data-b_id="{$business->id}" data-ip="{$ip}">{$discipline->nice_name}</span>
 		{/foreach}
 		<div class="clear"></div>
 	</div>

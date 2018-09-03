@@ -8,8 +8,10 @@ var QuestionnaireDispatcher  = {
 	active_submit_button_html_id: null,
     active_question_choice_label_class: null,
     active_question_choice_input_class: null,
+    questionnaire_dispatched: false,
 
 	dispatch: function ( question_ids, last_question_id, url ) {
+        this.questionnaire_dispatched = true;
         this.setQuestionIDs( question_ids );
         this.setTotalQuestions();
         if ( last_question_id == null || last_question_id == 0 ) {
