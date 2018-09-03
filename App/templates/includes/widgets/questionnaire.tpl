@@ -1,17 +1,36 @@
 <script>
 	{literal}
-	$( function() {
-		QuestionnaireDispatcher.dispatch(
-			{/literal}{$questionnaire->question_ids|@json_encode}{literal},
-			{/literal}{$respondent->last_question_id|default:0}{literal},
-			"{/literal}{$HOME}{literal}questionnaire/submit-question"
-		);
-	} );
+		$( function() {
+			// If an element exists with the --q-trigger class, dispatch the
+			// questionnaire when it is clicked. It it doesn't exists, trigger
+			// the questionnaire right away
+			if ( $( ".--q-trigger" ).length ) {
+				$( ".--q-trigger" ).on( "click", function () {
+					QuestionnaireDispatcher.dispatch(
+						{/literal}{$questionnaire->question_ids|@json_encode}{literal},
+						{/literal}{$respondent->last_question_id|default:0}{literal},
+						"{/literal}{$HOME}{literal}questionnaire/submit-question"
+					);
+				} );
+			} else {
+				QuestionnaireDispatcher.dispatch(
+					{/literal}{$questionnaire->question_ids|@json_encode}{literal},
+					{/literal}{$respondent->last_question_id|default:0}{literal},
+					"{/literal}{$HOME}{literal}questionnaire/submit-question"
+				);
+
+			}
+
+			$( ".questionnaire-close" ).on( "click", function () {
+				$( ".questionnaire" ).hide();
+			} );
+		} );
 	{/literal}
 </script>
 
 <div style="display: none;" class="questionnaire">
 	<div class="con-cnt-med-plus-plus bg-white mat-box-shadow push-t-lrg questionnaire-container">
+		<p class="questionnaire-close text-xlrg-heavy tc-gun-metal cursor-pt push-r floatright">x</p>
 		{foreach from=$questionnaire->questions item=question name=question_loop}
 		<div id="question_{$question->id}" class="inactive-question" style="padding-top: 20px;">
 			<div class="questionnaire-wrapper">

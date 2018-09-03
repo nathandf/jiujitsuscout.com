@@ -110,8 +110,8 @@ class SearchResultsDispatcher
                     $business->unit = $this->search_unit;
 
                     // Get review objects associated with business id
-                    $reviews = $this->reviewRepo->getAllByBusinessID( $business->id );
-                    $total_reviews = count( $reviews );
+                    $business->reviews = $this->reviewRepo->getAllByBusinessID( $business->id );
+                    $total_reviews = count( $business->reviews );
 
                     // Set default rating
                     $rating = 0;
@@ -122,7 +122,7 @@ class SearchResultsDispatcher
                     // If businesses has reviews, process them for listing
                     if ( $total_reviews > 0 ) {
                         $i = 1;
-                        foreach ( $reviews as $review ) {
+                        foreach ( $business->reviews as $review ) {
                             $rating = $rating + $review->rating;
 
                             // Set the last rating for display
