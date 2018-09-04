@@ -65,6 +65,23 @@
 	display: inline-block;
 }
 
+.discipline-tags-container {
+
+}
+
+.discipline-tag {
+	border-radius: 2px;
+	border: 1px solid #CCC;
+	padding: 1px;
+	box-sizing: border-box;
+	transition: .25s;
+}
+
+.discipline-tag:hover {
+	color: #0667D0;
+	border: 1px solid #0667D0;
+}
+
 .request-schedule-btn {
 	text-decoration: none;
 	padding: 8px;

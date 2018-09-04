@@ -44,6 +44,7 @@ $( function() {
             {
                 "business_id": this.dataset.b_id,
                 "property": this.dataset.property,
+                "property_sub_type": this.dataset.property_sub_type,
                 "ip": this.dataset.ip
             }
         );

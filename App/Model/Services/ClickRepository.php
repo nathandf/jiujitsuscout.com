@@ -5,13 +5,14 @@ namespace Model\Services;
 class ClickRepository extends Service
 {
 
-    public function create( $business_id, $ip, $property, $timestamp )
+    public function create( $business_id, $ip, $property, $property_sub_type = null )
     {
         $click = new \Model\Click();
         $click->business_id = $business_id;
         $click->ip = $ip;
         $click->property = $property;
-        $click->timestamp = $timestamp;
+        $click->property_sub_type = $property_sub_type;
+        $click->timestamp = time();
         $clickMapper = new \Model\Mappers\ClickMapper( $this->container );
         $clickMapper->create( $click );
 
@@ -46,6 +47,14 @@ class ClickRepository extends Service
     {
         $clickMapper = new \Model\Mappers\ClickMapper( $this->container );
         $clicks = $clickMapper->mapAllFromBusinessIDAndProperty( $business_id, $property );
+
+        return $clicks;
+    }
+
+    public function getAllByBusinessIDAndPropertyAndSubType( $business_id, $property, $property_sub_type )
+    {
+        $clickMapper = new \Model\Mappers\ClickMapper( $this->container );
+        $clicks = $clickMapper->mapAllFromBusinessIDAndPropertyAndSubType( $business_id, $property, $property_sub_type );
 
         return $clicks;
     }

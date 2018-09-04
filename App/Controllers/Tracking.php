@@ -32,16 +32,24 @@ class Tracking extends Controller
                 ],
                 "property" => [
                     "required" => true,
+                ],
+                "property_sub_type" => [
+
                 ]
             ],
             "click"
             ) )
         {
+            $property_sub_type = $input->get( "property_sub_type" );
+
+            if ( $property_sub_type == "" ) {
+                $property_sub_type = null;
+            }
             $clickRepo->create(
                 $input->get( "business_id" ),
                 $input->get( "ip" ),
                 $input->get( "property" ),
-                time()
+                $property_sub_type
             );
 
             return true;
