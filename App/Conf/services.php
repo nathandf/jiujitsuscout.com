@@ -351,6 +351,11 @@ $container->register( "transaction-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "unsubscribe-repository", function() use ( $container ) {
+	$repo = new \Model\Services\UnsubscribeRepository( $container );
+	return $repo;
+} );
+
 $container->register( "user-repository", function() use ( $container ) {
 	$repo = new \Model\Services\UserRepository( $container );
 	return $repo;

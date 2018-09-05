@@ -45,7 +45,7 @@ class Tracking extends Controller
             if ( $property_sub_type == "" ) {
                 $property_sub_type = null;
             }
-            $clickRepo->create(
+            $click = $clickRepo->create(
                 $input->get( "business_id" ),
                 $input->get( "ip" ),
                 $input->get( "property" ),
@@ -54,7 +54,7 @@ class Tracking extends Controller
 
             return true;
         }
-
+        
         return false;
 	}
 }

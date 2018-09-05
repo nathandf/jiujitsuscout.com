@@ -14,25 +14,24 @@
 		<div class="clear"></div>
 	    <div class="results-header">
 	      <form method="get" onsubmit="" action="search#results" >
-
-	      <span itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
-	        <span itemprop="target" itemscope itemtype="http://schema.org/EntryPoint">
-	          <meta itemprop="urlTemplate" content="https://www.jiujitsuscout.com/?search={literal}{search_term}{/literal}" />
-	        </span>
-	        <span itemprop="query-input" itemscope itemtype="http://schema.org/PropertyValueSpecification">
-	          <meta itemprop="valueRequired" content="True" />
-	          <meta itemprop="valueName" content="search_term" />
-	        </span>
-	      </span>
-	        <input type="search" class="search_bar encapsulate" id="search_bar" name="q" placeholder="City, State or Zip" require="required"/>
-	        <input type="submit" class="mat-hov find-gym-button bg-deep-blue" id="search_button" value="Find Gyms" /><br>
+			<span itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
+				<span itemprop="target" itemscope itemtype="http://schema.org/EntryPoint">
+					<meta itemprop="urlTemplate" content="https://www.jiujitsuscout.com/?search={literal}{search_term}{/literal}" />
+				</span>
+				<span itemprop="query-input" itemscope itemtype="http://schema.org/PropertyValueSpecification">
+					<meta itemprop="valueRequired" content="True" />
+					<meta itemprop="valueName" content="search_term" />
+				</span>
+			</span>
+			<input type="search" class="search_bar encapsulate" id="search_bar" name="q" placeholder="City, State or Zip" require="required"/>
+			<input type="submit" class="mat-hov find-gym-button bg-deep-blue" id="search_button" value="Find Gyms" /><br>
 	      </form>
 	    	<p><strong>Showing ({$total_results}) results for "{$query}"</strong></p>
 	    </div>
 		<div class="results-body">
 		{if $total_results > 0 }
 			<div class="results-side-bar bg-white floatleft">
-				test
+
 			</div>
 			<div id="results" class="results-container bg-white floatleft">
 				{foreach from=$results item=business name="business_listings"}

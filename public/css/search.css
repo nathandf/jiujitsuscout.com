@@ -57,7 +57,20 @@
 	padding-bottom: 15px;
 }
 
+.left-container, .middle-container {
+	display: table;
+}
+
+.middle-container {
+	max-width: 250px;
+}
+
+.right-container {
+
+}
+
 .view-profile-button {
+	float: right;
 	text-decoration: none;
 	border-radius: 5px;
 	padding: 10px;
@@ -129,11 +142,11 @@
 }
 
 .business-logo-container {
-
+	width: 140px;
+	height: 140px;
 }
 
 .business-logo {
-	float: left;
 	width: 140px;
 	max-height: 140px;
 	border-radius: 5px;
@@ -223,36 +236,8 @@ display: block;
 	}
 
 	.name {
-		font-family: arial;
-		font-weight: 400;
 		font-size: 18px;
-		text-decoration: none;
 	}
-	.name:hover{
-		text-decoration: underline;
-	}
-
-	.star{
-		color: #E7711B;
-	}
-
-	.cta_btn {
-		display: inline-block;
-		font-family: arial;
-		font-size: 14px;
-		font-weight: 600;
-		color: #fff;
-		padding: 10px;
-		background: #D32323;
-		margin-top: 15px;
-		border-radius: 5px;
-		text-decoration: none;
-		box-shadow: 0px 1px 3px #666;
-		transition: .4s;
-	}
-		.cta_btn:hover {
-			box-shadow: 0px 1px 5px #666;
-		}
 
 
 	.user_icon {
@@ -276,9 +261,17 @@ display: block;
 
 @media screen and (max-width: 450px) {
 
+	.listing {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	.business-logo-container {
+		width: 80px;
+		height: 80px;
+	}
 	.business-logo {
-		width: 75px;
-		height: 75px;
+		width: 80px;
 	}
 
 	.view-profile-button-container {

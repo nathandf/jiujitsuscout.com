@@ -1,22 +1,23 @@
 <div class="listing">
-	<div class="floatleft">
-		<img class="business-logo push-r-med" src="{$HOME}public/img/uploads/{$business->logo_filename}" />
-		<a class="name --clickable" href="{$HOME}martial-arts-gyms/{$business->site_slug}/" data-property="listing" data-b_id="{$business->id}" data-ip="{$ip}">{$business->business_name}</a>
-		<p>{$business->stars} <span class="text-sml">{if $business->reviews|@count < 1}Not rated{else}({$business->reviews|@count}){/if}</span></p>
-		<p class="text-sml">Distance: {$business->distance|round:2}{$business->unit}</p>
-		<div class="discipline-tags-container">
-			{foreach from=$business->disciplines item=discipline name="business_discipline_loop"}
-				{if $smarty.foreach.business_discipline_loop.iteration < 6}
-				<span class="--clickable --q-trigger tc-gun-metal push-t text-sml cursor-pt discipline-tag" data-property="listing" data-property_sub_type="discipline-tag-{$discipline->id}" data-b_id="{$business->id}" data-ip="{$ip}">{$discipline->nice_name}</span>
-				{elseif $smarty.foreach.business_discipline_loop.iteration == 6}
-				<a href="{$HOME}martial-arts-gyms/{$business->site_slug}/" class="--clickable link tc-gun-metal push-t text-sml"  data-property="listing" data-property_sub_type="discipline-and-more-link" data-b_id="{$business->id}" data-ip="{$ip}">— more</a>
-				{/if}
-			{/foreach}
+		<div class="left-container business-logo-container push-r-med floatleft">
+			<img class="business-logo" src="{$HOME}public/img/uploads/{$business->logo_filename}" />
 		</div>
-		<div class="clear"></div>
-	</div>
-	<div class="view-profile-button-container">
-		<a class="btn view-profile-button bg-deep-blue text-med-heavy tc-white --clickable" href="{$HOME}martial-arts-gyms/{$business->site_slug}/" data-property="listing" data-b_id="{$business->id}" data-ip="{$ip}">View Profile</a>
-	</div>
+		<div class="middle-container">
+			<a class="name --clickable" href="{$HOME}martial-arts-gyms/{$business->site_slug}/" data-property="listing" data-property_sub_type="business-name" data-b_id="{$business->id}" data-ip="{$ip}">{$business->business_name|truncate:25:"..."}</a>
+			<p>{$business->stars} <span class="text-sml">{if $business->reviews|@count < 1}Not rated{else}<span class="--clickable" data-property="listing" data-property_sub_type="reviews" data-b_id="{$business->id}" data-ip="{$ip}">(<a class="link tc-black" href="{$HOME}martial-arts-gyms/{$business->site_slug}/reviews">{$business->reviews|@count}</a>)</span>{/if}</span></p>
+			<p class="text-sml">Distance: {$business->distance|round:2}{$business->unit}</p>
+			<div class="discipline-tags-container">
+				{foreach from=$business->disciplines item=discipline name="business_discipline_loop"}
+					{if $smarty.foreach.business_discipline_loop.iteration < 4}
+					<p class="--clickable --q-trigger tc-gun-metal push-t text-sml cursor-pt discipline-tag" style="display: inline-block;" data-property="listing" data-property_sub_type="discipline-tag-{$discipline->id}" data-b_id="{$business->id}" data-ip="{$ip}">{$discipline->nice_name}</p>
+					{elseif $smarty.foreach.business_discipline_loop.iteration == 4}
+					<a href="{$HOME}martial-arts-gyms/{$business->site_slug}/" class="--clickable link tc-gun-metal push-t-sml text-sml" style="display: inline-block; white-space: nowrap;"  data-property="listing" data-property_sub_type="discipline-and-more-link" data-b_id="{$business->id}" data-ip="{$ip}">— more</a>
+					{/if}
+				{/foreach}
+			</div>
+		</div>
+		<div class="right-container">
+			<a class="btn view-profile-button bg-deep-blue text-med-heavy push-t-med tc-white --clickable" href="{$HOME}martial-arts-gyms/{$business->site_slug}/" data-property="listing" data-property_sub_type="view-profile" data-b_id="{$business->id}" data-ip="{$ip}">View Profile</a>
+		</div>
 	<div class="clear"></div>
 </div>
