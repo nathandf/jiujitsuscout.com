@@ -28,4 +28,9 @@ class Test extends Controller
         $sequenceManager = $this->load( "sequence-dispatcher" );
         $sequenceManager->dispatch();
     }
+
+    public function unsetAll()
+    {
+        unset( $_SESSION[ "respondent-token" ] );
+    }
 }
