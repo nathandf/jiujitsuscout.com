@@ -28,7 +28,6 @@
 					<div class="clear"></div>
 					<input class="btn btn-cnt button-med push-t-med" type="submit" value="Submit"/>
 				</form>
-				<span><a class="link" href="forgot-password">Forgot Password?</a></span>
 			</div>
 		</div>
 		{include file="includes/footer.tpl"}

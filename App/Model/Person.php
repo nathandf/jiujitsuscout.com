@@ -2,7 +2,7 @@
 
 namespace Model;
 
-abstract class Person
+class Person
 {
 
 	public $first_name;
