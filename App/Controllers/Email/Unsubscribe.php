@@ -56,15 +56,10 @@ class Unsubscribe extends Controller
 			) )
 		{
 			$unsubscribeRepo->create( $input->get( "email" ) );
-
-			$this->view->setTemplate( "email/unsubscribe/unsubscribed.tpl" );
-			$this->view->render( "App/Views/Email/Unsubscribe.php" );
-
-			return true;
 		}
 
-		$this->view->redirect( "email/unsubscribe/error" );
-		return false;
+		$this->view->setTemplate( "email/unsubscribe/unsubscribed.tpl" );
+		$this->view->render( "App/Views/Email/Unsubscribe.php" );
 	}
 
 	public function error()
