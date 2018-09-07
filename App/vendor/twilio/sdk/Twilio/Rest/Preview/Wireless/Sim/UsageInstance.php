@@ -53,7 +53,7 @@ class UsageInstance extends InstanceResource {
             'url' => Values::array_get($payload, 'url'),
         );
 
-        $this->solution = array('simSid' => $simSid);
+        $this->solution = array('simSid' => $simSid, );
     }
 
     /**
@@ -76,6 +76,7 @@ class UsageInstance extends InstanceResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return UsageInstance Fetched UsageInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch($options = array()) {
         return $this->proxy()->fetch($options);

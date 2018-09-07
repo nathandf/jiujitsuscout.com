@@ -31,7 +31,7 @@ class SyncMapItemContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'mapSid' => $mapSid, 'key' => $key);
+        $this->solution = array('serviceSid' => $serviceSid, 'mapSid' => $mapSid, 'key' => $key, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Maps/' . rawurlencode($mapSid) . '/Items/' . rawurlencode($key) . '';
     }
@@ -40,6 +40,7 @@ class SyncMapItemContext extends InstanceContext {
      * Fetch a SyncMapItemInstance
      * 
      * @return SyncMapItemInstance Fetched SyncMapItemInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -63,6 +64,7 @@ class SyncMapItemContext extends InstanceContext {
      * Deletes the SyncMapItemInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);
@@ -73,9 +75,10 @@ class SyncMapItemContext extends InstanceContext {
      * 
      * @param array $data The data
      * @return SyncMapItemInstance Updated SyncMapItemInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($data) {
-        $data = Values::of(array('Data' => Serialize::jsonObject($data)));
+        $data = Values::of(array('Data' => Serialize::jsonObject($data), ));
 
         $payload = $this->version->update(
             'POST',

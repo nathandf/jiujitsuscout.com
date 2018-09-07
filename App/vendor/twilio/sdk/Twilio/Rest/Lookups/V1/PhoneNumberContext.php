@@ -27,7 +27,7 @@ class PhoneNumberContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('phoneNumber' => $phoneNumber);
+        $this->solution = array('phoneNumber' => $phoneNumber, );
 
         $this->uri = '/PhoneNumbers/' . rawurlencode($phoneNumber) . '';
     }
@@ -37,6 +37,7 @@ class PhoneNumberContext extends InstanceContext {
      * 
      * @param array|Options $options Optional Arguments
      * @return PhoneNumberInstance Fetched PhoneNumberInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch($options = array()) {
         $options = new Values($options);

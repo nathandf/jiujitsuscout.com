@@ -30,7 +30,7 @@ class StreamMessageList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'streamSid' => $streamSid);
+        $this->solution = array('serviceSid' => $serviceSid, 'streamSid' => $streamSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Streams/' . rawurlencode($streamSid) . '/Messages';
     }
@@ -40,9 +40,10 @@ class StreamMessageList extends ListResource {
      * 
      * @param array $data Stream Message body.
      * @return StreamMessageInstance Newly created StreamMessageInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($data) {
-        $data = Values::of(array('Data' => Serialize::jsonObject($data)));
+        $data = Values::of(array('Data' => Serialize::jsonObject($data), ));
 
         $payload = $this->version->create(
             'POST',

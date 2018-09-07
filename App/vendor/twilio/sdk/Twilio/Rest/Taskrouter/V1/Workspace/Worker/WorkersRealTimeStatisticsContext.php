@@ -26,7 +26,7 @@ class WorkersRealTimeStatisticsContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('workspaceSid' => $workspaceSid);
+        $this->solution = array('workspaceSid' => $workspaceSid, );
 
         $this->uri = '/Workspaces/' . rawurlencode($workspaceSid) . '/Workers/RealTimeStatistics';
     }
@@ -37,11 +37,12 @@ class WorkersRealTimeStatisticsContext extends InstanceContext {
      * @param array|Options $options Optional Arguments
      * @return WorkersRealTimeStatisticsInstance Fetched
      *                                           WorkersRealTimeStatisticsInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch($options = array()) {
         $options = new Values($options);
 
-        $params = Values::of(array('TaskChannel' => $options['taskChannel']));
+        $params = Values::of(array('TaskChannel' => $options['taskChannel'], ));
 
         $payload = $this->version->fetch(
             'GET',

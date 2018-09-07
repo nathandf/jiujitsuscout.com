@@ -46,7 +46,7 @@ class NumberInstance extends InstanceResource {
             'url' => Values::array_get($payload, 'url'),
         );
 
-        $this->solution = array('number' => $number ?: $this->properties['number']);
+        $this->solution = array('number' => $number ?: $this->properties['number'], );
     }
 
     /**
@@ -68,6 +68,7 @@ class NumberInstance extends InstanceResource {
      * Fetch a NumberInstance
      * 
      * @return NumberInstance Fetched NumberInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();

@@ -26,7 +26,7 @@ class PublicKeyContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('sid' => $sid);
+        $this->solution = array('sid' => $sid, );
 
         $this->uri = '/Credentials/PublicKeys/' . rawurlencode($sid) . '';
     }
@@ -35,6 +35,7 @@ class PublicKeyContext extends InstanceContext {
      * Fetch a PublicKeyInstance
      * 
      * @return PublicKeyInstance Fetched PublicKeyInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -53,11 +54,12 @@ class PublicKeyContext extends InstanceContext {
      * 
      * @param array|Options $options Optional Arguments
      * @return PublicKeyInstance Updated PublicKeyInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         $options = new Values($options);
 
-        $data = Values::of(array('FriendlyName' => $options['friendlyName']));
+        $data = Values::of(array('FriendlyName' => $options['friendlyName'], ));
 
         $payload = $this->version->update(
             'POST',
@@ -73,6 +75,7 @@ class PublicKeyContext extends InstanceContext {
      * Deletes the PublicKeyInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);

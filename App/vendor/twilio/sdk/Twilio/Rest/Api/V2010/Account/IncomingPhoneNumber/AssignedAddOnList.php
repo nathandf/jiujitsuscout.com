@@ -29,7 +29,7 @@ class AssignedAddOnList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid, 'resourceSid' => $resourceSid);
+        $this->solution = array('accountSid' => $accountSid, 'resourceSid' => $resourceSid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/IncomingPhoneNumbers/' . rawurlencode($resourceSid) . '/AssignedAddOns.json';
     }
@@ -126,9 +126,10 @@ class AssignedAddOnList extends ListResource {
      * @param string $installedAddOnSid A string that uniquely identifies the
      *                                  Add-on installation
      * @return AssignedAddOnInstance Newly created AssignedAddOnInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($installedAddOnSid) {
-        $data = Values::of(array('InstalledAddOnSid' => $installedAddOnSid));
+        $data = Values::of(array('InstalledAddOnSid' => $installedAddOnSid, ));
 
         $payload = $this->version->create(
             'POST',

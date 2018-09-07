@@ -30,7 +30,7 @@ class NotificationList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid);
+        $this->solution = array('serviceSid' => $serviceSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Notifications';
     }
@@ -40,6 +40,7 @@ class NotificationList extends ListResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return NotificationInstance Newly created NotificationInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($options = array()) {
         $options = new Values($options);

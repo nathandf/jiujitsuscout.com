@@ -19,10 +19,10 @@ class ReplyTo implements \JsonSerializable
 
     public function __construct($email, $name = null)
     {
-        $this->email = $email;
+        $this->setEmail($email);
 
         if (!is_null($name)) {
-            $this->name = $name;
+            $this->setName($name);
         }
     }
 
@@ -38,7 +38,35 @@ class ReplyTo implements \JsonSerializable
 
     public function setName($name)
     {
-        $this->name = $name;
+        /*
+            Issue #368
+            ==========
+
+            If the name is not wrapped in double quotes and contains a comma or
+            semicolon, the API fails to parse it correctly.
+
+            When wrapped in double quotes, commas, semicolons and unescaped single
+            quotes are supported.
+            Escaped double quotes are supported as well but will appear unescaped in
+            the mail (e.g. "O\'Keefe").
+
+            Double quotes will be shown in some email clients, so the name should
+            only be wrapped when necessary.
+        */
+
+        // Only wrapp in double quote if comma or semicolon are found
+        if (false !== strpos($name, ',') || false !== strpos($name, ';')) {
+            // Unescape quotes
+            $name = stripslashes(html_entity_decode($name, ENT_QUOTES));
+
+            // Escape only double quotes
+            $name = str_replace('"', '\\"', $name);
+
+            // Wrapp in double quotes
+            $name = '"' . $name . '"';
+        }
+
+        $this->name = (!empty($name)) ? $name : null;
     }
 
     public function getName()
@@ -732,6 +760,18 @@ class Attachment implements \JsonSerializable
             }
         ) ?: null;
     }
+
+    public function setContentPath($string)
+    {
+        $rawContent = file_get_contents($string);
+
+        if ($rawContent === false) {
+            throw new \RuntimeException("Could not open file $string");
+        }
+
+        $this->content  = base64_encode($rawContent);
+        $this->filename = $this->filename ?: basename($string);
+    }
 }
 
 class Content implements \JsonSerializable
@@ -842,7 +882,7 @@ class Personalization implements \JsonSerializable
 
     public function addSubstitution($key, $value)
     {
-        $this->substitutions[$key] = $value;
+        $this->substitutions[$key] = (string)$value;
     }
 
     public function getSubstitutions()
@@ -897,13 +937,41 @@ class Email implements \JsonSerializable
 
     public function __construct($name, $email)
     {
-        $this->name = $name;
-        $this->email = $email;
+        $this->setName($name);
+        $this->setEmail($email);
     }
 
     public function setName($name)
     {
-        $this->name = $name;
+        /*
+            Issue #368
+            ==========
+
+            If the name is not wrapped in double quotes and contains a comma or
+            semicolon, the API fails to parse it correctly.
+
+            When wrapped in double quotes, commas, semicolons and unescaped single
+            quotes are supported.
+            Escaped double quotes are supported as well but will appear unescaped in
+            the mail (e.g. "O\'Keefe").
+
+            Double quotes will be shown in some email clients, so the name should
+            only be wrapped when necessary.
+        */
+
+        // Only wrapp in double quote if comma or semicolon are found
+        if (false !== strpos($name, ',') || false !== strpos($name, ';')) {
+            // Unescape quotes
+            $name = stripslashes(html_entity_decode($name, ENT_QUOTES));
+
+            // Escape only double quotes
+            $name = str_replace('"', '\\"', $name);
+
+            // Wrapp in double quotes
+            $name = '"' . $name . '"';
+        }
+
+        $this->name = (!empty($name)) ? $name : null;
     }
 
     public function getName()

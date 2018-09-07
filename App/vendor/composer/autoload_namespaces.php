@@ -9,4 +9,5 @@ return array(
     'PayPal' => array($vendorDir . '/paypal/rest-api-sdk-php/lib'),
     'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),
     'Google_' => array($vendorDir . '/google/apiclient/src'),
+    'Braintree' => array($vendorDir . '/braintree/braintree_php/lib'),
 );

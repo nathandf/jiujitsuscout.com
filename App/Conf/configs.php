@@ -127,5 +127,6 @@ $config[ "facebook" ] = [
         ],
         "default_graph_version" => "v5.6"
     ],
-    "jjs_client_pixel_id" => "309803832759430"
+    "jjs_client_pixel_id" => "309803832759430",
+    "jjs_pixel_id" => '1842001532752101'
 ];

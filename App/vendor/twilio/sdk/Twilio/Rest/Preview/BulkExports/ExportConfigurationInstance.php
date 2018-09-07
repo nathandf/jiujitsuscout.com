@@ -45,7 +45,7 @@ class ExportConfigurationInstance extends InstanceResource {
             'url' => Values::array_get($payload, 'url'),
         );
 
-        $this->solution = array('resourceType' => $resourceType ?: $this->properties['resourceType']);
+        $this->solution = array('resourceType' => $resourceType ?: $this->properties['resourceType'], );
     }
 
     /**
@@ -68,6 +68,7 @@ class ExportConfigurationInstance extends InstanceResource {
      * Fetch a ExportConfigurationInstance
      * 
      * @return ExportConfigurationInstance Fetched ExportConfigurationInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();
@@ -78,6 +79,7 @@ class ExportConfigurationInstance extends InstanceResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return ExportConfigurationInstance Updated ExportConfigurationInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         return $this->proxy()->update($options);

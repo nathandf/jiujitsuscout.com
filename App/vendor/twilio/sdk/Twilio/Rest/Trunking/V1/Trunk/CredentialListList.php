@@ -25,7 +25,7 @@ class CredentialListList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('trunkSid' => $trunkSid);
+        $this->solution = array('trunkSid' => $trunkSid, );
 
         $this->uri = '/Trunks/' . rawurlencode($trunkSid) . '/CredentialLists';
     }
@@ -33,11 +33,16 @@ class CredentialListList extends ListResource {
     /**
      * Create a new CredentialListInstance
      * 
-     * @param string $credentialListSid The credential_list_sid
+     * @param string $credentialListSid The SID of the Credential List that you
+     *                                  want to associate with this trunk. Once
+     *                                  associated, Twilio will start
+     *                                  authenticating access to the trunk against
+     *                                  this list.
      * @return CredentialListInstance Newly created CredentialListInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($credentialListSid) {
-        $data = Values::of(array('CredentialListSid' => $credentialListSid));
+        $data = Values::of(array('CredentialListSid' => $credentialListSid, ));
 
         $payload = $this->version->create(
             'POST',

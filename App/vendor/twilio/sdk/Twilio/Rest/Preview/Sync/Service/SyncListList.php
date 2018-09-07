@@ -29,7 +29,7 @@ class SyncListList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid);
+        $this->solution = array('serviceSid' => $serviceSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Lists';
     }
@@ -39,11 +39,12 @@ class SyncListList extends ListResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return SyncListInstance Newly created SyncListInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($options = array()) {
         $options = new Values($options);
 
-        $data = Values::of(array('UniqueName' => $options['uniqueName']));
+        $data = Values::of(array('UniqueName' => $options['uniqueName'], ));
 
         $payload = $this->version->create(
             'POST',

@@ -477,7 +477,7 @@ td {
     margin-top: 15px;
     margin-bottom: 8px;
     border: 1px solid #F6F6F6;
-    border-left: 3px solid red;
+    border-left: 3px solid #CA2A2A;
     background: #FFF;
     width: 85%;
     max-width: 300px;
@@ -941,6 +941,10 @@ td {
     background: #D32323;
 }
 
+.bg-error-red {
+    background: #CA2A2A;
+}
+
 .bg-forest {
     background: #00B478;
 }
@@ -955,6 +959,10 @@ td {
 
 .bg-good-green {
     background: #00C853;
+}
+
+.bg-approved-green {
+    background: #219653;
 }
 
 .bg-dark-mint {
@@ -1010,6 +1018,10 @@ td {
     color: #000000;
 }
 
+.tc-error {
+    color: #B00020;
+}
+
 .tc-dark-mint {
     color: #37BF91;
 }
@@ -1028,6 +1040,10 @@ td {
 
 .tc-y-red {
     color: #D32323;
+}
+
+.tc-error-red {
+    color: #CA2A2A;
 }
 
 .tc-deep-blue {
@@ -1260,7 +1276,7 @@ td {
 .msg-err {
     text-align: center;
     font weight: 100;
-    color: red;
+    color: #CA2A2A;
     padding-top: 8px;
     padding-bottom: 8px;
 }

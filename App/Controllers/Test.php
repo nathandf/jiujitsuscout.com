@@ -6,17 +6,31 @@ use \Core\Controller;
 
 class Test extends Controller
 {
+    public function braintree()
+	{
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+		$productRepo = $this->load( "product-repository" );
 
-  public function before()
-  {
+        $products = $productRepo->getAll();
 
-  }
+        $this->view->assign( "products", $products );
 
-  public function indexAction()
-  {
-    $sequenceManager = $this->load( "sequence-manager" );
-    $sequenceManager->dispatch();
-  }
+		$this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+	    $this->view->setErrorMessages( $inputValidator->getErrors() );
 
+		$this->view->setTemplate( "braintree-test.tpl" );
+		$this->view->render( "App/Views/Home.php" );
+	}
 
+    public function sequenceDispatcherAction()
+    {
+        $sequenceManager = $this->load( "sequence-dispatcher" );
+        $sequenceManager->dispatch();
+    }
+
+    public function unsetAll()
+    {
+        unset( $_SESSION[ "respondent-token" ] );
+    }
 }

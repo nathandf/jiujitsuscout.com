@@ -29,7 +29,7 @@ class AvailableAddOnExtensionContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('availableAddOnSid' => $availableAddOnSid, 'sid' => $sid);
+        $this->solution = array('availableAddOnSid' => $availableAddOnSid, 'sid' => $sid, );
 
         $this->uri = '/AvailableAddOns/' . rawurlencode($availableAddOnSid) . '/Extensions/' . rawurlencode($sid) . '';
     }
@@ -39,6 +39,7 @@ class AvailableAddOnExtensionContext extends InstanceContext {
      * 
      * @return AvailableAddOnExtensionInstance Fetched
      *                                         AvailableAddOnExtensionInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());

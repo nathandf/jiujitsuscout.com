@@ -59,7 +59,7 @@ class SyncMapInstance extends InstanceResource {
             'createdBy' => Values::array_get($payload, 'created_by'),
         );
 
-        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid ?: $this->properties['sid']);
+        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid ?: $this->properties['sid'], );
     }
 
     /**
@@ -85,6 +85,7 @@ class SyncMapInstance extends InstanceResource {
      * Fetch a SyncMapInstance
      * 
      * @return SyncMapInstance Fetched SyncMapInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();
@@ -94,6 +95,7 @@ class SyncMapInstance extends InstanceResource {
      * Deletes the SyncMapInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->proxy()->delete();

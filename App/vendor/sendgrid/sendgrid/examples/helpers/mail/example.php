@@ -2,7 +2,7 @@
 namespace SendGrid;
 
 // If you are using Composer
-require __DIR__ . '<PATH_TO>/vendor/autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 
 
 function helloEmail()
@@ -43,6 +43,7 @@ function kitchenSink()
     $mail->personalization[0]->addHeader("X-Mock", "true");
     $mail->personalization[0]->addSubstitution("%name%", "Example User");
     $mail->personalization[0]->addSubstitution("%city%", "Denver");
+    $mail->personalization[0]->addSubstitution("%sec1%", "%section1%");
     $mail->personalization[0]->addCustomArg("user_id", "343");
     $mail->personalization[0]->addCustomArg("type", "marketing");
     $mail->personalization[0]->setSendAt(1443636843);
@@ -65,6 +66,7 @@ function kitchenSink()
     $personalization1->addHeader("X-Mock", "true");
     $personalization1->addSubstitution("%name%", "Example User");
     $personalization1->addSubstitution("%city%", "Denver");
+    $personalization1->addSubstitution("%sec2%", "%section2%");
     $personalization1->addCustomArg("user_id", "343");
     $personalization1->addCustomArg("type", "marketing");
     $personalization1->setSendAt(1443636843);
@@ -92,7 +94,7 @@ function kitchenSink()
     $mail->setTemplateId("439b6d66-4408-4ead-83de-5c83c2ee313a");
 
     # This must be a valid [batch ID](https://sendgrid.com/docs/API_Reference/SMTP_API/scheduling_parameters.html) to work
-    # $mail->setBatchID("sengrid_batch_id");
+    # $mail->setBatchID("sendgrid_batch_id");
 
     $mail->addSection("%section1%", "Substitution Text for Section 1");
     $mail->addSection("%section2%", "Substitution Text for Section 2");

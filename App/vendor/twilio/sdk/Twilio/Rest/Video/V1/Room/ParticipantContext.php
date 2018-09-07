@@ -13,15 +13,18 @@ use Twilio\Exceptions\TwilioException;
 use Twilio\InstanceContext;
 use Twilio\Options;
 use Twilio\Rest\Video\V1\Room\Participant\PublishedTrackList;
+use Twilio\Rest\Video\V1\Room\Participant\SubscribedTrackList;
 use Twilio\Values;
 use Twilio\Version;
 
 /**
  * @property \Twilio\Rest\Video\V1\Room\Participant\PublishedTrackList publishedTracks
+ * @property \Twilio\Rest\Video\V1\Room\Participant\SubscribedTrackList subscribedTracks
  * @method \Twilio\Rest\Video\V1\Room\Participant\PublishedTrackContext publishedTracks(string $sid)
  */
 class ParticipantContext extends InstanceContext {
     protected $_publishedTracks = null;
+    protected $_subscribedTracks = null;
 
     /**
      * Initialize the ParticipantContext
@@ -35,7 +38,7 @@ class ParticipantContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('roomSid' => $roomSid, 'sid' => $sid);
+        $this->solution = array('roomSid' => $roomSid, 'sid' => $sid, );
 
         $this->uri = '/Rooms/' . rawurlencode($roomSid) . '/Participants/' . rawurlencode($sid) . '';
     }
@@ -44,6 +47,7 @@ class ParticipantContext extends InstanceContext {
      * Fetch a ParticipantInstance
      * 
      * @return ParticipantInstance Fetched ParticipantInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -67,11 +71,12 @@ class ParticipantContext extends InstanceContext {
      * 
      * @param array|Options $options Optional Arguments
      * @return ParticipantInstance Updated ParticipantInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         $options = new Values($options);
 
-        $data = Values::of(array('Status' => $options['status']));
+        $data = Values::of(array('Status' => $options['status'], ));
 
         $payload = $this->version->update(
             'POST',
@@ -103,6 +108,23 @@ class ParticipantContext extends InstanceContext {
         }
 
         return $this->_publishedTracks;
+    }
+
+    /**
+     * Access the subscribedTracks
+     * 
+     * @return \Twilio\Rest\Video\V1\Room\Participant\SubscribedTrackList 
+     */
+    protected function getSubscribedTracks() {
+        if (!$this->_subscribedTracks) {
+            $this->_subscribedTracks = new SubscribedTrackList(
+                $this->version,
+                $this->solution['roomSid'],
+                $this->solution['sid']
+            );
+        }
+
+        return $this->_subscribedTracks;
     }
 
     /**

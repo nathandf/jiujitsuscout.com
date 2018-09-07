@@ -28,6 +28,7 @@
 					<p class="text-med"><b>Number: </b>{$lead->phone_number|default:"N/a"}</p>
 					<p class="text-med"><b>Email: </b>{$lead->email|default:"N/a"}</p>
 					<p class="text-med"><b>Source: </b>{$lead->source|capitalize|default:"N/a"}</p>
+					<p class="text-med"><b>Created At: </b>{$lead->datetime_of_action|capitalize|default:"N/a"}</p>
 					<div class="clear last"></div>
 					{if $lead->type == "trial"}
 					<a class="link tc-mango text-med" href="{$HOME}account-manager/business/lead/{$lead->id}/trial"><span class="action-btn-text"><b>On Trial</b></span><i class="fa fa-calendar" aria-hidden="true"></i></a>

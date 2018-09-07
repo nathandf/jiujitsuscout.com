@@ -23,15 +23,17 @@ class SyncListItemList extends ListResource {
      * Construct the SyncListItemList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $serviceSid The service_sid
-     * @param string $listSid The list_sid
+     * @param string $serviceSid The unique SID identifier of the Service Instance
+     *                           that hosts this List object.
+     * @param string $listSid The unique 34-character SID identifier of the List
+     *                        containing this Item.
      * @return \Twilio\Rest\Sync\V1\Service\SyncList\SyncListItemList 
      */
     public function __construct(Version $version, $serviceSid, $listSid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'listSid' => $listSid);
+        $this->solution = array('serviceSid' => $serviceSid, 'listSid' => $listSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Lists/' . rawurlencode($listSid) . '/Items';
     }
@@ -39,14 +41,17 @@ class SyncListItemList extends ListResource {
     /**
      * Create a new SyncListItemInstance
      * 
-     * @param array $data The data
+     * @param array $data Contains arbitrary user-defined, schema-less data that
+     *                    this List Item stores, represented by a JSON object, up
+     *                    to 16KB.
      * @param array|Options $options Optional Arguments
      * @return SyncListItemInstance Newly created SyncListItemInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($data, $options = array()) {
         $options = new Values($options);
 
-        $data = Values::of(array('Data' => Serialize::jsonObject($data), 'Ttl' => $options['ttl']));
+        $data = Values::of(array('Data' => Serialize::jsonObject($data), 'Ttl' => $options['ttl'], ));
 
         $payload = $this->version->create(
             'POST',

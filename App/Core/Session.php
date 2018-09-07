@@ -17,7 +17,7 @@ class Session
 
     }
 
-    private function setSession( $index, $value )
+    public function setSession( $index, $value )
     {
         $_SESSION[ $index ] = $value;
     }

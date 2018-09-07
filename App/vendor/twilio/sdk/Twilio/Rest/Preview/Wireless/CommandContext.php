@@ -28,7 +28,7 @@ class CommandContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('sid' => $sid);
+        $this->solution = array('sid' => $sid, );
 
         $this->uri = '/Commands/' . rawurlencode($sid) . '';
     }
@@ -37,6 +37,7 @@ class CommandContext extends InstanceContext {
      * Fetch a CommandInstance
      * 
      * @return CommandInstance Fetched CommandInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());

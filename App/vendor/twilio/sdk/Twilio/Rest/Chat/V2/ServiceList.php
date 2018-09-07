@@ -32,11 +32,12 @@ class ServiceList extends ListResource {
     /**
      * Create a new ServiceInstance
      * 
-     * @param string $friendlyName The friendly_name
+     * @param string $friendlyName Human-readable name for this service instance
      * @return ServiceInstance Newly created ServiceInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($friendlyName) {
-        $data = Values::of(array('FriendlyName' => $friendlyName));
+        $data = Values::of(array('FriendlyName' => $friendlyName, ));
 
         $payload = $this->version->create(
             'POST',

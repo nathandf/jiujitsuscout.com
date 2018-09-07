@@ -21,14 +21,15 @@ class AlphaSenderList extends ListResource {
      * Construct the AlphaSenderList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $serviceSid The service_sid
+     * @param string $serviceSid The 34 character unique sid of the Messaging
+     *                           Service.
      * @return \Twilio\Rest\Messaging\V1\Service\AlphaSenderList 
      */
     public function __construct(Version $version, $serviceSid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid);
+        $this->solution = array('serviceSid' => $serviceSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/AlphaSenders';
     }
@@ -36,11 +37,13 @@ class AlphaSenderList extends ListResource {
     /**
      * Create a new AlphaSenderInstance
      * 
-     * @param string $alphaSender The alpha_sender
+     * @param string $alphaSender An Alphanumeric Sender ID string, up to 11
+     *                            characters.
      * @return AlphaSenderInstance Newly created AlphaSenderInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($alphaSender) {
-        $data = Values::of(array('AlphaSender' => $alphaSender));
+        $data = Values::of(array('AlphaSender' => $alphaSender, ));
 
         $payload = $this->version->create(
             'POST',

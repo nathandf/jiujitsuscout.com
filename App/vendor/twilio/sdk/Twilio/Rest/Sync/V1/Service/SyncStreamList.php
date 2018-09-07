@@ -29,7 +29,7 @@ class SyncStreamList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid);
+        $this->solution = array('serviceSid' => $serviceSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Streams';
     }
@@ -39,11 +39,12 @@ class SyncStreamList extends ListResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return SyncStreamInstance Newly created SyncStreamInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($options = array()) {
         $options = new Values($options);
 
-        $data = Values::of(array('UniqueName' => $options['uniqueName'], 'Ttl' => $options['ttl']));
+        $data = Values::of(array('UniqueName' => $options['uniqueName'], 'Ttl' => $options['ttl'], ));
 
         $payload = $this->version->create(
             'POST',

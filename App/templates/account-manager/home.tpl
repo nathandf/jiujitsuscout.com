@@ -9,12 +9,25 @@
 	    {include file="includes/navigation/account-manager-menu.tpl"}
 		<table cellspacing="0" class="con-cnt-xxlrg push-t-med push-b-med">
 			<tr class="bg-green">
-				<th class="tc-white">Account</td>
+
+				<!-- <th class="tc-white">Account</td> -->
+				<th class="tc-white">Credit</td>
 				<th class="tc-white">Businesses</td>
 				<th class="tc-white">Users</td>
 			</tr>
 			<tr class="bg-white">
-				<td class="text-center">{$account_type->name|capitalize}{if $account_type->id == 1}<br><a class="link text-sml tc-mango" target="_blank" href="{$HOME}account-manager/upgrade"><b>Upgrade</b></a>{/if}</p></td>
+				<!-- <td class="text-center"> -->
+					{*$account_type->name|capitalize*}
+					{if $user->role|in_array:[ "owner", "administrator" ]}
+						{if $account_type->id != 4}
+							<!-- <br>
+							<a class="link text-sml tc-mango" target="_blank" href="{$HOME}account-manager/upgrade">
+								<b>Upgrade</b>
+							</a> -->
+						{/if}
+					{/if}
+				<!-- </td> -->
+				<td class="text-center">${$account->credit}</td>
 				<td class="text-center">{$businesses|@count}</td>
 				<td class="text-center">{$total_users}<br><b class="text-sml-heavy">max users: {if $account_type->max_users > 998}Unlimited{else}{$account_type->max_users}{/if}</b></p></td>
 			</tr>

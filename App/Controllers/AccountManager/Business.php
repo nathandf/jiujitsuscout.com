@@ -48,10 +48,18 @@ class Business extends Controller
         $prospectRepo = $this->load( "prospect-repository" );
         $memberRepo = $this->load( "member-repository" );
         $appointmentRepo = $this->load( "appointment-repository" );
+        $clickRepo = $this->load( "click-repository" );
 
         // Get pending leads and leads on trial
         $leads = $prospectRepo->getAllByStatusAndBusinessID( "pending", $this->business->id );
-        $trials = $prospectRepo->getAllByTypeAndBusinessID( "trial", $this->business->id );
+        $trials = [];
+        $trialsAll = $prospectRepo->getAllByTypeAndBusinessID( "trial", $this->business->id );
+
+        foreach ( $trialsAll as $trial ) {
+            if ( $trial->status != "lost" ) {
+                $trials[] = $trial;
+            }
+        }
 
         // Load members
         $members = $memberRepo->getAllByBusinessID( $this->business->id );
@@ -65,10 +73,13 @@ class Business extends Controller
             }
         }
 
+        $listing_clicks = $clickRepo->getAllByBusinessIDAndProperty( $this->business->id, "listing" );
+
         $this->view->assign( "leads", $leads );
         $this->view->assign( "appointments", $appointments );
         $this->view->assign( "trials", $trials );
         $this->view->assign( "members", $members );
+        $this->view->assign( "lisiting_clicks", $listing_clicks );
 
         $this->view->setTemplate( "account-manager/business/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );

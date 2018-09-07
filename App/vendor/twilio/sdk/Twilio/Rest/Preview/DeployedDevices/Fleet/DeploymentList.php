@@ -29,7 +29,7 @@ class DeploymentList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('fleetSid' => $fleetSid);
+        $this->solution = array('fleetSid' => $fleetSid, );
 
         $this->uri = '/Fleets/' . rawurlencode($fleetSid) . '/Deployments';
     }
@@ -39,6 +39,7 @@ class DeploymentList extends ListResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return DeploymentInstance Newly created DeploymentInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($options = array()) {
         $options = new Values($options);

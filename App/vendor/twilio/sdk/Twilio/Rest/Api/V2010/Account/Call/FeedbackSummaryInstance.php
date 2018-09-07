@@ -63,7 +63,7 @@ class FeedbackSummaryInstance extends InstanceResource {
             'status' => Values::array_get($payload, 'status'),
         );
 
-        $this->solution = array('accountSid' => $accountSid, 'sid' => $sid ?: $this->properties['sid']);
+        $this->solution = array('accountSid' => $accountSid, 'sid' => $sid ?: $this->properties['sid'], );
     }
 
     /**
@@ -90,6 +90,7 @@ class FeedbackSummaryInstance extends InstanceResource {
      * Fetch a FeedbackSummaryInstance
      * 
      * @return FeedbackSummaryInstance Fetched FeedbackSummaryInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();
@@ -99,6 +100,7 @@ class FeedbackSummaryInstance extends InstanceResource {
      * Deletes the FeedbackSummaryInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->proxy()->delete();

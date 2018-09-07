@@ -21,13 +21,14 @@ use Twilio\Version;
  * @property \DateTime dateCreated
  * @property string sid
  * @property string sourceSid
- * @property integer size
+ * @property string size
  * @property string url
  * @property string type
  * @property integer duration
  * @property string containerFormat
  * @property string codec
  * @property array groupingSids
+ * @property string trackName
  * @property array links
  */
 class RecordingInstance extends InstanceResource {
@@ -36,7 +37,8 @@ class RecordingInstance extends InstanceResource {
      * 
      * @param \Twilio\Version $version Version that contains the resource
      * @param mixed[] $payload The response payload
-     * @param string $sid The sid
+     * @param string $sid The Recording Sid that uniquely identifies the Recording
+     *                    to fetch.
      * @return \Twilio\Rest\Video\V1\RecordingInstance 
      */
     public function __construct(Version $version, array $payload, $sid = null) {
@@ -56,10 +58,11 @@ class RecordingInstance extends InstanceResource {
             'containerFormat' => Values::array_get($payload, 'container_format'),
             'codec' => Values::array_get($payload, 'codec'),
             'groupingSids' => Values::array_get($payload, 'grouping_sids'),
+            'trackName' => Values::array_get($payload, 'track_name'),
             'links' => Values::array_get($payload, 'links'),
         );
 
-        $this->solution = array('sid' => $sid ?: $this->properties['sid']);
+        $this->solution = array('sid' => $sid ?: $this->properties['sid'], );
     }
 
     /**
@@ -81,6 +84,7 @@ class RecordingInstance extends InstanceResource {
      * Fetch a RecordingInstance
      * 
      * @return RecordingInstance Fetched RecordingInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();
@@ -90,6 +94,7 @@ class RecordingInstance extends InstanceResource {
      * Deletes the RecordingInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->proxy()->delete();

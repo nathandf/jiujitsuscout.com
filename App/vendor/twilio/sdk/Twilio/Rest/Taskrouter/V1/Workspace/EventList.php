@@ -20,14 +20,14 @@ class EventList extends ListResource {
      * Construct the EventList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $workspaceSid The sid
+     * @param string $workspaceSid The unique ID of the Workspace
      * @return \Twilio\Rest\Taskrouter\V1\Workspace\EventList 
      */
     public function __construct(Version $version, $workspaceSid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('workspaceSid' => $workspaceSid);
+        $this->solution = array('workspaceSid' => $workspaceSid, );
 
         $this->uri = '/Workspaces/' . rawurlencode($workspaceSid) . '/Events';
     }
