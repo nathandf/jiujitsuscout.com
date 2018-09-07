@@ -52,7 +52,14 @@ class Business extends Controller
 
         // Get pending leads and leads on trial
         $leads = $prospectRepo->getAllByStatusAndBusinessID( "pending", $this->business->id );
-        $trials = $prospectRepo->getAllByTypeAndBusinessID( "trial", $this->business->id );
+        $trials = [];
+        $trialsAll = $prospectRepo->getAllByTypeAndBusinessID( "trial", $this->business->id );
+
+        foreach ( $trialsAll as $trial ) {
+            if ( $trial->status != "lost" ) {
+                $trials[] = $trial;
+            }
+        }
 
         // Load members
         $members = $memberRepo->getAllByBusinessID( $this->business->id );
