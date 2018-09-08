@@ -26,7 +26,8 @@
 			<input type="search" class="search_bar encapsulate" id="search_bar" name="q" placeholder="City, State or Zip" require="required"/>
 			<input type="submit" class="mat-hov find-gym-button bg-deep-blue" id="search_button" value="Find Gyms" /><br>
 	      </form>
-	    	<p><strong>Showing ({$total_results}) results for "{$query}"</strong></p>
+		  <a class="choose-gym-button cursor-pt --q-trigger tc-deep-blue text-sml">Help Me Choose a Gym</a>
+	    	<p class="push-t-med"><strong>Showing ({$total_results}) results for "{$query}"</strong></p>
 	    </div>
 		<div class="results-body">
 		{if $total_results > 0 }

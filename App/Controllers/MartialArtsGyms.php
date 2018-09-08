@@ -10,39 +10,38 @@ class MartialArtsGyms extends Controller
 
     protected function before()
     {
-        require_once( "App/Helpers/tracking-code-builders.php" );
         $this->requireParam( "siteslug" );
 
         $businessRepo = $this->load( "business-repository" );
         $phoneRepo = $this->load( "phone-repository" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $Config = $this->load( "config" );
 
         // Get business by the unique URL slug
         $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
-
-        // Get phone associated with this business
-        $phone = $phoneRepo->getByID( $this->business->phone_id );
-        $this->business->phone = $phone;
 
         // Render 404 if no business is returned
         if ( is_null( $this->business->id ) || $this->business->id == "" ) {
             $this->view->render404();
         }
-        // Load configs
-        $Config = $this->load( "config" );
+
+        // Get phone associated with this business
+        $phone = $phoneRepo->getByID( $this->business->phone_id );
+        $this->business->phone = $phone;
 
         // Get jiujitsuscout google api key
         $google_api_key = $Config::$configs[ "google" ][ "api_key" ];
 
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebook_pixel = build_facebook_pixel( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
 
         // Replace the facebook pixel if user specifies a pixel id of their own
         if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
-            $facebook_pixel = build_facebook_pixel( $this->business->facebook_pixel_id );
+            $facebookPixelBuilder->setPixelID( $this->business->facebook_pixel_id );
         }
 
         $this->view->assign( "business", $this->business );
-        $this->view->assign( "facebook_pixel", $facebook_pixel );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
         $this->view->assign( "google_api_key", $google_api_key );
     }
 
@@ -62,10 +61,10 @@ class MartialArtsGyms extends Controller
             $userRepo = $this->load( "user-repository" );
             $userMailer = $this->load( "user-mailer" );
             $phoneRepo = $this->load( "phone-repository" );
+            $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
             // Require in helper functions
             require_once( "App/Helpers/fa-return-stars.php" );
-            require_once( "App/Helpers/tracking-code-builders.php" );
 
             // Get business by the unique URL slug
             $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
@@ -83,11 +82,11 @@ class MartialArtsGyms extends Controller
             $google_api_key = $Config::$configs[ "google" ][ "api_key" ];
 
             // Build facebook tracking pixel using jiujitsuscout clients pixel id
-            $facebook_pixel = build_facebook_pixel( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ], [ "ViewContent" ] );
+            $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
 
             // Replace the facebook pixel if user specifies a pixel id of their own
             if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
-                $facebook_pixel = build_facebook_pixel( $this->business->facebook_pixel_id, [ "ViewContent" ] );
+                $facebookPixelBuilder->setPixelID( $this->business->facebook_pixel_id );
             }
 
             // Get reviews from business id
@@ -251,15 +250,13 @@ class MartialArtsGyms extends Controller
             }
 
             $this->view->assign( "inputs", $inputs );
-
-            $csrf_token = $this->session->generateCSRFToken();
-            $this->view->assign( "csrf_token", $csrf_token );
+            $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 
             $this->view->setErrorMessages( $inputValidator->getErrors() );
 
             // Assign data the view
             $this->view->assign( "google_api_key", $google_api_key );
-            $this->view->assign( "facebook_pixel", $facebook_pixel );
+            $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
             $this->view->assign( "reviews", $reviews );
             $this->view->assign( "business", $this->business );
             $this->view->assign( "html_stars", $html_stars );
@@ -537,8 +534,7 @@ class MartialArtsGyms extends Controller
 
         $this->view->assign( "inputs", $inputs );
 
-        $csrf_token = $this->session->generateCSRFToken();
-        $this->view->assign( "csrf_token", $csrf_token );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->assign( "business", $this->business );
@@ -865,7 +861,6 @@ class MartialArtsGyms extends Controller
 
     public function thankYouAction()
     {
-        require_once( "App/Helpers/tracking-code-builders.php" );
         $Config = $this->load( "config" );
 
         $prospectRegistrar = $this->load( "prospect-registrar" );
@@ -873,19 +868,26 @@ class MartialArtsGyms extends Controller
         $userMailer = $this->load( "user-mailer" );
         $reviewRepo = $this->load( "review-repository" );
         $phoneRepo = $this->load( "phone-repository" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebook_pixel = build_facebook_pixel( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ], [ "Lead" ] );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
+
         // Replace the facebook pixel if user specifies a pixel id of their own
         if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
-            $facebook_pixel = build_facebook_pixel( $this->business->facebook_pixel_id, [ "Lead" ] );
+            $facebookPixelBuilder->setPixelID( $this->business->facebook_pixel_id );
         }
+
+        // Add InitiateCheckout Event if there are products in the cart
+        $facebookPixelBuilder->addEvent([
+            "Lead"
+        ]);
 
         // Get phone resource and set phone_number property for business object
         $phone = $phoneRepo->getByID( $this->business->phone_id );
         $this->business->phone_number = $phone->national_number;
 
-        $this->view->assign( "facebook_pixel", $facebook_pixel );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
         $this->view->assign( "business", $this->business );
         $this->view->setTemplate( "martial-arts-gyms/thank-you.tpl" );
         $this->view->render( "App/Views/MartialArtsGyms.php" );
@@ -893,7 +895,6 @@ class MartialArtsGyms extends Controller
 
     public function promoAction()
     {
-        require_once( "App/Helpers/tracking-code-builders.php" );
         $Config = $this->load( "config" );
         $businessRepo = $this->load( "business-repository" );
         $reviewRepo = $this->load( "review-repository" );
@@ -915,11 +916,11 @@ class MartialArtsGyms extends Controller
             $this->view->render404();
         }
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $landingPage->facebook_pixel = build_facebook_pixel( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ], [ "ViewContent" ] );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
 
         // Replace the facebook pixel if user specifies a pixel id of their own
         if ( !is_null( $landingPage->facebook_pixel_id ) && $landingPage->facebook_pixel_id != "" ) {
-            $landingPage->facebook_pixel = build_facebook_pixel( $landingPage->facebook_pixel_id );
+            $facebookPixelBuilder->setPixelID( $landingPage->facebook_pixel_id);
         }
 
         if ( $input->exists() && $input->issetField( "landing_page" ) && $inputValidator->validate( $input,
@@ -1012,7 +1013,6 @@ class MartialArtsGyms extends Controller
     public function leaveReviewAction()
     {
         require_once( "App/Helpers/fa-return-stars.php" );
-        require_once( "App/Helpers/tracking-code-builders.php" );
 
         // Load input and input validation helpers and services
         $Config = $this->load( "config" );
@@ -1024,11 +1024,6 @@ class MartialArtsGyms extends Controller
         $userRepo = $this->load( "user-repository" );
         $userMailer = $this->load( "user-mailer" );
         $phoneRepo = $this->load( "phone-repository" );
-
-        // Replace the facebook pixel if user specifies a pixel id of their own
-        if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
-            $facebook_pixel = build_facebook_pixel( $this->business->facebook_pixel_id, [ "ViewContent" ] );
-        }
 
         // Get reviews from business id
         $reviews = $reviewRepo->getAllByBusinessID( $this->business->id );
@@ -1047,10 +1042,6 @@ class MartialArtsGyms extends Controller
 
         // return html stars
         $html_stars = fa_return_stars( $business_rating );
-
-        // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebook_pixel = build_facebook_pixel( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
-
 
         if ( $input->exists() && $input->issetField( "rate_review" ) && $inputValidator->validate( $input,
                 [
@@ -1125,7 +1116,6 @@ class MartialArtsGyms extends Controller
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         // Assign data the view
-        $this->view->assign( "facebook_pixel", $facebook_pixel );
         $this->view->assign( "reviews", $reviews );
         $this->view->assign( "business", $this->business );
         $this->view->assign( "html_stars", $html_stars );
