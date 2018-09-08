@@ -8,6 +8,7 @@
 		<meta itemprop="headline" content="Sign up" />
 		<meta itemprop="url" content="http://www.jiujitsuscout.com/" />
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/register.css"/>
+		{$facebook_pixel|default:null}
     {include file='includes/head/main-head.tpl'}
 	</head>
 	<body>

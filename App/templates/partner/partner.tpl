@@ -4,6 +4,7 @@
 	    <title>Marketing Your Martial Arts Business | Generate Leads</title>
 		{include file='includes/head/main-head.tpl'}
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/partner.css"/>
+		{$facebook_pixel|default:null}
 	</head>
 	<body>
 		{include file='includes/navigation/main-menu.tpl'}

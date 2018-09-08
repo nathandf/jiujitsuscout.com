@@ -5,6 +5,7 @@
 		{include file="includes/head/main-head.tpl"}
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/search.css"/>
 		<link rel="stylesheet" href="{HOME}public/css/questionnaire.css">
+		{$facebook_pixel}
 		<script src="{$HOME}{$JS_SCRIPTS}QuestionnaireDispatcher.js"></script>
 		<script src="{$HOME}{$JS_SCRIPTS}search.js"></script>
 	</head>
@@ -26,7 +27,7 @@
 			<input type="search" class="search_bar encapsulate" id="search_bar" name="q" placeholder="City, State or Zip" require="required"/>
 			<input type="submit" class="mat-hov find-gym-button bg-deep-blue" id="search_button" value="Find Gyms" /><br>
 	      </form>
-		  <a class="choose-gym-button cursor-pt --q-trigger tc-deep-blue text-sml">Help Me Choose a Gym</a>
+		  <a class="--clickable choose-gym-button cursor-pt --q-trigger tc-deep-blue text-sml" data-property="search-results" data-property_sub_type="help-choose-a-gym-button" data-b_id="0" data-ip="{$ip}">Help Me Choose a Gym</a>
 	    	<p class="push-t-med"><strong>Showing ({$total_results}) results for "{$query}"</strong></p>
 	    </div>
 		<div class="results-body">

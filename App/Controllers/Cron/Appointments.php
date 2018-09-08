@@ -147,7 +147,7 @@ class Appointments extends Controller
 								</table>
 								<table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-top: 50px;">
 									<tr>
-										<td style="width: 300px; text-align: center;"><span style="font-size: 12px; font-weight: 600; color: #BBBBBB;">One click <a href="https://www.jiujitsuscout.com/email/unsubscribe" style="text-decoration: underline; color: #C0C0C0;">unsubscribe</a></span></td>
+										<td style="width: 300px; text-align: center;"><span style="font-size: 12px; font-weight: 600; color: #BBBBBB;">One click <a href="https://www.jiujitsuscout.com/email/unsubscribe/" style="text-decoration: underline; color: #C0C0C0;">unsubscribe</a></span></td>
 									</tr>
 								</table>
 							</div>';

@@ -33,7 +33,7 @@ class MartialArtsGyms extends Controller
         $google_api_key = $Config::$configs[ "google" ][ "api_key" ];
 
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         // Replace the facebook pixel if user specifies a pixel id of their own
         if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
@@ -82,7 +82,7 @@ class MartialArtsGyms extends Controller
             $google_api_key = $Config::$configs[ "google" ][ "api_key" ];
 
             // Build facebook tracking pixel using jiujitsuscout clients pixel id
-            $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
+            $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
             // Replace the facebook pixel if user specifies a pixel id of their own
             if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
@@ -871,14 +871,14 @@ class MartialArtsGyms extends Controller
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         // Replace the facebook pixel if user specifies a pixel id of their own
         if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
             $facebookPixelBuilder->setPixelID( $this->business->facebook_pixel_id );
         }
 
-        // Add InitiateCheckout Event if there are products in the cart
+        // Add Lead event
         $facebookPixelBuilder->addEvent([
             "Lead"
         ]);
@@ -916,7 +916,7 @@ class MartialArtsGyms extends Controller
             $this->view->render404();
         }
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_client_pixel_id" ] );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         // Replace the facebook pixel if user specifies a pixel id of their own
         if ( !is_null( $landingPage->facebook_pixel_id ) && $landingPage->facebook_pixel_id != "" ) {
