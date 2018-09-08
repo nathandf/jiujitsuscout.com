@@ -29,10 +29,10 @@ class Unsubscribe extends Controller
 			$this->view->assign( "email", $input->get( "email" ) );
 		}
 
-		$this->view->setTemplate( "email/unsubscribe/home.tpl" );
-
 		if ( in_array( $input->get( "email" ), $emails ) ) {
 			$this->view->setTemplate( "email/unsubscribe/unsubscribed.tpl" );
+		} else {
+			$this->view->setTemplate( "email/unsubscribe/home.tpl" );
 		}
 
 		$this->view->render( "App/Views/Email/Unsubscribe.php" );
