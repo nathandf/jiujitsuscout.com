@@ -7,10 +7,13 @@
 {/block}
 
 {block name="body"}
+
+	{include file="includes/widgets/questionnaire.tpl"}
+
 	{include file='includes/navigation/martial-arts-gym-top-nav.tpl'}
 	<div class="con-cnt-xxlrg push-t-lrg mat-box-shadow push-b-lrg bg-white" style="border: 1px solid #CCC;" itemscope itemtype="http://schema.org/LocalBusiness">
-		{include file='includes/snippets/business-name.tpl'}
-		{include file='includes/navigation/martial-arts-gym-nav.tpl'}
+		{*include file='includes/snippets/business-name.tpl'*}
+		{*include file='includes/navigation/martial-arts-gym-nav.tpl'*}
 		{block name="business-profile-body"}{/block}
 	</div>
 {/block}

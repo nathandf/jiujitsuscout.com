@@ -1,3 +1,4 @@
+{if isset($questionnaire)}
 <script>
 	{literal}
 		$( function() {
@@ -77,3 +78,4 @@
 		{/foreach}
 	</div>
 </div>
+{/if}

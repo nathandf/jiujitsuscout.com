@@ -62,6 +62,34 @@ class MartialArtsGyms extends Controller
             $userMailer = $this->load( "user-mailer" );
             $phoneRepo = $this->load( "phone-repository" );
             $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+            $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
+            $respondentRepo = $this->load( "respondent-repository" );
+
+            // Dispatch questionnaire
+
+            // Check session for a respondent token. If one doesnt exit, create a
+            // new respondent and dispatch the questionnaire. If a respondent does
+            // exist, load the respodent and pass through the last question id to
+            // start the questionnaire where that respondent left off.
+            $respondent_token = $this->session->getSession( "respondent-token" );
+
+            if ( is_null( $respondent_token ) ) {
+                // Generate a new token
+                $respondent_token = $this->session->generateToken();
+
+                // Set the session with the new respondent token
+                $this->session->setSession( "respondent-token", $respondent_token );
+
+                // Create a respondent with this questionnaire_id and respondent token
+                $respondentRepo->create( 1, $respondent_token );
+            }
+
+            // Load the respondent object
+            $respondent = $respondentRepo->getByToken( $respondent_token );
+
+            // Dispatch the questionnaire and return the questionnaire object
+            $questionnaireDispatcher->dispatch( 1 );
+            $questionnaire = $questionnaireDispatcher->getQuestionnaire();
 
             // Require in helper functions
             require_once( "App/Helpers/fa-return-stars.php" );
@@ -97,6 +125,7 @@ class MartialArtsGyms extends Controller
             $business_rating = 0;
             foreach ( $reviews as $review ) {
                 $sum_rating = $sum_rating + $review->rating;
+                $review->html_stars = fa_return_stars( $review->rating );
                 $total_ratings++;
             }
 
@@ -255,6 +284,8 @@ class MartialArtsGyms extends Controller
             $this->view->setErrorMessages( $inputValidator->getErrors() );
 
             // Assign data the view
+            $this->view->assign( "questionnaire", $questionnaire );
+            $this->view->assign( "respondent", $respondent );
             $this->view->assign( "google_api_key", $google_api_key );
             $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
             $this->view->assign( "reviews", $reviews );
