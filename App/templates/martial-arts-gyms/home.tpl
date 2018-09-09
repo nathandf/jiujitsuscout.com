@@ -54,45 +54,47 @@
 				{/foreach}
 			</div>
 		{/if}
-	</div>
-	<div class="clear"></div>
-	{if $business->reviews|@count > 2}
-	<div class="col-100" style="border-top: 1px solid #CCC;">
+		{if $business->reviews|@count > 0}
+			<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Reviews:</p>
 			<div class="testimonials">
 				<div id="comments" >
-					{foreach from=$business->reviews item=review}
-					<div class="testimonial-seperator"></div>
-					<span itemprop="review" itemscope itemtype="http://schema.org/Review">
-						<meta itemprop="itemReviewed" content="{$business->business_name}">
-						<p class="com">
-							<span class="reviewer-icon">{$review->name|substr:0:1|upper}</span><div class="reviewer-info-container"><span itemprop="author"><span class="reviewer-name">{$review->name}</span></span>
-							<br>
-							<span itemprop="reviewRating">{$review->html_stars}</span>
-							<br>
-							<span class="review-date">Reviewed on:
-								<span itemprop="datePublished">{$review->datetime}</span></div>
-								<div class="clear"></div>
+					{foreach from=$business->reviews item=review name=review_loop}
+						{if $smarty.foreach.review_loop.iteration <= 3}
+							<div class="testimonial-seperator"></div>
+							<span itemprop="review" itemscope itemtype="http://schema.org/Review">
+								<meta itemprop="itemReviewed" content="{$business->business_name}">
+								<p class="com">
+									<span class="reviewer-icon">{$review->name|substr:0:1|upper}</span><div class="reviewer-info-container"><span itemprop="author"><span class="reviewer-name">{$review->name}</span></span>
+									<br>
+									<span itemprop="reviewRating">{$review->html_stars}</span>
+									<br>
+									<span class="review-date">Reviewed on:
+										<span itemprop="datePublished">{$review->datetime|date_format:"%A, %b %e %Y %l:%M%p"}</span></div>
+										<div class="clear"></div>
+									</span>
+								</p>
+								<div class="testimonial" style="color: #000000;">
+									<p style="margin: 5px;">
+										<span itemprop="reviewBody" class="review-body">{$review->review_body}</span>
+									</p>
+								</div>
 							</span>
-						</p>
-						<div class="testimonial" style="color: #000000;">
-							<p style="margin: 5px;">
-								<span itemprop="reviewBody" class="review-body">{$review->review_body}</span>
-							</p>
-						</div>
-					</span>
+						{else}
+							<a class="link push-b" href="reviews">— see more reviews</a>
+							<div class="clear push-t"></div>
+						{/if}
 					{/foreach}
 				</div><!-- end comments -->
 			</div><!-- end testimonials -->
-
-	</div><!-- end testimonials-container -->
-	<div class="clear"></div>
-	<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
-		<a class="btn btn-inline floatright bg-deep-blue text-lrg" href="{$HOME}martial-arts-gyms/{$business->site_slug}/free-class" style="margin-bottom: 0;">Free Class</a>
-		<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
+			<div class="clear"></div>
+			<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
+				<a class="btn btn-inline floatright bg-deep-blue text-lrg" href="{$HOME}martial-arts-gyms/{$business->site_slug}/free-class" style="margin-bottom: 0;">Free Class</a>
+				<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		{/if}
+		{include file="includes/widgets/js-google-map.tpl"}
 		<div class="clear"></div>
 	</div>
-	<div class="clear"></div>
-	{/if}
-	{include file="includes/widgets/js-google-map.tpl"}
-	<div class="clear"></div>
 {/block}
