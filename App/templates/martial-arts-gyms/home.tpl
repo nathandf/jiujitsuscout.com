@@ -7,20 +7,41 @@
 {/block}
 
 {block name="business-profile-body"}
-	<div class="col-100">
-		<div class="business-logo-container">
+	<div class="col-100 inner-pad-med">
+		<div class="business-logo-container floatleft push-r-med">
 			<img itemprop="image" alt="{$business->business_name}'s logo - Martial Arts classes in {$business->city}, {$business->region}" src="{$HOME}public/img/uploads/{$business->logo_filename}" class="business-logo"/>
 		</div>
-		<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-			<div class="testimonials-gym-rating"><p>{$business->business_name}<br>{$html_stars}</p>
+		<div class="floatleft" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+			<div class="testimonials-gym-rating">
+				<p>{$business->business_name}</p>
+				<p>{$html_stars}</p>
 				<p class="testimonials-gym-rating-sub-headline"><span itemprop="ratingValue">{$business_rating}</span> stars based on <span itemprop="reviewCount">{$total_ratings}</span> reviews</p>
 			</div>
 		</div>
+		<div class="clear"></div>
 	</div>
-	<div class="inner-pad-med" style="border-top: 1px solid #CCCCCC;">
-		<a class="btn btn-inline floatright bg-deep-blue" href="{$HOME}martial-arts-gyms/{$business->site_slug}/free-class" style="margin-bottom: 0;">Free Class</a>
+	<div class="inner-pad-med" style="border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
+		<a class="btn btn-inline floatright bg-deep-blue text-lrg" href="{$HOME}martial-arts-gyms/{$business->site_slug}/free-class" style="margin-bottom: 0;">Free Class</a>
 		<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
 		<div class="clear"></div>
+	</div>
+	<div class="col-100 inner-pad-med">
+		{if $business->disciplines|@count > 0}
+			<div class="push-b-med">
+				<p class="text-xlrg push-b push-t-med">Classes:</p>
+				{foreach from=$business->disciplines item=discipline}
+					<p class="push-r --q-trigger cursor-pt push-t" style="display: inline-block; padding: 2px 5px 2px 5px; border: 1px solid #666; border-radius: 4px; color: #666;">{$discipline->nice_name}</p>
+				{/foreach}
+			</div>
+		{/if}
+		{if $business->programs|@count > 0}
+			<div class="push-b-med">
+				<p class="text-xlrg push-b push-t-med">Programs:</p>
+				{foreach from=$business->programs item=program}
+					<p class="push-r --q-trigger cursor-pt push-t" style="display: inline-block; padding: 2px 5px 2px 5px; border: 1px solid #666; border-radius: 4px; color: #666;">{$program|capitalize}</p>
+				{/foreach}
+			</div>
+		{/if}
 	</div>
 	<div class="clear"></div>
 	<div class="col-100" style="border-top: 1px solid #CCC;">
@@ -51,8 +72,15 @@
 		</div><!-- end testimonials -->
 	</div><!-- end testimonials-container -->
 	<div class="clear"></div>
+	<div class="inner-pad-med" style="border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
+		<a class="btn btn-inline floatright bg-deep-blue text-lrg" href="{$HOME}martial-arts-gyms/{$business->site_slug}/free-class" style="margin-bottom: 0;">Free Class</a>
+		<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
 	{include file="includes/widgets/js-google-map.tpl"}
 	<div class="clear"></div>
+
 	<div id="review" class="inner-pad-med">
 		<h2 class="push-b-med">Leave a Review and Rate your experience!</h2>
 		{if isset($error_messages.review)}

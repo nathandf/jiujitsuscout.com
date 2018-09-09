@@ -29,9 +29,6 @@ class MartialArtsGyms extends Controller
         $phone = $phoneRepo->getByID( $this->business->phone_id );
         $this->business->phone = $phone;
 
-        // Get jiujitsuscout google api key
-        $google_api_key = $Config::$configs[ "google" ][ "api_key" ];
-
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
         $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
@@ -42,7 +39,7 @@ class MartialArtsGyms extends Controller
 
         $this->view->assign( "business", $this->business );
         $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
-        $this->view->assign( "google_api_key", $google_api_key );
+        $this->view->assign( "google_api_key", $Config::$configs[ "google" ][ "api_key" ] );
     }
 
     public function index()
@@ -64,6 +61,7 @@ class MartialArtsGyms extends Controller
             $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
             $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
             $respondentRepo = $this->load( "respondent-repository" );
+            $disciplineRepo = $this->load( "discipline-repository" );
 
             // Dispatch questionnaire
 
@@ -106,8 +104,17 @@ class MartialArtsGyms extends Controller
                 $this->view->render404();
             }
 
-            // Get jiujitsuscout google api key
-            $google_api_key = $Config::$configs[ "google" ][ "api_key" ];
+            // Load all disciplines and attach to business object
+            $this->business->disciplines = [];
+            $business_discipline_ids = explode( ",", $this->business->discipline_ids );
+
+            foreach ( $business_discipline_ids as $discipline_id ) {
+                $discipline = $disciplineRepo->getByID( $discipline_id );
+                $this->business->disciplines[] = $discipline;
+            }
+
+            // Create an array of the available programs on the business object
+            $this->business->programs = explode( ",", $this->business->programs );
 
             // Build facebook tracking pixel using jiujitsuscout clients pixel id
             $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
@@ -286,7 +293,7 @@ class MartialArtsGyms extends Controller
             // Assign data the view
             $this->view->assign( "questionnaire", $questionnaire );
             $this->view->assign( "respondent", $respondent );
-            $this->view->assign( "google_api_key", $google_api_key );
+            $this->view->assign( "google_api_key", $Config::$configs[ "google" ][ "api_key" ] );
             $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
             $this->view->assign( "reviews", $reviews );
             $this->view->assign( "business", $this->business );

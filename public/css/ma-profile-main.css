@@ -18,17 +18,13 @@ body {
 }
 
 .business-logo-container {
-	height: 140px;
-	width: 140px;
-	box-sizing: border-box;
-	border-radius: 5px;
-	margin: 0 auto;
-	margin-top: 20px;
+	height: 100px;
+	width: 100px;
 }
 
 .business-logo {
 	display: block;
-	max-height: 140px;
+	max-height: 100px;
 	margin: 0 auto;
 }
 
@@ -678,14 +674,11 @@ background: #0667D0;
 padding: 15px;
 padding-left: 25px;
 }
-.testimonials-gym-rating
-{
-padding-top: 5px;
-padding-bottom: 5px;
-text-align: center;
-font-size: 22px;
-font-weight: 600;
-color: #777;
+.testimonials-gym-rating {
+	text-align: left;
+	font-size: 22px;
+	font-weight: 600;
+	color: #777;
 }
 .testimonials-gym-rating-sub-headline
 {
