@@ -7,25 +7,16 @@ body {
 	margin-top: 25px;
 }
 
-#school-logo {
-	display: block;
-	margin: 0 auto;
-	margin-left: 0px;
-	max-height: 75px;
-	margin-right: 25px;
-	position: relative;
-	float: left;
-}
-
 .business-logo-container {
-	height: 100px;
-	width: 100px;
+	max-height: 100px;
+	min-width: 100px;
 }
 
 .business-logo {
+	box-sizing: border-box;
 	display: block;
 	max-height: 100px;
-	margin: 0 auto;
+
 }
 
 .title {
@@ -511,15 +502,6 @@ background: #000000;
 display: none;
 }
 
-.mobile-nav-top {
-display: block;
-}
-
-.mobile-school-logo {
-margin-top: 10px;
-display: block;
-}
-
 #top-bio {
 height: auto;
 padding-top: 10px;
@@ -648,22 +630,21 @@ width: 320px;
 }
 
 /* ---------------------------- reviews page -------------------------------*/
-.review-link
-{
-margin-left: 50px;
+.review-link {
+	margin-left: 50px;
 }
-.testimonials-container
-{
-box-sizing: border-box;
-padding-top: 0px;
-margin-left: 50px;
-margin-right: 0px;
-margin-top: 25px;
-margin-bottom: 25px;
-width: 60%;
-float: left;
-border: 1px solid #999;
-padding-bottom: 0px;
+
+.testimonials-container {
+	box-sizing: border-box;
+	padding-top: 0px;
+	margin-left: 50px;
+	margin-right: 0px;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	width: 60%;
+	float: left;
+	border: 1px solid #999;
+	padding-bottom: 0px;
 }
 .testimonials-header
 {
@@ -680,31 +661,27 @@ padding-left: 25px;
 	font-weight: 600;
 	color: #777;
 }
-.testimonials-gym-rating-sub-headline
-{
-padding-top: 5px;
-padding-bottom: 5px;
-text-align: center;
-font-size: 16px;
-font-weight: 100;
-color: #777;
+.testimonials-gym-rating-sub-headline {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-align: left;
+	font-size: 16px;
+	font-weight: 100;
+	color: #777;
 }
-.testimonials /* the container that contains the testimonials. This does not include the testimonials header.*/
-{
-box-sizing: border-box;
-max-height: 400px;
-overflow-y: scroll;
+.testimonials {
+	box-sizing: border-box;
 }
 .testimonial
 {
-margin: 15px;
-margin-bottom: 50px;
+	margin: 15px;
+	margin-bottom: 50px;
 }
 .testimonial-seperator
 {
-width: 100%;
-border-bottom: 1px solid #777;
-margin-bottom: 50px;
+	width: 100%;
+	border-bottom: 1px solid #CCC;
+	margin-bottom: 50px;
 }
 .reviewer-name
 {

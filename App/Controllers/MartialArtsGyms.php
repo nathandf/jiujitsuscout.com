@@ -109,8 +109,10 @@ class MartialArtsGyms extends Controller
             $business_discipline_ids = explode( ",", $this->business->discipline_ids );
 
             foreach ( $business_discipline_ids as $discipline_id ) {
-                $discipline = $disciplineRepo->getByID( $discipline_id );
-                $this->business->disciplines[] = $discipline;
+                if ( $discipline_id != "" ) {
+                    $discipline = $disciplineRepo->getByID( $discipline_id );
+                    $this->business->disciplines[] = $discipline;
+                }
             }
 
             // Create an array of the available programs on the business object
@@ -125,12 +127,13 @@ class MartialArtsGyms extends Controller
             }
 
             // Get reviews from business id
-            $reviews = $reviewRepo->getAllByBusinessID( $this->business->id );
+            $this->business->reviews = $reviewRepo->getAllByBusinessID( $this->business->id );
+
             // Calculating number and total of ratings
             $sum_rating = 0;
             $total_ratings = 0;
             $business_rating = 0;
-            foreach ( $reviews as $review ) {
+            foreach ( $this->business->reviews as $review ) {
                 $sum_rating = $sum_rating + $review->rating;
                 $review->html_stars = fa_return_stars( $review->rating );
                 $total_ratings++;
@@ -295,7 +298,6 @@ class MartialArtsGyms extends Controller
             $this->view->assign( "respondent", $respondent );
             $this->view->assign( "google_api_key", $Config::$configs[ "google" ][ "api_key" ] );
             $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
-            $this->view->assign( "reviews", $reviews );
             $this->view->assign( "business", $this->business );
             $this->view->assign( "html_stars", $html_stars );
             $this->view->assign( "total_ratings", $total_ratings );
