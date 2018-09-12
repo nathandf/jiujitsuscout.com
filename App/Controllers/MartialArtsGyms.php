@@ -118,6 +118,10 @@ class MartialArtsGyms extends Controller
             // Create an array of the available programs on the business object
             $this->business->programs = explode( ",", $this->business->programs );
 
+            if ( $this->business->programs[ 0 ] == "" ) {
+                $this->business->programs = [];
+            }
+
             // Build facebook tracking pixel using jiujitsuscout clients pixel id
             $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 

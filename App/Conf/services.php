@@ -199,6 +199,11 @@ $container->register( "group-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "image-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ImageRepository( $container );
+	return $repo;
+} );
+
 $container->register( "landing-page-repository", function() use ( $container ) {
 	$repo = new \Model\Services\LandingPageRepository( $container );
 	return $repo;

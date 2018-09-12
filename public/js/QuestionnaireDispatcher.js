@@ -9,6 +9,7 @@ var QuestionnaireDispatcher  = {
     active_question_choice_label_class: null,
     active_question_choice_input_class: null,
     questionnaire_dispatched: false,
+    questionnaire_complete: false,
 
 	dispatch: function ( question_ids, last_question_id, url ) {
         this.questionnaire_dispatched = true;
@@ -19,6 +20,7 @@ var QuestionnaireDispatcher  = {
             this.setCurrentQuestionIndex();
         } else {
             if ( this.question_ids.indexOf( last_question_id.toString() ) >= this.total_questions - 1 || this.question_ids.indexOf( last_question_id.toString() ) == -1 ) {
+                this.questionnaire_complete = true;
                 return;
             }
 
@@ -169,6 +171,7 @@ var QuestionnaireDispatcher  = {
 
         // If there are no more questions, hide the questionnaire
         if ( this.current_question_index == this.total_questions - 1) {
+            this.questionnaire_complete = true;
             this.hideQuestionnaire();
             return;
         }
