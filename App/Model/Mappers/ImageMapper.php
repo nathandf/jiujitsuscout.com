@@ -4,12 +4,23 @@ namespace Model\Mappers;
 
 class ImageMapper extends DataMapper
 {
+    public function create( \Model\Image $image )
+    {
+        $id = $this->insert(
+            "image",
+            [ "business_id", "filename", "description", "alt", "tags", "created_at", "updated_at" ],
+            [ $image->business_id, $image->filename, $image->description, $image->alt, $image->tags, $image->created_at, $image->updated_at ]
+        );
+
+        return $image->id = $id;
+    }
 
     public function mapAllFromBusinessID( $business_id )
     {
         $entityFactory = $this->container->getService( "entity-factory" );
         $images = [];
-        $sql = $this->DB->prepare( "SELECT * FROM images WHERE business_id = :business_id" );
+        $sql = $this->DB->prepare( "SELECT * FROM image WHERE business_id = :business_id" );
+        $sql->bindParam( "business_id", $business_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $image = $entityFactory->build( "Image" );

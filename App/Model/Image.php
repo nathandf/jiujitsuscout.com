@@ -2,7 +2,9 @@
 
 namespace Model;
 
-class Image extends Entity
+use Contracts\EntityInterface;
+
+class Image implements EntityInterface
 {
 	public $id;
 	public $business_id;

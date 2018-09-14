@@ -62,6 +62,7 @@ class MartialArtsGyms extends Controller
             $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
             $respondentRepo = $this->load( "respondent-repository" );
             $disciplineRepo = $this->load( "discipline-repository" );
+            $imageRepo = $this->load( "image-repository" );
 
             // Dispatch questionnaire
 

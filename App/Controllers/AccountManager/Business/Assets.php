@@ -70,7 +70,7 @@ class Assets extends Controller
             ) )
         {
             if ( $this->business->logo_filename == $config::$configs[ "default_logo" ] ) {
-                $imageManager->saveImageTo( "image", "public/img/uploads/" );
+                $imageManager->saveImageTo( "image" );
             } else {
                 $imageManager->overwriteImage( "image", "public/img/uploads/", "public/img/uploads/" . $this->business->logo_filename );
             }
@@ -83,6 +83,48 @@ class Assets extends Controller
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setTemplate( "account-manager/business/assets/logo.tpl" );
+        $this->view->render( "App/Views/AccountManager/Assets.php" );
+    }
+
+    public function imagesAction()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $imageManager = $this->load( "image-manager" );
+        $imageRepo = $this->load( "image-repository" );
+        $config = $this->load( "config" );
+
+        $images = $imageRepo->getAllByBusinessID( $this->business->id );
+
+        if ( $input->exists() && $input->issetField( "upload_image" ) && $inputValidator->validate(
+
+                $input,
+
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "upload_image" => [
+                        "required" => true
+                    ]
+
+                ],
+
+                "upload_image" /* error index */
+            ) )
+        {
+            $image_name = $imageManager->saveImageTo( "image" );
+            $imageRepo->create( $image_name, $business_id = $this->business->id );
+            $this->view->redirect( "account-manager/business/assets/images" );
+        }
+
+        $this->view->assign( "images", $images );
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+        $this->view->setTemplate( "account-manager/business/assets/images.tpl" );
         $this->view->render( "App/Views/AccountManager/Assets.php" );
     }
 

@@ -8,7 +8,7 @@ class ImageManager
     public $new_image_file_name;
     public $image_name_iterator = 0;
 
-    public function saveImageTo( $index, $save_to_path )
+    public function saveImageTo( $index, $save_to_path = "public/img/uploads/" )
     {
         if ( isset( $_FILES[ $index ] ) ) {
             $file_name      = $_FILES[ $index ][ "name" ];
@@ -22,7 +22,7 @@ class ImageManager
             move_uploaded_file( $file_tmp_name, $save_to_path . $new_image_name  );
             $this->setNewImageFileName( $new_image_name );
 
-            return true;
+            return $new_image_name;
         }
 
         return false;
@@ -59,7 +59,7 @@ class ImageManager
         if ( file_exists( $path_to_image ) ) {
             unlink( $path_to_image );
         }
-        
+
         return true;
     }
 
