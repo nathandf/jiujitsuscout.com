@@ -100,6 +100,9 @@ class MartialArtsGyms extends Controller
             $phone = $phoneRepo->getByID( $this->business->phone_id );
             $this->business->phone = $phone;
 
+            // Get images for this business
+            $images = $imageRepo->getAllByBusinessID( $this->business->id );
+
             // Render 404 if no business is returned
             if ( is_null( $this->business->id ) || $this->business->id == "" ) {
                 $this->view->render404();
@@ -307,6 +310,7 @@ class MartialArtsGyms extends Controller
             $this->view->assign( "html_stars", $html_stars );
             $this->view->assign( "total_ratings", $total_ratings );
             $this->view->assign( "business_rating", $business_rating );
+            $this->view->assign( "images", $images );
             $this->view->setTemplate( "martial-arts-gyms/home.tpl" );
         }
 

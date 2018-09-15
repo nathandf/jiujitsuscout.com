@@ -91,10 +91,12 @@ class Assets extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $imageManager = $this->load( "image-manager" );
+        $disciplineRepo = $this->load( "discipline-repository" );
         $imageRepo = $this->load( "image-repository" );
         $config = $this->load( "config" );
 
         $images = $imageRepo->getAllByBusinessID( $this->business->id );
+        $disciplines = $disciplineRepo->getAll();
 
         if ( $input->exists() && $input->issetField( "upload_image" ) && $inputValidator->validate(
 
@@ -107,6 +109,15 @@ class Assets extends Controller
                     ],
                     "upload_image" => [
                         "required" => true
+                    ],
+                    "description" => [
+
+                    ],
+                    "alt" => [
+
+                    ],
+                    "discipline_tags" => [
+                        "is_array" => true
                     ]
 
                 ],
@@ -114,12 +125,38 @@ class Assets extends Controller
                 "upload_image" /* error index */
             ) )
         {
+            $description = null;
+            $alt = null;
+            $discipline_tags = null;
+
+            if ( $input->get( "discipline_tags" ) != "" ) {
+                $discipline_tags = implode( ",", $input->get( "discipline_tags" ) );
+            }
+
+            if ( $input->get( "description" ) != "" ) {
+                $description = $input->get( "description" );
+            }
+
+            if ( $input->get( "alt" ) != "" ) {
+                $alt = $input->get( "alt" );
+            }
+
             $image_name = $imageManager->saveImageTo( "image" );
-            $imageRepo->create( $image_name, $business_id = $this->business->id );
-            $this->view->redirect( "account-manager/business/assets/images" );
+            if ( $image_name ) {
+                $imageRepo->create(
+                    $image_name,
+                    $this->business->id,
+                    $description,
+                    $alt,
+                    $discipline_tags
+                );
+
+                $this->view->redirect( "account-manager/business/assets/images" );
+            }
         }
 
         $this->view->assign( "images", $images );
+        $this->view->assign( "disciplines", $disciplines );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );

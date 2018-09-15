@@ -13,3 +13,21 @@
 .add-user-btn {
   text-align: center;
 }
+
+.hidden-checkbox {
+    display: none;
+}
+
+.discipline-tag-label {
+    border: 1px solid #555;
+    border-radius: 3px;
+    padding: 2px;
+    color: #555;
+    display: inline-block;
+}
+
+input[type=checkbox]:checked + .discipline-tag-label {
+	border: 1px solid #0668D0;
+    background: #0668D0;
+	color: #FFF;
+}

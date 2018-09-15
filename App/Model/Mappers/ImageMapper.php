@@ -19,7 +19,7 @@ class ImageMapper extends DataMapper
     {
         $entityFactory = $this->container->getService( "entity-factory" );
         $images = [];
-        $sql = $this->DB->prepare( "SELECT * FROM image WHERE business_id = :business_id" );
+        $sql = $this->DB->prepare( "SELECT * FROM image WHERE business_id = :business_id ORDER BY id DESC" );
         $sql->bindParam( "business_id", $business_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {

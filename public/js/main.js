@@ -50,6 +50,16 @@ $( function() {
         );
     } );
 
+    $( "input:file" ).change(
+        function() {
+            if ( $( this ).val() ) {
+                $( ".file-upload-button" ).show();
+                // $( "input:submit" ).attr( "disabled", false );
+                // $( "input:submit" ).removeAttr('disabled');
+            }
+        }
+    );
+
     $( "#nav-dropdown-button" ).on( "click", function() {
         $( "#nav-items-container" ).slideToggle( 250 );
         $( "#nav-items-container" ).scrollTop();
