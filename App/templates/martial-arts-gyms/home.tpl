@@ -9,6 +9,8 @@
 
 {block name="business-profile-body"}
 	{include file="includes/modals/free-class.tpl"}
+	{include file="includes/modals/business-images-lightbox.tpl"}
+	{include file="includes/modals/reviews-lightbox.tpl"}
 	<div class="col-100 inner-pad-med">
 		<div class="business-logo-container floatleft push-r-med">
 			<img itemprop="image" alt="{$business->business_name}'s logo - Martial Arts classes in {$business->city}, {$business->region}" src="{$HOME}public/img/uploads/{$business->logo_filename}" class="business-logo"/>
@@ -59,12 +61,19 @@
 		{if $images|@count > 0}
 			<div class="push-b-med">
 				<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Photos:</p>
+				<!-- <div class="owl-carousel">
+					{foreach from=$images item=image name=image_loop}
+					<div>
+						<img style="max-height: 100px; border: 1px solid #CCC; border-radius: 3px;" src="{$HOME}public/img/uploads/{$image->filename}" alt="">
+					</div>
+					{/foreach}
+				</div> -->
 				{foreach from=$images item=image name=image_loop}
 					{if $smarty.foreach.image_loop.iteration <= 4}
 					<img style="max-height: 100px; border: 1px solid #CCC; border-radius: 3px;" src="{$HOME}public/img/uploads/{$image->filename}" alt="">
 					{elseif $smarty.foreach.image_loop.iteration == 5}
 					<div class="clear"></div>
-					<a class="link text-med tc-deep-blue">— view more</a>
+					<a class="link text-med tc-deep-blue business-images-lightbox-link">— view more</a>
 					{/if}
 				{/foreach}
 			</div>
@@ -95,7 +104,7 @@
 								</div>
 							</span>
 						{else}
-							<a class="link push-b" href="reviews">— see more reviews</a>
+							<a class="link push-b tc-deep-blue reviews-lightbox-link">— see more reviews</a>
 							<div class="clear push-t"></div>
 						{/if}
 					{/foreach}

@@ -3,7 +3,7 @@
 		<p class="free-class-modal-close text-xlrg-heavy tc-gun-metal cursor-pt push-r floatright">x</p>
 		<div class="clear push-t-med"></div>
 		<div class="free-class-form-container con-cnt-fit push-t-med push-b-med">
-			<p class="push-t-med push-b-med">Complete form to reserve your free class</p>
+			<p class="push-t-med push-b-med">Try a class for free to see if this gym is the right fit for you!</p>
 			<form action="" method="post">
 				<div class="clear"></div>
 				<label for="" class="text-med">Name:</label>
