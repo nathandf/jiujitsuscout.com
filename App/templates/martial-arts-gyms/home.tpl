@@ -1,6 +1,7 @@
 {extends file="layouts/business-profile.tpl"}
 
 {block name="business-profile-head"}
+	<title>{$business->business_name|capitalize} - Martial arts {if isset($business->city) && isset($business->region)}in {$business->city}, {$business->region}{/if}</title>
 	<link rel="stylesheet" href="{HOME}public/css/questionnaire.css">
 	<script src="{$HOME}{$JS_SCRIPTS}QuestionnaireDispatcher.js"></script>
 	<script src="{$HOME}{$JS_SCRIPTS}business-profile.js"></script>
@@ -27,7 +28,7 @@
 	<div class="col-100 inner-pad-med">
 		{if $business->message != null}
 		<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
-			<button class="btn btn-inline floatright bg-deep-blue text-lrg free-class-button" style="margin-bottom: 0;">Free Class</button>
+			<button class="btn btn-inline floatright bg-deep-blue text-med-heavy free-class-button" style="margin-bottom: 0;">Free Class</button>
 			<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
 			<div class="clear"></div>
 		</div>
@@ -37,7 +38,7 @@
 		</div>
 		{else}
 		<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
-			<button class="btn btn-inline floatright bg-deep-blue text-lrg free-class-button" style="margin-bottom: 0;">Free Class</button>
+			<button class="btn btn-inline floatright bg-deep-blue text-med-heavy free-class-button" style="margin-bottom: 0;">Free Class</button>
 			<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
 			<div class="clear"></div>
 		</div>
@@ -46,7 +47,7 @@
 			<div class="push-b-med">
 				<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Classes:</p>
 				{foreach from=$business->disciplines item=discipline}
-					<p class="push-r --q-trigger cursor-pt push-t" style="display: inline-block; padding: 2px 5px 2px 5px; border: 1px solid #666; border-radius: 4px; color: #666;">{$discipline->nice_name}</p>
+					<p class="push-r cursor-pt push-t" style="display: inline-block; padding: 2px 5px 2px 5px; border: 1px solid #666; border-radius: 4px; color: #666;">{$discipline->nice_name}</p>
 				{/foreach}
 			</div>
 		{/if}
@@ -54,23 +55,16 @@
 			<div class="push-b-med">
 				<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Programs:</p>
 				{foreach from=$business->programs item=program}
-					<p class="push-r --q-trigger cursor-pt push-t" style="display: inline-block; padding: 2px 5px 2px 5px; border: 1px solid #666; border-radius: 4px; color: #666;">{$program|capitalize}</p>
+					<p class="push-r cursor-pt push-t" style="display: inline-block; padding: 2px 5px 2px 5px; border: 1px solid #666; border-radius: 4px; color: #666;">{$program|capitalize}</p>
 				{/foreach}
 			</div>
 		{/if}
 		{if $images|@count > 0}
 			<div class="push-b-med">
 				<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Photos:</p>
-				<!-- <div class="owl-carousel">
-					{foreach from=$images item=image name=image_loop}
-					<div>
-						<img style="max-height: 100px; border: 1px solid #CCC; border-radius: 3px;" src="{$HOME}public/img/uploads/{$image->filename}" alt="">
-					</div>
-					{/foreach}
-				</div> -->
 				{foreach from=$images item=image name=image_loop}
 					{if $smarty.foreach.image_loop.iteration <= 4}
-					<img style="max-height: 100px; border: 1px solid #CCC; border-radius: 3px;" src="{$HOME}public/img/uploads/{$image->filename}" alt="">
+					<img class="cursor-pt mat-hov business-images-lightbox-link" style="max-height: 100px; border: 1px solid #CCC; border-radius: 3px;" src="{$HOME}public/img/uploads/{$image->filename}" alt="{$image->alt|default:null}">
 					{elseif $smarty.foreach.image_loop.iteration == 5}
 					<div class="clear"></div>
 					<a class="link text-med tc-deep-blue business-images-lightbox-link">— view more</a>
@@ -112,7 +106,7 @@
 			</div><!-- end testimonials -->
 			<div class="clear"></div>
 			<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
-				<button class="btn btn-inline floatright bg-deep-blue text-lrg free-class-button" style="margin-bottom: 0;">Free Class</button>
+				<button class="btn btn-inline floatright bg-deep-blue text-med-heavy free-class-button" style="margin-bottom: 0;">Free Class</button>
 				<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
 				<div class="clear"></div>
 			</div>

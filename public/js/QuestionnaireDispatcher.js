@@ -9,42 +9,45 @@ var QuestionnaireDispatcher  = {
     active_question_choice_label_class: null,
     active_question_choice_input_class: null,
     questionnaire_dispatched: false,
-    questionnaire_complete: false,
+    questionnaire_complete: null,
 
-	dispatch: function ( question_ids, last_question_id, url ) {
-        this.questionnaire_dispatched = true;
-        this.setQuestionIDs( question_ids );
-        this.setTotalQuestions();
-        if ( last_question_id == null || last_question_id == 0 ) {
-            this.setCurrentQuestionID( this.question_ids[ 0 ] );
-            this.setCurrentQuestionIndex();
-        } else {
-            if ( this.question_ids.indexOf( last_question_id.toString() ) >= this.total_questions - 1 || this.question_ids.indexOf( last_question_id.toString() ) == -1 ) {
-                this.questionnaire_complete = true;
-                return;
+	dispatch: function ( question_ids, last_question_id, questionnaire_complete, url ) {
+        is_complete = parseInt( questionnaire_complete, 10 );
+        if ( is_complete < 1 ) {
+            this.questionnaire_dispatched = true;
+            this.setQuestionIDs( question_ids );
+            this.setTotalQuestions();
+            if ( last_question_id == null || last_question_id == 0 ) {
+                this.setCurrentQuestionID( this.question_ids[ 0 ] );
+                this.setCurrentQuestionIndex();
+            } else {
+                if ( this.question_ids.indexOf( last_question_id.toString() ) >= this.total_questions - 1 || this.question_ids.indexOf( last_question_id.toString() ) == -1 ) {
+                    this.questionnaire_complete = true;
+                    return;
+                }
+
+                last_question_index = this.question_ids.indexOf( last_question_id.toString() );
+                this.current_question_index = last_question_index + 1;
+                current_question_id = this.question_ids[ this.current_question_index ];
+                this.setCurrentQuestionID( current_question_id );
             }
 
-            last_question_index = this.question_ids.indexOf( last_question_id.toString() );
-            this.current_question_index = last_question_index + 1;
-            current_question_id = this.question_ids[ this.current_question_index ];
-            this.setCurrentQuestionID( current_question_id );
+            this.showQuestionnaire();
+            this.setActiveQuestionHTMLID();
+            this.showQuestion();
+            this.setActiveQuestionChoiceLabelClass();
+            this.setActiveQuestionChoiceInputClass();
+            this.setActiveFormHTMLID();
+            this.setActiveSubmitButtonID();
         }
 
-        this.showQuestionnaire();
-        this.setActiveQuestionHTMLID();
-        this.showQuestion();
-        this.setActiveQuestionChoiceLabelClass();
-        this.setActiveQuestionChoiceInputClass();
-        this.setActiveFormHTMLID();
-        this.setActiveSubmitButtonID();
-
         $( ".questionnaire-question-choice" ).on( "click", function ( event ) {
-			QuestionnaireDispatcher.toggleSubmitButton( event );
-		} );
+            QuestionnaireDispatcher.toggleSubmitButton( event );
+        } );
 
-		$( ".questionnaire-submit" ).on( "click", function () {
-			QuestionnaireDispatcher.submitQuestionAnswer( url );
-		} );
+        $( ".questionnaire-submit" ).on( "click", function () {
+            QuestionnaireDispatcher.submitQuestionAnswer( url );
+        } );
 	},
 
     setQuestionIDs: function ( question_ids ) {

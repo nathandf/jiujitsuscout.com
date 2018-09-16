@@ -10,22 +10,19 @@
 					// If questionnaire dispatched, show questonnaire, else,
 					// dispatch questionnaire
 					if ( QuestionnaireDispatcher.questionnaire_dispatched ) {
-						$( ".questionnaire" ).show();
+						if ( QuestionnaireDispatcher.questionnaire_complete == false || QuestionnaireDispatcher.questionnaire_complete == null ) {
+							$( ".questionnaire" ).show();
+						}
 					} else {
 						QuestionnaireDispatcher.dispatch(
 							{/literal}{$questionnaire->question_ids|@json_encode}{literal},
 							{/literal}{$respondent->last_question_id|default:0}{literal},
+							{/literal}{$respondent->questionnaire_complete|default:0}{literal},
 							"{/literal}{$HOME}{literal}questionnaire/submit-question"
 						);
 					}
 
 				} );
-			} else {
-				QuestionnaireDispatcher.dispatch(
-					{/literal}{$questionnaire->question_ids|@json_encode}{literal},
-					{/literal}{$respondent->last_question_id|default:0}{literal},
-					"{/literal}{$HOME}{literal}questionnaire/submit-question"
-				);
 			}
 
 			$( ".questionnaire-close" ).on( "click", function () {
@@ -36,8 +33,9 @@
 </script>
 
 <div style="display: none;" class="questionnaire">
-	<div class="con-cnt-med-plus-plus bg-white mat-box-shadow push-t-lrg questionnaire-container">
-		<p class="questionnaire-close text-xlrg-heavy tc-gun-metal cursor-pt push-r floatright">x</p>
+	<p class="questionnaire-close text-xlrg-heavy tc-white inner-pad-med cursor-pt push-r floatright"><i class="fa fa-2x fa-times" aria-hidden="true"></i></p>
+	<div class="clear"></div>
+	<div class="con-cnt-med-plus-plus bg-white mat-box-shadow questionnaire-container">
 		{foreach from=$questionnaire->questions item=question name=question_loop}
 		<div id="question_{$question->id}" class="inactive-question" style="padding-top: 20px;">
 			<div class="questionnaire-wrapper">
@@ -69,7 +67,7 @@
 				</div>
 				<div class="questionnaire-submit-container">
 					<div class="questionnaire-wrapper">
-						<button style="display: none;" id="question_submit_{$question->id}" type="submit" class="questionnaire-submit btn push-t-med"><span class="text-xlrg">{if $smarty.foreach.question_loop.last}Complete{else}Continue{/if}</span></button>
+						<button style="display: none;" id="question_submit_{$question->id}" type="submit" class="questionnaire-submit btn push-t-med{if $smarty.foreach.question_loop.last} questionnaire-complete-button{/if}"><span class="text-xlrg">{if $smarty.foreach.question_loop.last}Complete{else}Continue{/if}</span></button>
 						<div class="clear"></div>
 					</div>
 				</div>
