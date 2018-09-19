@@ -279,6 +279,11 @@ $container->register( "question-choice-type-repository", function() use ( $conta
 	return $repo;
 } );
 
+$container->register( "question-choice-weight-repository", function() use ( $container ) {
+	$repo = new \Model\Services\QuestionChoiceWeightRepository( $container );
+	return $repo;
+} );
+
 $container->register( "questionnaire-repository", function() use ( $container ) {
 	$repo = new \Model\Services\QuestionnaireRepository( $container );
 	return $repo;
@@ -548,6 +553,15 @@ $container->register( "paypal-payment-manager", function() use ( $container ) {
 $container->register( "payment-manager", function() use ( $container ) {
 	$paymentManager = $container->getService( "paypal-payment-manager" );
 	return $paymentManager;
+} );
+
+$container->register( "prospect-appraiser", function() use ( $container ) {
+	$prospectAppraiser = new \Model\Services\ProspectAppraiser(
+		$container->getService( "question-choice-weight-repository" ),
+		$container->getService( "respondent-repository" ),
+		$container->getService( "respondent-question-answer-repository" )
+	);
+	return $prospectAppraiser;
 } );
 
 $container->register( "questionnaire-dispatcher", function() use ( $container ) {

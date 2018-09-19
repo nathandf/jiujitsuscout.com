@@ -44,6 +44,17 @@ class RespondentMapper extends DataMapper
         return $respondent;
     }
 
+    public function mapFromProspectID( \Model\Respondent $respondent, $prospect_id )
+    {
+        $sql = $this->DB->prepare( "SELECT * FROM respondent WHERE prospect_id = :prospect_id" );
+        $sql->bindParam( ":prospect_id", $prospect_id );
+        $sql->execute();
+        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
+        $this->populateRespondent( $respondent, $resp );
+
+        return $respondent;
+    }
+
     public function mapFromQuestionnaireID( \Model\Respondent $respondent, $questionnaire_id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM respondent WHERE questionnaire_id = :questionnaire_id" );
@@ -69,6 +80,11 @@ class RespondentMapper extends DataMapper
     public function updateLastQuestionIDByID( $id, $question_id )
     {
         $this->update( "respondent", "last_question_id", $question_id, "id", $id );
+    }
+
+    public function updateProspectIDByID( $id, $prospect_id )
+    {
+        $this->update( "respondent", "prospect_id", $prospect_id, "id", $id );
     }
 
     public function updateQuestionnaireCompleteByID( $id, $value )

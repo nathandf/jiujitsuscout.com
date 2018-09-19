@@ -9,7 +9,7 @@ class Respondent implements EntityInterface
 {
 	public $id;
 	public $questionnaire_id;
-	public $questionnaire_completed;
+	public $questionnaire_complete;
 	public $last_question_id;
 	public $prospect_id;
 	public $token;

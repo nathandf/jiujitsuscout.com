@@ -5,6 +5,13 @@
 			// If an element exists with the --q-trigger class, dispatch the
 			// questionnaire when it is clicked. It it doesn't exists, trigger
 			// the questionnaire right away
+			QuestionnaireDispatcher.dispatch(
+				{/literal}{$questionnaire->question_ids|@json_encode}{literal},
+				{/literal}{$respondent->last_question_id|default:0}{literal},
+				{/literal}{$respondent->questionnaire_complete|default:0}{literal},
+				"{/literal}{$HOME}{literal}questionnaire/submit-question"
+			);
+
 			if ( $( ".--q-trigger" ).length ) {
 				$( ".--q-trigger" ).on( "click", function () {
 					// If questionnaire dispatched, show questonnaire, else,
@@ -13,15 +20,7 @@
 						if ( QuestionnaireDispatcher.questionnaire_complete == false || QuestionnaireDispatcher.questionnaire_complete == null ) {
 							$( ".questionnaire" ).show();
 						}
-					} else {
-						QuestionnaireDispatcher.dispatch(
-							{/literal}{$questionnaire->question_ids|@json_encode}{literal},
-							{/literal}{$respondent->last_question_id|default:0}{literal},
-							{/literal}{$respondent->questionnaire_complete|default:0}{literal},
-							"{/literal}{$HOME}{literal}questionnaire/submit-question"
-						);
 					}
-
 				} );
 			}
 

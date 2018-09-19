@@ -32,13 +32,15 @@ var QuestionnaireDispatcher  = {
                 this.setCurrentQuestionID( current_question_id );
             }
 
-            this.showQuestionnaire();
+            // this.showQuestionnaire();
             this.setActiveQuestionHTMLID();
             this.showQuestion();
             this.setActiveQuestionChoiceLabelClass();
             this.setActiveQuestionChoiceInputClass();
             this.setActiveFormHTMLID();
             this.setActiveSubmitButtonID();
+        } else {
+            this.questionnaire_complete = true;
         }
 
         $( ".questionnaire-question-choice" ).on( "click", function ( event ) {

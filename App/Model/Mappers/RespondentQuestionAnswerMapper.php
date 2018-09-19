@@ -33,6 +33,22 @@ class RespondentQuestionAnswerMapper extends DataMapper
         return $respondentQuestionAnswers;
     }
 
+    public function mapAllFromRespondentID( $respondent_id )
+    {
+        $entityFactory = $this->container->getService( "entity-factory" );
+        $respondentQuestionAnswers = [];
+        $sql = $this->DB->prepare( "SELECT * FROM respondent_question_answer WHERE respondent_id = :respondent_id" );
+        $sql->bindParam( "respondent_id", $respondent_id );
+        $sql->execute();
+        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $respondentQuestionAnswer = $entityFactory->build( "RespondentQuestionAnswer" );
+            $this->populateRespondentQuestionAnswer( $respondentQuestionAnswer, $resp );
+            $respondentQuestionAnswers[] = $respondentQuestionAnswer;
+        }
+
+        return $respondentQuestionAnswers;
+    }
+
     public function mapFromID( \Model\RespondentQuestionAnswer $respondentQuestionAnswer, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM respondent_question_answer WHERE id = :id" );
