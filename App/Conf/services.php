@@ -194,6 +194,16 @@ $container->register( "event-type-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "faq-repository", function() use ( $container ) {
+	$repo = new \Model\Services\FAQRepository( $container );
+	return $repo;
+} );
+
+$container->register( "faq-answer-repository", function() use ( $container ) {
+	$repo = new \Model\Services\FAQAnswerRepository( $container );
+	return $repo;
+} );
+
 $container->register( "group-repository", function() use ( $container ) {
 	$repo = new \Model\Services\GroupRepository( $container );
 	return $repo;

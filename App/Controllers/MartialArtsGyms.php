@@ -242,6 +242,8 @@ class MartialArtsGyms extends Controller
         $businessRepo = $this->load( "business-repository" );
         $phoneRepo = $this->load( "phone-repository" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $faqRepo = $this->load( "faq-repository" );
+        $faqAnswerRepo = $this->load( "faq-answer-repository" );
         $Config = $this->load( "config" );
 
         // Get business by the unique URL slug
@@ -263,6 +265,16 @@ class MartialArtsGyms extends Controller
         $facebookPixelBuilder->addEvent([
             "Lead"
         ]);
+
+        // Get all FAQs
+        $faqs = $faqRepo->getAll();
+
+        // Get all FAQs answered by this business
+        $faqAnswers = [];
+        foreach ( $faqs as $faq ) {
+            $faqAnswers[] = $faqAnswerRepo->getByBusinessIDAndFAQID( $this->business->id, $faq_id );
+        }
+
 
         $this->view->assign( "business", $this->business );
         $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
