@@ -1,15 +1,15 @@
 $( function () {
-	$( ".free-class-button" ).on( "click", function() {
-		$( ".free-class-modal" ).show();
+	$( ".register-button" ).on( "click", function() {
+		$( ".register-modal" ).show();
 	} );
 
-	$( ".free-class-modal-close" ).on( "click", function() {
-		$( ".free-class-modal" ).hide();
+	$( ".register-modal-close" ).on( "click", function() {
+		$( ".register-modal" ).hide();
 	} );
 
 	$( ".contact-business-button" ).on( "click", function() {
 		if ( QuestionnaireDispatcher.questionnaire_complete ) {
-			$( ".free-class-modal" ).show();
+			$( ".register-modal" ).show();
 		}
 	} );
 
@@ -30,6 +30,6 @@ $( function () {
 	} );
 
 	$( ".questionnaire-complete-button" ).on( "click", function() {
-		$( ".free-class-modal" ).show();
+		$( ".register-modal" ).show();
 	} );
 } );

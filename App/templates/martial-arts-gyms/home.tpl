@@ -9,10 +9,17 @@
 {/block}
 
 {block name="business-profile-body"}
-	{include file="includes/modals/free-class.tpl"}
+	{include file="includes/modals/register.tpl"}
 	{include file="includes/modals/business-images-lightbox.tpl"}
 	{include file="includes/modals/reviews-lightbox.tpl"}
 	<div class="col-100 inner-pad-med">
+		{if !empty($error_messages.capture)}
+			{foreach from=$error_messages.capture item=message}
+				<div class="con-message-failure mat-hov cursor-pt --c-hide">
+					<p class="user-message-body">{$message}</p>
+				</div>
+			{/foreach}
+		{/if}
 		<div class="business-logo-container floatleft push-r-med">
 			<img itemprop="image" alt="{$business->business_name}'s logo - Martial Arts classes in {$business->city}, {$business->region}" src="{$HOME}public/img/uploads/{$business->logo_filename}" class="business-logo"/>
 		</div>
@@ -28,7 +35,7 @@
 	<div class="col-100 inner-pad-med">
 		{if $business->message != null}
 		<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
-			<button class="btn btn-inline floatright bg-deep-blue text-med-heavy free-class-button" style="margin-bottom: 0;">Free Class</button>
+			<button class="btn btn-inline floatright bg-deep-blue text-med-heavy register-button" style="margin-bottom: 0;">Free Class</button>
 			<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
 			<div class="clear"></div>
 		</div>
@@ -38,7 +45,7 @@
 		</div>
 		{else}
 		<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
-			<button class="btn btn-inline floatright bg-deep-blue text-med-heavy free-class-button" style="margin-bottom: 0;">Free Class</button>
+			<button class="btn btn-inline floatright bg-deep-blue text-med-heavy register-button" style="margin-bottom: 0;">Free Class</button>
 			<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
 			<div class="clear"></div>
 		</div>
@@ -106,7 +113,7 @@
 			</div><!-- end testimonials -->
 			<div class="clear"></div>
 			<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
-				<button class="btn btn-inline floatright bg-deep-blue text-med-heavy free-class-button" style="margin-bottom: 0;">Free Class</button>
+				<button class="btn btn-inline floatright bg-deep-blue text-med-heavy register-button" style="margin-bottom: 0;">Free Class</button>
 				<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
 				<div class="clear"></div>
 			</div>

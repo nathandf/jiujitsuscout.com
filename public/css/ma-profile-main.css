@@ -27,12 +27,12 @@ body {
 	background: #FFF;
 }
 
-.free-class-button {
+.register-button {
 	border-radius: 4px;
 	padding: 10px;
 }
 
-.free-class-modal {
+.register-modal {
 	background-color: rgba( 0, 0, 0, .85 );
 	position: fixed;
 	top: 0;
@@ -42,17 +42,17 @@ body {
 	z-index: 99999;
 }
 
-.free-class-container {
+.register-container {
 	border: 4px solid #CCC;
 	border-radius: 2px;
 	background: #FFF;
 }
 
-.free-class-form-container {
+.register-form-container {
 	margin: 0 auto;
 }
 
-.free-class-field {
+.register-field {
 	height: 50px;
 	width: 280px;
 	box-sizing: border-box;
@@ -62,7 +62,7 @@ body {
 	padding: 10px;
 }
 
-.free-class-field-lrg {
+.register-field-lrg {
 	height: 100px;
 	width: 280px;
 	box-sizing: border-box;
@@ -552,7 +552,7 @@ margin-bottom: 25px;
 
 @media screen and (max-width: 1111px){
 
-.free-class-input, .free-class-form-button, .free-class-input-label
+.register-input, .register-form-button, .register-input-label
 {
 margin-left: 10px;
 }

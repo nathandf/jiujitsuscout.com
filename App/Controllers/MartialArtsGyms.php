@@ -50,6 +50,7 @@ class MartialArtsGyms extends Controller
 
             // Load input and input validation helpers and services
             $Config = $this->load( "config" );
+            $accountRepo = $this->load( "account-repository" );
             $businessRepo = $this->load( "business-repository" );
             $reviewRepo = $this->load( "review-repository" );
             $input = $this->load( "input" );
@@ -101,6 +102,9 @@ class MartialArtsGyms extends Controller
             $phone = $phoneRepo->getByID( $this->business->phone_id );
             $this->business->phone = $phone;
 
+            // Load the account this business is associated with
+            $this->account = $accountRepo->getByID( $this->business->account_id );
+
             // Get images for this business
             $images = $imageRepo->getAllByBusinessID( $this->business->id );
 
@@ -129,11 +133,6 @@ class MartialArtsGyms extends Controller
 
             // Build facebook tracking pixel using jiujitsuscout clients pixel id
             $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
-
-            // Replace the facebook pixel if user specifies a pixel id of their own
-            if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
-                $facebookPixelBuilder->setPixelID( $this->business->facebook_pixel_id );
-            }
 
             // Get reviews from business id
             $this->business->reviews = $reviewRepo->getAllByBusinessID( $this->business->id );
@@ -184,7 +183,7 @@ class MartialArtsGyms extends Controller
                 "capture"
                 ) )
             {
-                $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
+                $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "phone" ) ) );
 
                 $prospectRegistrar->add([
                     "first_name" => $input->get( "name" ),
@@ -202,7 +201,14 @@ class MartialArtsGyms extends Controller
                 $respondentRepo->updateProspectIDByID( $respondent->id, $prospect->id );
 
                 $prospect_price = $prospectAppraiser->appraise( $prospect );
-                vdumpd( $prospect_price );
+
+                if ( $this->account->credit >= $prospect_price ) {
+                    // TODO Send lead caputre notification
+                    $accountRepo->debitAccountByID( $this->account->id, $prospect_price );
+                    $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
+                } else {
+                    // TODO Send insufficient funds for lead capture notification
+                }
             }
 
             // Set variables to populate inputs after form submission failure and assign to view
@@ -226,6 +232,42 @@ class MartialArtsGyms extends Controller
             $this->view->setTemplate( "martial-arts-gyms/home.tpl" );
         }
 
+        $this->view->render( "App/Views/MartialArtsGyms.php" );
+    }
+
+    public function registrationComplete()
+    {
+        $this->requireParam( "siteslug" );
+
+        $businessRepo = $this->load( "business-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $Config = $this->load( "config" );
+
+        // Get business by the unique URL slug
+        $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
+
+        // Render 404 if no business is returned
+        if ( is_null( $this->business->id ) || $this->business->id == "" ) {
+            $this->view->render404();
+        }
+
+        // Get phone associated with this business
+        $phone = $phoneRepo->getByID( $this->business->phone_id );
+        $this->business->phone = $phone;
+
+        // Build facebook tracking pixel using jiujitsuscout clients pixel id
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        // Add Lead event
+        $facebookPixelBuilder->addEvent([
+            "Lead"
+        ]);
+
+        $this->view->assign( "business", $this->business );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
+        $this->view->setTemplate( "martial-arts-gyms/registration-complete.tpl" );
         $this->view->render( "App/Views/MartialArtsGyms.php" );
     }
 
