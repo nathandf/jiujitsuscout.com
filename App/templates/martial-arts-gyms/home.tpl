@@ -120,6 +120,29 @@
 			<div class="clear"></div>
 		{/if}
 		{include file="includes/widgets/js-google-map.tpl"}
+		{if $faqAnswers|@count > 0}
+		<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Frequently Asked Questions:</p>
+		<table class="push-t-med">
+			{foreach from=$faqAnswers item=faqAnswer}
+			<tr class="push-t-med">
+				<td style="vertical-align: top;">
+					<p class="text-lrg-heavy push-r">Q:</p>
+				</td>
+				<td>
+					<p class="text-lrg-heavy">{$faqAnswer->faq->text}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: top;">
+					<p class="text-lrg push-r">A:</p>
+				</td>
+				<td>
+					<p class="text-lrg">{$faqAnswer->text}</p>
+				</td>
+			<tr>
+			{/foreach}
+		</table>
+		{/if}
 		<div class="clear"></div>
 	</div>
 {/block}

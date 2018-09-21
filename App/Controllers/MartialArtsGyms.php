@@ -65,6 +65,8 @@ class MartialArtsGyms extends Controller
             $disciplineRepo = $this->load( "discipline-repository" );
             $imageRepo = $this->load( "image-repository" );
             $prospectAppraiser = $this->load( "prospect-appraiser" );
+            $faqRepo = $this->load( "faq-repository" );
+            $faqAnswerRepo = $this->load( "faq-answer-repository" );
 
             // Dispatch questionnaire
 
@@ -154,6 +156,19 @@ class MartialArtsGyms extends Controller
             // return html stars
             $html_stars = fa_return_stars( $business_rating );
 
+            // Get all FAQs
+            $faqs = $faqRepo->getAll();
+
+            // Get all FAQs answered by this business
+            $faqAnswers = [];
+            foreach ( $faqs as $faq ) {
+                $faqAnswer = $faqAnswerRepo->getByBusinessIDAndFAQID( $this->business->id, $faq->id );
+                if ( !is_null( $faqAnswer->id ) ) {
+                    $faqAnswer->faq = $faq;
+                    $faqAnswers[] = $faqAnswer;
+                }
+            }
+
             if ( $input->exists() && $input->issetField( "capture" ) && $inputValidator->validate(
                 $input,
                 [
@@ -229,6 +244,7 @@ class MartialArtsGyms extends Controller
             $this->view->assign( "total_ratings", $total_ratings );
             $this->view->assign( "business_rating", $business_rating );
             $this->view->assign( "images", $images );
+            $this->view->assign( "faqAnswers", $faqAnswers );
             $this->view->setTemplate( "martial-arts-gyms/home.tpl" );
         }
 

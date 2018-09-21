@@ -18,12 +18,13 @@
 			</tr>
 			<tr>
 				<td style="vertical-align: top;">
-					<p class="text-lrg">A:</p>
+					<p class="text-lrg push-r">A:</p>
 				</td>
 				<td>
 					<p class="text-lrg">{$faqAnswer->text}</p>
 				</td>
 			<tr>
+
 			{/foreach}
 		</table>
 	</div>
