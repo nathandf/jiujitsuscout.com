@@ -47,7 +47,7 @@ class FAQMapper extends DataMapper
     {
         $faq->id = $data[ "id" ];
         $faq->placement = $data[ "placement" ];
-        $faq->business_id = $data[ "text" ];
+        $faq->text = $data[ "text" ];
     }
 
 }

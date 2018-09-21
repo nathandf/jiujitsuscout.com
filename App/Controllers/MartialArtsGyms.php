@@ -272,10 +272,14 @@ class MartialArtsGyms extends Controller
         // Get all FAQs answered by this business
         $faqAnswers = [];
         foreach ( $faqs as $faq ) {
-            $faqAnswers[] = $faqAnswerRepo->getByBusinessIDAndFAQID( $this->business->id, $faq_id );
+            $faqAnswer = $faqAnswerRepo->getByBusinessIDAndFAQID( $this->business->id, $faq->id );
+            if ( !is_null( $faqAnswer->id ) ) {
+                $faqAnswer->faq = $faq;
+                $faqAnswers[] = $faqAnswer;
+            }
         }
 
-
+        $this->view->assign( "faqAnswers", $faqAnswers );
         $this->view->assign( "business", $this->business );
         $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 

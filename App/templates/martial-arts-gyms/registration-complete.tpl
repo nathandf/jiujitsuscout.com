@@ -2,8 +2,30 @@
 
 {block name="business-profile-body"}
 	<div class="con-cnt-xlrg push-t-med inner-pad-med">
-		<h2>Registration Complete</h2>
-		<p class="push-t-med">You will be contacted by a staff member of {$business->business_name} to schedule your first free class.</p>
+		<h2>Registration Complete <i class="fa fa-check-square tc-good-green" aria-hidden="true"></i></h2>
+		<p class="push-t-med">A staff member of {$business->business_name} will contact you shortly to schedule your first free class. In the meantime, checkout out some of the frequently asked questions for this gym.</p>
+		<h3 class="push-t-lrg">Frequently Asked Questions</h3>
+		<div class="hr-sml"></div>
+		<table class="push-t-med">
+			{foreach from=$faqAnswers item=faqAnswer}
+			<tr class="push-t-med">
+				<td style="vertical-align: top;">
+					<p class="text-lrg-heavy push-r">Q:</p>
+				</td>
+				<td>
+					<p class="text-lrg-heavy">{$faqAnswer->faq->text}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: top;">
+					<p class="text-lrg">A:</p>
+				</td>
+				<td>
+					<p class="text-lrg">{$faqAnswer->text}</p>
+				</td>
+			<tr>
+			{/foreach}
+		</table>
 	</div>
 	<div class="clear"></div>
 {/block}
