@@ -33,6 +33,22 @@ class FAQAnswerMapper extends DataMapper
         return $faqAnswers;
     }
 
+    public function mapAllFromBusinessID( $business_id )
+    {
+        $entityFactory = $this->container->getService( "entity-factory" );
+        $faqAnswers = [];
+        $sql = $this->DB->prepare( "SELECT * FROM faq_answer WHERE business_id = :business_id" );
+        $sql->bindParam( "business_id", $business_id );
+        $sql->execute();
+        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $faqAnswer = $entityFactory->build( "FAQAnswer" );
+            $this->populateFAQAnswer( $faqAnswer, $resp );
+            $faqAnswers[] = $faqAnswer;
+        }
+
+        return $faqAnswers;
+    }
+
     public function mapFromID( \Model\FAQAnswer $faqAnswer, $id )
     {
         $sql = $this->DB->prepare( "SELECT * FROM faq_answer WHERE id = :id" );
@@ -52,6 +68,15 @@ class FAQAnswerMapper extends DataMapper
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
         $this->populateFAQAnswer( $faqAnswer, $resp );
         return $faqAnswer;
+    }
+
+    public function updateByBusinessIDAndFAQID( $business_id, $faq_id, $text )
+    {
+        $sql = $this->DB->prepare( "UPDATE faq_answer SET text = :text WHERE business_id = :business_id AND faq_id = :faq_id" );
+        $sql->bindParam( ":business_id", $business_id );
+        $sql->bindParam( ":faq_id", $faq_id );
+        $sql->bindParam( ":text", $text );
+        $sql->execute();
     }
 
     private function populateFAQAnswer( \Model\FAQAnswer $faqAnswer, $data )

@@ -8,7 +8,7 @@ class FAQAnswerRepository extends Service
     public function create( $business_id, $faq_id, $text )
     {
         $faqAnswer = new \Model\FAQAnswer();
-        $faqAnswer->business_id = $buisness_id;
+        $faqAnswer->business_id = $business_id;
         $faqAnswer->text = $text;
         $faqAnswer->faq_id = $faq_id;
         $faqAnswerMapper = new \Model\Mappers\FAQAnswerMapper( $this->container );
@@ -33,13 +33,11 @@ class FAQAnswerRepository extends Service
         return $faqAnswer;
     }
 
-    public function getByBusinessID( $business_id )
+    public function getAllByBusinessID( $business_id )
     {
-        $faqAnswer = new \Model\FAQAnswer();
         $faqAnswerMapper = new \Model\Mappers\FAQAnswerMapper( $this->container );
-        $faqAnswerMapper->mapFromBusinessID( $faqAnswer, $business_id );
-
-        return $faqAnswer;
+        $faqAnswers = $faqAnswerMapper->mapAllFromBusinessID( $business_id );
+        return $faqAnswers;
     }
 
     public function getByBusinessIDAndFAQID( $business_id, $faq_id )
@@ -49,6 +47,12 @@ class FAQAnswerRepository extends Service
         $faqAnswerMapper->mapFromBusinessIDAndFAQID( $faqAnswer, $business_id, $faq_id );
 
         return $faqAnswer;
+    }
+
+    public function updateByBusinessIDAndFAQID( $business_id, $faq_id, $text )
+    {
+        $faqAnswerMapper = new \Model\Mappers\FAQAnswerMapper( $this->container );
+        $faqAnswerMapper->updateByBusinessIDAndFAQID( $business_id, $faq_id, $text );
     }
 
 }

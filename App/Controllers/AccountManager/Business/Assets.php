@@ -204,32 +204,20 @@ class Assets extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $faqRepo = $this->load( "faq-repository" );
+        $faqAnswerRepo = $this->load( "faq-answer-repository" );
 
-        if ( $input->exists() && $input->issetField( "site_slug" ) && $inputValidator->validate(
+        $faqs = $faqRepo->getAll();
 
-                $input,
-
-                [
-                    "token" => [
-                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                        "required" => true
-                    ],
-                    "site_slug" => [
-                        "name" => "Site Slug",
-                        "required" => true,
-                        "min" => 1,
-                        "max" => 50
-                    ]
-                ],
-
-                "update_site_slug" /* error index */
-            ) )
-        {
-            $this->businessRepo->updateSiteSlugByID( $this->business->id, $input->get( "site_slug" ) );
-            $this->view->redirect( "account-manager/business/assets/lead-capture-site" );
+        foreach ( $faqs as $faq ) {
+            $faqAnswer = $faqAnswerRepo->getByBusinessIDAndFAQID( $this->business->id, $faq->id );
+            if ( is_null( $faqAnswer->id ) ) {
+                $faqAnswer = null;
+            }
+            $faq->faqAnswer = $faqAnswer;
         }
 
-        if ( $input->exists() && $inputValidator->validate(
+        if ( $input->exists() && $input->issetField( "update_message" ) && $inputValidator->validate(
                 $input,
 
                 [
@@ -256,6 +244,51 @@ class Assets extends Controller
             $this->businessRepo->updateSiteMessageByID( $this->business->id, $input->get( "title" ), $input->get( "message" ) );
             $this->view->redirect( "account-manager/business/assets/lead-capture-site" );
         }
+
+        if ( $input->exists() && $input->issetField( "faq_id" ) && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "faq_id" => [
+                    "required" => true,
+                    "numeric" => true
+                ],
+                "answered" => [
+                    "required" => true
+                ],
+                "faq_answer" => [
+
+                ]
+            ],
+            "faq"
+        ) )
+        {
+            switch ( $input->get( "answered" ) ) {
+                case "true":
+                    $faqAnswerRepo->updateByBusinessIDAndFAQID(
+                        $this->business->id,
+                        $input->get( "faq_id" ),
+                        $input->get( "faq_answer" )
+                    );
+                    $this->view->redirect( "account-manager/business/assets/lead-capture-site" );
+                    break;
+                case "false":
+                    $faqAnswerRepo->create(
+                        $this->business->id,
+                        $input->get( "faq_id" ),
+                        $input->get( "faq_answer" )
+                    );
+                    $this->view->redirect( "account-manager/business/assets/lead-capture-site" );
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $this->view->assign( "faqs", $faqs );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
