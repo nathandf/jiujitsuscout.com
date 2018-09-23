@@ -55,6 +55,7 @@ class MartialArtsGyms extends Controller
             $reviewRepo = $this->load( "review-repository" );
             $input = $this->load( "input" );
             $inputValidator = $this->load( "input-validator" );
+            $prospectRepo = $this->load( "prospect-repository" );
             $prospectRegistrar = $this->load( "prospect-registrar" );
             $userRepo = $this->load( "user-repository" );
             $userMailer = $this->load( "user-mailer" );
@@ -65,6 +66,7 @@ class MartialArtsGyms extends Controller
             $disciplineRepo = $this->load( "discipline-repository" );
             $imageRepo = $this->load( "image-repository" );
             $prospectAppraiser = $this->load( "prospect-appraiser" );
+            $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
             $faqRepo = $this->load( "faq-repository" );
             $faqAnswerRepo = $this->load( "faq-answer-repository" );
             $faStars = $this->load( "fa-stars" );
@@ -222,7 +224,12 @@ class MartialArtsGyms extends Controller
                 if ( $this->account->credit >= $prospect_price ) {
 
                     if ( $this->account->auto_purchase == true ) {
+
+                        // Remove credit from the account for the amount of the prospect's appraisal
                         $accountRepo->debitAccountByID( $this->account->id, $prospect_price );
+
+                        // Record a prospect purchase
+                        $prospectPurchaseRepo->create( $this->business->id, $prospect->id );
 
                         // Get the users that require email lead notifications
                         $users = [];
@@ -233,7 +240,7 @@ class MartialArtsGyms extends Controller
                             $users[] = $userRepo->getByID( $user_id );
                         }
 
-                        // Send the email to each user
+                        // Send lead caputre notification to all users in user_notification_recipient_ids array
                         foreach ( $users as $user ) {
                             $userMailer->sendLeadCaptureNotification(
                                 $user->first_name,
@@ -251,6 +258,9 @@ class MartialArtsGyms extends Controller
 
                         $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
                     } else {
+                        // Mark this lead as requiring a purchase
+                        $prospectRepo->updateRequiresPurchaseByID( $prospect->id, 1 );
+
                         // Get the users that require email lead notifications
                         $users = [];
                         $user_ids = explode( ",", $this->business->user_notification_recipient_ids );
@@ -277,8 +287,14 @@ class MartialArtsGyms extends Controller
                         $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
                     }
                 } else {
+                    // Mark this lead as requiring a purchase
+                    $prospectRepo->updateRequiresPurchaseByID( $prospect->id, 1 );
+
+                    // Send an insufficient funs notice to the primary user
                     $user = $userRepo->getByID( $this->account->primary_user_id );
                     $userMailer->sendInsufficientFundsNotification( $user->first_name, $user->email );
+
+                    // Redirect to registration complete page
                     $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
                 }
             }

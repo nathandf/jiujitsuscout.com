@@ -284,6 +284,11 @@ $container->register( "prospect-appraisal-repository", function() use ( $contain
 	return $repo;
 } );
 
+$container->register( "prospect-purchase-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ProspectPurchaseRepository( $container );
+	return $repo;
+} );
+
 $container->register( "question-choice-repository", function() use ( $container ) {
 	$repo = new \Model\Services\QuestionChoiceRepository( $container );
 	return $repo;

@@ -117,4 +117,10 @@ class ProspectRepository extends Service
         $prospectMapper->updateTrialRemindStatusByID( $id, $status );
     }
 
+    public function updateRequiresPurchaseByID( $id, $value = 1 )
+    {
+        $prospectMapper = new \Model\Mappers\ProspectMapper( $this->container );
+        $prospectMapper->updateRequiresPurchaseByID( $id, $value );
+    }
+
 }

@@ -157,6 +157,11 @@ class ProspectMapper extends DataMapper
         $this->update( "prospect", "region", $prospect->region, "id", $id );
     }
 
+    public function updateRequiresPurchaseByID( $id, $value )
+    {
+        $this->update( "prospect", "requires_purchase", $value, "id", $id );
+    }
+
     public function updateTrialRemindStatusByID( $id, $status )
     {
         $this->update( "prospect", "trial_remind_status", $status, "id", $id );
@@ -185,6 +190,7 @@ class ProspectMapper extends DataMapper
     $prospect->trial_end               = $data[ "trial_end" ];
     $prospect->trial_remind_status     = $data[ "trial_remind_status" ];
     $prospect->datetime_of_action      = $data[ "datetime_of_action" ];
+    $prospect->requires_purchase       = $data[ "requires_purchase" ];
   }
 
 }

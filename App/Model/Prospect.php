@@ -18,4 +18,5 @@ class Prospect extends Person implements EntityInterface
     public $native_review_status;
     public $unsubscribe_email;
     public $unsubscribe_text;
+    public $requires_purchase;
 }

@@ -247,6 +247,21 @@ body {
 	text-align: left;
 }
 
+.purchase-lead-tag
+{
+	text-decoration: none;
+	font-family: 'Source Sans Pro', sans-serif;
+	width: 250px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	box-sizing: border-box;
+	float: left;
+	transition: .25s;
+	font-size: 16px;
+	background: #fff;
+	text-align: left;
+}
+
 .toolbar {
 	text-decoration: none;
 	font-family: 'Source Sans Pro', sans-serif;

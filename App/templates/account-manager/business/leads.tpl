@@ -14,7 +14,7 @@
 			<div class="clear"></div>
 			<!-- <input type="search" class="inp search-bar-std first" placeholder="Search">
 			<div class="clear"></div> -->
-			<p class='results_count_message first'>Showing ({$leads|@count}) Results</p>
+			<p class='results_count_message first'>Showing ({$prospects|@count}) Results</p>
 			<div class="lead-box">
 				<div id="lead-tag-container">
 					{if !empty($error_messages.update_leads)}
@@ -34,7 +34,7 @@
 					<form method="post" action="{$HOME}account-manager/business/leads">
 						<input type="hidden" name="update_leads" value="{$csrf_token}">
 						<input type="hidden" name="token" value="{$csrf_token}">
-						{if $leads}
+						{if $prospects}
 						<table>
 							<tr>
 								<td>
@@ -58,31 +58,53 @@
 									<div class="clear"></div>
 								</td>
 							</tr>
-							{foreach from=$leads item=lead}
-								{if $lead->type == "trial" || $lead->type == "lead"}
-								<tr>
-									<td>
-										<input type="checkbox" name="lead_ids[]" value="{$lead->id}" class="action-cb checkbox-med cursor-pt">
-									</td>
-									<td>
-										<a href="{$HOME}account-manager/business/lead/{$lead->id}/" id="lead{$lead->id}" class="lead-tag first mat-hov floatleft">
-											{if $lead->type == "trial"}
-												<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-											{elseif $lead->type == "lead"}
-												{if $lead->times_contacted < 1}
-												<span class="lead-icon icon-c-2"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-												{else}
-												<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$lead->first_name|substr:0:1|upper}</span>
-												{/if}
-											{/if}
-											<div class="lead-data">
-												<p class="lead-name">{$lead->first_name|capitalize|truncate:20:"..."} {$lead->last_name|capitalize|truncate:20:"..."}</p>
-												<p>{$lead->phone_number|default:"Number: N/a"}</p>
-												<p>{if $lead->email}{$lead->email|lower|truncate:20:"..."}{else}email: N/a{/if}</p>
+							{foreach from=$prospects item=prospect}
+								{if $prospect->type == "trial" || $prospect->type == "lead"}
+									{if $prospect->requires_purchase && !isset($prospect->prospect_purchase) && isset($prospect->appraisal)}
+									<tr>
+										<td>
+										</td>
+										<td>
+											<div id="lead{$prospect->id}" class="purchase-lead-tag floatleft">
+												<span class="lead-icon bg-dark-mint"><i class="fa fa-dollar" aria-hidden="true"></i></span>
+												<div class="lead-data">
+													<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" class="link cursor-pt lead-name" style="display: inline-block; margin-top: 8px;">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</a>
+													<p class="text-lrg">{$business->currency->symbol}{$prospect->appraisal->value|string_format:"%.2f"}</p>
+												</div>
+												<div class="col-100 push-t-med" style="border-top: 2px solid #CCC;"></div>
+												<div class="push-t">
+													<a class="btn btn-inline bg-dark-mint floatright push-r text-sml-heavy" style="margin-bottom: 0;">Purchase</a>
+													<a class="btn btn-inline floatleft push-l text-sml-heavy" style="margin-bottom: 0;">Reject</a>
+												</div>
+												<div class="clear"></div>
 											</div>
-										</a>
-									</td>
-								<tr>
+										</td>
+									<tr>
+									{else}
+									<tr>
+										<td>
+											<input type="checkbox" name="lead_ids[]" value="{$prospect->id}" class="action-cb checkbox-med cursor-pt">
+										</td>
+										<td>
+											<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag first mat-hov floatleft">
+												{if $prospect->type == "trial"}
+													<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+												{elseif $prospect->type == "lead"}
+													{if $prospect->times_contacted < 1}
+													<span class="lead-icon icon-c-2"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
+													{else}
+													<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$prospect->first_name|substr:0:1|upper}</span>
+													{/if}
+												{/if}
+												<div class="lead-data">
+													<p class="lead-name">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
+													<p>{$prospect->phone_number|default:"Number: N/a"}</p>
+													<p>{if $prospect->email}{$prospect->email|lower|truncate:20:"..."}{else}email: N/a{/if}</p>
+												</div>
+											</a>
+										</td>
+									<tr>
+									{/if}
 								{/if}
 							{/foreach}
 						</table>
