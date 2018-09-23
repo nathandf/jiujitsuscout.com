@@ -67,6 +67,7 @@ class MartialArtsGyms extends Controller
             $prospectAppraiser = $this->load( "prospect-appraiser" );
             $faqRepo = $this->load( "faq-repository" );
             $faqAnswerRepo = $this->load( "faq-answer-repository" );
+            $faStars = $this->load( "fa-stars" );
 
             // Dispatch questionnaire
 
@@ -93,9 +94,6 @@ class MartialArtsGyms extends Controller
             // Dispatch the questionnaire and return the questionnaire object
             $questionnaireDispatcher->dispatch( 1 );
             $questionnaire = $questionnaireDispatcher->getQuestionnaire();
-
-            // Require in helper functions
-            require_once( "App/Helpers/fa-return-stars.php" );
 
             // Get business by the unique URL slug
             $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
@@ -145,7 +143,7 @@ class MartialArtsGyms extends Controller
             $business_rating = 0;
             foreach ( $this->business->reviews as $review ) {
                 $sum_rating = $sum_rating + $review->rating;
-                $review->html_stars = fa_return_stars( $review->rating );
+                $review->html_stars = $faStars->show( $review->rating );
                 $total_ratings++;
             }
 
@@ -154,7 +152,7 @@ class MartialArtsGyms extends Controller
             }
 
             // return html stars
-            $html_stars = fa_return_stars( $business_rating );
+            $html_stars = $faStars->show( $business_rating );
 
             // Get all FAQs
             $faqs = $faqRepo->getAll();
@@ -198,6 +196,10 @@ class MartialArtsGyms extends Controller
                 "capture"
                 ) )
             {
+                $message = null;
+                if ( $input->get( "message" ) != "" ) {
+                    $message = "Message from lead: " . $input->get( "message" );
+                }
                 $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "phone" ) ) );
 
                 $prospectRegistrar->add([
@@ -218,11 +220,66 @@ class MartialArtsGyms extends Controller
                 $prospect_price = $prospectAppraiser->appraise( $prospect );
 
                 if ( $this->account->credit >= $prospect_price ) {
-                    // TODO Send lead caputre notification
-                    $accountRepo->debitAccountByID( $this->account->id, $prospect_price );
-                    $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
+
+                    if ( $this->account->auto_purchase == true ) {
+                        $accountRepo->debitAccountByID( $this->account->id, $prospect_price );
+
+                        // Get the users that require email lead notifications
+                        $users = [];
+                        $user_ids = explode( ",", $this->business->user_notification_recipient_ids );
+
+                        // Populate users array with users data
+                        foreach ( $user_ids as $user_id ) {
+                            $users[] = $userRepo->getByID( $user_id );
+                        }
+
+                        // Send the email to each user
+                        foreach ( $users as $user ) {
+                            $userMailer->sendLeadCaptureNotification(
+                                $user->first_name,
+                                $user->email,
+                                [
+                                    "name" => $prospect->first_name,
+                                    "email" => $prospect->email,
+                                    "number" => "+" . $phone->country_code  . " " . $phone->national_number,
+                                    "source" => "JiuJitsuScout Profile",
+                                    "id" => $prospect->id,
+                                    "additional_info" => $message
+                                ]
+                            );
+                        }
+
+                        $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
+                    } else {
+                        // Get the users that require email lead notifications
+                        $users = [];
+                        $user_ids = explode( ",", $this->business->user_notification_recipient_ids );
+
+                        // Populate users array with users data
+                        foreach ( $user_ids as $user_id ) {
+                            $users[] = $userRepo->getByID( $user_id );
+                        }
+
+                        // Send the email to each user
+                        foreach ( $users as $user ) {
+                            $userMailer->sendLeadCapturePurchaseRequiredNotification(
+                                $user->first_name,
+                                $user->email,
+                                [
+                                    "id" => $prospect->id,
+                                    "name" => $prospect->first_name,
+                                    "source" => "JiuJitsuScout Profile",
+                                    "additional_info" => $message
+                                ]
+                            );
+                        }
+
+                        $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
+                    }
                 } else {
-                    // TODO Send insufficient funds for lead capture notification
+                    $user = $userRepo->getByID( $this->account->primary_user_id );
+                    $userMailer->sendInsufficientFundsNotification( $user->first_name, $user->email );
+                    $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
                 }
             }
 
@@ -306,112 +363,6 @@ class MartialArtsGyms extends Controller
     public function homeAction()
     {
         $this->view->redirect( "martial-arts-gyms/" . $this->business->site_slug . "/" );
-    }
-
-    public function freeClassAction()
-    {
-        $input = $this->load( "input" );
-        $inputValidator = $this->load( "input-validator" );
-        $prospectRegistrar = $this->load( "prospect-registrar" );
-        $userRepo = $this->load( "user-repository" );
-        $userMailer = $this->load( "user-mailer" );
-        $phoneRepo = $this->load( "phone-repository" );
-
-        // Input validation rules
-        if ( $input->exists() && $inputValidator->validate(
-
-                $input,
-
-                [
-                    "token" => [
-                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                        "required" => true
-                     ],
-                    "name" => [
-                        "name" => "Name",
-                        "required" => true,
-                        "min" => 1,
-                        "max" => 50
-                     ],
-                    "number" => [
-                        "name" => "Phone Number",
-                        "required" => true,
-                        "min" => 6,
-                        "max" => 50,
-                        "phone" => true
-                     ],
-                    "email" => [
-                        "name" => "Email",
-                        "required" => true,
-                        "email" => true,
-                    ]
-                ],
-
-                "free_class" // error index
-
-            ) )
-        {
-            $prospect = $prospectRegistrar->build();
-            $prospect->first_name = $input->get( "name" );
-            $prospect->last_name = "";
-            $prospect->email = strtolower( $input->get( "email" ) );
-            $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
-            $prospect->phone_id = $phone->id;
-            $prospect->business_id = $this->business->id;
-            $prospect->source = "JiuJitsuScout Profile: free class page";
-            $prospectRegistrar->register( $prospect );
-
-            // Get the users that require email lead notifications
-            $users = [];
-            $user_ids = explode( ",", $this->business->user_notification_recipient_ids );
-
-            // Populate users array with users data
-            foreach ( $user_ids as $user_id ) {
-                $users[] = $userRepo->getByID( $user_id );
-            }
-
-            // Send the email to each user
-            foreach ( $users as $user ) {
-                $userMailer->sendLeadCaptureNotification(
-                    $user->first_name,
-                    $user->email,
-                    [
-                        "name" => $prospect->first_name,
-                        "email" => $prospect->email,
-                        "number" => "+" . $phone->country_code  . " " . $phone->national_number,
-                        "source" => $prospect->source,
-                        "id" => $prospect->id,
-                        "additional_info" => "N/a"
-                    ]
-                );
-            }
-
-            $this->view->redirect( "martial-arts-gyms/{$this->business->site_slug}/thank-you" );
-        }
-
-        // Set variables to populate inputs after form submission failure and assign to view
-        $inputs = [];
-
-        $inputs[ "free_class" ][ "name" ] = $input->get( "name" );
-        $inputs[ "free_class" ][ "email" ] = $input->get( "email" );
-        $inputs[ "free_class" ][ "number" ] = $input->get( "number" );
-
-        $this->view->assign( "inputs", $inputs );
-
-        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
-        $this->view->setErrorMessages( $inputValidator->getErrors() );
-
-        $this->view->assign( "business", $this->business );
-        $this->view->setTemplate( "martial-arts-gyms/free-class.tpl" );
-        $this->view->render( "App/Views/MartialArtsGyms.php" );
-    }
-
-    public function gymList()
-    {
-        if ( $this->issetParam( "siteslug" ) ) {
-            $this->view->render404(); // parent method
-        }
-        $this->view->redirect( "martial-arts-gyms/", 301 );
     }
 
     public function thankYouAction()
@@ -567,8 +518,6 @@ class MartialArtsGyms extends Controller
 
     public function leaveReviewAction()
     {
-        require_once( "App/Helpers/fa-return-stars.php" );
-
         // Load input and input validation helpers and services
         $Config = $this->load( "config" );
         $businessRepo = $this->load( "business-repository" );
@@ -579,6 +528,7 @@ class MartialArtsGyms extends Controller
         $userRepo = $this->load( "user-repository" );
         $userMailer = $this->load( "user-mailer" );
         $phoneRepo = $this->load( "phone-repository" );
+        $faStars = $this->load( "fa-stars" );
 
         // Get reviews from business id
         $reviews = $reviewRepo->getAllByBusinessID( $this->business->id );
@@ -596,7 +546,7 @@ class MartialArtsGyms extends Controller
         }
 
         // return html stars
-        $html_stars = fa_return_stars( $business_rating );
+        $html_stars = $faStars->show( $business_rating );
 
         if ( $input->exists() && $input->issetField( "rate_review" ) && $inputValidator->validate( $input,
                 [

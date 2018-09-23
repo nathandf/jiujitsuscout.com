@@ -279,6 +279,11 @@ $container->register( "prospect-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "prospect-appraisal-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ProspectAppraisalRepository( $container );
+	return $repo;
+} );
+
 $container->register( "question-choice-repository", function() use ( $container ) {
 	$repo = new \Model\Services\QuestionChoiceRepository( $container );
 	return $repo;
@@ -493,6 +498,11 @@ $container->register( "facebook-pixel-builder", function() {
 	return $helper;
 } );
 
+$container->register( "fa-stars", function() {
+	$helper = new \Helpers\FAStars;
+	return $helper;
+} );
+
 $container->register( "google-geocoder", function() use ( $container ) {
 	$GoogleGeocoder = new \Helpers\GoogleGeocoder( $container->getService( "config" ) );
 	return $GoogleGeocoder;
@@ -569,7 +579,8 @@ $container->register( "prospect-appraiser", function() use ( $container ) {
 	$prospectAppraiser = new \Model\Services\ProspectAppraiser(
 		$container->getService( "question-choice-weight-repository" ),
 		$container->getService( "respondent-repository" ),
-		$container->getService( "respondent-question-answer-repository" )
+		$container->getService( "respondent-question-answer-repository" ),
+		$container->getService( "prospect-appraisal-repository" )
 	);
 	return $prospectAppraiser;
 } );
