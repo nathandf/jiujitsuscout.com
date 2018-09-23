@@ -84,7 +84,7 @@ class UserMailer
         $this->mailer->setSenderName( "JiuJitsuScout" );
         $this->mailer->setSenderEmailAddress( "noreply@jiujitsuscout.com" );
         $this->mailer->setContentType( "text/html" );
-        $this->mailer->setEmailSubject( "New Lead Captured | Purchase Required" );
+        $this->mailer->setEmailSubject( "New Lead Captured | Action Required" );
         $this->mailer->setEmailBody( '
             <div>
                 <table cellspacing=0 style="width: 300px; table-layout: fixed; box-sizing: border-box; display: block; margin-left: 20px;">
