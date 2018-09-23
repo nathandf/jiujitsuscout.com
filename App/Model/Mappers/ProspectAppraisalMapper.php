@@ -15,7 +15,7 @@ class ProspectAppraisalMapper extends DataMapper
             [ $prospectAppraisal->prospect_id, $prospectAppraisal->value, $prospectAppraisal->currency ]
         );
         $prospectAppraisal->id = $id;
-        vdumpd($prospectAppraisal);
+        
         return $prospectAppraisal;
     }
 
