@@ -24,6 +24,13 @@ $( function() {
         }
     } );
 
+    $( ".--c-reject-prospect" ).on( "click", function( event ) {
+        confirmation = confirm( "Are you sure your want to reject this lead? This action is permanent." );
+        if ( confirmation === false ) {
+            event.preventDefault();
+        }
+    } );
+
     $( ".--c-status-confirm" ).on( "click", function( event ) {
         confirmation = confirm( "Confirm this status change." );
         if ( confirmation === false ) {

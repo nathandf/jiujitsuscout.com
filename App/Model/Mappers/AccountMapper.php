@@ -74,8 +74,9 @@ class AccountMapper extends DataMapper
 
     public function subtractAccountCreditByID( $id, $amount )
     {
-        $sql = $this->DB->prepare( "UPDATE account SET credit = credit - :credit WHERE id = :id" );
-        $sql->bindParam( ":credit", $amount );
+        $amount = floatval( $amount );
+        $sql = $this->DB->prepare( "UPDATE account SET credit = ( credit - :amount ) WHERE id = :id" );
+        $sql->bindParam( ":amount", $amount );
         $sql->bindParam( ":id", $id );
         $sql->execute();
     }

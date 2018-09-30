@@ -38,7 +38,7 @@
 						<table>
 							<tr>
 								<td>
-									<input id="master-checkbox" type="checkbox" class="checkbox-med cursor-pt">
+									<input id="master-checkbox" type="checkbox" class="checkbox-med cursor-pt push-r">
 								</td>
 								<td>
 									<select class="first inp field-sml floatleft cursor-pt" name="action" id="action" required="required">
@@ -65,19 +65,14 @@
 										<td>
 										</td>
 										<td>
-											<div id="lead{$prospect->id}" class="purchase-lead-tag floatleft">
-												<span class="lead-icon bg-dark-mint"><i class="fa fa-dollar" aria-hidden="true"></i></span>
+											<a  href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag floatleft unpurchased mat-hov">
+												<span class="lead-icon bg-good-green tc-black" style="color: #fff;"><i class="fa fa-user" aria-hidden="true"></i></span>
 												<div class="lead-data">
-													<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" class="link cursor-pt lead-name" style="display: inline-block; margin-top: 8px;">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</a>
+													<p class="lead-name" style="display: inline-block; margin-top: 8px;">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
 													<p class="text-lrg">{$business->currency->symbol}{$prospect->appraisal->value|string_format:"%.2f"}</p>
 												</div>
-												<div class="col-100 push-t-med" style="border-top: 2px solid #CCC;"></div>
-												<div class="push-t">
-													<a class="btn btn-inline bg-dark-mint floatright push-r text-sml-heavy" style="margin-bottom: 0;">Purchase</a>
-													<a class="btn btn-inline floatleft push-l text-sml-heavy" style="margin-bottom: 0;">Reject</a>
-												</div>
 												<div class="clear"></div>
-											</div>
+											</a>
 										</td>
 									<tr>
 									{else}
@@ -86,22 +81,36 @@
 											<input type="checkbox" name="lead_ids[]" value="{$prospect->id}" class="action-cb checkbox-med cursor-pt">
 										</td>
 										<td>
-											<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag first mat-hov floatleft">
-												{if $prospect->type == "trial"}
+											{if $prospect->type == "trial"}
+												<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag trial first mat-hov floatleft">
 													<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-												{elseif $prospect->type == "lead"}
-													{if $prospect->times_contacted < 1}
-													<span class="lead-icon icon-c-2"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-													{else}
-													<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$prospect->first_name|substr:0:1|upper}</span>
-													{/if}
+													<div class="lead-data">
+														<p class="lead-name">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
+														<p>{$prospect->phone_number|default:"Number: N/a"}</p>
+														<p>{if $prospect->email}{$prospect->email|lower|truncate:20:"..."}{else}email: N/a{/if}</p>
+													</div>
+												</a>
+											{elseif $prospect->type == "lead"}
+												{if $prospect->times_contacted < 1}
+													<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag uncontacted first mat-hov floatleft">
+														<span class="lead-icon icon-c-2"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
+														<div class="lead-data">
+															<p class="lead-name">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
+															<p>{$prospect->phone_number|default:"Number: N/a"}</p>
+															<p>{if $prospect->email}{$prospect->email|lower|truncate:23:"..."}{else}email: N/a{/if}</p>
+														</div>
+													</a>
+												{else}
+													<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag first mat-hov floatleft">
+														<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$prospect->first_name|substr:0:1|upper}</span>
+														<div class="lead-data">
+															<p class="lead-name">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
+															<p>{$prospect->phone_number|default:"Number: N/a"}</p>
+															<p>{if $prospect->email}{$prospect->email|lower|truncate:23:"..."}{else}email: N/a{/if}</p>
+														</div>
+													</a>
 												{/if}
-												<div class="lead-data">
-													<p class="lead-name">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
-													<p>{$prospect->phone_number|default:"Number: N/a"}</p>
-													<p>{if $prospect->email}{$prospect->email|lower|truncate:20:"..."}{else}email: N/a{/if}</p>
-												</div>
-											</a>
+											{/if}
 										</td>
 									<tr>
 									{/if}

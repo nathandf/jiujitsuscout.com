@@ -27,6 +27,10 @@ class Lead extends Controller
         $phoneRepo = $this->load( "phone-repository" );
         $prospectRepo = $this->load( "prospect-repository" );
         $this->smsMessageRepo = $this->load( "sms-message-repository" );
+        $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
+        $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
+        $currencyRepo = $this->load( "currency-repository" );
+
         // If user not validated with session or cookie, send them to sign in
         if ( !$userAuth->userValidate() ) {
             $this->view->redirect( "account-manager/sign-in" );
@@ -39,26 +43,40 @@ class Lead extends Controller
         $this->account = $accountRepo->getByID( $accountUser->account_id );
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
-        // Verify that this lead is owned by this business
-        $leads = $prospectRepo->getAllByBusinessID( $this->business->id );
-        $lead_ids = [];
-        foreach ( $leads as $lead ) {
-            $lead_ids[] = $lead->id;
+        // Get currency object for business
+        $this->business->currency = $currencyRepo->getByCode( $this->business->currency );
+        // Verify that this prospect is owned by this business
+        $prospects = $prospectRepo->getAllByBusinessID( $this->business->id );
+        $prospect_ids = [];
+        foreach ( $prospects as $prospect ) {
+            $prospect_ids[] = $prospect->id;
         }
-        if ( !in_array( $this->params[ "id" ], $lead_ids ) ) {
+        if ( !in_array( $this->params[ "id" ], $prospect_ids ) ) {
             $this->view->redirect( "account-manager/business/leads" );
         }
         // Load prospects by type associated with business
-        $this->lead = $prospectRepo->getByID( $this->params[ "id" ] );
-        // Load lead's phone object
-        $this->phone = $phoneRepo->getByID( $this->lead->phone_id );
-        // Set lead's phone number
-        $this->lead->setPhoneNumber( $this->phone->country_code, $this->phone->national_number );
+        $this->prospect = $prospectRepo->getByID( $this->params[ "id" ] );
+        // Load prospect's phone object
+        $this->phone = $phoneRepo->getByID( $this->prospect->phone_id );
+        // Set prospect's phone number
+        $this->prospect->setPhoneNumber( $this->phone->country_code, $this->phone->national_number );
+
+        // Get appraisal for prospect if one exists
+        $appraisal = $prospectAppraisalRepo->getByProspectID( $this->prospect->id );
+        if ( !is_null( $appraisal->id ) ) {
+            $this->prospect->appraisal = $appraisal;
+        }
+
+        // Get purchase for prospect if one exists
+        $purchase = $prospectPurchaseRepo->getByProspectID( $this->prospect->id );
+        if ( !is_null( $purchase->id ) ) {
+            $this->prospect->purchase = $purchase;
+        }
 
         $this->view->assign( "account", $this->account );
         $this->view->assign( "user", $this->user );
         $this->view->assign( "business", $this->business );
-        $this->view->assign( "lead", $this->lead );
+        $this->view->assign( "lead", $this->prospect );
     }
 
     public function indexAction()
@@ -73,8 +91,13 @@ class Lead extends Controller
         $groupRepo = $this->load( "group-repository" );
         $mailer = $this->load( "mailer" );
 
+        // If prospect requires purchase, redirect to purchase page
+        if ( isset( $this->prospect->appraisal ) && ( isset( $this->prospect->purchase ) == false ) ) {
+            $this->view->redirect( "account-manager/business/lead/" . $this->params[ "id" ] . "/purchase" );
+        }
+
         // Load all notes
-        $notes = $noteRepo->getAllByProspectID( $this->lead->id );
+        $notes = $noteRepo->getAllByProspectID( $this->prospect->id );
 
         // Create a list of all note ids.
         $note_ids = [];
@@ -83,7 +106,7 @@ class Lead extends Controller
         }
 
         // Load all appointments
-        $appointments_all = $appointmentRepo->getAllByProspectID( $this->lead->id );
+        $appointments_all = $appointmentRepo->getAllByProspectID( $this->prospect->id );
 
         // Filter appointments by status. Put pending appointments in appointments array
         $appointments = [];
@@ -96,7 +119,7 @@ class Lead extends Controller
         // Load all groups
         $groupsAll = $groupRepo->getAllByBusinessID( $this->business->id );
         $groups = [];
-        $group_ids = explode( ",", $this->lead->group_ids );
+        $group_ids = explode( ",", $this->prospect->group_ids );
         foreach ( $groupsAll as $group ) {
             if ( in_array( $group->id, $group_ids ) ) {
                 $groups[] = $group;
@@ -104,8 +127,8 @@ class Lead extends Controller
         }
 
         // Set variables for sending an email
-        $recipient_first_name = $this->lead->first_name;
-        $recipient_email = $this->lead->email;
+        $recipient_first_name = $this->prospect->first_name;
+        $recipient_email = $this->prospect->email;
         $sender_first_name = $this->user->first_name;
         $sender_email = $this->user->email;
 
@@ -137,8 +160,8 @@ class Lead extends Controller
             ) )
         {
             // Prospect must have an email address to which to send the email
-            if ( is_null( $this->lead->email ) || $this->lead->email == "" ) {
-                $this->view->redirect( "account-manager/business/lead/" . $this->lead->id . "/?error=invalid_email" );
+            if ( is_null( $this->prospect->email ) || $this->prospect->email == "" ) {
+                $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/?error=invalid_email" );
             }
             // Send email
             $email_subject = $input->get( "subject" );
@@ -153,12 +176,12 @@ class Lead extends Controller
             $mailer->mail();
 
             // Record email interaction
-            $prospectRepo->updateTimesContactedByID( ( $this->lead->times_contacted + 1 ), $this->lead->id );
+            $prospectRepo->updateTimesContactedByID( ( $this->prospect->times_contacted + 1 ), $this->prospect->id );
 
             // Create a note for this interaction
             $note_body = "Sent with JiuJitsuScout: " . $input->get( "body" );
-            $noteRegistrar->save( $note_body, $this->business->id, $this->user->id, $this->lead->id );
-            $this->view->redirect( "account-manager/business/lead/" . $this->lead->id . "/" );
+            $noteRegistrar->save( $note_body, $this->business->id, $this->user->id, $this->prospect->id );
+            $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/" );
         }
 
         // Add a note to the database if validation passes
@@ -182,7 +205,7 @@ class Lead extends Controller
                 "add_note" /* error index */
             ) )
         {
-            $noteRegistrar->save( $input->get( "body" ), $this->business->id, $this->user->id, $this->lead->id );
+            $noteRegistrar->save( $input->get( "body" ), $this->business->id, $this->user->id, $this->prospect->id );
             $this->view->redirect( "account-manager/business/lead/" . $this->params[ "id" ] . "/" );
         }
 
@@ -229,7 +252,7 @@ class Lead extends Controller
                 "record_interaction" /* error index */
             ) )
         {
-            $prospectRepo->updateTimesContactedByID( ( $this->lead->times_contacted + 1 ), $this->lead->id );
+            $prospectRepo->updateTimesContactedByID( ( $this->prospect->times_contacted + 1 ), $this->prospect->id );
             switch ( $input->get( "record_interaction" ) ) {
                 case "call":
                     $contact_action = "called";
@@ -244,12 +267,12 @@ class Lead extends Controller
                     $contact_action = "sent an email to";
                     break;
             }
-            $note_body = $this->user->first_name . " " . $contact_action . " " . $this->lead->first_name;
-            $noteRegistrar->save( $note_body, $this->business->id, $this->user->id, $this->lead->id );
-            $this->view->redirect( "account-manager/business/lead/" . $this->lead->id . "/" );
+            $note_body = $this->user->first_name . " " . $contact_action . " " . $this->prospect->first_name;
+            $noteRegistrar->save( $note_body, $this->business->id, $this->user->id, $this->prospect->id );
+            $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/" );
         }
 
-        // Update lead's status on successful validation
+        // Update prospect's status on successful validation
         if ( $input->exists() && $input->issetField( "update_status" ) && $inputValidator->validate(
 
                 $input,
@@ -269,8 +292,8 @@ class Lead extends Controller
             ) )
         {
             if ( $input->get( "update_status" ) == "lost" ) {
-                $prospectRepo->updateStatusByID( "lost", $this->lead->id );
-                $this->view->redirect( "account-manager/business/lead/" . $this->lead->id . "/" );
+                $prospectRepo->updateStatusByID( "lost", $this->prospect->id );
+                $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/" );
             }
         }
 
@@ -291,7 +314,7 @@ class Lead extends Controller
         $this->view->setFlashMessages( $this->session->getFlashMessages( "flash_messages" ) );
 
         // where the form should get posted to
-        $this->view->assign( "action", HOME . "account-manager/business/lead/" . $this->lead->id . "/" );
+        $this->view->assign( "action", HOME . "account-manager/business/lead/" . $this->prospect->id . "/" );
 
         $this->view->assign( "recipient_first_name", $recipient_first_name );
         $this->view->assign( "recipient_email", $recipient_email );
@@ -317,7 +340,7 @@ class Lead extends Controller
         $entityFactory = $this->load( "entity-factory" );
         $appointmentRepo = $this->load( "appointment-repository" );
 
-        $phone = $phoneRepo->getByID( $this->lead->phone_id );
+        $phone = $phoneRepo->getByID( $this->prospect->phone_id );
 
         $country = $countryRepo->getByISO( $this->account->country );
 
@@ -382,14 +405,14 @@ class Lead extends Controller
 
             $phone->country_code = $input->get( "country_code" );
             $phone->national_number = $input->get( "phone_number" );
-            $phoneRepo->updateByID( $phone, $this->lead->phone_id );
+            $phoneRepo->updateByID( $phone, $this->prospect->phone_id );
 
             $prospect->address_1 = $input->get( "address_1" );
             $prospect->address_2 = $input->get( "address_2" );
             $prospect->city = $input->get( "city" );
             $prospect->region = $input->get( "region" );
-            $prospectRepo->updateProspectByID( $this->lead->id, $prospect );
-            $this->view->redirect( "account-manager/business/lead/" . $this->lead->id . "/edit" );
+            $prospectRepo->updateProspectByID( $this->prospect->id, $prospect );
+            $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/edit" );
         }
 
         if ( $input->exists() && $input->issetField( "trash" ) && $inputValidator->validate(
@@ -413,7 +436,7 @@ class Lead extends Controller
                 "trash_prospect" /* error */
             ) )
         {
-            // Change lead status to trash
+            // Change prospect status to trash
             $prospectRepo->updateStatusByID( "trash", $input->get( "prospect_id" ) );
             $prospectRepo->updateTypeByID( "trash", $input->get( "prospect_id" ) );
 
@@ -428,7 +451,7 @@ class Lead extends Controller
 
         $this->view->assign( "phone", $phone );
         $this->view->assign( "countries", $countries );
-        $this->view->assign( "lead", $this->lead );
+        $this->view->assign( "lead", $this->prospect );
 
         $csrf_token = $this->session->generateCSRFToken();
         $this->view->assign( "csrf_token", $csrf_token );
@@ -445,7 +468,7 @@ class Lead extends Controller
         $timeManager = $this->load( "time-manager" );
         // Load appointments
         $appointmentRepo = $this->load( "appointment-repository" );
-        $appointments = $appointmentRepo->getAllByProspectID( $this->lead->id );
+        $appointments = $appointmentRepo->getAllByProspectID( $this->prospect->id );
 
         $appointments_by_time = [];
         $appointments_by_time[ "today" ] = [];
@@ -488,7 +511,7 @@ class Lead extends Controller
 
         $this->view->assign( "appointments_total", $appointments_total );
         $this->view->assign( "appointments_by_time", $appointments_by_time );
-        $this->view->assign( "lead", $this->lead );
+        $this->view->assign( "lead", $this->prospect );
 
         $csrf_token = $this->session->generateCSRFToken();
         $this->view->assign( "csrf_token", $csrf_token );
@@ -537,11 +560,11 @@ class Lead extends Controller
                 $trial_extension = ( 60 * 60 * 24 * 30 ) * $quantity;
             }
 
-            $new_end_date = $this->lead->trial_end + $trial_extension;
-            $prospectRepo->updateTrialTimesByID( $this->lead->id, $this->lead->trial_start,$new_end_date );
-            $prospectRepo->updateTrialRemindStatusByID( $this->lead->id, 0 );
+            $new_end_date = $this->prospect->trial_end + $trial_extension;
+            $prospectRepo->updateTrialTimesByID( $this->prospect->id, $this->prospect->trial_start,$new_end_date );
+            $prospectRepo->updateTrialRemindStatusByID( $this->prospect->id, 0 );
 
-            $this->view->redirect( "account-manager/business/lead/" . $this->lead->id . "/trial" );
+            $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/trial" );
         }
 
         $csrf_token = $this->session->generateCSRFToken();
@@ -561,7 +584,7 @@ class Lead extends Controller
 
         $all_groups = $groupRepo->getAllByBusinessID( $this->business->id );
 
-        $lead_group_ids = explode( ",", $this->lead->group_ids );
+        $prospect_group_ids = explode( ",", $this->prospect->group_ids );
 
         if ( $input->exists() ) {
             $group_ids = null;
@@ -570,12 +593,12 @@ class Lead extends Controller
             }
             $prospectRepo->updateGroupIDsByID( $group_ids, $this->params[ "id" ] );
 
-            $this->view->redirect( "account-manager/business/lead/" . $this->lead->id . "/groups" );
+            $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/groups" );
         }
 
         foreach ( $all_groups as $group ) {
             $group->isset = false;
-            if ( in_array( $group->id, $lead_group_ids ) ) {
+            if ( in_array( $group->id, $prospect_group_ids ) ) {
                 $group->isset = true;
             }
         }
@@ -599,7 +622,7 @@ class Lead extends Controller
                     "sender_country_code" => "+1",
                     "sender_phone_number" => $this->user->phone_number,
                     "recipient_country_code" => "+1",
-                    "recipient_phone_number" => $this->lead->phone_number,
+                    "recipient_phone_number" => $this->prospect->phone_number,
                     "sms_body" => $input->get( "sms_body" ),
                     "utc_time_sent" => time()
                 ]
@@ -607,7 +630,112 @@ class Lead extends Controller
 
             $smsMessager->send( $smsMessage );
         }
-    $this->view->redirect( "account-manager/business/lead/" . $this->lead->id . "/#conversation-box" );
+        $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/#conversation-box" );
+    }
+
+    public function purchaseAction()
+    {
+        // If prospect has been appraised and purchased or no appraisal has been made, redirect to the lead profile
+        if ( ( isset( $this->prospect->appraisal ) && isset( $this->prospect->purchase ) ) || isset( $this->prospect->appraisal ) == false ) {
+            $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/" );
+        }
+
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $respondentRepo = $this->load( "respondent-repository" );
+        $respondentQuestionAnswerRepo = $this->load( "respondent-question-answer-repository" );
+        $questionRepo = $this->load( "question-repository" );
+        $questionChoiceRepo = $this->load( "question-choice-repository" );
+        $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
+        $accountRepo = $this->load( "account-repository" );
+        $userMailer = $this->load( "user-mailer" );
+        $userRepo = $this->load( "user-repository" );
+        $prospectRepo = $this->load( "prospect-repository" );
+
+        $respondent = $respondentRepo->getByProspectID( $this->prospect->id );
+
+        if ( !is_null( $respondent->id ) ) {
+            $questionAnswers = $respondentQuestionAnswerRepo->getAllByRespondentID( $respondent->id );
+            foreach ( $questionAnswers as $questionAnswer ) {
+                $questionAnswer->question = $questionRepo->getByID( $questionAnswer->question_id );
+                $questionAnswer->questionChoice = $questionChoiceRepo->getByID( $questionAnswer->question_choice_id );
+            }
+            $respondent->questionAnswers = $questionAnswers;
+        }
+
+        if ( $input->exists() && $input->issetField( "purchase" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true,
+                    ],
+                    "purchase" => [
+                        "required" => true
+                    ],
+                ],
+                "purchase"
+            ) )
+        {
+            // Remove credit from the account for the amount of the prospect's appraisal
+            $accountRepo->debitAccountByID( $this->account->id, $this->prospect->appraisal->value );
+
+            // Record a prospect purchase
+            $prospectPurchaseRepo->create( $this->business->id, $this->prospect->id );
+
+            // Update requries_purchase to false
+            $prospectRepo->updateRequiresPurchaseByID( $this->prospect->id, 0 );
+
+            // Get primary user of this account
+            $user = $userRepo->getByID( $this->account->primary_user_id );
+
+            // Send primary user
+            $userMailer->sendLeadPurchaseNotification(
+                $user->first_name,
+                $user->email,
+                [
+                    "name" => $this->prospect->first_name,
+                    "email" => $this->prospect->email,
+                    "number" => $this->prospect->phone_number,
+                    "id" => $this->prospect->id,
+                ]
+            );
+
+            $this->view->redirect( "account-manager/business/lead/" . $this->params[ "id" ] . "/" );
+        }
+
+        if ( $input->exists() && $input->issetField( "reject" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true,
+                    ],
+                    "reject" => [
+                        "required" => true
+                    ],
+                ],
+                "reject_lead"
+            ) )
+        {
+            // Update prospect
+            $prospectRepo->updateStatusByID( "rejected", $this->prospect->id );
+
+            // Notify lead was rejected on next page load with flash message
+            $this->session->addFlashMessage( "Lead Rejected" );
+            $this->session->setFlashMessages();
+
+            // Redirect to leads page
+            $this->view->redirect( "account-manager/business/leads" );
+        }
+
+        $this->view->assign( "respondent", $respondent );
+
+        $csrf_token = $this->session->generateCSRFToken();
+        $this->view->assign( "csrf_token", $csrf_token );
+
+        $this->view->setTemplate( "account-manager/business/lead/purchase.tpl" );
+        $this->view->render( "App/Views/AccountManager/Business/Lead.php" );
     }
 
 }

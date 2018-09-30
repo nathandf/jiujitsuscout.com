@@ -682,6 +682,12 @@ class AccountManager extends Controller
 		$this->view->render( "App/Views/AccountManager.php" );
 	}
 
+	public function addCreditAction()
+	{
+		$this->view->setTemplate( "account-manager/add-credit.tpl" );
+		$this->view->render( "App/Views/AccountManager.php" );
+	}
+
 	public function logout()
 	{
 		$userAuth = $this->load( "user-authenticator" );

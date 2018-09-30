@@ -997,6 +997,10 @@ td {
     background: #ff9c59;
 }
 
+.bg-gold {
+    background: #FFEA00;
+}
+
 .bg-dark-creamsicle {
     background: #ff7e26;
 }
@@ -1108,6 +1112,10 @@ td {
 
 .tc-white {
     color: #FFF;
+}
+
+.tc-red {
+    color: #D32323;
 }
 
 /* Images */
