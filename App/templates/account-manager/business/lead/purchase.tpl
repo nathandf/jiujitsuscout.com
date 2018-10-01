@@ -35,7 +35,7 @@
 				<form method="post" action="">
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input type="hidden" name="purchase" value="{$csrf_token}">
-					<button class="btn btn-cnt bg-gold tc-black text-med-heavy cursor-pt mat-hov" style="margin-bottom: 0px; box-sizing: border-box; border: 2px solid #333; border-radius: 55px; width: 80%; height: 55px; text-align: center;">Buy Now</button>
+					<button class="btn btn-cnt bg-gold tc-black text-med-heavy cursor-pt mat-hov --c-purchase" style="margin-bottom: 0px; box-sizing: border-box; border: 2px solid #333; border-radius: 55px; width: 80%; height: 55px; text-align: center;">Buy Now</button>
 				</form>
 				{else}
 				<a href="{$HOME}account-manager/add-credit" class="btn btn-cnt bg-good-green tc-white text-med-heavy cursor-pt mat-hov push-t-med" style="margin-bottom: 0px; box-sizing: border-box; border: none; border-radius: 55px; width: 80%; height: 55px; text-align: center; line-height: 38px;">Fund account</a>
@@ -64,7 +64,7 @@
 					<form method="post" action="">
 						<input type="hidden" name="token" value="{$csrf_token}">
 						<input type="hidden" name="purchase" value="{$csrf_token}">
-						<button class="btn btn-cnt bg-gold tc-black text-med-heavy cursor-pt mat-hov" style="margin-bottom: 0px; box-sizing: border-box; border: 2px solid #333; border-radius: 55px; width: 80%; height: 55px; text-align: center;">Buy Now</button>
+						<button class="btn btn-cnt bg-gold tc-black text-med-heavy cursor-pt mat-hov --c-purchase" style="margin-bottom: 0px; box-sizing: border-box; border: 2px solid #333; border-radius: 55px; width: 80%; height: 55px; text-align: center;">Buy Now</button>
 					</form>
 					{else}
 					<a href="{$HOME}account-manager/add-credit" class="btn btn-cnt bg-good-green tc-white text-med-heavy cursor-pt mat-hov push-t-med" style="margin-bottom: 0px; box-sizing: border-box; border: none; border-radius: 55px; width: 80%; height: 55px; text-align: center; line-height: 38px;">Fund account</a>

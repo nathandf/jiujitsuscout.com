@@ -23,7 +23,7 @@
 				<form action="" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input class="btn-std" type="file" name="image" size="25"/>
-					<input class="btn" type="submit" value="Upload Photo" name="upload_image" size="25" />
+					<input style="display: none;" class="btn file-upload-button" type="submit" value="Upload Photo" name="upload_image" size="25" />
 					<div class="clear"></div>
 				</form>
 				<div class="clear"></div>

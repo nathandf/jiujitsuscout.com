@@ -89,21 +89,7 @@ class UserMailer
             <div>
                 <table cellspacing=0 style="width: 300px; table-layout: fixed; box-sizing: border-box; display: block; margin-left: 20px;">
                     <tr>
-                        <td><p>' . $prospect_info[ "name" ] . ' is interested in visiting your business! Log into your account manager to purchase or reject the lead.</p></td>
-                    </tr>
-                </table>
-                <table cellspacing=0 style="width: 300px; background: #f6f7f9; border-collapse: collapse; table-layout: fixed; border: 1px solid #CCCCCC; box-sizing: border-box; padding: 15px; display: block; margin-left: 20px;">
-                    <tr>
-                        <td style="font-weight: bold; padding: 15px;">Name:</td>
-                        <td>' . $prospect_info[ "name" ] . '</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold; padding: 15px;">Source:</td>
-                        <td><p sytle="max-width: 50ch;">' . $prospect_info[ "source" ] . '</p></td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold; padding: 15px;">Additional Info:</td>
-                        <td><p sytle="max-width: 50ch;">' . $prospect_info[ "additional_info" ] . '</p></td>
+                        <td><p>Someone is interested in visiting your business! Log into your account manager to purchase or reject this lead.</p></td>
                     </tr>
                 </table>
                 <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">

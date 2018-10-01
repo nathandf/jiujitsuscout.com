@@ -31,6 +31,13 @@ $( function() {
         }
     } );
 
+    $( ".--c-purchase" ).on( "click", function( event ) {
+        confirmation = confirm( "Press OK to confirm your purchase." );
+        if ( confirmation === false ) {
+            event.preventDefault();
+        }
+    } );
+
     $( ".--c-status-confirm" ).on( "click", function( event ) {
         confirmation = confirm( "Confirm this status change." );
         if ( confirmation === false ) {
