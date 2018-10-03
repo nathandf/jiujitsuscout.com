@@ -38,7 +38,7 @@ class ImageManager
         if ( $this->saveImageTo( $index, $save_to_path ) ) {
             $this->deleteImage( $path_to_old_image );
 
-            return $new_image_name;
+            return $this->new_image_file_name;
         }
 
         return false;
@@ -62,7 +62,7 @@ class ImageManager
     public function deleteImage( $path_to_image )
     {
         if ( file_exists( $path_to_image ) ) {
-            unlink( $path_to_image );
+            @unlink( $path_to_image );
         }
 
         return true;
