@@ -426,6 +426,7 @@ class MartialArtsGyms extends Controller
         $userRepo = $this->load( "user-repository" );
         $userMailer = $this->load( "user-mailer" );
         $phoneRepo = $this->load( "phone-repository" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
         $this->view->assign( "business", $this->business );
         $this->requireParam( "slug" );
