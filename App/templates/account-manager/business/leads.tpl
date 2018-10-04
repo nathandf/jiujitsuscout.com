@@ -68,7 +68,7 @@
 											<a  href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag floatleft unpurchased mat-hov">
 												<span class="lead-icon bg-good-green tc-black" style="color: #fff;"><i class="fa fa-user" aria-hidden="true"></i></span>
 												<div class="lead-data">
-													<p class="lead-name" style="display: inline-block; margin-top: 8px;">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
+													<p class="lead-name" style="display: inline-block; margin-top: 8px;">New Lead</p>
 													<p class="text-lrg">{$business->currency->symbol}{$prospect->appraisal->value|string_format:"%.2f"}</p>
 												</div>
 												<div class="clear"></div>
