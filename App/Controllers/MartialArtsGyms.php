@@ -10,15 +10,25 @@ class MartialArtsGyms extends Controller
 
     protected function before()
     {
-        $this->requireParam( "siteslug" );
+        // $this->requireParam( "siteslug" );
+        if ( isset( $this->params[ "siteslug" ] ) != false && isset( $this->params[ "id" ] ) != false ) {
+            $this->view->render404();
+        }
 
         $businessRepo = $this->load( "business-repository" );
         $phoneRepo = $this->load( "phone-repository" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
         $Config = $this->load( "config" );
 
-        // Get business by the unique URL slug
-        $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
+        if ( isset( $this->params[ "id" ] ) ) {
+            // Get business by the unique URL slug
+            $this->business = $businessRepo->getByID( $this->params[ "id" ] );
+            $this->redirect_uri = $this->params[ "id" ];
+        } elseif ( isset( $this->params[ "siteslug" ] ) ) {
+            // Get business by ID
+            $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
+            $this->redirect_uri = $this->params[ "siteslug" ];
+        }
 
         // Render 404 if no business is returned
         if ( is_null( $this->business->id ) || $this->business->id == "" ) {
@@ -44,14 +54,31 @@ class MartialArtsGyms extends Controller
 
     public function index()
     {
-        if ( !$this->issetParam( "siteslug" ) ) {
+        if ( isset( $this->params[ "siteslug" ] ) != false && isset( $this->params[ "id" ] ) != false ) {
+            $this->view->render404();
+        }
+
+        $businessRepo = $this->load( "business-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $Config = $this->load( "config" );
+
+        if ( isset( $this->params[ "id" ] ) ) {
+            // Get business by the unique URL slug
+            $this->business = $businessRepo->getByID( $this->params[ "id" ] );
+            $this->redirect_uri = $this->params[ "id" ];
+        } elseif ( isset( $this->params[ "siteslug" ] ) ) {
+            // Get business by ID
+            $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
+            $this->redirect_uri = $this->params[ "siteslug" ];
+        }
+
+        if ( !$this->issetParam( "siteslug" ) && !$this->issetParam( "id" ) ) {
             $this->view->redirect( "" );
         } else {
 
             // Load input and input validation helpers and services
-            $Config = $this->load( "config" );
             $accountRepo = $this->load( "account-repository" );
-            $businessRepo = $this->load( "business-repository" );
             $reviewRepo = $this->load( "review-repository" );
             $input = $this->load( "input" );
             $inputValidator = $this->load( "input-validator" );
@@ -59,8 +86,6 @@ class MartialArtsGyms extends Controller
             $prospectRegistrar = $this->load( "prospect-registrar" );
             $userRepo = $this->load( "user-repository" );
             $userMailer = $this->load( "user-mailer" );
-            $phoneRepo = $this->load( "phone-repository" );
-            $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
             $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
             $respondentRepo = $this->load( "respondent-repository" );
             $disciplineRepo = $this->load( "discipline-repository" );
@@ -96,9 +121,6 @@ class MartialArtsGyms extends Controller
             // Dispatch the questionnaire and return the questionnaire object
             $questionnaireDispatcher->dispatch( 1 );
             $questionnaire = $questionnaireDispatcher->getQuestionnaire();
-
-            // Get business by the unique URL slug
-            $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
 
             // Get phone associated with this business
             $phone = $phoneRepo->getByID( $this->business->phone_id );
@@ -256,7 +278,7 @@ class MartialArtsGyms extends Controller
                             );
                         }
 
-                        $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
+                        $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/registration-complete" );
                     } else {
                         // Mark this lead as requiring a purchase
                         $prospectRepo->updateRequiresPurchaseByID( $prospect->id, 1 );
@@ -284,7 +306,7 @@ class MartialArtsGyms extends Controller
                             );
                         }
 
-                        $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
+                        $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/registration-complete" );
                     }
                 } else {
                     // Mark this lead as requiring a purchase
@@ -295,7 +317,7 @@ class MartialArtsGyms extends Controller
                     $userMailer->sendInsufficientFundsNotification( $user->first_name, $user->email );
 
                     // Redirect to registration complete page
-                    $this->view->redirect( "martial-arts-gyms/" . $this->params[ "siteslug" ] . "/registration-complete" );
+                    $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/registration-complete" );
                 }
             }
 
@@ -324,28 +346,12 @@ class MartialArtsGyms extends Controller
         $this->view->render( "App/Views/MartialArtsGyms.php" );
     }
 
-    public function registrationComplete()
+    public function registrationCompleteAction()
     {
-        $this->requireParam( "siteslug" );
-
-        $businessRepo = $this->load( "business-repository" );
-        $phoneRepo = $this->load( "phone-repository" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
         $faqRepo = $this->load( "faq-repository" );
         $faqAnswerRepo = $this->load( "faq-answer-repository" );
         $Config = $this->load( "config" );
-
-        // Get business by the unique URL slug
-        $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
-
-        // Render 404 if no business is returned
-        if ( is_null( $this->business->id ) || $this->business->id == "" ) {
-            $this->view->render404();
-        }
-
-        // Get phone associated with this business
-        $phone = $phoneRepo->getByID( $this->business->phone_id );
-        $this->business->phone = $phone;
 
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
         $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
@@ -378,7 +384,36 @@ class MartialArtsGyms extends Controller
 
     public function homeAction()
     {
-        $this->view->redirect( "martial-arts-gyms/" . $this->business->site_slug . "/" );
+        $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/" );
+    }
+
+    public function reviewCompleteAction()
+    {
+        $Config = $this->load( "config" );
+
+        $prospectRegistrar = $this->load( "prospect-registrar" );
+        $userRepo = $this->load( "user-repository" );
+        $userMailer = $this->load( "user-mailer" );
+        $reviewRepo = $this->load( "review-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+        // Build facebook tracking pixel using jiujitsuscout clients pixel id
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        // Replace the facebook pixel if user specifies a pixel id of their own
+        if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
+            $facebookPixelBuilder->setPixelID( $this->business->facebook_pixel_id );
+        }
+
+        // Get phone resource and set phone_number property for business object
+        $phone = $phoneRepo->getByID( $this->business->phone_id );
+        $this->business->phone_number = $phone->national_number;
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+        $this->view->assign( "business", $this->business );
+        $this->view->setTemplate( "martial-arts-gyms/review-complete.tpl" );
+        $this->view->render( "App/Views/MartialArtsGyms.php" );
     }
 
     public function thankYouAction()
@@ -508,7 +543,7 @@ class MartialArtsGyms extends Controller
                 );
             }
 
-            $this->view->redirect( "martial-arts-gyms/{$this->params[ "siteslug" ]}/thank-you" );
+            $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/thank-you" );
         }
 
         $this->view->assign( "page", $landingPage );
@@ -618,7 +653,7 @@ class MartialArtsGyms extends Controller
                 );
             }
 
-            $this->view->redirect( "martial-arts-gyms/" . $this->business->site_slug . "/reviews" );
+            $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/review-complete" );
         }
 
         // Set variables to populate inputs after form submission failure and assign to view

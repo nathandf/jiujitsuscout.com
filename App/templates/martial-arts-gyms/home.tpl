@@ -104,7 +104,8 @@
 									</p>
 								</div>
 							</span>
-						{else}
+						{elseif $smarty.foreach.review_loop.iteration == 4}
+
 							<a class="link push-b tc-deep-blue reviews-lightbox-link">— see more reviews</a>
 							<div class="clear push-t"></div>
 						{/if}

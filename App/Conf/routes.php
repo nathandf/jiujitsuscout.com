@@ -3,6 +3,8 @@
 // routes
 $Router->add( "", [ "controller" => "home", "action" => 'index' ] );
 $Router->add( "{action}", [ "controller" => "home" ] );
+$Router->add( "{controller:martial-arts-gyms}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
+$Router->add( "{controller:martial-arts-gyms}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}/{slug:[a-zA-Z0-9-]+}" );
 $Router->add( "{controller:martial-arts-gyms}/{siteslug:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{controller:martial-arts-gyms}/{siteslug:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]*}/{slug:[a-zA-Z0-9-]+}" );
 $Router->add( "{path:account-manager/business}/{controller:lead}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
