@@ -609,32 +609,14 @@ class Lead extends Controller
         $this->view->render( "App/Views/AccountManager/Business/Lead.php" );
     }
 
-    public function sendSMSAction()
-    {
-        $input = $this->load( "input" );
-        $inputValidator = $this->load( "input-validator" );
-        $smsMessager = $this->load( "sms-messager" );
-        if ( $input->exists() && $inputValidator->validate( $input, [ "sms_body" ] ) ) {
-            $entityFactory = $this->load( "entity-factory" );
-            $smsMessage = $entityFactory->build( "SMSMessage" );
-            $this->smsMessageRepo->save( $smsMessage,
-                [
-                    "sender_country_code" => "+1",
-                    "sender_phone_number" => $this->user->phone_number,
-                    "recipient_country_code" => "+1",
-                    "recipient_phone_number" => $this->prospect->phone_number,
-                    "sms_body" => $input->get( "sms_body" ),
-                    "utc_time_sent" => time()
-                ]
-            );
-
-            $smsMessager->send( $smsMessage );
-        }
-        $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/#conversation-box" );
-    }
-
     public function purchaseAction()
     {
+        // Restrict access to administrators and managers
+        $accessControl = $this->load( "access-control" );
+        if ( !$accessControl->hasAccess( [ "administrator", "manager" ], $this->user->role ) ) {
+            $this->view->render403();
+        }
+
         // If prospect has been appraised and purchased or no appraisal has been made, redirect to the lead profile
         if ( ( isset( $this->prospect->appraisal ) && isset( $this->prospect->purchase ) ) || isset( $this->prospect->appraisal ) == false ) {
             $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/" );

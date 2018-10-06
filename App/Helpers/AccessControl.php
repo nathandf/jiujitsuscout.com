@@ -4,25 +4,28 @@ namespace Helpers;
 
 class AccessControl
 {
-  public $required_roles;
+    public $available_roles = [
+        "administrator",
+        "manager",
+        "standard"
+    ];
 
-  public function requireRoles( $roles )
-  {
-    $this->required_roles = $roles;
-  }
+    public function hasAccess( array $required_roles, $user_role )
+    {
+        $this->validateRoles( $required_roles );
+        if ( !in_array( $user_role, $required_roles ) ) {
+            return false;
+        }
 
-  public function isAuthorized( $user_role )
-  {
-    if ( is_array( $this->required_roles ) ) {
-      if ( !in_array( $user_role, $this->required_roles ) ) {
-        return false;
-      } else {
         return true;
-      }
-    } elseif ( $this->required_roles == "any" ) {
-      return true;
     }
 
-  }
-
+    public function validateRoles( array $roles )
+    {
+        foreach ( $roles as $role ) {
+            if ( !in_array( $role, $this->available_roles ) ) {
+                throw new \Exception( "{$role} is not one of the available roles" );
+            }
+        }
+    }
 }

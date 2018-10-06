@@ -70,6 +70,11 @@ class User extends Controller
         $userRepo = $this->load( "user-repository" );
         $countryRepo = $this->load( "country-repository" );
         $factory = $this->load( "entity-factory" );
+        $accessControl = $this->load( "access-control" );
+
+        if ( !$accessControl->hasAccess( [ "administrator" ], $this->user->role ) ) {
+            $this->view->render403();
+        }
 
         $countries = $countryRepo->getAll();
 

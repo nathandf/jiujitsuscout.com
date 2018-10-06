@@ -477,6 +477,10 @@ $container->register( "sms-messager", function() use ( $container ) {
 } );
 
 // Helpers
+$container->register( "access-control", function() {
+	$helper = new \Helpers\AccessControl;
+	return $helper;
+} );
 
 $container->register( "form", function() {
 	$form = new \Helpers\Form;

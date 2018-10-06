@@ -115,4 +115,10 @@ class View extends CoreObject
         exit();
     }
 
+    public function render403()
+    {
+        $this->render( "App/templates/403.shtml" );
+        exit();
+    }
+
 }

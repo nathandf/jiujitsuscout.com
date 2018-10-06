@@ -15,6 +15,7 @@ class Settings extends Controller
         $accountUserRepo = $this->load( "account-user-repository" );
         $this->businessRepo = $this->load( "business-repository" );
         $userRepo = $this->load( "user-repository" );
+        $accessControl = $this->load( "access-control" );
 
         // If user not validated with session or cookie, send them to sign in
         if ( !$userAuth->userValidate() ) {
@@ -32,6 +33,11 @@ class Settings extends Controller
 
         // Grab business details
         $this->business = $this->businessRepo->getByID( $this->user->getCurrentBusinessID() );
+
+        // Restrict entire controller to admins
+        if ( !$accessControl->hasAccess( [ "administrator" ], $this->user->role ) ) {
+            $this->view->render403();
+        }
 
         // Set data for the view
         $this->view->assign( "account", $this->account );
