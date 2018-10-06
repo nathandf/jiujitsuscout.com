@@ -2,8 +2,8 @@
 
 Add another account.primary_user_id when deleting current primary user
 
-Hide prospect details if purchase required and prospect not purchased.
-
 Add option for primary account user to toggle account auto_purchase status.
 
 Add daily_budget property to account.
+
+Restrict access to certain UI elements by role

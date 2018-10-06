@@ -28,4 +28,9 @@ class AccessControl
             }
         }
     }
+
+    public function getRoles()
+    {
+        return $this->available_roles;
+    }
 }

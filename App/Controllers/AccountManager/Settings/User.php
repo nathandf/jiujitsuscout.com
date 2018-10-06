@@ -125,6 +125,9 @@ class User extends Controller
                         "name" => "Phone Number",
                         "phone" => true
                     ],
+                    "role" => [
+                        "name" => "Role"
+                    ]
                 ],
 
                 "edit_user" /* error index */
@@ -141,14 +144,20 @@ class User extends Controller
 
             $phoneRepo->updateByID( $phone, $userToEdit->phone_id );
 
+            // This is a mess. TODO fix
             $userRepo->updateUserByID( $userToEdit->id, $user );
+
+            // Disallow changing own permissions
+            if ( $this->user->id != $this->params[ "id" ] ) {
+                $userRepo->updateRoleByID( $this->params[ "id" ], $input->get( "role" ) );
+            }
 
             $this->view->redirect( "account-manager/settings/user/" . $userToEdit->id . "/edit" );
         }
 
         $this->view->assign( "user_to_edit", $userToEdit );
         $this->view->assign( "phone", $phone );
-
+        $this->view->assign( "roles", $accessControl->getRoles() );
         $this->view->assign( "countries", $countries );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
