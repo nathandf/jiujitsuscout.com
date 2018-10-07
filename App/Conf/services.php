@@ -351,7 +351,8 @@ $container->register( "search-results-dispatcher", function() use ( $container )
 		$container->getService( "review-repository" ),
 		$container->getService( "discipline-repository" ),
 		$container->getService( "geocoder" ),
-		$container->getService( "geometry" )
+		$container->getService( "geometry" ),
+		$container->getService( "fa-stars" )
 	);
 	return $dispatcher;
 } );

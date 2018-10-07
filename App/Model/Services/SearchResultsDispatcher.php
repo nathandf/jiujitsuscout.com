@@ -7,7 +7,8 @@ use Model\Services\AccountRepository,
     Model\Services\ReviewRepository,
     Model\Services\DisciplineRepository,
     Contracts\GeocoderInterface,
-    Helpers\Geometry;
+    Helpers\Geometry,
+    Helpers\FAStars;
 
 
 class SearchResultsDispatcher
@@ -31,7 +32,8 @@ class SearchResultsDispatcher
         ReviewRepository $reviewRepo,
         DisciplineRepository $disciplineRepo,
         GeocoderInterface $geocoder,
-        Geometry $geometry
+        Geometry $geometry,
+        FAStars $faStars
     )
     {
         $this->accountRepo = $accountRepo;
@@ -40,6 +42,7 @@ class SearchResultsDispatcher
         $this->disciplineRepo = $disciplineRepo;
         $this->geocoder = $geocoder;
         $this->geometry = $geometry;
+        $this->faStars = $faStars;
     }
 
     public function dispatch( $query, $discipline_id = null, $radius = null, $unit = null )
@@ -79,9 +82,6 @@ class SearchResultsDispatcher
             // Find businesses in range
             foreach ( $businesses as $business ) {
 
-                // html star builder helper
-                require_once( "App/Helpers/fa-return-stars.php" );
-
                 // Get distance of businesses from search query in specified unit
                 $distance = $this->geometry->haversineGreatCircleDistance(
                     $search_latitude,
@@ -117,7 +117,7 @@ class SearchResultsDispatcher
                     $rating = 0;
 
                     // Font awesome stars html (Will return 5 empty stars)
-                    $stars = fa_return_stars( $rating );
+                    $stars = $this->faStars->show( $rating );
 
                     // If businesses has reviews, process them for listing
                     if ( $total_reviews > 0 ) {
@@ -136,7 +136,7 @@ class SearchResultsDispatcher
                         $rating = round( $rating / $total_reviews, 1 );
 
                         // Replace emply html stars with full ones to reflect the rating
-                        $stars = fa_return_stars( $rating );
+                        $stars = $this->faStars->show( $rating );
                     }
 
                     // Set aggregated rating and stars to business object property
