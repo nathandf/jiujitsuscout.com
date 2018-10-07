@@ -8,28 +8,11 @@
 	<body>
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
 	    {include file="includes/navigation/business-manager-menu.tpl"}
-		<div class="con-cnt-xxlrg inner-box settings-box first">
+		<div class="con-cnt-xxlrg encapsulate settings-box first">
 			{include file="includes/navigation/business-assets-menu.tpl"}
-			<div class="con-cnt-xlrg inner-pad-med">
-				<h2 class="first last">Site Slug</h2>
-				<p class="">Change the URL of your lead generation site. Create a unique URL Slug!</p>
-				{if !empty($error_messages.update_site_slug)}
-					{foreach from=$error_messages.update_site_slug item=message}
-						<div class="con-message-failure mat-hov cursor-pt --c-hide">
-							<p class="user-message-body">{$message}</p>
-						</div>
-					{/foreach}
-				{/if}
-				<form id="site-slug-form" action="" method="post">
-					<input type="hidden" name="token" value="{$csrf_token}">
-					<input id="input-slug" type="text" class="inp first field-sml" name="site_slug" placeholder="Site slug" name="title" value="{$business->site_slug}">
-					<p class="text-sml">https://www.jiujitsuscout.com/martial-arts-gyms/<b id="slug">{$business->site_slug}</b>/</p>
-				  	<div class="clear"></div>
-					<input type="submit" form="site-slug-form" class="btn first" name="update_site_slug" value="Update Site Slug">
-				</form>
-				<div class="hr"></div>
+			<div class="con-cnt-xlrg inner-pad-med push-t-med">
 				<h2>Message to your customers</h2>
-				<div class="clear first last"></div>
+				<div class="clear push-t-med push-b-med"></div>
 				{if !empty($error_messages.update_site_message)}
 					{foreach from=$error_messages.update_site_message item=message}
 						<div class="con-message-failure mat-hov cursor-pt --c-hide">
@@ -39,12 +22,29 @@
 				{/if}
 				<form id="message" action="" method="post">
 					<input type="hidden" name="token" value="{$csrf_token}">
-					<input type="text" class="inp field-med" placeholder="Title" name="title" value="{$business->title}">
-					<div class="first"></div>
-					<textarea class="textbox textbox-lrg" placeholder="Your unique message here" name="message">{$business->message}</textarea>
+					<textarea class="inp field-med-plus-plus-tall" style="padding: 10px; text-indent: 0;" placeholder="Your unique message here" name="message">{$business->message|default:null}</textarea>
 					<div class="clear"></div>
 					<input type="submit" form="message" class="btn" name="update_message" value="Update Message">
 				</form>
+				<div class="push-t-lrg">
+					<h2>Frequently Asked Questions: </h2>
+					{foreach from=$faqs item=faq}
+						<div class="hr-sml"></div>
+						<p class="text-lrg-heavy push-t-med"><span class="push-r">Q:</span>{$faq->text}</p>
+						<form id="message" action="" method="post">
+							<input type="hidden" name="token" value="{$csrf_token}">
+							<input type="hidden" name="faq_id" value="{$faq->id}">
+							{if !is_null( $faq->faqAnswer )}
+								<input type="hidden" name="answered" value="true">
+							{else}
+								<input type="hidden" name="answered" value="false">
+							{/if}
+							<textarea class="inp field-med-plus-plus-tall push-t" style="padding: 10px; text-indent: 0;" placeholder="Your unique message here" name="faq_answer">{if !is_null($faq->faqAnswer)}{$faq->faqAnswer->text}{/if}</textarea>
+							<div class="clear"></div>
+							<input type="submit" class="btn" value="Submit Answer">
+						</form>
+					{/foreach}
+				</div>
 			</div>
 			<div class="clear"></div>
 		</div>

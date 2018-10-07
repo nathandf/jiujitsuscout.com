@@ -28,7 +28,7 @@ class PhoneNumberList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid);
+        $this->solution = array('serviceSid' => $serviceSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/PhoneNumbers';
     }
@@ -38,9 +38,10 @@ class PhoneNumberList extends ListResource {
      * 
      * @param string $sid Delete by unique phone-number Sid
      * @return PhoneNumberInstance Newly created PhoneNumberInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($sid) {
-        $data = Values::of(array('Sid' => $sid));
+        $data = Values::of(array('Sid' => $sid, ));
 
         $payload = $this->version->create(
             'POST',

@@ -27,8 +27,11 @@ use Twilio\Version;
  * @property \DateTime dateCreated
  * @property \DateTime dateUpdated
  * @property string url
+ * @property array links
  */
 class AuthorizationDocumentInstance extends InstanceResource {
+    protected $_dependentHostedNumberOrders = null;
+
     /**
      * Initialize the AuthorizationDocumentInstance
      * 
@@ -50,9 +53,10 @@ class AuthorizationDocumentInstance extends InstanceResource {
             'dateCreated' => Deserialize::dateTime(Values::array_get($payload, 'date_created')),
             'dateUpdated' => Deserialize::dateTime(Values::array_get($payload, 'date_updated')),
             'url' => Values::array_get($payload, 'url'),
+            'links' => Values::array_get($payload, 'links'),
         );
 
-        $this->solution = array('sid' => $sid ?: $this->properties['sid']);
+        $this->solution = array('sid' => $sid ?: $this->properties['sid'], );
     }
 
     /**
@@ -73,6 +77,7 @@ class AuthorizationDocumentInstance extends InstanceResource {
      * Fetch a AuthorizationDocumentInstance
      * 
      * @return AuthorizationDocumentInstance Fetched AuthorizationDocumentInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();
@@ -83,9 +88,19 @@ class AuthorizationDocumentInstance extends InstanceResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return AuthorizationDocumentInstance Updated AuthorizationDocumentInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         return $this->proxy()->update($options);
+    }
+
+    /**
+     * Access the dependentHostedNumberOrders
+     * 
+     * @return \Twilio\Rest\Preview\HostedNumbers\AuthorizationDocument\DependentHostedNumberOrderList 
+     */
+    protected function getDependentHostedNumberOrders() {
+        return $this->proxy()->dependentHostedNumberOrders;
     }
 
     /**

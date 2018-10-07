@@ -37,6 +37,9 @@ class Home extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $disciplineRepo = $this->load( "discipline-repository" );
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         $disciplines = $disciplineRepo->getAll();
         $discipline_names = [];
@@ -65,6 +68,7 @@ class Home extends Controller
         }
 
         $this->view->assign( "discipline", $discipline );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         $this->view->setTemplate( "home.tpl" );
         $this->view->render( "App/Views/Home.php" );
@@ -76,27 +80,26 @@ class Home extends Controller
         $inputValidator = $this->load( "input-validator" );
         $searchRepo = $this->load( "search-repository" );
         $resultRepo = $this->load( "result-repository" );
-        $businessRepo = $this->load( "business-repository" );
-        $geocoder = $this->load( "geocoder" );
-        $geometry = $this->load( "geometry" );
         $disciplineRepo = $this->load( "discipline-repository" );
-        $reviewRepo = $this->load( "review-repository" );
         $prospectRepo = $this->load( "prospect-repository" );
         $entityFactory = $this->load( "entity-factory" );
         $phoneRepo = $this->load( "phone-repository" );
         $noteRegistrar = $this->load( "note-registrar" );
+        $respondentRepo = $this->load( "respondent-repository" );
+        $searchResultsDispatcher = $this->load( "search-results-dispatcher" );
+        $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
-        // html star builder helper
-        require_once( "App/Helpers/fa-return-stars.php" );
+        // Add InitiateCheckout Event if there are products in the cart
+        $facebookPixelBuilder->addEvent([
+            "Search"
+        ]);
 
         // Set defaults
         $disciplines = $disciplineRepo->getAll();
         $discipline_ids = [];
-        $results = [];
-        $results_by_distance = [];
-        $business_ids = [];
-        $search_radius = 15;
-        $search_unit = "mi";
 
         // Create array of discipline ids
         foreach ( $disciplines as $discipline ) {
@@ -174,116 +177,63 @@ class Home extends Controller
                 "search" /* error index */
             ) )
         {
+            // Return busiensses within the specified distance from the queried
+            // location as well as by discipline
+            $results = $searchResultsDispatcher->dispatch(
+                $input->get( "q" ),
+                $input->get( "discid" ),
+                $input->get( "distance" ),
+                $input->get( "unit" )
+            );
 
-            // Get latitude and longitude of search query
-            $geoInfo = $geocoder->getGeoInfoByAddress( $input->get( "q" ) );
+            // Dispatch questionnaire
 
-            // Get businesses by discipline id. If discipline id is not specified, get all businesses
-            if ( !empty( $input->get( "discid" ) ) ) {
-                $businesses = $businessRepo->getAllByDisciplineID( $input->get( "discid" ) );
-            } else {
-                $businesses = $businessRepo->getAll();
+            // Check session for a respondent token. If one doesnt exit, create a
+            // new respondent and dispatch the questionnaire. If a respondent does
+            // exist, load the respodent and pass through the last question id to
+            // start the questionnaire where that respondent left off.
+            $respondent_token = $this->session->getSession( "respondent-token" );
+
+            if ( is_null( $respondent_token ) ) {
+                // Generate a new token
+                $respondent_token = $this->session->generateToken();
+
+                // Set the session with the new respondent token
+                $this->session->setSession( "respondent-token", $respondent_token );
+
+                // Create a respondent with this questionnaire_id and respondent token
+                $respondentRepo->create( 1, $respondent_token );
             }
 
-            // If unit is set and in array set new search unit
-            if ( $input->issetField( "unit" ) && in_array( $input->get( "unit" ), [ "km", "mi" ] ) ) {
-                $search_unit = $input->get( "unit" );
-            }
+            // Load the respondent object
+            $respondent = $respondentRepo->getByToken( $respondent_token );
 
-            // If distance is set and less than 50, set new search radius
-            if ( $input->issetField( "distance" ) && $input->get( "distance" ) < 50 ) {
-                $search_radius = $input->get( "distance" );
-            }
-
-            // If geoInfo results are returned, show business listings
-            if ( count( $geoInfo->results > 0 ) && !empty( $geoInfo->results ) ) {
-
-                // Set search query lat lng
-                $search_latitude = $geoInfo->results[ 0 ]->geometry->location->lat;
-                $search_longitude = $geoInfo->results[ 0 ]->geometry->location->lng;
-
-                // Find businesses in range
-                foreach ( $businesses as $business ) {
-
-                    // Get distance of businesses from search query in specified unit
-                    $distance = $geometry->haversineGreatCircleDistance( $search_latitude, $search_longitude, $business->latitude, $business->longitude, $unit = $search_unit );
-
-                    // If distance of businesses is less than search distanc, populate results
-                    if ( $distance <= $search_radius ) {
-
-                        // Set distance and unit from searched location to businesses address
-                        $business->distance = $distance;
-                        $business->unit = $search_unit;
-
-                        // Get review objects associated with business id
-                        $reviews = $reviewRepo->getAllByBusinessID( $business->id );
-                        $total_reviews = count( $reviews );
-
-                        // Set default rating
-                        $rating = 0;
-
-                        // Font awesome stars html (Will return 5 empty stars)
-                        $stars = fa_return_stars( $rating );
-
-                        // If businesses has reviews, process them for listing
-                        if ( $total_reviews > 0 ) {
-                            $i = 1;
-                            foreach ( $reviews as $review ) {
-                                $rating = $rating + $review->rating;
-
-                                // Set the last rating for display
-                                if ( $i == $total_reviews ) {
-                                    $business->reviewer = $review->name;
-                                    $business->review = $review->review_body;
-                                }
-                                $i++;
-                            }
-                            // Aggregated rating
-                            $rating = round( $rating / $total_reviews, 1 );
-
-                            // Replace emply html stars with full ones to reflect the rating
-                            $stars = fa_return_stars( $rating );
-                        }
-
-                        // Set aggregated rating and stars to business object property
-                        $business->rating = $rating;
-                        $business->stars = $stars;
-
-                        // Results (unordered)
-                        $results[] = $business;
-
-                        // The $business_ids array stores the business ids that were returned
-                        // in the results which will be recoded by the result-repository
-                        $business_ids[] = $business->id;
-                    }
-                }
-            }
-
-            // Sort results array by distance property of the business objects
-            usort( $results, function ( $business_a, $business_b ) {
-                return ( $business_a->distance < $business_b->distance ) ? -1 : ( ( $business_a->distance > $business_b->distance ) ? 1 : 0 );
-            } );
-
-            // TODO Sort the distance-sorted results by premium, featured, and standard listing types
-
-            $this->view->assign( "results", $results );
-            $this->view->assign( "total_results", count( $results ) );
-            $this->view->assign( "query", trim( $input->get( "q" ) ) );
-            $this->view->assign( "discid", $input->get( "discid" ) );
+            // Dispatch the questionnaire and return the questionnaire object
+            $questionnaireDispatcher->dispatch( 1 );
+            $questionnaire = $questionnaireDispatcher->getQuestionnaire();
 
             $search = $searchRepo->create( $_SERVER[ "REMOTE_ADDR" ], $input->get( "q" ), time() );
 
             // Save results data and associate with search
             if ( count( $results ) > 0 ) {
-                $resultRepo->create( $search->id, implode( ",", $business_ids ) );
+                $resultRepo->create( $search->id, implode( ",", $searchResultsDispatcher->getBusinessIDs() ) );
             }
+
         } else {
             // If search input not validated, return to home screen
             $this->view->redirect( "" );
         }
 
-        $this->view->assign( "search_radius", $search_radius );
-        $this->view->assign( "unit", $search_unit );
+        $this->view->assign( "search_radius", $searchResultsDispatcher->getSearchRadius() );
+        $this->view->assign( "unit", $searchResultsDispatcher->getSearchUnit() );
+        $this->view->assign( "questionnaire", $questionnaire );
+        $this->view->assign( "respondent", $respondent );
+        $this->view->assign( "results", $results );
+        $this->view->assign( "total_results", count( $results ) );
+        $this->view->assign( "query", trim( $input->get( "q" ) ) );
+        $this->view->assign( "discid", $input->get( "discid" ) );
+        $this->view->assign( "ip", $_SERVER[ "REMOTE_ADDR" ] );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
@@ -407,13 +357,14 @@ class Home extends Controller
 
     public function register()
     {
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
         $this->view->setTemplate( "register.tpl" );
         $this->view->render( "App/Views/Home.php" );
-    }
-
-    public function studentRegistration()
-    {
-        // TODO Student Registration
     }
 
     public function aboutUs()
@@ -444,7 +395,15 @@ class Home extends Controller
 
     public function thankYou()
     {
-        // TODO add facbook pixel
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        // Track leads
+        $facebookPixelBuilder->addEvent([
+            "Lead"
+        ]);
+
         $this->view->setTemplate( "thank-you.tpl" );
         $this->view->render( "App/Views/Home.php" );
     }

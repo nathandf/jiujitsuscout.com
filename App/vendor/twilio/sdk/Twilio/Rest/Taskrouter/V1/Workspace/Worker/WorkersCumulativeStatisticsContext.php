@@ -27,7 +27,7 @@ class WorkersCumulativeStatisticsContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('workspaceSid' => $workspaceSid);
+        $this->solution = array('workspaceSid' => $workspaceSid, );
 
         $this->uri = '/Workspaces/' . rawurlencode($workspaceSid) . '/Workers/CumulativeStatistics';
     }
@@ -38,6 +38,7 @@ class WorkersCumulativeStatisticsContext extends InstanceContext {
      * @param array|Options $options Optional Arguments
      * @return WorkersCumulativeStatisticsInstance Fetched
      *                                             WorkersCumulativeStatisticsInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch($options = array()) {
         $options = new Values($options);

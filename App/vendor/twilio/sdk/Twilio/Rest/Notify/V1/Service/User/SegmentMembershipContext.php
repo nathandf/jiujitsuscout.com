@@ -30,7 +30,11 @@ class SegmentMembershipContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'identity' => $identity, 'segment' => $segment);
+        $this->solution = array(
+            'serviceSid' => $serviceSid,
+            'identity' => $identity,
+            'segment' => $segment,
+        );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Users/' . rawurlencode($identity) . '/SegmentMemberships/' . rawurlencode($segment) . '';
     }
@@ -39,6 +43,7 @@ class SegmentMembershipContext extends InstanceContext {
      * Deletes the SegmentMembershipInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);
@@ -48,6 +53,7 @@ class SegmentMembershipContext extends InstanceContext {
      * Fetch a SegmentMembershipInstance
      * 
      * @return SegmentMembershipInstance Fetched SegmentMembershipInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());

@@ -36,7 +36,7 @@ class FaxContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('sid' => $sid);
+        $this->solution = array('sid' => $sid, );
 
         $this->uri = '/Faxes/' . rawurlencode($sid) . '';
     }
@@ -45,6 +45,7 @@ class FaxContext extends InstanceContext {
      * Fetch a FaxInstance
      * 
      * @return FaxInstance Fetched FaxInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -63,11 +64,12 @@ class FaxContext extends InstanceContext {
      * 
      * @param array|Options $options Optional Arguments
      * @return FaxInstance Updated FaxInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         $options = new Values($options);
 
-        $data = Values::of(array('Status' => $options['status']));
+        $data = Values::of(array('Status' => $options['status'], ));
 
         $payload = $this->version->update(
             'POST',
@@ -83,6 +85,7 @@ class FaxContext extends InstanceContext {
      * Deletes the FaxInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);

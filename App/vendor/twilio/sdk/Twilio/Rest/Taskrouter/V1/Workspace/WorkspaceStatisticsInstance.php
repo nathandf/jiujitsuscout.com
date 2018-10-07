@@ -43,7 +43,7 @@ class WorkspaceStatisticsInstance extends InstanceResource {
             'url' => Values::array_get($payload, 'url'),
         );
 
-        $this->solution = array('workspaceSid' => $workspaceSid);
+        $this->solution = array('workspaceSid' => $workspaceSid, );
     }
 
     /**
@@ -65,6 +65,7 @@ class WorkspaceStatisticsInstance extends InstanceResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return WorkspaceStatisticsInstance Fetched WorkspaceStatisticsInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch($options = array()) {
         return $this->proxy()->fetch($options);

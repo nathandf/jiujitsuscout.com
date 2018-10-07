@@ -44,7 +44,7 @@ class CountryInstance extends InstanceResource {
             'priceUnit' => Values::array_get($payload, 'price_unit'),
         );
 
-        $this->solution = array('isoCountry' => $isoCountry ?: $this->properties['isoCountry']);
+        $this->solution = array('isoCountry' => $isoCountry ?: $this->properties['isoCountry'], );
     }
 
     /**
@@ -66,6 +66,7 @@ class CountryInstance extends InstanceResource {
      * Fetch a CountryInstance
      * 
      * @return CountryInstance Fetched CountryInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();

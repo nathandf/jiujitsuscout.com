@@ -29,7 +29,7 @@ class AlphaSenderContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid);
+        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/AlphaSenders/' . rawurlencode($sid) . '';
     }
@@ -38,6 +38,7 @@ class AlphaSenderContext extends InstanceContext {
      * Fetch a AlphaSenderInstance
      * 
      * @return AlphaSenderInstance Fetched AlphaSenderInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -60,6 +61,7 @@ class AlphaSenderContext extends InstanceContext {
      * Deletes the AlphaSenderInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);

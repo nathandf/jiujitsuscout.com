@@ -15,22 +15,20 @@ use Twilio\Serialize;
 use Twilio\Values;
 use Twilio\Version;
 
-/**
- * PLEASE NOTE that this class contains beta products that are subject to change. Use them with caution.
- */
 class UsageRecordList extends ListResource {
     /**
      * Construct the UsageRecordList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $simSid The sim_sid
+     * @param string $simSid The unique id of the SIM resource that this Usage
+     *                       Record is for.
      * @return \Twilio\Rest\Wireless\V1\Sim\UsageRecordList 
      */
     public function __construct(Version $version, $simSid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('simSid' => $simSid);
+        $this->solution = array('simSid' => $simSid, );
 
         $this->uri = '/Sims/' . rawurlencode($simSid) . '/UsageRecords';
     }

@@ -28,7 +28,7 @@ class MonthlyList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid);
+        $this->solution = array('accountSid' => $accountSid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/Usage/Records/Monthly.json';
     }
@@ -96,6 +96,7 @@ class MonthlyList extends ListResource {
             'Category' => $options['category'],
             'StartDate' => Serialize::iso8601Date($options['startDate']),
             'EndDate' => Serialize::iso8601Date($options['endDate']),
+            'IncludeSubaccounts' => Serialize::booleanToString($options['includeSubaccounts']),
             'PageToken' => $pageToken,
             'Page' => $pageNumber,
             'PageSize' => $pageSize,

@@ -1,4 +1,4 @@
-# JiuJitsuScout.com | Business Automation platform for martial arts businesses
+# JiuJitsuScout.com | Lead Generation and Marketing automation platform for martial arts businesses
 
 ## Versioning Standards
 ---

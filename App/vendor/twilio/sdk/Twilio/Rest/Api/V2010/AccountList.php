@@ -35,11 +35,12 @@ class AccountList extends ListResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return AccountInstance Newly created AccountInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($options = array()) {
         $options = new Values($options);
 
-        $data = Values::of(array('FriendlyName' => $options['friendlyName']));
+        $data = Values::of(array('FriendlyName' => $options['friendlyName'], ));
 
         $payload = $this->version->create(
             'POST',

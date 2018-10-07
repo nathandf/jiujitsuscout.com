@@ -60,6 +60,15 @@
 						<label class="text-sml">Phone number</label>
 						<div class="clear"></div>
 						<input type="text" class="inp field-sml" name="phone_number" value="{$phone->national_number|default:null}">
+						<div class="clear push-t-med"></div>
+						<label class="text-sml">Role</label>
+						<div class="clear"></div>
+						<select class="inp field-sml cursor-pt" id="role" name="role"/>
+							<option value="{$user_to_edit->role}" selected="selected" hidden="hidden">{$user_to_edit->role|capitalize}</option>
+							{foreach from=$roles item=role}
+							<option value="{$role}">{$role|capitalize}</option>
+							{/foreach}
+						</select>
 						<div class="clear"></div>
 						<input type="submit" class="btn bnt-inline push-t-med" value="Update User">
 					</form>

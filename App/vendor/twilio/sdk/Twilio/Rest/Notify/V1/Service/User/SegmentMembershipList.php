@@ -29,7 +29,7 @@ class SegmentMembershipList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'identity' => $identity);
+        $this->solution = array('serviceSid' => $serviceSid, 'identity' => $identity, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Users/' . rawurlencode($identity) . '/SegmentMemberships';
     }
@@ -39,9 +39,10 @@ class SegmentMembershipList extends ListResource {
      * 
      * @param string $segment The segment
      * @return SegmentMembershipInstance Newly created SegmentMembershipInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($segment) {
-        $data = Values::of(array('Segment' => $segment));
+        $data = Values::of(array('Segment' => $segment, ));
 
         $payload = $this->version->create(
             'POST',

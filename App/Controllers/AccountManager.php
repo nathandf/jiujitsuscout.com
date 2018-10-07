@@ -262,6 +262,12 @@ class AccountManager extends Controller
 		$salesAgentMailer = $this->load( "sales-agent-mailer" );
 		$phoneRepo = $this->load( "phone-repository" );
 		$geocoder = $this->load( "geocoder" );
+		$accessControl = $this->load( "access-control" );
+
+		// Restrict access to admins
+		if ( !$accessControl->hasAccess( [ "administrator" ], $this->user->role ) ) {
+			$this->view->render403();
+		}
 
 		$country = $countryRepo->getByISO( $this->account->country );
 
@@ -456,7 +462,7 @@ class AccountManager extends Controller
 					<br><br>
 					Click the link below to reset your password.
 					<br>
-					<a href='https://jiujitsuscout.com/jjs-admin/password-reset-validation?reset_token={$nonceToken->value}'>localhost/develop.jiujitsuscout.com/account-manager/password-reset-validation?reset_token={$nonceToken->value}</a>
+					<a href='https://jiujitsuscout.com/jjs-admin/password-reset-validation?reset_token={$nonceToken->value}'>https://www.jiujitsuscout.com/account-manager/password-reset-validation?reset_token={$nonceToken->value}</a>
 					<br><br>
 					If you did not send a password reset request, ignore this message.
 				" );
@@ -569,7 +575,131 @@ class AccountManager extends Controller
 
 	public function upgradeAction()
 	{
-		$this->view->setTemplate( "account-manager/upgrade.tpl" );
+		$input = $this->load( "input" );
+		$inputValidator = $this->load( "input-validator" );
+		$businessRepo = $this->load( "business-repository" );
+		$customerRepo = $this->load( "customer-repository" );
+		$productRepo = $this->load( "product-repository" );
+		$orderRepo = $this->load( "order-repository" );
+		$orderProductRepo = $this->load( "order-product-repository" );
+		$accessControl = $this->load( "access-control" );
+
+		if ( !$accessControl->hasAccess( [ "administrator" ], $this->user->role ) ) {
+			$this->view->render403();
+		}
+
+		if ( $input->exists() && $inputValidator->validate(
+
+				$input,
+
+				[
+					"token" => [
+						"equals-hidden" => $this->session->getSession( "csrf-token" ),
+						"required" => true
+					],
+					"product_id" => [
+						"required" => true
+					],
+				],
+
+				"upgrade_account" /* error index */
+			) )
+		{
+			// Get all businesses associated with this account. The quantity
+			// of the orderProducts will reflect the number of businesses
+			// returned
+			$businesses = $businessRepo->getAllByAccountID( $this->account->id );
+
+			// Verify that all product ids returned are valid products
+			$product_ids = [];
+			$products = [];
+			$all_product_ids = [];
+			$all_products = $productRepo->getAll();
+			$product_id = $input->get( "product_id" );
+			$product_ids[] = $product_id;
+
+			// Quantity will be number of businesses
+			$quantity = count( $businesses );
+
+			// Add multiple instances of the same product to the
+			// product ids array.Create an array of the products and
+			// dynamically add a description with the related businesses
+			foreach ( $product_ids as $product_id ) {
+				$product = $productRepo->getByID( $product_id );
+				$original_description = $product->description;
+				// Reset product description
+				$product->description = null;
+
+				// Add business anes to product description
+				foreach ( $businesses as $business ) {
+					$product->description = $product->description . " | " . $business->business_name;
+				}
+
+				// Append orginal product description
+				$product->description = $product->description . $original_description;
+				$products[] = $product;
+			}
+
+			// Create a list of valid product ids
+			foreach ( $all_products as $_product ) {
+				$all_product_ids[] = $_product->id;
+			}
+
+			// Redirect back to the upgrade page if any submitted product ids
+			// are invalid. Someone's messin' about.
+			foreach ( $product_ids as $_product_id ) {
+				if ( !in_array( $_product_id, $all_product_ids ) ) {
+					$this->view->redirect( "account-manager/upgrade" );
+				}
+			}
+
+			// Get customer resource if one exists.
+			$customer = $customerRepo->getByAccountID( $this->account->id );
+
+			// If no valid customer is returned, create a new one
+			if ( is_null( $customer->id ) ) {
+				$customer = $customerRepo->create( $this->account->id );
+			}
+
+			// Check for an upaid order for this customer. If one exists, add
+			// the products to the order. If not, create an new order
+			$order = $orderRepo->getUnpaidOrderByCustomerID( $customer->id );
+			if ( is_null( $order->id ) ) {
+				$order = $orderRepo->create( $customer->id, $paid = 0 );
+			}
+
+			// Create orderProducts for this order
+			foreach ( $products as $product ) {
+				$orderProductRepo->create(
+					$order->id,
+					$product->id,
+					$quantity,
+					$description = $product->description
+				);
+			}
+
+			$this->view->redirect( "cart/" );
+		}
+
+		$this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+	    $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+		if ( in_array( $this->accountType->id, [ 1, 2, 3 ] ) ) {
+			$this->view->setTemplate( "account-manager/upgrade-business.tpl" );
+		} else {
+			$this->view->setTemplate( "account-manager/upgrade-enterprise.tpl" );
+		}
+
+		$this->view->render( "App/Views/AccountManager.php" );
+	}
+
+	public function addCreditAction()
+	{
+		$accessControl = $this->load( "access-control" );
+		if ( !$accessControl->hasAccess( [ "administrator", "manager" ], $this->user->role ) ) {
+			$this->view->render403();
+		}
+		$this->view->setTemplate( "account-manager/add-credit.tpl" );
 		$this->view->render( "App/Views/AccountManager.php" );
 	}
 

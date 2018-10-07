@@ -92,6 +92,16 @@ $config[ "paypal" ] = [
     ],
 ];
 
+$config[ "braintree" ] = [
+    "environment" => "sandbox",
+    "credentials" => [
+        "merchant_id" => "kkbwf4n39k6swp8g",
+        "public_key" => "3mjf86zmfkgyczzh",
+        "private_key" => "1426beef3362529e126a9dc67a76a8da",
+        "tokenization_key" => "sandbox_vn2nhygr_kkbwf4n39k6swp8g"
+    ]
+];
+
 // IPInfo API
 $config[ "ipinfo" ] = [
     "access_token" => "3bc3b475674965",
@@ -117,5 +127,6 @@ $config[ "facebook" ] = [
         ],
         "default_graph_version" => "v5.6"
     ],
-    "jjs_client_pixel_id" => "309803832759430"
+    "jjs_client_pixel_id" => "309803832759430",
+    "jjs_pixel_id" => '1842001532752101'
 ];

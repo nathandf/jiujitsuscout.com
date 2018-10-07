@@ -19,6 +19,7 @@ class Business extends Controller
         $accountUserRepo = $this->load( "account-user-repository" );
         $accountTypeRepo = $this->load( "account-type-repository" );
         $businessRepo = $this->load( "business-repository" );
+        $currencyRepo = $this->load( "currency-repository" );
         $userRepo = $this->load( "user-repository" );
         // If user not validated with session or cookie, send them to sign in
         if ( !$userAuth->userValidate() ) {
@@ -34,6 +35,8 @@ class Business extends Controller
         $this->account_type = $accountTypeRepo->getByID( $this->account->account_type_id );
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
+        // Get currency object for business
+        $this->business->currency = $currencyRepo->getByCode( $this->business->currency );
 
         // Set data for the view
         $this->view->assign( "account_type", $this->account_type );
@@ -48,10 +51,18 @@ class Business extends Controller
         $prospectRepo = $this->load( "prospect-repository" );
         $memberRepo = $this->load( "member-repository" );
         $appointmentRepo = $this->load( "appointment-repository" );
+        $clickRepo = $this->load( "click-repository" );
 
         // Get pending leads and leads on trial
-        $leads = $prospectRepo->getAllByStatusAndBusinessID( "pending", $this->business->id );
-        $trials = $prospectRepo->getAllByTypeAndBusinessID( "trial", $this->business->id );
+        $prospects = $prospectRepo->getAllByStatusAndBusinessID( "pending", $this->business->id );
+        $trials = [];
+        $trialsAll = $prospectRepo->getAllByTypeAndBusinessID( "trial", $this->business->id );
+
+        foreach ( $trialsAll as $trial ) {
+            if ( $trial->status != "lost" ) {
+                $trials[] = $trial;
+            }
+        }
 
         // Load members
         $members = $memberRepo->getAllByBusinessID( $this->business->id );
@@ -65,10 +76,13 @@ class Business extends Controller
             }
         }
 
-        $this->view->assign( "leads", $leads );
+        $listing_clicks = $clickRepo->getAllByBusinessIDAndProperty( $this->business->id, "listing" );
+
+        $this->view->assign( "leads", $prospects );
         $this->view->assign( "appointments", $appointments );
         $this->view->assign( "trials", $trials );
         $this->view->assign( "members", $members );
+        $this->view->assign( "lisiting_clicks", $listing_clicks );
 
         $this->view->setTemplate( "account-manager/business/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
@@ -134,6 +148,8 @@ class Business extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $prospectRepo = $this->load( "prospect-repository" );
+        $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
+        $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
         $memberRegistrar = $this->load( "member-registrar" );
         $phoneRepo = $this->load( "phone-repository" );
         $groupRepo = $this->load( "group-repository" );
@@ -141,27 +157,38 @@ class Business extends Controller
         $appointmentRepo = $this->load( "appointment-repository" );
 
         // Get all leads and trials
-        $leadsAll = $prospectRepo->getAllByStatusAndBusinessID( "pending", $this->business->id );
-        $lead_ids = [];
-        $leads = [];
+        $prospectsAll = $prospectRepo->getAllByStatusAndBusinessID( "pending", $this->business->id );
+        $prospect_ids = [];
+        $prospects = [];
         $trials = [];
 
         // Seperate leads by status (lead and trial), load phone resource, and set phone number
-        foreach ( $leadsAll as $lead ) {
+        foreach ( $prospectsAll as $prospect ) {
+            // Get appraisal for prospect if one exists
+            $appraisal = $prospectAppraisalRepo->getByProspectID( $prospect->id );
+            if ( !is_null( $appraisal->id ) ) {
+                $prospect->appraisal = $appraisal;
+            }
+
+            // Get purchase for prospect if one exists
+            $purchase = $prospectPurchaseRepo->getByProspectID( $prospect->id );
+            if ( !is_null( $purchase->id ) ) {
+                $prospect->purchase = $purchase;
+            }
 
             // Get phone resources for all leads and trials and assign them to their respective owners
-            $phone = $phoneRepo->getByID( $lead->phone_id );
-            $lead->setPhoneNumber( $phone->country_code, $phone->national_number );
+            $phone = $phoneRepo->getByID( $prospect->phone_id );
+            $prospect->setPhoneNumber( $phone->country_code, $phone->national_number );
 
             // Seperate into trials and leads
-            if ( $lead->type == "lead" ) {
-                $leads[] = $lead;
-            } elseif ( $lead->type == "trial" ) {
-                $trials[] = $lead;
+            if ( $prospect->type == "lead" ) {
+                $prospects[] = $prospect;
+            } elseif ( $prospect->type == "trial" ) {
+                $trials[] = $prospect;
             }
 
             // Create rray of all lead's ids
-            $lead_ids[] = $lead->id;
+            $prospect_ids[] = $prospect->id;
         }
 
         // Load all groups by business_id to an array
@@ -170,10 +197,10 @@ class Business extends Controller
         // Filtering leads
         if ( $input->exists( "get" ) && $input->issetField( "limit" ) ) {
             if ( is_numeric( $input->get( "limit" ) ) ) {
-                $leads = array_slice( $leads, 0, $input->get( "limit" ) );
+                $prospects = array_slice( $prospects, 0, $input->get( "limit" ) );
             }
         } else {
-            $leads = array_slice( $leads, 0, 25 );
+            $prospects = array_slice( $prospects, 0, 25 );
         }
         // Bulk action updating for leads
         if ( $input->exists() && $inputValidator->validate( $input,
@@ -197,15 +224,15 @@ class Business extends Controller
         {
             if ( $input->issetField( "lead_ids" ) ) {
                 if ( is_array( $input->get( "lead_ids" ) ) ) {
-                    $lead_count = count( $input->get( "lead_ids" ) );
+                    $prospect_count = count( $input->get( "lead_ids" ) );
                     $iteration = 0;
-                    foreach ( $input->get( "lead_ids" ) as $lead_id ) {
+                    foreach ( $input->get( "lead_ids" ) as $prospect_id ) {
                         // Check the id of the lead being updated/deleted. Skip if not owned by this business
-                        if ( in_array( $lead_id, $lead_ids ) ) {
+                        if ( in_array( $prospect_id, $prospect_ids ) ) {
                             $iteration++;
                             // Convert lead_id to integer. Will come from POST array as string
-                            $lead_id = intval( $lead_id );
-                            $prospect = $prospectRepo->getByID( $lead_id );
+                            $prospect_id = intval( $prospect_id );
+                            $prospect = $prospectRepo->getByID( $prospect_id );
                             switch ( $input->get( "action" ) ) {
                                 case "member":
                                     // build empty Member object
@@ -216,39 +243,39 @@ class Business extends Controller
                                     $member = $memberRegistrar->registerProspect( $member, $prospect );
                                     $prospectRepo->updateTypeByID( "member", $prospect->id );
                                     $prospectRepo->updateStatusByID( "member", $prospect->id );
-                                    if ( $iteration == $lead_count ) {
-                                        $this->session->addFlashMessage( "Leads converted to members ($lead_count)" );
+                                    if ( $iteration == $prospect_count ) {
+                                        $this->session->addFlashMessage( "Leads converted to members ($prospect_count)" );
                                     }
                                     break;
                                 case "trash":
                                     // Change the status to trash.
-                                    $prospectRepo->updateStatusByID( "trash", $lead_id );
-                                    $prospectRepo->updateTypeByID( "trash", $lead_id );
+                                    $prospectRepo->updateStatusByID( "trash", $prospect_id );
+                                    $prospectRepo->updateTypeByID( "trash", $prospect_id );
                                     // Remove group ids
-                                    $prospectRepo->updateGroupIDsByID( "", $lead_id );
+                                    $prospectRepo->updateGroupIDsByID( "", $prospect_id );
                                     // Remove appointments assosciated with lead
-                                    $appointmentRepo->removeByProspectID( $lead_id );
-                                    if ( $iteration == $lead_count ) {
-                                        $this->session->addFlashMessage( "Leads trashed ($lead_count)" );
+                                    $appointmentRepo->removeByProspectID( $prospect_id );
+                                    if ( $iteration == $prospect_count ) {
+                                        $this->session->addFlashMessage( "Leads trashed ($prospect_count)" );
                                     }
                                     break;
                                 case "contacted":
                                     // Break if prospect is already contacted
                                     if ( $prospect->times_contacted < 1 ) {
-                                        $prospectRepo->updateTimesContactedByID( 1, $lead_id );
+                                        $prospectRepo->updateTimesContactedByID( 1, $prospect_id );
                                     }
                                     // Set flash message
-                                    if ( $iteration == $lead_count ) {
-                                        $this->session->addFlashMessage( "Leads marked as contacted ($lead_count)" );
+                                    if ( $iteration == $prospect_count ) {
+                                        $this->session->addFlashMessage( "Leads marked as contacted ($prospect_count)" );
                                     }
                                     break;
                                 case "uncontacted":
                                     // Change status back to pending and remove all times contacted
-                                    $prospectRepo->updateStatusByID( "pending", $lead_id );
-                                    $prospectRepo->updateTimesContactedByID( 0, $lead_id );
+                                    $prospectRepo->updateStatusByID( "pending", $prospect_id );
+                                    $prospectRepo->updateTimesContactedByID( 0, $prospect_id );
                                     // Set flash message
-                                    if ( $iteration == $lead_count ) {
-                                        $this->session->addFlashMessage( "Leads marked as uncontacted ($lead_count)" );
+                                    if ( $iteration == $prospect_count ) {
+                                        $this->session->addFlashMessage( "Leads marked as uncontacted ($prospect_count)" );
                                     }
                                     break;
                                 case ( preg_match( "/group-[ 0-9 ]+/", $input->get( "action" ) ) ? true : false ):
@@ -262,8 +289,8 @@ class Business extends Controller
                                     // Get group
                                     $group = $groupRepo->getByID( $group_id );
                                     // Set flash message
-                                    if ( $iteration == $lead_count ) {
-                                        $this->session->addFlashMessage( "Leads added to '{$group->name}' group ($lead_count)" );
+                                    if ( $iteration == $prospect_count ) {
+                                        $this->session->addFlashMessage( "Leads added to '{$group->name}' group ($prospect_count)" );
                                     }
                                     break;
                             }
@@ -282,7 +309,7 @@ class Business extends Controller
         $this->view->setFlashMessages( $this->session->getFlashMessages( "flash_messages" ) );
 
         $this->view->assign( "groups", $groups );
-        $this->view->assign( "leads", $leadsAll );
+        $this->view->assign( "prospects", $prospectsAll );
 
         $this->view->setTemplate( "account-manager/business/leads.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );

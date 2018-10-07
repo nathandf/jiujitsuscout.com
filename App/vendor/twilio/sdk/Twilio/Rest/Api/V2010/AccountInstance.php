@@ -78,7 +78,7 @@ class AccountInstance extends InstanceResource {
             'uri' => Values::array_get($payload, 'uri'),
         );
 
-        $this->solution = array('sid' => $sid ?: $this->properties['sid']);
+        $this->solution = array('sid' => $sid ?: $this->properties['sid'], );
     }
 
     /**
@@ -100,6 +100,7 @@ class AccountInstance extends InstanceResource {
      * Fetch a AccountInstance
      * 
      * @return AccountInstance Fetched AccountInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();
@@ -110,6 +111,7 @@ class AccountInstance extends InstanceResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return AccountInstance Updated AccountInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         return $this->proxy()->update($options);

@@ -1,99 +1,149 @@
 {extends file="layouts/business-profile.tpl"}
 
 {block name="business-profile-head"}
+	<title>{$business->business_name|capitalize} - Martial arts {if isset($business->city) && isset($business->region)}in {$business->city}, {$business->region}{/if}</title>
+	<link rel="stylesheet" href="{HOME}public/css/questionnaire.css">
+	<script src="{$HOME}{$JS_SCRIPTS}QuestionnaireDispatcher.js"></script>
+	<script src="{$HOME}{$JS_SCRIPTS}business-profile.js"></script>
 	{$facebook_pixel|default:""}
 {/block}
 
 {block name="business-profile-body"}
-	<div class="inner-pad-med" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-		<div>
-			<p>{$business->business_name}'s Rating: <span itemprop="ratingValue">{$business_rating}</span>/ 5</p>
-			<p>{$html_stars}</p>
-		</div>
-		<div>
-			<p>Reviews: <span itemprop="reviewCount">{$total_ratings}</span></p>
-		</div>
-		<div class="clear"></div>
-	</div>
-	<div class="inner-pad-med" style="border-top: 1px solid #CCCCCC;">
-		<a class="btn btn-inline push-r-med floatright " href="{$HOME}martial-arts-gyms/{$business->site_slug}/free-class" style="margin-bottom: 0;">Free Class</a>
-		<table cellspacing="0" class="">
-			<tr>
-				<td style="padding: 0px;"><p class="text-med-heavy">Phone: </p></td>
-				<td style="padding: 0px;"><p class="text-sml push-l">+{$business->phone->country_code} {$business->phone->national_number}</p></td>
-			</tr>
-			<tr>
-				<td style="padding: 0px;"><p class="text-med-heavy">Address: </p></td>
-				<td style="padding: 0px;"><p class="text-sml push-l">{$business->address_1}, {$business->city}, {$business->region} {$business->postal_code}</p></td>
-			</tr>
-		</table>
-		<div class="clear"></div>
-	</div>
-	<div class="clear"></div>
-	{include file="includes/widgets/js-google-map.tpl"}
-	<!-- <div class="content-container-16-9 bg-black">
-		<img class="inner-content-container-fit" src="{$HOME}public/img/finisher.jpg">
-	</div> -->
-	<div class="con-cnt-xxlrg">
-		<p class="title-wrapper text-xlrg-heavy push-t-med">Request Information</p>
-		<div class="con-outer-fit inner-pad-med bg-deep-blue">
-			{if !empty($error_messages.info_request)}
-				{foreach from=$error_messages.info_request item=message}
-					<div class="con-message-failure mat-hov cursor-pt --c-hide">
-						<p class="user-message-body">{$message}</p>
-					</div>
-				{/foreach}
-			{/if}
-			<div class="con-cnt-fit">
-				<form id="info-request" method="post" action="{$HOME}martial-arts-gyms/{$business->site_slug}/#info-request-header">
-					<input type="hidden" name="token" value="{$csrf_token}">
-					<input type="hidden" name="info_request" value="{$csrf_token}">
-					<input class="inp field-med push-t" name="name" value="{$inputs.info_request.name|default:null}" type="text" placeholder="Name"/>
-					<input class="inp field-med push-t" name="email" value="{$inputs.info_request.email|default:null}" type="text" placeholder="Email"/>
-					<input class="inp field-med push-t" name="number" value="{$inputs.info_request.number|default:null}" type="text" placeholder="Phone Number"/>
-					<div class="clear push-t-med"></div>
-					<select class="inp field-sml cursor-pt" name="info" id="info" form="info-request">
-						<option value="Promotional Offers, Schedule, and Pricing Information" selected="selected" hidden="hidden">More Info</option>
-						<option value="Schedule">Schedule</option>
-						<option value="Promotional Offers">Promotional Offers</option>
-						<option value="Pricing">Pricing Info</option>
-						<option value="Promotional Offers, Schedule, and Pricing Information">All of the above</option>
-					</select>
-					<div class="clear push-t-med"></div>
-					<input class="btn button-med btn-inline" type="submit" value="Request More Info"/>
-				</form>
-			</div>
-		</div>
-
-		<div class="clear"></div>
-	</div>
-	<div class="clear"></div>
-	<div id="review" class="inner-pad-med">
-		<h2 class="push-b-med">Leave a Review and Rate your experience!</h2>
-		{if isset($error_messages.review)}
-			{foreach from=$error_messages.review item=message}
+	{include file="includes/modals/register.tpl"}
+	{include file="includes/modals/business-images-lightbox.tpl"}
+	{include file="includes/modals/reviews-lightbox.tpl"}
+	<div class="col-100 inner-pad-med">
+		{if !empty($error_messages.capture)}
+			{foreach from=$error_messages.capture item=message}
 				<div class="con-message-failure mat-hov cursor-pt --c-hide">
 					<p class="user-message-body">{$message}</p>
 				</div>
 			{/foreach}
 		{/if}
-		<form method="post" id="comment-form" action="{$HOME}martial-arts-gyms/{$business->site_slug}/#review-box">
-			<input type="hidden" name="token" value="{$csrf_token}">
-			<input type="hidden" name="rate_review" value="{$csrf_token}">
-			<select form="comment-form" name="rating" class="inp field-sml cursor-pt">
-				<option value="5"><p>Great! - 5</p></option>
-				<option value="4"><p>Good - 4</p></option>
-				<option value="3"><p>Okay - 3</p></option>
-				<option value="2"><p>Not so good - 2</p></option>
-				<option value="1"><p>Not Good - 1</p></option>
-			</select>
-			<div class="clear push-t-med"></div>
-			<input type="text" name="name" class="inp field-sml push-t" value="{$inputs.rate_review.name|default:null}" placeholder="Name">
-			<input type="email" name="email" class="inp field-sml push-t" value="{$inputs.rate_review.email|default:null}" placeholder="Email">
-			<div class="clear push-t-med"></div>
-			<textarea style="padding: 10px; box-sizing: border-box; text-indent: 0px;" class="inp field-med-plus-plus-tall" name="review" placeholder="How was your experience with {$business->business_name}?">{$inputs.rate_review.review|default:null}</textarea>
+		<div class="business-logo-container floatleft push-r-med">
+			<img itemprop="image" alt="{$business->business_name}'s logo - Martial Arts classes in {$business->city}, {$business->region}" src="{$HOME}public/img/uploads/{$business->logo_filename}" class="business-logo"/>
+		</div>
+		<div class="floatleft" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+			<div class="testimonials-gym-rating">
+				<p style="color: #333;">{$business->business_name}</p>
+				<p>{$html_stars}</p>
+				<p class="testimonials-gym-rating-sub-headline"><span itemprop="ratingValue">{$business_rating}</span> stars based on <span itemprop="reviewCount">{$total_ratings}</span> reviews</p>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="col-100 inner-pad-med">
+		{if $business->message != null}
+		<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
+			<button class="btn btn-inline floatright bg-deep-blue text-med-heavy register-button" style="margin-bottom: 0;">Free Class</button>
+			<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
 			<div class="clear"></div>
-			<input type="submit" class="btn btn-inline push-t-med" name="visitor_review" value="Post Review"/>
-		</form>
+		</div>
+		<div class="">
+			<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">About this gym:</p>
+			<p class="text-med-heavy" style="color: #333;">{$business->message}</p>
+		</div>
+		{else}
+		<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
+			<button class="btn btn-inline floatright bg-deep-blue text-med-heavy register-button" style="margin-bottom: 0;">Free Class</button>
+			<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
+			<div class="clear"></div>
+		</div>
+		{/if}
+		{if $business->disciplines|@count > 0 }
+			<div class="push-b-med">
+				<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Classes:</p>
+				{foreach from=$business->disciplines item=discipline}
+					<p class="push-r cursor-pt push-t" style="display: inline-block; padding: 2px 5px 2px 5px; border: 1px solid #666; border-radius: 4px; color: #666;">{$discipline->nice_name}</p>
+				{/foreach}
+			</div>
+		{/if}
+		{if $business->programs|@count > 0}
+			<div class="push-b-med">
+				<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Programs:</p>
+				{foreach from=$business->programs item=program}
+					<p class="push-r cursor-pt push-t" style="display: inline-block; padding: 2px 5px 2px 5px; border: 1px solid #666; border-radius: 4px; color: #666;">{$program|capitalize}</p>
+				{/foreach}
+			</div>
+		{/if}
+		{if $images|@count > 0}
+			<div class="push-b-med">
+				<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Photos:</p>
+				{foreach from=$images item=image name=image_loop}
+					{if $smarty.foreach.image_loop.iteration <= 4}
+					<img class="cursor-pt mat-hov business-images-lightbox-link" style="max-height: 100px; border: 1px solid #CCC; border-radius: 3px;" src="{$HOME}public/img/uploads/{$image->filename}" alt="{$image->alt|default:null}">
+					{elseif $smarty.foreach.image_loop.iteration == 5}
+					<div class="clear"></div>
+					<a class="link text-med tc-deep-blue business-images-lightbox-link">— view more</a>
+					{/if}
+				{/foreach}
+			</div>
+		{/if}
+		{if $business->reviews|@count > 0}
+			<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Reviews:</p>
+			<div class="testimonials">
+				<div id="comments" >
+					{foreach from=$business->reviews item=review name=review_loop}
+						{if $smarty.foreach.review_loop.iteration <= 3}
+							<div class="testimonial-seperator"></div>
+							<span itemprop="review" itemscope itemtype="http://schema.org/Review">
+								<meta itemprop="itemReviewed" content="{$business->business_name}">
+								<p class="com">
+									<span class="reviewer-icon">{$review->name|substr:0:1|upper}</span><div class="reviewer-info-container"><span itemprop="author"><span class="reviewer-name">{$review->name}</span></span>
+									<br>
+									<span itemprop="reviewRating">{$review->html_stars}</span>
+									<br>
+									<span class="review-date">Reviewed on:
+										<span itemprop="datePublished">{$review->datetime|date_format:"%A, %b %e %Y %l:%M%p"}</span></div>
+										<div class="clear"></div>
+									</span>
+								</p>
+								<div class="testimonial" style="color: #000000;">
+									<p style="margin: 5px;">
+										<span itemprop="reviewBody" class="review-body">{$review->review_body}</span>
+									</p>
+								</div>
+							</span>
+						{elseif $smarty.foreach.review_loop.iteration == 4}
+
+							<a class="link push-b tc-deep-blue reviews-lightbox-link">— see more reviews</a>
+							<div class="clear push-t"></div>
+						{/if}
+					{/foreach}
+				</div><!-- end comments -->
+			</div><!-- end testimonials -->
+			<div class="clear"></div>
+			<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
+				<button class="btn btn-inline floatright bg-deep-blue text-med-heavy register-button" style="margin-bottom: 0;">Free Class</button>
+				<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		{/if}
+		{include file="includes/widgets/js-google-map.tpl"}
+		{if $faqAnswers|@count > 0}
+		<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Frequently Asked Questions:</p>
+		<table class="push-t-med">
+			{foreach from=$faqAnswers item=faqAnswer}
+			<tr class="push-t-med">
+				<td style="vertical-align: top;">
+					<p class="text-lrg-heavy push-r">Q:</p>
+				</td>
+				<td>
+					<p class="text-lrg-heavy">{$faqAnswer->faq->text}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: top;">
+					<p class="text-lrg push-r">A:</p>
+				</td>
+				<td>
+					<p class="text-lrg">{$faqAnswer->text}</p>
+				</td>
+			<tr>
+			{/foreach}
+		</table>
+		{/if}
+		<div class="clear"></div>
 	</div>
 {/block}

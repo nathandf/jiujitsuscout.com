@@ -40,7 +40,7 @@ class SyncMapContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid);
+        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Maps/' . rawurlencode($sid) . '';
     }
@@ -49,6 +49,7 @@ class SyncMapContext extends InstanceContext {
      * Fetch a SyncMapInstance
      * 
      * @return SyncMapInstance Fetched SyncMapInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -71,6 +72,7 @@ class SyncMapContext extends InstanceContext {
      * Deletes the SyncMapInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);

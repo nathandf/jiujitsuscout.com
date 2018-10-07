@@ -18,7 +18,8 @@ class IpAccessControlListMappingList extends ListResource {
      * Construct the IpAccessControlListMappingList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $accountSid The account_sid
+     * @param string $accountSid The unique id of the Account that responsible for
+     *                           this resource.
      * @param string $domainSid A string that uniquely identifies the SIP Domain
      * @return \Twilio\Rest\Api\V2010\Account\Sip\Domain\IpAccessControlListMappingList 
      */
@@ -26,7 +27,7 @@ class IpAccessControlListMappingList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid, 'domainSid' => $domainSid);
+        $this->solution = array('accountSid' => $accountSid, 'domainSid' => $domainSid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/SIP/Domains/' . rawurlencode($domainSid) . '/IpAccessControlListMappings.json';
     }
@@ -37,9 +38,10 @@ class IpAccessControlListMappingList extends ListResource {
      * @param string $ipAccessControlListSid The ip_access_control_list_sid
      * @return IpAccessControlListMappingInstance Newly created
      *                                            IpAccessControlListMappingInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($ipAccessControlListSid) {
-        $data = Values::of(array('IpAccessControlListSid' => $ipAccessControlListSid));
+        $data = Values::of(array('IpAccessControlListSid' => $ipAccessControlListSid, ));
 
         $payload = $this->version->create(
             'POST',

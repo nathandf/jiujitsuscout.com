@@ -1,4 +1,4 @@
-<div class="bg-white" style="border-bottom: 1px solid #333; padding: 10px; box-sizing: border-box;">
+<div class="bg-white profile-title-bar">
     <div class="push-r-med floatleft">
         <img itemprop="image" alt="{$business->business_name}'s logo - Martial Arts classes in {$business->city}, {$business->region}" src="{$HOME}public/img/uploads/{$business->logo_filename}" class="img-xsml"/>
     </div>

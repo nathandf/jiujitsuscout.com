@@ -17,14 +17,15 @@ class WorkersStatisticsList extends ListResource {
      * Construct the WorkersStatisticsList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $workspaceSid The workspace_sid
+     * @param string $workspaceSid The ID of the Workflow this worker is associated
+     *                             with
      * @return \Twilio\Rest\Taskrouter\V1\Workspace\Worker\WorkersStatisticsList 
      */
     public function __construct(Version $version, $workspaceSid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('workspaceSid' => $workspaceSid);
+        $this->solution = array('workspaceSid' => $workspaceSid, );
     }
 
     /**

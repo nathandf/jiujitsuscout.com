@@ -39,11 +39,12 @@ class ServiceList extends ListResource {
      * @param string $name Friendly name of the service
      * @param array|Options $options Optional Arguments
      * @return ServiceInstance Newly created ServiceInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($name, $options = array()) {
         $options = new Values($options);
 
-        $data = Values::of(array('Name' => $name, 'CodeLength' => $options['codeLength']));
+        $data = Values::of(array('Name' => $name, 'CodeLength' => $options['codeLength'], ));
 
         $payload = $this->version->create(
             'POST',

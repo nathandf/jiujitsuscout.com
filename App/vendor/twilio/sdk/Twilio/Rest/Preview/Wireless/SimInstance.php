@@ -82,7 +82,7 @@ class SimInstance extends InstanceResource {
             'links' => Values::array_get($payload, 'links'),
         );
 
-        $this->solution = array('sid' => $sid ?: $this->properties['sid']);
+        $this->solution = array('sid' => $sid ?: $this->properties['sid'], );
     }
 
     /**
@@ -103,6 +103,7 @@ class SimInstance extends InstanceResource {
      * Fetch a SimInstance
      * 
      * @return SimInstance Fetched SimInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();
@@ -113,6 +114,7 @@ class SimInstance extends InstanceResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return SimInstance Updated SimInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         return $this->proxy()->update($options);

@@ -29,7 +29,7 @@ class PhoneNumberContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid);
+        $this->solution = array('serviceSid' => $serviceSid, 'sid' => $sid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/PhoneNumbers/' . rawurlencode($sid) . '';
     }
@@ -38,6 +38,7 @@ class PhoneNumberContext extends InstanceContext {
      * Deletes the PhoneNumberInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);
@@ -47,6 +48,7 @@ class PhoneNumberContext extends InstanceContext {
      * Fetch a PhoneNumberInstance
      * 
      * @return PhoneNumberInstance Fetched PhoneNumberInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());

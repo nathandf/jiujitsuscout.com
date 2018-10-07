@@ -22,14 +22,15 @@ class SyncMapList extends ListResource {
      * Construct the SyncMapList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $serviceSid The service_sid
+     * @param string $serviceSid The unique SID identifier of the Service Instance
+     *                           that hosts this Map object.
      * @return \Twilio\Rest\Sync\V1\Service\SyncMapList 
      */
     public function __construct(Version $version, $serviceSid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid);
+        $this->solution = array('serviceSid' => $serviceSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/Maps';
     }
@@ -39,11 +40,12 @@ class SyncMapList extends ListResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return SyncMapInstance Newly created SyncMapInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($options = array()) {
         $options = new Values($options);
 
-        $data = Values::of(array('UniqueName' => $options['uniqueName'], 'Ttl' => $options['ttl']));
+        $data = Values::of(array('UniqueName' => $options['uniqueName'], 'Ttl' => $options['ttl'], ));
 
         $payload = $this->version->create(
             'POST',

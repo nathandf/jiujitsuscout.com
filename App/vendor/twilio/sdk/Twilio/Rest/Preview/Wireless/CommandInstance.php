@@ -57,7 +57,7 @@ class CommandInstance extends InstanceResource {
             'url' => Values::array_get($payload, 'url'),
         );
 
-        $this->solution = array('sid' => $sid ?: $this->properties['sid']);
+        $this->solution = array('sid' => $sid ?: $this->properties['sid'], );
     }
 
     /**
@@ -79,6 +79,7 @@ class CommandInstance extends InstanceResource {
      * Fetch a CommandInstance
      * 
      * @return CommandInstance Fetched CommandInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         return $this->proxy()->fetch();

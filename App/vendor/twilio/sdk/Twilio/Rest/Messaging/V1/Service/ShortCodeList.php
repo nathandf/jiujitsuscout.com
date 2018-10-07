@@ -21,14 +21,14 @@ class ShortCodeList extends ListResource {
      * Construct the ShortCodeList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $serviceSid The service_sid
+     * @param string $serviceSid The 34 character unique sid of the Service.
      * @return \Twilio\Rest\Messaging\V1\Service\ShortCodeList 
      */
     public function __construct(Version $version, $serviceSid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('serviceSid' => $serviceSid);
+        $this->solution = array('serviceSid' => $serviceSid, );
 
         $this->uri = '/Services/' . rawurlencode($serviceSid) . '/ShortCodes';
     }
@@ -36,11 +36,13 @@ class ShortCodeList extends ListResource {
     /**
      * Create a new ShortCodeInstance
      * 
-     * @param string $shortCodeSid The short_code_sid
+     * @param string $shortCodeSid ShortCodeSid for the Shortcode being added to
+     *                             the Service.
      * @return ShortCodeInstance Newly created ShortCodeInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($shortCodeSid) {
-        $data = Values::of(array('ShortCodeSid' => $shortCodeSid));
+        $data = Values::of(array('ShortCodeSid' => $shortCodeSid, ));
 
         $payload = $this->version->create(
             'POST',

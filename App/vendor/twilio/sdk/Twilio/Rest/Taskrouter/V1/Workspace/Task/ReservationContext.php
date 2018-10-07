@@ -29,7 +29,7 @@ class ReservationContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('workspaceSid' => $workspaceSid, 'taskSid' => $taskSid, 'sid' => $sid);
+        $this->solution = array('workspaceSid' => $workspaceSid, 'taskSid' => $taskSid, 'sid' => $sid, );
 
         $this->uri = '/Workspaces/' . rawurlencode($workspaceSid) . '/Tasks/' . rawurlencode($taskSid) . '/Reservations/' . rawurlencode($sid) . '';
     }
@@ -38,6 +38,7 @@ class ReservationContext extends InstanceContext {
      * Fetch a ReservationInstance
      * 
      * @return ReservationInstance Fetched ReservationInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -62,6 +63,7 @@ class ReservationContext extends InstanceContext {
      * 
      * @param array|Options $options Optional Arguments
      * @return ReservationInstance Updated ReservationInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         $options = new Values($options);

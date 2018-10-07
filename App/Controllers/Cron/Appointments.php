@@ -9,12 +9,12 @@ class Appointments extends Controller
 	public function before()
 	{
 		$this->logger = $this->load( "logger" );
-		$this->logger->info( "Cron Start: Appointments -----------------------" );
+		$this->logger->info( "Cron Start: Appointments" );
 	}
 
 	public function after()
 	{
-		$this->logger->info( "Cron End: Appointments -------------------------" );
+		$this->logger->info( "Cron End: Appointment" );
 		die();
 		exit();
 	}
@@ -30,6 +30,7 @@ class Appointments extends Controller
 		$businessRepo = $this->load( "business-repository" );
 		$phoneRepo = $this->load( "phone-repository" );
 		$noteRegistrar = $this->load( "note-registrar" );
+		$appointmentHashRepo = $this->load( "appointment-hash-repository" );
 
 		// Set empty appointments array
 		$appointments = [];
@@ -98,10 +99,14 @@ class Appointments extends Controller
 						// Send email if remind prospect is > 0 (true)
 						if ( $appointment->remind_prospect > 0 ) {
 
+							// This hash will be added to the url in the query sting in the
+							// appointment reminder email
+							$appointmentHash = $appointmentHashRepo->create( $appointment->id );
+
 							// Set email details
 							$mailer->setRecipientName( $prospect->first_name );
 				            $mailer->setRecipientEmailAddress( $prospect->email );
-				            $mailer->setSenderName( $business->business_name );
+				            $mailer->setSenderName( html_entity_decode( $business->business_name, ENT_COMPAT, "UTF-8" ) );
 				            $mailer->setSenderEmailAddress( $business->email );
 				            $mailer->setContentType( "text/html" );
 				            $mailer->setEmailSubject( "Confirm Your Appointment" );
@@ -129,10 +134,10 @@ class Appointments extends Controller
 								</table>
 								<table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-top: 20px;">
 									<tr>
-										<td><a href="https://www.jiujitsuscout.com/webhooks/email/appointment-confirmation/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">Confirm Appointment</a></td>
+										<td><a href="https://www.jiujitsuscout.com/email/appointment/confirm?apthash=' . $appointmentHash->hash . '" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">Confirm Appointment</a></td>
 									</tr>
 									<tr>
-										<td><a href="https://www.jiujitsuscout.com/webhooks/email/appointment-confirmation/" style="background: #FA8072; margin-top: 8px; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">Reschedule Appointment</a></td>
+										<td><a href="https://www.jiujitsuscout.com/email/appointment/reschedule?apthash=' . $appointmentHash->hash . '" style="background: #FA8072; margin-top: 8px; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">Request Appointment Reschedule</a></td>
 									</tr>
 								</table>
 								<table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-top: 50px;">
@@ -142,7 +147,7 @@ class Appointments extends Controller
 								</table>
 								<table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-top: 50px;">
 									<tr>
-										<td style="width: 300px; text-align: center;"><span style="font-size: 12px; font-weight: 600; color: #BBBBBB;">One click <a href="https://www.jiujitsuscout.com/webhooks/unsubscribe/" style="text-decoration: underline; color: #C0C0C0;">unsubscribe</a></span></td>
+										<td style="width: 300px; text-align: center;"><span style="font-size: 12px; font-weight: 600; color: #BBBBBB;">One click <a href="https://www.jiujitsuscout.com/email/unsubscribe/" style="text-decoration: underline; color: #C0C0C0;">unsubscribe</a></span></td>
 									</tr>
 								</table>
 							</div>';
@@ -165,7 +170,7 @@ class Appointments extends Controller
 							$mailer->setRecipientName( $user->first_name );
 				            $mailer->setRecipientEmailAddress( $user->email );
 				            $mailer->setSenderName( "JiuJitsuScout" );
-				            $mailer->setSenderEmailAddress( "notifications@jiujitsuscout.com" );
+				            $mailer->setSenderEmailAddress( "noreply@jiujitsuscout.com" );
 				            $mailer->setContentType( "text/html" );
 				            $mailer->setEmailSubject( "Appointment Reminder for {$prospect->first_name}" );
 							$userEmailBody = '

@@ -35,7 +35,7 @@ class FlowContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('sid' => $sid);
+        $this->solution = array('sid' => $sid, );
 
         $this->uri = '/Flows/' . rawurlencode($sid) . '';
     }
@@ -44,6 +44,7 @@ class FlowContext extends InstanceContext {
      * Fetch a FlowInstance
      * 
      * @return FlowInstance Fetched FlowInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -61,6 +62,7 @@ class FlowContext extends InstanceContext {
      * Deletes the FlowInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);

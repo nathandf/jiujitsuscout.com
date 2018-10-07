@@ -28,7 +28,7 @@ class ApplicationContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid, 'sid' => $sid);
+        $this->solution = array('accountSid' => $accountSid, 'sid' => $sid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/Applications/' . rawurlencode($sid) . '.json';
     }
@@ -37,6 +37,7 @@ class ApplicationContext extends InstanceContext {
      * Deletes the ApplicationInstance
      * 
      * @return boolean True if delete succeeds, false otherwise
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function delete() {
         return $this->version->delete('delete', $this->uri);
@@ -46,6 +47,7 @@ class ApplicationContext extends InstanceContext {
      * Fetch a ApplicationInstance
      * 
      * @return ApplicationInstance Fetched ApplicationInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -69,6 +71,7 @@ class ApplicationContext extends InstanceContext {
      * 
      * @param array|Options $options Optional Arguments
      * @return ApplicationInstance Updated ApplicationInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($options = array()) {
         $options = new Values($options);

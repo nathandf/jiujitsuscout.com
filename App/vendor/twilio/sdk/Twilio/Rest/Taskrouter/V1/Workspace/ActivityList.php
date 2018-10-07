@@ -20,14 +20,15 @@ class ActivityList extends ListResource {
      * Construct the ActivityList
      * 
      * @param Version $version Version that contains the resource
-     * @param string $workspaceSid The workspace_sid
+     * @param string $workspaceSid The unique ID of the Workspace that this
+     *                             Activity belongs to.
      * @return \Twilio\Rest\Taskrouter\V1\Workspace\ActivityList 
      */
     public function __construct(Version $version, $workspaceSid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('workspaceSid' => $workspaceSid);
+        $this->solution = array('workspaceSid' => $workspaceSid, );
 
         $this->uri = '/Workspaces/' . rawurlencode($workspaceSid) . '/Activities';
     }
@@ -127,9 +128,11 @@ class ActivityList extends ListResource {
     /**
      * Create a new ActivityInstance
      * 
-     * @param string $friendlyName The friendly_name
+     * @param string $friendlyName A human-readable name for the Activity, such as
+     *                             'On Call', 'Break', 'Email', etc.
      * @param array|Options $options Optional Arguments
      * @return ActivityInstance Newly created ActivityInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($friendlyName, $options = array()) {
         $options = new Values($options);

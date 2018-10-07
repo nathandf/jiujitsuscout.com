@@ -1,9 +1,5 @@
 {extends file="layouts/business-profile.tpl"}
 
-{block name="business-profile-head"}
-	{$facebook_pixel|default:""}
-{/block}
-
 {block name="business-profile-body"}
 	<h2 class="page-title">Thank You</h2>
 	<div class="thank-you-container">

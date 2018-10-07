@@ -27,7 +27,7 @@ class TaskQueueRealTimeStatisticsContext extends InstanceContext {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('workspaceSid' => $workspaceSid, 'taskQueueSid' => $taskQueueSid);
+        $this->solution = array('workspaceSid' => $workspaceSid, 'taskQueueSid' => $taskQueueSid, );
 
         $this->uri = '/Workspaces/' . rawurlencode($workspaceSid) . '/TaskQueues/' . rawurlencode($taskQueueSid) . '/RealTimeStatistics';
     }
@@ -38,11 +38,12 @@ class TaskQueueRealTimeStatisticsContext extends InstanceContext {
      * @param array|Options $options Optional Arguments
      * @return TaskQueueRealTimeStatisticsInstance Fetched
      *                                             TaskQueueRealTimeStatisticsInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch($options = array()) {
         $options = new Values($options);
 
-        $params = Values::of(array('TaskChannel' => $options['taskChannel']));
+        $params = Values::of(array('TaskChannel' => $options['taskChannel'], ));
 
         $payload = $this->version->fetch(
             'GET',
