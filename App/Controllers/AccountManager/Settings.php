@@ -52,6 +52,11 @@ class Settings extends Controller
         $phoneRepo = $this->load( "phone-repository" );
         $userRepo = $this->load( "user-repository" );
         $userRegistrar = $this->load( "user-registrar" );
+        $accessControl = $this->load( "access-control" );
+
+        if ( !$accessControl->hasAccess( [ "administrator", "manager" ], $this->user->role ) ) {
+            $this->view->render403();
+        }
 
         // Load user emails to veryify submitted email address is unique
         $user_emails = $userRepo->getAllEmails();

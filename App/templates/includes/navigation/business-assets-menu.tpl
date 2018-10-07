@@ -3,6 +3,7 @@
     <li class="nav-item-l"><a class="nav-link" href="{$HOME}account-manager/business/assets/">Logo</a></li>
     <li class="nav-item-l"><a class="nav-link" href="{$HOME}account-manager/business/assets/tracking-codes">Tracking Codes</a></li>
     <li class="nav-item-l"><a class="nav-link" href="{$HOME}account-manager/business/assets/lead-capture-site">Lead Capture Site</a></li>
+    <li class="nav-item-l"><a class="nav-link" href="{$HOME}account-manager/business/assets/images">Images</a></li>
   </ul>
   <div class="clear"></div>
 </div>

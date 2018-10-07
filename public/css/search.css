@@ -1,3 +1,9 @@
+.choose-gym-button {
+	border: 1px solid #0667D0;
+	border-radius: 3px;
+	padding: 2px;
+}
+
 .results-header {
 	padding-top: 25px;
 	padding-bottom: 25px;

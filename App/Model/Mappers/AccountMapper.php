@@ -74,8 +74,9 @@ class AccountMapper extends DataMapper
 
     public function subtractAccountCreditByID( $id, $amount )
     {
-        $sql = $this->DB->prepare( "UPDATE account SET credit = credit - :credit WHERE id = :id" );
-        $sql->bindParam( ":credit", $amount );
+        $amount = floatval( $amount );
+        $sql = $this->DB->prepare( "UPDATE account SET credit = ( credit - :amount ) WHERE id = :id" );
+        $sql->bindParam( ":amount", $amount );
         $sql->bindParam( ":id", $id );
         $sql->execute();
     }
@@ -83,6 +84,11 @@ class AccountMapper extends DataMapper
     public function updateAccountTypeIDByID( $account_id, $account_type_id )
     {
         $this->update( "account", "account_type_id", $account_type_id, "id", $account_id );
+    }
+
+    public function updateAutoPurchaseByID( $account_id, $value )
+    {
+        $this->update( "account", "auto_purchase", $value, "id", $account_id );
     }
 
     private function populateAccount( \Model\Account $account, $data )
@@ -96,6 +102,7 @@ class AccountMapper extends DataMapper
         $account->timezone = $data[ "timezone" ];
         $account->primary_user_id = $data[ "primary_user_id" ];
         $account->credit = $data[ "credit" ];
+        $account->auto_purchase = $data[ "auto_purchase" ];
     }
 
 }

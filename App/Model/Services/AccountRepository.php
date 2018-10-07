@@ -58,10 +58,10 @@ class AccountRepository extends Service
         $accountMapper->addAccountCreditByID( $id, $amount );
     }
 
-    public function subtractAccountCreditByID( $id, $amount )
+    public function debitAccountByID( $id, $amount )
     {
         $accountMapper = new AccountMapper( $this->container );
-        $accountMapper->addAccountCreditByID( $id, $amount );
+        $accountMapper->subtractAccountCreditByID( $id, $amount );
     }
 
     public function updateAccountTypeIDByID( $account_id, $account_type_id )

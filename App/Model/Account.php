@@ -18,4 +18,5 @@ class Account
     public $profile_creation_date;
     public $timezone;
     public $primary_user_id;
+    public $auto_purchase;
 }

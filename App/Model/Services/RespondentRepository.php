@@ -32,6 +32,15 @@ class RespondentRepository extends Service
         return $respondent;
     }
 
+    public function getByProspectID( $prospect_id )
+    {
+        $respondent = new \Model\Respondent();
+        $respondentMapper = new \Model\Mappers\RespondentMapper( $this->container );
+        $respondentMapper->mapFromProspectID( $respondent, $prospect_id );
+
+        return $respondent;
+    }
+
     public function getByQuestionnaireID( $questionnaire_id )
     {
         $respondent = new \Model\Respondent();
@@ -54,6 +63,12 @@ class RespondentRepository extends Service
     {
         $respondentMapper = new \Model\Mappers\RespondentMapper( $this->container );
         $respondentMapper->updateLastQuestionIDByID( $id, $question_id );
+    }
+
+    public function updateProspectIDByID( $id, $prospect_id )
+    {
+        $respondentMapper = new \Model\Mappers\RespondentMapper( $this->container );
+        $respondentMapper->updateProspectIDByID( $id, $prospect_id );
     }
 
     public function markQuestionnaireCompleteByID( $id )

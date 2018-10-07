@@ -235,6 +235,18 @@ td {
     background: #FFFFFF;
 }
 
+.lightbox {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    background-color: rgba( 0, 0, 0, .85 );
+    z-index: 99999;
+    overflow-y: scroll;
+}
+
 .overlay {
     width: 100%;
     height: 100%;
@@ -985,6 +997,10 @@ td {
     background: #ff9c59;
 }
 
+.bg-gold {
+    background: #FFEA00;
+}
+
 .bg-dark-creamsicle {
     background: #ff7e26;
 }
@@ -1096,6 +1112,10 @@ td {
 
 .tc-white {
     color: #FFF;
+}
+
+.tc-red {
+    color: #D32323;
 }
 
 /* Images */

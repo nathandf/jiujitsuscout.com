@@ -150,4 +150,12 @@ class UserRepository extends Service
     return true;
   }
 
+    public function updateRoleByID( $id, $role )
+    {
+        $userMapper = new UserMapper( $this->container );
+        $userMapper->updateRoleByID( $id, $role );
+
+        return true;
+    }
+
 }

@@ -14,6 +14,11 @@ class Partner extends Controller
 		$timezonedb = $this->load( "timezonedb" );
 		$countryRepo = $this->load( "country-repository" );
 		$currencyRepo = $this->load( "currency-repository" );
+		$Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
 		// Get geo info of user by ip using the IPInfo API
 		$this->geoInfo = $ipinfo->getGeoByIP();
@@ -33,9 +38,9 @@ class Partner extends Controller
 			$this->currency = $currecnyRepo->getByCountry( "United States" );
 		}
 
-		// Get timezone details. Default to American/Chicago
+		// Get timezone details. Default to America/Chicago
 		$timezoneData = $timezonedb->getTimezoneByIP( $ipinfo->getIP() );
-		$this->timezone = "American/Chicago";
+		$this->timezone = "America/Chicago";
 
 		if ( $timezoneData !== false && $timezoneData->status == "OK" ) {
 			$this->timezone = $timezoneData->zoneName;

@@ -24,6 +24,20 @@ $( function() {
         }
     } );
 
+    $( ".--c-reject-prospect" ).on( "click", function( event ) {
+        confirmation = confirm( "Are you sure your want to reject this lead? This action is permanent." );
+        if ( confirmation === false ) {
+            event.preventDefault();
+        }
+    } );
+
+    $( ".--c-purchase" ).on( "click", function( event ) {
+        confirmation = confirm( "Press OK to confirm your purchase." );
+        if ( confirmation === false ) {
+            event.preventDefault();
+        }
+    } );
+
     $( ".--c-status-confirm" ).on( "click", function( event ) {
         confirmation = confirm( "Confirm this status change." );
         if ( confirmation === false ) {
@@ -49,6 +63,16 @@ $( function() {
             }
         );
     } );
+
+    $( "input:file" ).change(
+        function() {
+            if ( $( this ).val() ) {
+                $( ".file-upload-button" ).show();
+                // $( "input:submit" ).attr( "disabled", false );
+                // $( "input:submit" ).removeAttr('disabled');
+            }
+        }
+    );
 
     $( "#nav-dropdown-button" ).on( "click", function() {
         $( "#nav-items-container" ).slideToggle( 250 );

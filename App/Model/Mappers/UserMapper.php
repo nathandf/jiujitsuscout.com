@@ -124,6 +124,11 @@ class UserMapper extends DataMapper
         $this->update( "user", "password", $password, "id", $id );
     }
 
+    public function updateRoleByID( $id, $role )
+    {
+        $this->update( "user", "role", $role, "id", $id );
+    }
+
   public function updatePassword( $id, $email_to_verify, $new_password )
   {
     $user_email = $this->get( $id, "email" )[ "email" ];

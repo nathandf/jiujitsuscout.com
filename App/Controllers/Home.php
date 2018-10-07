@@ -37,6 +37,9 @@ class Home extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $disciplineRepo = $this->load( "discipline-repository" );
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         $disciplines = $disciplineRepo->getAll();
         $discipline_names = [];
@@ -65,6 +68,7 @@ class Home extends Controller
         }
 
         $this->view->assign( "discipline", $discipline );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         $this->view->setTemplate( "home.tpl" );
         $this->view->render( "App/Views/Home.php" );
@@ -84,6 +88,14 @@ class Home extends Controller
         $respondentRepo = $this->load( "respondent-repository" );
         $searchResultsDispatcher = $this->load( "search-results-dispatcher" );
         $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        // Add InitiateCheckout Event if there are products in the cart
+        $facebookPixelBuilder->addEvent([
+            "Search"
+        ]);
 
         // Set defaults
         $disciplines = $disciplineRepo->getAll();
@@ -221,6 +233,7 @@ class Home extends Controller
         $this->view->assign( "query", trim( $input->get( "q" ) ) );
         $this->view->assign( "discid", $input->get( "discid" ) );
         $this->view->assign( "ip", $_SERVER[ "REMOTE_ADDR" ] );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
@@ -344,6 +357,12 @@ class Home extends Controller
 
     public function register()
     {
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
         $this->view->setTemplate( "register.tpl" );
         $this->view->render( "App/Views/Home.php" );
     }
@@ -376,7 +395,15 @@ class Home extends Controller
 
     public function thankYou()
     {
-        // TODO add facbook pixel
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        // Track leads
+        $facebookPixelBuilder->addEvent([
+            "Lead"
+        ]);
+
         $this->view->setTemplate( "thank-you.tpl" );
         $this->view->render( "App/Views/Home.php" );
     }

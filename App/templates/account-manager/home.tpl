@@ -27,7 +27,7 @@
 						{/if}
 					{/if}
 				<!-- </td> -->
-				<td class="text-center">${$account->credit}</td>
+				<td class="text-center">${$account->credit|string_format:"%.2f"}</td>
 				<td class="text-center">{$businesses|@count}</td>
 				<td class="text-center">{$total_users}<br><b class="text-sml-heavy">max users: {if $account_type->max_users > 998}Unlimited{else}{$account_type->max_users}{/if}</b></p></td>
 			</tr>

@@ -262,6 +262,12 @@ class AccountManager extends Controller
 		$salesAgentMailer = $this->load( "sales-agent-mailer" );
 		$phoneRepo = $this->load( "phone-repository" );
 		$geocoder = $this->load( "geocoder" );
+		$accessControl = $this->load( "access-control" );
+
+		// Restrict access to admins
+		if ( !$accessControl->hasAccess( [ "administrator" ], $this->user->role ) ) {
+			$this->view->render403();
+		}
 
 		$country = $countryRepo->getByISO( $this->account->country );
 
@@ -576,6 +582,11 @@ class AccountManager extends Controller
 		$productRepo = $this->load( "product-repository" );
 		$orderRepo = $this->load( "order-repository" );
 		$orderProductRepo = $this->load( "order-product-repository" );
+		$accessControl = $this->load( "access-control" );
+
+		if ( !$accessControl->hasAccess( [ "administrator" ], $this->user->role ) ) {
+			$this->view->render403();
+		}
 
 		if ( $input->exists() && $inputValidator->validate(
 
@@ -679,6 +690,16 @@ class AccountManager extends Controller
 			$this->view->setTemplate( "account-manager/upgrade-enterprise.tpl" );
 		}
 
+		$this->view->render( "App/Views/AccountManager.php" );
+	}
+
+	public function addCreditAction()
+	{
+		$accessControl = $this->load( "access-control" );
+		if ( !$accessControl->hasAccess( [ "administrator", "manager" ], $this->user->role ) ) {
+			$this->view->render403();
+		}
+		$this->view->setTemplate( "account-manager/add-credit.tpl" );
 		$this->view->render( "App/Views/AccountManager.php" );
 	}
 

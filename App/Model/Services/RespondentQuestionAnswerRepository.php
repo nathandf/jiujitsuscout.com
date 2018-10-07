@@ -25,6 +25,14 @@ class RespondentQuestionAnswerRepository extends Service
         return $respondentQuestionAnswers;
     }
 
+    public function getAllByRespondentID( $respondent_id )
+    {
+        $respondentQuestionAnswerMapper = new \Model\Mappers\RespondentQuestionAnswerMapper( $this->container );
+        $respondentQuestionAnswers = $respondentQuestionAnswerMapper->mapAllFromRespondentID( $respondent_id );
+
+        return $respondentQuestionAnswers;
+    }
+
     public function getByID( $id )
     {
         $respondentQuestionAnswer = new \Model\RespondentQuestionAnswer();

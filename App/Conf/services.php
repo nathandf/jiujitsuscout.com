@@ -194,8 +194,23 @@ $container->register( "event-type-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "faq-repository", function() use ( $container ) {
+	$repo = new \Model\Services\FAQRepository( $container );
+	return $repo;
+} );
+
+$container->register( "faq-answer-repository", function() use ( $container ) {
+	$repo = new \Model\Services\FAQAnswerRepository( $container );
+	return $repo;
+} );
+
 $container->register( "group-repository", function() use ( $container ) {
 	$repo = new \Model\Services\GroupRepository( $container );
+	return $repo;
+} );
+
+$container->register( "image-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ImageRepository( $container );
 	return $repo;
 } );
 
@@ -264,6 +279,16 @@ $container->register( "prospect-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "prospect-appraisal-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ProspectAppraisalRepository( $container );
+	return $repo;
+} );
+
+$container->register( "prospect-purchase-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ProspectPurchaseRepository( $container );
+	return $repo;
+} );
+
 $container->register( "question-choice-repository", function() use ( $container ) {
 	$repo = new \Model\Services\QuestionChoiceRepository( $container );
 	return $repo;
@@ -271,6 +296,11 @@ $container->register( "question-choice-repository", function() use ( $container 
 
 $container->register( "question-choice-type-repository", function() use ( $container ) {
 	$repo = new \Model\Services\QuestionChoiceTypeRepository( $container );
+	return $repo;
+} );
+
+$container->register( "question-choice-weight-repository", function() use ( $container ) {
+	$repo = new \Model\Services\QuestionChoiceWeightRepository( $container );
 	return $repo;
 } );
 
@@ -321,7 +351,8 @@ $container->register( "search-results-dispatcher", function() use ( $container )
 		$container->getService( "review-repository" ),
 		$container->getService( "discipline-repository" ),
 		$container->getService( "geocoder" ),
-		$container->getService( "geometry" )
+		$container->getService( "geometry" ),
+		$container->getService( "fa-stars" )
 	);
 	return $dispatcher;
 } );
@@ -447,6 +478,10 @@ $container->register( "sms-messager", function() use ( $container ) {
 } );
 
 // Helpers
+$container->register( "access-control", function() {
+	$helper = new \Helpers\AccessControl;
+	return $helper;
+} );
 
 $container->register( "form", function() {
 	$form = new \Helpers\Form;
@@ -470,6 +505,11 @@ $container->register( "input-validator", function() {
 
 $container->register( "facebook-pixel-builder", function() {
 	$helper = new \Helpers\FacebookPixelBuilder;
+	return $helper;
+} );
+
+$container->register( "fa-stars", function() {
+	$helper = new \Helpers\FAStars;
 	return $helper;
 } );
 
@@ -543,6 +583,16 @@ $container->register( "paypal-payment-manager", function() use ( $container ) {
 $container->register( "payment-manager", function() use ( $container ) {
 	$paymentManager = $container->getService( "paypal-payment-manager" );
 	return $paymentManager;
+} );
+
+$container->register( "prospect-appraiser", function() use ( $container ) {
+	$prospectAppraiser = new \Model\Services\ProspectAppraiser(
+		$container->getService( "question-choice-weight-repository" ),
+		$container->getService( "respondent-repository" ),
+		$container->getService( "respondent-question-answer-repository" ),
+		$container->getService( "prospect-appraisal-repository" )
+	);
+	return $prospectAppraiser;
 } );
 
 $container->register( "questionnaire-dispatcher", function() use ( $container ) {

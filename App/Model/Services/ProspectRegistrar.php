@@ -18,6 +18,15 @@ class ProspectRegistrar
         $this->setProspect( $prospect );
     }
 
+    public function add( array $properties )
+    {
+        $prospect = $this->factory->build( "Prospect" );
+        $this->setProperties( $prospect, $properties );
+        $id = $this->repo->save( $prospect );
+        $prospect->id = $id;
+        $this->setProspect( $prospect );
+    }
+
     public function build()
     {
         $prospect = $this->factory->build( "Prospect" );
@@ -37,6 +46,13 @@ class ProspectRegistrar
         }
 
         return null;
+    }
+
+    protected function setProperties( \Model\Prospect $prospect, array $properties )
+    {
+        foreach ( $properties as $property => $property_value ) {
+            $prospect->{$property} = $property_value;
+        }
     }
 
 }

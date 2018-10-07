@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html>
 	<head>
-    <title>Find Brazilian Jiu Jitsu classes and MMA near you | Martial Arts School Finder</title>
-    <meta name="description" content="Find Brazilian Jiu Jitsu classes and MMA gyms near you with our BJJ Gym Finder. Browse martial arts gyms in your area and try a class for free">
+	    <title>Find Martial Arts gyms near you | Try a class for free</title>
+	    <meta name="description" content="Find Martial Arts classes near you with our gym finder tool. Browse martial arts gyms in your area and try a class for free">
 		<meta name="msvalidate.01" content="B9CB71BA77FCF02DC8BBE5FAA9A33456" />
 		<span itemscope itemtype="http://schema.org/Organization" itemid="#amt-organization">
-		<meta itemprop="name" content="Jiu Jitsu Classes and MMA gyms Near Me | BJJ School Finder" />
 		<span itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-			<meta itemprop="name" content="Brazilian Jiu Jitsu Classes and MMA Gyms Near Me logo" />
+			<meta itemprop="name" content="Martial arts classes near me logo" />
 			<meta itemprop="text" content="Find Jiu Jitsu near me logo" />
-			<meta itemprop="url" content="http://www.jiujitsuscout.com/img/jiujitsuscoutlogo.jpg" />
-			<meta itemprop="contentUrl" content="http://www.jiujitsuscout.com/img/jiujitsuscoutlogo.jpg" />
+			<meta itemprop="url" content="http://www.jiujitsuscout.com/public/img/jjslogotypographytransparent.jpg" />
+			<meta itemprop="contentUrl" content="http://www.jiujitsuscout.com/public/img/jjslogotypographytransparent.jpg" />
 			<meta itemprop="encodingFormat" content="image/jpg" />
 		</span>
 		<meta itemprop="url" content="https://www.jiujitsuscout.com/" />
 		<meta itemprop="sameAs" content="https://twitter.com/Find_Bjj_Gyms" />
 		<meta itemprop="sameAs" content="https://www.facebook.com/JiuJitsuScout/" />
-		<meta itemprop="mainEntityOfPage" content="http://www.jiujitsuscout.com/" />
+		<meta itemprop="mainEntityOfPage" content="https://www.jiujitsuscout.com/" />
 		</span>
 		<span itemscope itemtype="http://schema.org/WebSite" itemid="#amt-website">
 		<meta itemprop="name" content="Martial Arts Gym Finder | Martial Arts near me" />
@@ -24,6 +23,7 @@
 		<meta itemprop="url" content="https://www.jiujitsuscout.com/" />
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/home.css"/>
 	    {include file='includes/head/main-head.tpl'}
+		{$facebook_pixel}
 	    {include file='includes/tracking-codes/analyticstracking.html'}
 	</head>
 	<body>
