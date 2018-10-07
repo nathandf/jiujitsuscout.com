@@ -12,8 +12,6 @@
 			<h2>Leads</h2>
 			<a href="{$HOME}account-manager/business/add-lead" class="btn btn-inline leads first mat-hov"><span class="text-med">Add Lead <i class="fa fa-plus" aria-hidden="true"></i></span></a>
 			<div class="clear"></div>
-			<!-- <input type="search" class="inp search-bar-std first" placeholder="Search">
-			<div class="clear"></div> -->
 			<p class='results_count_message first'>Showing ({$prospects|@count}) Results</p>
 			<div class="lead-box">
 				<div id="lead-tag-container">
@@ -60,7 +58,7 @@
 							</tr>
 							{foreach from=$prospects item=prospect}
 								{if $prospect->type == "trial" || $prospect->type == "lead"}
-									{if $prospect->requires_purchase && !isset($prospect->prospect_purchase) && isset($prospect->appraisal)}
+									{if $prospect->requires_purchase && !isset($prospect->prospect_purchase) && isset($prospect->appraisal) && ( $user->role == "administrator" || $user->role == "manager")}
 									<tr>
 										<td>
 										</td>
