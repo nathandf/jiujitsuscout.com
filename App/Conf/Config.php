@@ -10,17 +10,26 @@ class Config
 
     public function __construct()
     {
-        require( "App/Conf/configs.php" );
-        self::$configs = $config;
+
     }
 
     public static function setEnv( $environment )
     {
+        require( "App/Conf/configs.php" );
+        self::$configs = $config;
+
         if ( !in_array( $environment, self::$environments ) ) {
             throw new \Exception( "\"{$environment}\" is not valid environment - Environments list [ " . implode( ",", self::$environments ) ." ]" );
         }
 
         self::$environment = $environment;
+
+        // Make sure people aint stealing my shit
+        if ( $environment == "production" && $_SERVER[ "REMOTE_ADDR" ] != "::1" ) {
+            if ( $_SERVER[ "SERVER_NAME" ] != self::$configs[ "server_name" ] ) {
+                header( "location: https://" . self::$configs[ "server_name" ] );
+            }
+        }
     }
 
     public static function getEnv()

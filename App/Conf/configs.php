@@ -1,5 +1,6 @@
 <?php
 
+$config[ "server_name" ] = "www.jiujitsuscout.com";
 $config[ "sitemap_base_url" ] = "https://www.jiujitsuscout.com/";
 $config[ "sitemap_ignore" ] = [ "sitemap.xml", "account-manager/user/logout", "jjs-admin/logout", "test" ];
 $config[ "facebook" ][ "pixel_id" ] = '1842001532752101';
