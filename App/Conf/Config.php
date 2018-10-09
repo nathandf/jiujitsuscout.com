@@ -26,8 +26,8 @@ class Config
 
         // Make sure people aint stealing my shit
         if ( $environment == "production" && $_SERVER[ "REMOTE_ADDR" ] != "::1" ) {
-            if ( $_SERVER[ "SERVER_NAME" ] != self::$configs[ "server_name" ] ) {
-                header( "location: https://" . self::$configs[ "server_name" ] );
+            if ( !in_array( $_SERVER[ "SERVER_NAME" ], self::$configs[ "approved_server_names" ] ) ) {
+                header( "location: https://www.jiujitsuscout.com" );
             }
         }
     }
