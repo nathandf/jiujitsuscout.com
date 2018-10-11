@@ -6,21 +6,20 @@
 		<div id="comments" >
 			{foreach from=$business->reviews item=review name=review_loop}
 				<div class="testimonial-seperator"></div>
-				<span itemprop="review" itemscope itemtype="http://schema.org/Review">
-					<meta itemprop="itemReviewed" content="{$business->business_name}">
+				<span>
 					<p class="com">
-						<span class="reviewer-icon">{$review->name|substr:0:1|upper}</span><div class="reviewer-info-container"><span itemprop="author"><span class="reviewer-name">{$review->name}</span></span>
+						<span class="reviewer-icon">{$review->name|substr:0:1|upper}</span><div class="reviewer-info-container"><span><span class="reviewer-name">{$review->name}</span></span>
 						<br>
-						<span itemprop="reviewRating">{$review->html_stars}</span>
+						<span>{$review->html_stars}</span>
 						<br>
 						<span class="review-date">Reviewed on:
-							<span itemprop="datePublished">{$review->datetime|date_format:"%A, %b %e %Y %l:%M%p"}</span></div>
+							<span >{$review->datetime|date_format:"%A, %b %e %Y %l:%M%p"}</span></div>
 							<div class="clear"></div>
 						</span>
 					</p>
 					<div class="testimonial" style="color: #000000;">
 						<p style="margin: 5px;">
-							<span itemprop="reviewBody" class="review-body">{$review->review_body}</span>
+							<span class="review-body">{$review->review_body}</span>
 						</p>
 					</div>
 				</span>

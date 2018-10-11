@@ -4,23 +4,54 @@
 	    <title>Find Martial Arts gyms near you | Try a class for free</title>
 	    <meta name="description" content="Find Martial Arts classes near you with our gym finder tool. Browse martial arts gyms in your area and try a class for free">
 		<meta name="msvalidate.01" content="B9CB71BA77FCF02DC8BBE5FAA9A33456" />
-		<span itemscope itemtype="http://schema.org/Organization" itemid="#amt-organization">
-		<span itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-			<meta itemprop="name" content="Martial arts classes near me logo" />
-			<meta itemprop="text" content="Find Jiu Jitsu near me logo" />
-			<meta itemprop="url" content="http://www.jiujitsuscout.com/public/img/jjslogotypographytransparent.jpg" />
-			<meta itemprop="contentUrl" content="http://www.jiujitsuscout.com/public/img/jjslogotypographytransparent.jpg" />
-			<meta itemprop="encodingFormat" content="image/jpg" />
-		</span>
-		<meta itemprop="url" content="https://www.jiujitsuscout.com/" />
-		<meta itemprop="sameAs" content="https://twitter.com/Find_Bjj_Gyms" />
-		<meta itemprop="sameAs" content="https://www.facebook.com/JiuJitsuScout/" />
-		<meta itemprop="mainEntityOfPage" content="https://www.jiujitsuscout.com/" />
-		</span>
-		<span itemscope itemtype="http://schema.org/WebSite" itemid="#amt-website">
-		<meta itemprop="name" content="Martial Arts Gym Finder | Martial Arts near me" />
-		<meta itemprop="headline" content="Home" />
-		<meta itemprop="url" content="https://www.jiujitsuscout.com/" />
+		<script type="application/ld+json">
+		{literal}
+			[{
+				"@context": "http://schema.org",
+				"@type": "Organization",
+				"name": "JiuJitsuScout",
+				"legalName": "JiuJitsuScout LLC",
+				"url": "https://www.jiujitsuscout.com",
+				"logo": {
+					"@type": "ImageObject",
+					"name": "JiuJitsuScout logo",
+					"text": "Find Martial Arts Near Me",
+					"url": "https://www.jiujitsuscout.com/public/img/jjslogoiconwhite.jpg",
+					"encodingFormat": "image/jpg"
+				},
+				"sameAs": [
+					"https://twitter.com/Find_Bjj_Gyms",
+					"https://www.facebook.com/JiuJitsuScout/"
+				],
+				"contactPoint": {
+					"@type": "ContactPoint",
+					"contactType": "Customer Service",
+					"telephone": "+1 (812) 276-3172",
+					"email": "jiujitsuscout@gmail.com"
+				}
+			},
+			{
+				"@context": "http://schema.org",
+				"@type": "Website",
+				"name": "JiuJitsuScout",
+				"headline": "Find martial arts near you and try classes for free",
+				"url": "https://www.jiujitsuscout.com/",
+				"potentialAction": {
+					"@type": "SearchAction",
+					"target": {
+						"@type": "EntryPoint",
+						"urlTemplate": "https://www.jiujitsuscout.com/search?q={query}"
+					},
+					"query-input": {
+						"@type": "PropertyValueSpecification",
+						"valueRequired": "True",
+						"valueName": "query"
+					}
+				}
+			}]
+		{/literal}
+		</script>
+
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/home.css"/>
 	    {include file='includes/head/main-head.tpl'}
 		{$facebook_pixel}
@@ -37,15 +68,6 @@
 			        			<h1 class="search-title">Find {if !is_null($discipline)}{$discipline->nice_name}{else}Martial Arts{/if} Gyms Near&nbsp;You</h1>
 								<div class="clear"></div>
 								<form method="get" action="{$HOME}search">
-			        			<span itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
-			        			<span itemprop="target" itemscope itemtype="http://schema.org/EntryPoint">
-			        			<meta itemprop="urlTemplate" content="https://www.jiujitsuscout.com/search?q={literal}{search_term}{/literal}" /> <!-- serach_term needs curly braces-->
-			        			</span>
-			        			<span itemprop="query-input" itemscope itemtype="http://schema.org/PropertyValueSpecification">
-			        			<meta itemprop="valueRequired" content="True" />
-			        			<meta itemprop="valueName" content="search_term" />
-			        			</span>
-			        			</span>
 						  		<input type="search" id="search-bar" name="q" placeholder="City, State, Region" value="{$geo|default:null}" >
 								{if !is_null($discipline)}
 								<input type="hidden" name="discid" value="{$discipline->id}">
