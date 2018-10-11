@@ -10,9 +10,7 @@
 	{include file="includes/widgets/questionnaire.tpl"}
 
 	{include file='includes/navigation/main-menu.tpl'}
-	<div class="con-cnt-xlrg push-t-med push-b-lrg bg-white" itemscope itemtype="http://schema.org/LocalBusiness">
-		{*include file='includes/snippets/business-name.tpl'*}
-		{*include file='includes/navigation/martial-arts-gym-nav.tpl'*}
+	<div class="con-cnt-xlrg push-t-med push-b-lrg bg-white">
 		{block name="business-profile-body"}{/block}
 	</div>
 {/block}
