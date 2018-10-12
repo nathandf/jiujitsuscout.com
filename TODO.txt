@@ -7,3 +7,5 @@ Add option for primary account user to toggle account auto_purchase status.
 Add daily_budget property to account.
 
 Restrict access to certain UI elements by role
+
+Trigger questionnaire widget on gyms-list page

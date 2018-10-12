@@ -85,8 +85,8 @@ class MartialArtsGyms extends Controller
             $faStars = $this->load( "fa-stars" );
 
             $businesses = $businessRepo->getAllByLocalityAndRegion(
-                $this->params[ "locality" ],
-                $this->params[ "region" ]
+                preg_replace( "/[-]+/", " ", $this->params[ "locality" ] ),
+                preg_replace( "/[-]+/", " ", $this->params[ "region" ] )
             );
 
             // Get and assign all business resources
@@ -146,6 +146,8 @@ class MartialArtsGyms extends Controller
             $this->view->assign( "ip", $_SERVER[ "REMOTE_ADDR" ] );
             $this->view->assign( "locality", ucwords( $this->params[ "locality" ] ) );
             $this->view->assign( "region", ucwords( $this->params[ "region" ] ) );
+            $this->view->assign( "locality_uri", preg_replace( "/[-]+/", " ", strtolower( $this->params[ "locality" ] ) ) );
+            $this->view->assign( "region_uri", preg_replace( "/[-]+/", " ", strtolower( $this->params[ "region" ] ) ) );
             $this->view->assign( "businesses", $businesses );
 
         } else {
@@ -187,8 +189,8 @@ class MartialArtsGyms extends Controller
             // against business locality and region
             if ( isset( $this->params[ "locality" ] ) && isset( $this->params[ "region" ] ) ) {
                 if (
-                    strtolower( $this->params[ "locality" ] ) != strtolower( $this->business->city ) ||
-                    strtolower( $this->params[ "region" ] ) != strtolower( $this->business->region )
+                    preg_replace( "/[-]+/", " ", strtolower( $this->params[ "locality" ] ) ) != strtolower( $this->business->city ) ||
+                    preg_replace( "/[-]+/", " ", strtolower( $this->params[ "region" ] ) ) != strtolower( $this->business->region )
                 ) {
                     $this->view->render404();
                 }
@@ -428,6 +430,8 @@ class MartialArtsGyms extends Controller
             $this->view->setErrorMessages( $inputValidator->getErrors() );
 
             // Assign data the view
+            $this->view->assign( "locality_uri", preg_replace( "/[ ]+/", "-", strtolower( $this->business->city ) ) );
+            $this->view->assign( "region_uri", preg_replace( "/[ ]+/", "-", strtolower( $this->business->region ) ) );
             $this->view->assign( "questionnaire", $questionnaire );
             $this->view->assign( "respondent", $respondent );
             $this->view->assign( "google_api_key", $Config::$configs[ "google" ][ "api_key" ] );

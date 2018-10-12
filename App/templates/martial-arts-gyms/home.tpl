@@ -3,7 +3,7 @@
 {block name="business-profile-head"}
 	<title>{$business->business_name|capitalize} - Martial arts {if isset($business->city) && isset($business->region)}in {$business->city}, {$business->region}{/if}</title>
 	<link rel="stylesheet" href="{HOME}public/css/questionnaire.css">
-	<link rel="canonical" href="https://www.jiujitsuscout.com/martial-arts-gyms/{$business->city|lower}/{$business->region|lower}/{$business->id}/">
+	<link rel="canonical" href="https://www.jiujitsuscout.com/martial-arts-gyms/{$locality_uri}/{$region_uri}/{$business->id}/">
 	<script src="{$HOME}{$JS_SCRIPTS}QuestionnaireDispatcher.js"></script>
 	<script src="{$HOME}{$JS_SCRIPTS}business-profile.js"></script>
 	<script type="application/ld+json">

@@ -22,7 +22,8 @@
 				},
 				"sameAs": [
 					"https://twitter.com/Find_Bjj_Gyms",
-					"https://www.facebook.com/JiuJitsuScout/"
+					"https://www.facebook.com/JiuJitsuScout/",
+					"https://www.facebook.com/jiujitsuscoutforbusiness/"
 				],
 				"contactPoint": {
 					"@type": "ContactPoint",
