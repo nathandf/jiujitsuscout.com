@@ -54,7 +54,7 @@ $( function() {
 
     $( ".--clickable" ).on( "click", function( event ) {
         $.post(
-            "./tracking/record-click",
+            "/tracking/record-click",
             {
                 "business_id": this.dataset.b_id,
                 "property": this.dataset.property,

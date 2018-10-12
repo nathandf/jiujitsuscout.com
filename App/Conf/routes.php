@@ -3,6 +3,9 @@
 // routes
 $Router->add( "", [ "controller" => "home", "action" => 'index' ] );
 $Router->add( "{action}", [ "controller" => "home" ] );
+$Router->add( "{controller:martial-arts-gyms}/{locality:[a-zA-Z0-9-]*}/{region:[a-zA-Z0-9-]*}/{action:[a-zA-Z0-9-]*}" );
+$Router->add( "{controller:martial-arts-gyms}/{locality:[a-zA-Z0-9-]*}/{region:[a-zA-Z0-9-]*}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
+$Router->add( "{controller:martial-arts-gyms}/{locality:[a-zA-Z0-9-]*}/{region:[a-zA-Z0-9-]*}/{siteslug:[a-zA-Z0-9-]*}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{controller:martial-arts-gyms}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{controller:martial-arts-gyms}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}/{slug:[a-zA-Z0-9-]+}" );
 $Router->add( "{controller:martial-arts-gyms}/{siteslug:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]*}" );

@@ -10,9 +10,10 @@ class MartialArtsGyms extends Controller
 
     protected function before()
     {
-        // $this->requireParam( "siteslug" );
         if ( isset( $this->params[ "siteslug" ] ) != false && isset( $this->params[ "id" ] ) != false ) {
-            $this->view->render404();
+            if ( isset( $this->params[ "locality" ] ) != false &&  isset( $this->params[ "region" ] ) != false ) {
+                $this->view->render404();
+            }
         }
 
         $businessRepo = $this->load( "business-repository" );
@@ -63,20 +64,91 @@ class MartialArtsGyms extends Controller
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
         $Config = $this->load( "config" );
 
-        if ( isset( $this->params[ "id" ] ) ) {
-            // Get business by the unique URL slug
-            $this->business = $businessRepo->getByID( $this->params[ "id" ] );
-            $this->redirect_uri = $this->params[ "id" ];
-        } elseif ( isset( $this->params[ "siteslug" ] ) ) {
-            // Get business by ID
-            $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
-            $this->redirect_uri = $this->params[ "siteslug" ];
-        }
-
+        // Build facebook tracking pixel using jiujitsuscout clients pixel id
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        // If siteslug and id aren't set, show listings of gyms based on locality and region
         if ( !$this->issetParam( "siteslug" ) && !$this->issetParam( "id" ) ) {
-            $this->view->redirect( "" );
-        } else {
+            // If locality and region are not set, redirect to home page
+            if ( !$this->issetParam( "locality" ) || !$this->issetParam( "region" ) ) {
+                $this->view->redirect( "" );
+            }
+            // Display the listings based on locality and region
+            $accountRepo = $this->load( "account-repository" );
+            $reviewRepo = $this->load( "review-repository" );
+            $input = $this->load( "input" );
+            $inputValidator = $this->load( "input-validator" );
+            $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
+            $respondentRepo = $this->load( "respondent-repository" );
+            $disciplineRepo = $this->load( "discipline-repository" );
+            $imageRepo = $this->load( "image-repository" );
+            $faqAnswerRepo = $this->load( "faq-answer-repository" );
+            $faStars = $this->load( "fa-stars" );
 
+            $businesses = $businessRepo->getAllByLocalityAndRegion(
+                $this->params[ "locality" ],
+                $this->params[ "region" ]
+            );
+
+            // Get and assign all business resources
+            foreach ( $businesses as $business ) {
+                // Set disciplines to business object
+                $business->disciplines = [];
+                $business_discipline_ids = [];
+                if ( !is_null( $business->discipline_ids ) ) {
+                    $business_discipline_ids = explode( ",", $business->discipline_ids );
+                }
+
+                foreach ( $business_discipline_ids as $business_discipline_id ) {
+                    $discipline = $disciplineRepo->getByID( $business_discipline_id );
+                    $business->disciplines[] = $discipline;
+                }
+
+                // Get review objects associated with business id
+                $business->reviews = $reviewRepo->getAllByBusinessID( $business->id );
+                $total_reviews = count( $business->reviews );
+                $business->total_reviews = $total_reviews;
+
+                // Set default rating
+                $rating = 0;
+
+                // Font awesome stars html (Will return 5 empty stars)
+                $stars = $faStars->show( $rating );
+
+                // If businesses has reviews, process them for listing
+                if ( $total_reviews > 0 ) {
+                    $i = 1;
+                    foreach ( $business->reviews as $review ) {
+                        $rating = $rating + $review->rating;
+
+                        // Set the last rating for display
+                        if ( $i == $total_reviews ) {
+                            $business->reviewer = $review->name;
+                            $business->review = $review->review_body;
+                        }
+                        $i++;
+                    }
+                    // Aggregated rating
+                    $rating = round( $rating / $total_reviews, 1 );
+                    $business->rating = $rating;
+
+                    // Replace emply html stars with full ones to reflect the rating
+                    $stars = $faStars->show( $rating );
+                }
+
+                // Set aggregated rating and stars to business object property
+                $business->rating = $rating;
+                $business->stars = $stars;
+            }
+
+            $this->view->setTemplate( "martial-arts-gyms/gyms-list.tpl" );
+
+            $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+            $this->view->assign( "ip", $_SERVER[ "REMOTE_ADDR" ] );
+            $this->view->assign( "locality", ucwords( $this->params[ "locality" ] ) );
+            $this->view->assign( "region", ucwords( $this->params[ "region" ] ) );
+            $this->view->assign( "businesses", $businesses );
+
+        } else {
             // Load input and input validation helpers and services
             $accountRepo = $this->load( "account-repository" );
             $reviewRepo = $this->load( "review-repository" );
@@ -95,6 +167,35 @@ class MartialArtsGyms extends Controller
             $faqRepo = $this->load( "faq-repository" );
             $faqAnswerRepo = $this->load( "faq-answer-repository" );
             $faStars = $this->load( "fa-stars" );
+
+            if ( isset( $this->params[ "id" ] ) ) {
+                // Get business by the unique URL slug
+                $this->business = $businessRepo->getByID( $this->params[ "id" ] );
+                $this->redirect_uri = $this->params[ "id" ];
+            } elseif ( isset( $this->params[ "siteslug" ] ) ) {
+                // Get business by ID
+                $this->business = $businessRepo->getBySiteSlug( $this->params[ "siteslug" ] );
+                $this->redirect_uri = $this->params[ "siteslug" ];
+            }
+
+            // If an empty business object was returned, render 404
+            if ( isset( $this->business->id ) == false ) {
+                $this->view->render404();
+            }
+
+            // If locality and region params are set, validate their values
+            // against business locality and region
+            if ( isset( $this->params[ "locality" ] ) && isset( $this->params[ "region" ] ) ) {
+                if (
+                    strtolower( $this->params[ "locality" ] ) != strtolower( $this->business->city ) ||
+                    strtolower( $this->params[ "region" ] ) != strtolower( $this->business->region )
+                ) {
+                    $this->view->render404();
+                }
+
+                $this->view->assign( "locality", $this->params[ "locality" ] );
+                $this->view->assign( "region", $this->params[ "region" ] );
+            }
 
             // Dispatch questionnaire
 
@@ -154,9 +255,6 @@ class MartialArtsGyms extends Controller
             if ( $this->business->programs[ 0 ] == "" ) {
                 $this->business->programs = [];
             }
-
-            // Build facebook tracking pixel using jiujitsuscout clients pixel id
-            $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
             // Get reviews from business id
             $this->business->reviews = $reviewRepo->getAllByBusinessID( $this->business->id );

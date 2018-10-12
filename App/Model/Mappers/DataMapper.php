@@ -74,4 +74,17 @@ abstract class DataMapper implements DataMapperInterface
 
         return $data;
     }
+
+    protected function populate( $entity, $data )
+    {
+        if ( !is_object( $entity ) ) {
+            throw new \Exception( "Argument 'entity' must be an object" );
+        }
+
+        if ( $data ) {
+            foreach ( $data as $key => $d ) {
+                $entity->{$key} = $data[ $key ];
+            }
+        }
+    }
 }

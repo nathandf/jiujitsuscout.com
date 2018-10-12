@@ -3,6 +3,7 @@
 {block name="business-profile-head"}
 	<title>{$business->business_name|capitalize} - Martial arts {if isset($business->city) && isset($business->region)}in {$business->city}, {$business->region}{/if}</title>
 	<link rel="stylesheet" href="{HOME}public/css/questionnaire.css">
+	<link rel="canonical" href="https://www.jiujitsuscout.com/martial-arts-gyms/{$business->city|lower}/{$business->region|lower}/{$business->id}/">
 	<script src="{$HOME}{$JS_SCRIPTS}QuestionnaireDispatcher.js"></script>
 	<script src="{$HOME}{$JS_SCRIPTS}business-profile.js"></script>
 	<script type="application/ld+json">
@@ -23,7 +24,7 @@
 				"@type": "GeoCoordinates",
 				"latitude": "{/literal}{$business->latitude|default:null}{literal}",
 				"longitude": "{/literal}{$business->longitude|default:null}{literal}"
-			},
+			}{/literal}{if $total_ratings > 0}{literal},
 			"aggregateRating": {
 				"@type": "AggregateRating",
 				"ratingValue": "{/literal}{$business_rating}{literal}",
@@ -49,6 +50,7 @@
 					{/if}
 				{literal}
 			]
+			{/literal}{/if}{literal}
 		}
 	{/literal}
 	</script>
