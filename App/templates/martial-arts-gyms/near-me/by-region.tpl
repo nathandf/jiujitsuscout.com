@@ -18,7 +18,7 @@
 				<div class="clear push-t-sml"></div>
 			{/foreach}
 		</div>
-		<div class="clear push-t-med"></div>
+		<div class="clear"></div>
 	</div>
 {/block}
 

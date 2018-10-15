@@ -2,10 +2,9 @@
 <html>
 	<head>
 	    <title>Find Martial Arts gyms near you | Try a class for free</title>
-		<link rel="canonical" href="http://www.jiujitsuscout.com/">
+		<link rel="canonical" href="https://www.jiujitsuscout.com/">
 	    <meta name="description" content="Find Martial Arts classes near you with our gym finder tool. Browse martial arts gyms in your area and try a class for free">
 		<meta name="msvalidate.01" content="B9CB71BA77FCF02DC8BBE5FAA9A33456" />
-		<link rel="canonical" href="https://www.jiujitsuscout.com">
 		<script type="application/ld+json">
 		{literal}
 			[{
@@ -99,7 +98,7 @@
 						<div class="clear push-b-sml"></div>
 						{foreach from=$businesses_geo_info_by_region item=business_geo_info name=business_geo_info_loop}
 							{if $smarty.foreach.business_geo_info_loop.iteration < 6}
-							<a class="link text-lrg" style="color: #777;" href="{$HOME}martial-arts-gyms/{$business_geo_info[ 'locality_uri' ]}/{$business_geo_info[ 'region_uri' ]}/">{$business_geo_info[ "locality" ]}</a>
+							<a class="link text-lrg" style="color: #777;" href="{$HOME}martial-arts-gyms/near-me/{$business_geo_info[ 'region_uri' ]}/{$business_geo_info[ 'locality_uri' ]}/">{$business_geo_info[ "locality" ]}</a>
 							<div class="clear push-t-sml"></div>
 							{elseif $smarty.foreach.business_geo_info_loop.iteration == 6}
 							<a class="link text-lrg tc-deep-blue" href="{$HOME}martial-arts-gyms/near-me/{$key}/">— more</a>

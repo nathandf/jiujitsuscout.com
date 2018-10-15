@@ -5,6 +5,8 @@
 	{include file='includes/head/main-head.tpl'}
 	<link rel="stylesheet" type="text/css" href="{$HOME}public/css/search.css"/>
 	<link rel="stylesheet" href="{HOME}public/css/questionnaire.css">
+	<link rel="canonical" href="https://www.jiujitsuscout.com/martial-arts-gyms/near-me/{$region_uri}/{$locality_uri}/">
+	<meta name="description" content="Choose from the best martial arts gyms in {$locality|capitalize}, {$region|capitalize}. Sign up - Try for free - No obligation">
 	<script src="{$HOME}{$JS_SCRIPTS}QuestionnaireDispatcher.js"></script>
 	<script src="{$HOME}{$JS_SCRIPTS}search.js"></script>
 	<script type="application/ld+json">
