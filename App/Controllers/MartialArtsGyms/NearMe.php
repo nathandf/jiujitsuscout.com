@@ -126,8 +126,8 @@ class NearMe extends Controller
                 }
 
                 $this->view->assign( "ip", $_SERVER[ "REMOTE_ADDR" ] );
-                $this->view->assign( "locality", ucwords( $this->params[ "locality" ] ) );
-                $this->view->assign( "region", ucwords( $this->params[ "region" ] ) );
+                $this->view->assign( "locality", preg_replace( "/[-]+/", " ", ucwords( $this->params[ "locality" ] ) ) );
+                $this->view->assign( "region", preg_replace( "/[-]+/", " ", ucwords( $this->params[ "region" ] ) ) );
                 $this->view->assign( "locality_uri", preg_replace( "/[ ]+/", "-", strtolower( $this->params[ "locality" ] ) ) );
                 $this->view->assign( "region_uri", preg_replace( "/[ ]+/", "-", strtolower( $this->params[ "region" ] ) ) );
                 $this->view->assign( "businesses", $businesses );
