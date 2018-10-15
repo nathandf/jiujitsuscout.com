@@ -2,6 +2,7 @@
 <html>
 	<head>
 	    <title>Find Martial Arts gyms near you | Try a class for free</title>
+		<link rel="canonical" href="http://www.jiujitsuscout.com/">
 	    <meta name="description" content="Find Martial Arts classes near you with our gym finder tool. Browse martial arts gyms in your area and try a class for free">
 		<meta name="msvalidate.01" content="B9CB71BA77FCF02DC8BBE5FAA9A33456" />
 		<link rel="canonical" href="https://www.jiujitsuscout.com">

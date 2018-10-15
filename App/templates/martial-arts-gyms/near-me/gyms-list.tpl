@@ -5,6 +5,7 @@
 	{include file='includes/head/main-head.tpl'}
 	<link rel="stylesheet" type="text/css" href="{$HOME}public/css/search.css"/>
 	<link rel="stylesheet" href="{HOME}public/css/questionnaire.css">
+	<link rel="canonical" href="https://www.jiujitsuscout.com/martial-arts-gyms/{$locality_uri}/{$region_uri}/">
 	<script src="{$HOME}{$JS_SCRIPTS}QuestionnaireDispatcher.js"></script>
 	<script src="{$HOME}{$JS_SCRIPTS}search.js"></script>
 	<script type="application/ld+json">
