@@ -36,10 +36,36 @@ class Home extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $businessRepo = $this->load( "business-repository" );
         $disciplineRepo = $this->load( "discipline-repository" );
         $Config = $this->load( "config" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
         $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        // Get all businesses geo info to populate links
+        $businesses = $businessRepo->getAll();
+        $businesses_geo_info = [];
+        $businesses_geo_raw = [];
+
+        foreach ( $businesses as $business ) {
+            $geo_raw = preg_replace( "/[ -]+/", "", strtolower( $business->city ) ) . ", " . preg_replace( "/[ -]+/", "", strtolower( $business->region ) );
+            if (
+                !in_array( $geo_raw, $businesses_geo_raw ) &&
+                !is_null( $business->city ) &&
+                !is_null( $business->region )
+            ) {
+                $businesses_geo_info[ strtolower( $business->region ) ][] = [
+                    "locality" => $business->city,
+                    "locality_uri" => preg_replace( "/[ ]+/", "-", strtolower( $business->city ) ),
+                    "region" => $business->region,
+                    "region_uri" => preg_replace( "/[ ]+/", "-", strtolower( $business->region ) )
+                ];
+
+                $businesses_geo_raw[] = $geo_raw;
+            }
+        }
+
+        ksort( $businesses_geo_info );
 
         $disciplines = $disciplineRepo->getAll();
         $discipline_names = [];
@@ -67,6 +93,7 @@ class Home extends Controller
             }
         }
 
+        $this->view->assign( "businesses_geo_info", $businesses_geo_info );
         $this->view->assign( "discipline", $discipline );
         $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 

@@ -1,7 +1,8 @@
 {extends file="layouts/business-profile.tpl"}
 
 {block name="business-profile-head"}
-	<title>{$business->business_name|capitalize} - Martial arts {if isset($business->city) && isset($business->region)}in {$business->city}, {$business->region}{/if}</title>
+	<title>{$business->business_name|capitalize} - Martial arts classes{if isset($business->city) && isset($business->region)} in {$business->city}, {$business->region}{/if}</title>
+	<meta name="description" content="{if isset($business->message)}{$business->message}{else}Join us for a free class to see if our gym is right for you. Hit the 'Contact Gym' or the 'Free Class' button to sign up.{/if}">
 	<link rel="stylesheet" href="{HOME}public/css/questionnaire.css">
 	<link rel="canonical" href="https://www.jiujitsuscout.com/martial-arts-gyms/{$locality_uri}/{$region_uri}/{$business->id}/">
 	<script src="{$HOME}{$JS_SCRIPTS}QuestionnaireDispatcher.js"></script>

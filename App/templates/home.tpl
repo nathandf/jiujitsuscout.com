@@ -89,7 +89,29 @@
 					</div>
 				</div>
 			</div><!-- end search-box -->
-      		<div class="clear"></div>
+			<div class="col-100" style="border-top: 1px solid #CCC;"></div>
+			<div class="con-cnt-xxlrg inner-pad-med">
+				<h2 style="color: #2F3033;" class="push-b-lrg">Find martial arts gyms by region</h2>
+				{foreach from=$businesses_geo_info item=businesses_geo_info_by_region name=by_region_loop key=key}
+					<div class="region-block" style="box-sizing: border-box; padding: 5px; width: 25%; min-width: 150px; float: left;">
+						<a href="{$HOME}martial-arts-gyms/near-me/{$key}/" class="text-lrg-heavy link" style="color: #2F3033;">{$key|capitalize}</a>
+						<div class="clear push-b-sml"></div>
+						{foreach from=$businesses_geo_info_by_region item=business_geo_info name=business_geo_info_loop}
+							{if $smarty.foreach.business_geo_info_loop.iteration < 6}
+							<a class="link text-lrg" style="color: #777;" href="{$HOME}martial-arts-gyms/{$business_geo_info[ 'locality_uri' ]}/{$business_geo_info[ 'region_uri' ]}/">{$business_geo_info[ "locality" ]}</a>
+							<div class="clear push-t-sml"></div>
+							{elseif $smarty.foreach.business_geo_info_loop.iteration == 6}
+							<a class="link text-lrg tc-deep-blue" href="{$HOME}martial-arts-gyms/near-me/{$key}/">— more</a>
+							<div class="clear push-t-sml"></div>
+							{/if}
+						{/foreach}
+					</div>
+					{if $smarty.foreach.by_region_loop.iteration % 4 == 0}
+					<div class="clear"></div>
+					{/if}
+				{/foreach}
+			</div>
+      		<div class="clear push-t-med"></div>
 		</div><!-- end content-->
     {include file='includes/footer.tpl'}
 	</body>
