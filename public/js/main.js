@@ -53,7 +53,7 @@ $( function() {
     } );
 
     $( ".--clickable" ).on( "click", function( event ) {
-        if ( document.location.hostname == "www.jiujitsuscout.com" ) {
+        if ( $( location ).attr( "hostname" ) == "www.jiujitsuscout.com" ) {
             $.post(
                 "https://www.jiujitsuscout.com/tracking/record-click",
                 {
