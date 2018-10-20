@@ -2,7 +2,6 @@
 <meta name="ROBOTS" content="INDEX, FOLLOW" >
 <meta http-equiv="Content Type" content="text/html; charset=UTF-8" >
 <meta http-equiv="content-language" content="en">
-<link rel="canonical" href="http://www.jiujitsuscout.com/">
 <link rel="stylesheet" type="text/css" href="{$HOME}public/css/main.css"/>
 <link href="https://fonts.googleapis.com/css?family=Raleway:500" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:700" rel="stylesheet">

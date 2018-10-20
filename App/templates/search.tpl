@@ -15,19 +15,9 @@
 		<div class="clear"></div>
 	    <div class="results-header">
 	      <form method="get" onsubmit="" action="search#results" >
-			<span itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
-				<span itemprop="target" itemscope itemtype="http://schema.org/EntryPoint">
-					<meta itemprop="urlTemplate" content="https://www.jiujitsuscout.com/?search={literal}{search_term}{/literal}" />
-				</span>
-				<span itemprop="query-input" itemscope itemtype="http://schema.org/PropertyValueSpecification">
-					<meta itemprop="valueRequired" content="True" />
-					<meta itemprop="valueName" content="search_term" />
-				</span>
-			</span>
 			<input type="search" class="search_bar encapsulate" id="search_bar" name="q" placeholder="City, State or Zip" require="required"/>
 			<input type="submit" class="mat-hov find-gym-button bg-deep-blue" id="search_button" value="Find Gyms" /><br>
 	      </form>
-		  <a class="--clickable choose-gym-button cursor-pt --q-trigger tc-deep-blue text-sml" data-property="search-results" data-property_sub_type="help-choose-a-gym-button" data-b_id="0" data-ip="{$ip}">Help Me Choose a Gym</a>
 	    	<p class="push-t-med"><strong>Showing ({$total_results}) results for "{$query}"</strong></p>
 	    </div>
 		<div class="results-body">
@@ -45,7 +35,13 @@
 		    </div>
 			{else}
 			<div id="results" class="push-b-med" style="border-bottom: 1px solid #CCCCCC;">
-				<p class="push-b-med inner-pad-med">No results found within a {$search_radius} {$unit} distance.</p>
+				<div class="inner-pad-med">
+					<p class="text-med">
+						Don't see your gym?
+						<a class="link tc-deep-blue" href="{$HOME}partner/">Add it now</a>
+					</p>
+				</div>
+
 			</div>
 			<div class="">
 				<div class="inner-pad-med">

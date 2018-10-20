@@ -24,7 +24,7 @@ class BusinessMapper extends DataMapper
     $sql->bindParam( ":business_name", $business_name );
     $sql->execute();
     $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-    $this->populateBusiness( $business, $resp );
+    $this->populate( $business, $resp );
     return $business;
   }
 
@@ -34,7 +34,7 @@ class BusinessMapper extends DataMapper
     $sql->bindParam( ":id", $id );
     $sql->execute();
     $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-    $this->populateBusiness( $business, $resp );
+    $this->populate( $business, $resp );
     return $business;
   }
 
@@ -44,7 +44,7 @@ class BusinessMapper extends DataMapper
     $sql->bindParam( ":site_slug", $slug );
     $sql->execute();
     $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-    $this->populateBusiness( $business, $resp );
+    $this->populate( $business, $resp );
     return $business;
   }
 
@@ -57,7 +57,7 @@ class BusinessMapper extends DataMapper
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
       $business = $entityFactory->build( "Business" );
-      $this->populateBusiness( $business, $resp );
+      $this->populate( $business, $resp );
       $businesses[] = $business;
     }
 
@@ -73,11 +73,29 @@ class BusinessMapper extends DataMapper
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $business = $entityFactory->build( "Business" );
-            $this->populateBusiness( $business, $resp );
+            $this->populate( $business, $resp );
             $discipline_ids = explode( ",", $business->discipline_ids );
             if ( in_array( $discipline_id, $discipline_ids ) ) {
                 $businesses[] = $business;
             }
+        }
+
+        return $businesses;
+    }
+
+    public function mapAllFromLocalityAndRegion( $locality, $region )
+    {
+        $entityFactory = $this->container->getService( "entity-factory" );
+        $businesses = [];
+        $sql = $this->DB->prepare( "SELECT * FROM business WHERE city = :city AND region = :region" );
+        $sql->bindParam( ":city", $locality );
+        $sql->bindParam( ":region", $region );
+        $sql->execute();
+
+        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $business = $entityFactory->build( "Business" );
+            $this->populate( $business, $resp );
+            $businesses[] = $business;
         }
 
         return $businesses;
@@ -93,7 +111,7 @@ class BusinessMapper extends DataMapper
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $business = $entityFactory->build( "Business" );
-            $this->populateBusiness( $business, $resp );
+            $this->populate( $business, $resp );
             $businesses[] = $business;
         }
 
@@ -184,46 +202,5 @@ class BusinessMapper extends DataMapper
     }
     return $slugs;
   }
-
-    private function populateBusiness( \Model\Business $business, $data )
-    {
-        $business->id                      = $data[ "id" ];
-        $business->business_name           = $data[ "business_name" ];
-        $business->site_slug               = $data[ "site_slug" ];
-        $business->account_id              = $data[ "account_id" ];
-        $business->account_status          = $data[ "account_status" ];
-        $business->account_type            = $data[ "account_type" ];
-        $business->listing_type            = $data[ "listing_type" ];
-        $business->max_users               = $data[ "max_users" ];
-        $business->currency                = $data[ "currency" ];
-        $business->website                 = $data[ "website" ];
-        $business->contact_name            = $data[ "contact_name" ];
-        $business->email                   = $data[ "email" ];
-        $business->phone_id                = $data[ "phone_id" ];
-        $business->auto_sms_number         = $data[ "auto_sms_number" ];
-        $business->address_1               = $data[ "address_1" ];
-        $business->address_2               = $data[ "address_2" ];
-        $business->city                    = $data[ "city" ];
-        $business->region                  = $data[ "region" ];
-        $business->postal_code             = $data[ "postal_code" ];
-        $business->country                 = $data[ "country" ];
-        $business->latitude                = $data[ "latitude" ];
-        $business->longitude               = $data[ "longitude" ];
-        $business->profile_views           = $data[ "profile_views" ];
-        $business->free_class_reservations = $data[ "free_class_reservations" ];
-        $business->website_visits          = $data[ "website_visits" ];
-        $business->logo_filename           = $data[ "logo_filename" ];
-        $business->discipline_ids          = $data[ "discipline_ids" ];
-        $business->promotional_offer       = $data[ "promotional_offer" ];
-        $business->title                   = $data[ "title" ];
-        $business->message                 = $data[ "message" ];
-        $business->programs                = $data[ "programs" ];
-        $business->video_link              = $data[ "video_link" ];
-        $business->profile_creation_date   = $data[ "profile_creation_date" ];
-        $business->google_place_id         = $data[ "google_place_id" ];
-        $business->facebook_pixel_id       = $data[ "facebook_pixel_id" ];
-        $business->timezone                = $data[ "timezone" ];
-        $business->user_notification_recipient_ids = $data[ "user_notification_recipient_ids" ];
-    }
 
 }
