@@ -63,6 +63,8 @@ $( function() {
                     "ip": this.dataset.ip
                 }
             );
+        } else {
+            alert( document.location.hostname );
         }
     } );
 
