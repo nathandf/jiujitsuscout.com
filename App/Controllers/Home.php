@@ -56,9 +56,9 @@ class Home extends Controller
             ) {
                 $businesses_geo_info[ strtolower( $business->region ) ][] = [
                     "locality" => $business->city,
-                    "locality_uri" => preg_replace( "/[ ]+/", "-", strtolower( $business->city ) ),
+                    "locality_url" => preg_replace( "/[ ]+/", "-", strtolower( $business->city ) ),
                     "region" => $business->region,
-                    "region_uri" => preg_replace( "/[ ]+/", "-", strtolower( $business->region ) )
+                    "region_url" => preg_replace( "/[ ]+/", "-", strtolower( $business->region ) )
                 ];
 
                 $businesses_geo_raw[] = $geo_raw;
@@ -70,6 +70,7 @@ class Home extends Controller
         $disciplines = $disciplineRepo->getAll();
         $discipline_names = [];
         foreach ( $disciplines as $discipline ) {
+            $discipline->url = preg_replace( "/[ ]+/", "-", $discipline->name );
             $discipline_names[] = $discipline->name;
         }
 
@@ -93,6 +94,7 @@ class Home extends Controller
             }
         }
 
+        $this->view->assign( "disciplines", $disciplines );
         $this->view->assign( "businesses_geo_info", $businesses_geo_info );
         $this->view->assign( "discipline", $discipline );
         $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
