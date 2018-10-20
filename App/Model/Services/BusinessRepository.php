@@ -76,6 +76,14 @@ class BusinessRepository extends Service
         return $businesses;
     }
 
+    public function getAllByLocalityAndRegion( $locality, $region )
+    {
+        $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
+        $businesses = $businessMapper->mapAllFromLocalityAndRegion( $locality, $region );
+
+        return $businesses;
+    }
+
 
   public function updateSiteSlugByID( $id, $slug )
   {

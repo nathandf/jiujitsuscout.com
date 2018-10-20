@@ -5,7 +5,9 @@
 		<div class="middle-container">
 			<a class="name --clickable" href="{$HOME}martial-arts-gyms/{$business->id}/" data-property="listing" data-property_sub_type="business-name" data-b_id="{$business->id}" data-ip="{$ip}">{$business->business_name|truncate:25:"..."}</a>
 			<p>{$business->stars} <span class="text-sml">{if $business->reviews|@count < 1}Not rated{else}<span class="--clickable" data-property="listing" data-property_sub_type="reviews" data-b_id="{$business->id}" data-ip="{$ip}">(<a class="link tc-black" href="{$HOME}martial-arts-gyms/{$business->id}/">{$business->reviews|@count}</a>)</span>{/if}</span></p>
+			{if isset($business->distance) && isset($business->unit)}
 			<p class="text-sml">Distance: {$business->distance|round:2}{$business->unit}</p>
+			{/if}
 			<div class="discipline-tags-container">
 				{foreach from=$business->disciplines item=discipline name="business_discipline_loop"}
 					{if $smarty.foreach.business_discipline_loop.iteration < 4}

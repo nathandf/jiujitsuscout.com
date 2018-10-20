@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-    	<title>Register</title>
-    	<meta name="description" content="Register your martial arts business to find new students">
+    	<title>Capture more leads for your martial arts gym | Register</title>
+    	<meta name="description" content="Register your martial arts business on the JiuJitsuScout lead generation platform to find more students">
 		<span itemscope itemtype="http://schema.org/WebSite" itemid="#amt-website">
 		<meta itemprop="name" content="Martial Arts School Finder | Martial Arts near me" />
 		<meta itemprop="headline" content="Sign up" />

@@ -2,6 +2,7 @@
 <html>
 	<head>
 	    <title>Marketing Your Martial Arts Business | Generate Leads</title>
+		<meta name="description" content="Add your gym to our lead generation platform to start generating leads.">
 		{include file='includes/head/main-head.tpl'}
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/partner.css"/>
 		{$facebook_pixel|default:null}
