@@ -102,6 +102,16 @@ $container->register( "appointment-hash-repository", function() use ( $container
 	return $repo;
 } );
 
+$container->register( "article-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ArticleRepository( $container );
+	return $repo;
+} );
+
+$container->register( "blog-repository", function() use ( $container ) {
+	$repo = new \Model\Services\BlogRepository( $container );
+	return $repo;
+} );
+
 $container->register( "braintree-api-manager", function() use ( $container ) {
 	$transactionBuilder = new \Model\Services\BraintreeAPIManager(
 		$container->getService( "braintree-gateway-initializer" )

@@ -369,6 +369,63 @@ class JjsAdmin extends Controller
 
     }
 
+    public function blogsAction()
+    {
+        $blogRepo = $this->load( "blog-repository" );
+
+        $blogs = $blogRepo->getAll();
+
+        $this->view->assign( "blogs", $blogs );
+
+        $this->view->setTemplate( "jjs-admin/blogs.tpl" );
+        $this->view->render( "App/Views/JJSAdmin.php" );
+
+    }
+
+    public function createBlog()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $blogRepo = $this->load( "blog-repository" );
+
+        if (
+            $input->exists()
+            && $input->issetField( "create" )
+            && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "name" => [
+                        "name" => "Blog Name",
+                        "required" => true,
+                        "min" => 1,
+                        "max" => 256
+                    ],
+                    "url" => [
+                        "name" => "Blog URL",
+                        "required" => true,
+                        "min" => 1,
+                        "max" => 256
+                    ]
+                ],
+
+                "create"
+            )
+        ) {
+            $blog = $blogRepo->create( $input->get( "name" ), $input->get( "url" ) );
+            $this->view->redirect( "jjs-admin/blog/" . $blog->id . "/" );
+        }
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+	    $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+        $this->view->setTemplate( "jjs-admin/create-blog.tpl" );
+        $this->view->render( "App/Views/JJSAdmin.php" );
+    }
+
 	public function invalidToken()
 	{
 		$this->view->setTemplate( "jjs-admin/invalid-token.tpl" );
