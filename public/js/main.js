@@ -53,7 +53,7 @@ $( function() {
     } );
 
     $( ".--clickable" ).on( "click", function( event ) {
-        if ( document.location.hostname == "https://www.jiujitsuscout.com" ) {
+        if ( document.location.hostname == "www.jiujitsuscout.com" ) {
             $.post(
                 "https://www.jiujitsuscout.com/tracking/record-click",
                 {
@@ -63,8 +63,6 @@ $( function() {
                     "ip": this.dataset.ip
                 }
             );
-        } else {
-            alert( document.location.hostname );
         }
     } );
 
