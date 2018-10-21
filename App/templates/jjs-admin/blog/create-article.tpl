@@ -23,8 +23,8 @@
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="create_article" value="{$csrf_token}">
 			<div class="clear col-100 push-t-med push-b-sml" style="border-top: 1px solid #CCC;"></div>
-			<button type="submit" name="publish" class="btn btn-inline bg-green article-btn">Publish</button>
-			<button type="submit" name="draft" class="btn btn-inline bg-deep-blue article-btn">Save draft</button>
+			<button type="submit" name="publish" value="1" class="btn btn-inline bg-green article-btn">Publish</button>
+			<button type="submit" name="draft" value="1" class="btn btn-inline bg-deep-blue article-btn">Save draft</button>
 			<div class="clear col-100 push-b-med push-t-sml" style="border-top: 1px solid #CCC;"></div>
 			<label class="text-med">Article Title</label>
 			<div class="clear"></div>
@@ -46,8 +46,8 @@
 			<div class="clear"></div>
 			<textarea class="article-builder-field mat-hov body" name="body">{$inputs.create_article.body|default:null}</textarea>
 			<div class="clear col-100 push-t-med push-b-sml" style="border-top: 1px solid #CCC;"></div>
-			<button type="submit" name="publish" class="btn btn-inline bg-green article-btn">Publish</button>
-			<button type="submit" name="draft" class="btn btn-inline bg-deep-blue article-btn">Save draft</button>
+			<button type="submit" name="publish" value="1" class="btn btn-inline bg-green article-btn">Publish</button>
+			<button type="submit" name="draft" value="1" class="btn btn-inline bg-deep-blue article-btn">Save draft</button>
 		</form>
 	</div>
 {/block}

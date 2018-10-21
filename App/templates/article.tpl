@@ -11,12 +11,12 @@
 {/block}
 
 {block name="body"}
-	<div class="alt-content" style="margin: 0px;">
-		<div class="con-cnt-xlrg inner-pad-med">
-			<h1 class="title">{$article->title}</h1>
-			<p class="body push-t-lrg">{$article->body}</p>
-		</div>
+	<div class="article-content con-cnt-xlrg bg-white push-t-lrg push-b-lrg inner-pad-med-plus">
+		<h1>{$article->title}</h1>
+		<p class="push-t-lrg article-body">{$article->body}</p>
+		<div class="clear"></div>
 	</div>
+	<div class="clear"></div>
 {/block}
 
 {block name="footer"}

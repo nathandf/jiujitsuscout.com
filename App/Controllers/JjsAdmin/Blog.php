@@ -90,6 +90,7 @@ class Blog extends Controller
             "create_article"
             )
         ) {
+
             $status = "draft";
             if ( $input->issetField( "publish" ) ) {
                 $status = "published";

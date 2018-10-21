@@ -464,6 +464,16 @@ td {
     padding: 20px;
 }
 
+.inner-pad-med-plus {
+    box-sizing: border-box;
+    padding: 30px;
+}
+
+.inner-pad-med-plus-plus {
+    box-sizing: border-box;
+    padding: 40px;
+}
+
 .inner-pad-lrg {
     box-sizing: border-box;
     padding: 50px;
