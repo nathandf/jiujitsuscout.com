@@ -10,7 +10,7 @@ class ArticleMapper extends DataMapper
         $now = time();
         $id = $this->insert(
             "article",
-            [ "blog_id", "title", "slug", "meta_title", "meta_description", "publisher", "author", "body", "created_at", "updated_at" ]
+            [ "blog_id", "title", "slug", "meta_title", "meta_description", "publisher", "author", "body", "created_at", "updated_at" ],
             [ $article->blog_id, $article->title, $article->slug, $article->meta_title, $article->meta_description, $article->publisher, $article->author, $article->body, $now, $now ]
         );
 
@@ -22,7 +22,7 @@ class ArticleMapper extends DataMapper
     public function mapAllFromBlogID( $blog_id )
     {
         $entityFactory = $this->container->getService( "entity-factory" );
-        $article = [];
+        $articles = [];
         $sql = $this->DB->prepare( 'SELECT * FROM article WHERE blog_id = :blog_id' );
         $sql->bindParam( ":blog_id", $blog_id );
         $sql->execute();
@@ -33,6 +33,27 @@ class ArticleMapper extends DataMapper
         }
 
         return $articles;
+    }
+
+    public function mapFromID( \Model\Article $article, $id )
+    {
+        $sql = $this->DB->prepare( "SELECT * FROM article WHERE id = :id" );
+        $sql->bindParam( ":id", $id );
+        $sql->execute();
+        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
+        $this->populate( $article, $resp );
+        return $article;
+    }
+
+    public function mapFromIDAndBlogID( \Model\Article $article, $id, $blog_id )
+    {
+        $sql = $this->DB->prepare( "SELECT * FROM article WHERE id = :id AND blog_id = :blog_id" );
+        $sql->bindParam( ":id", $id );
+        $sql->bindParam( ":blog_id", $blog_id );
+        $sql->execute();
+        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
+        $this->populate( $article, $resp );
+        return $article;
     }
 
     public function mapFromSlug( \Model\Article $article, $slug )

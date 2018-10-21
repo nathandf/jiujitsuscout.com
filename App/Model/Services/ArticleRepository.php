@@ -26,10 +26,28 @@ class ArticleRepository extends Service
 
     public function getAllByBlogID( $blog_id )
     {
-        $articleMapper = new \Model\Mappers\BusinessMapper( $this->container );
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
         $articles = $articleMapper->mapAllFromBlogID( $blog_id );
 
         return $articles;
+    }
+
+    public function getByID( $id )
+    {
+        $article = new \Model\Article();
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->mapFromID( $article, $id );
+
+        return $article;
+    }
+
+    public function getByIDAndBlogID( $id, $blog_id )
+    {
+        $article = new \Model\Article();
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->mapFromIDAndBlogID( $article, $id, $blog_id );
+
+        return $article;
     }
 
     public function getBySlug( $slug )

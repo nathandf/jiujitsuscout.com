@@ -14,7 +14,7 @@
 		<a href="{$HOME}jjs-admin/blog/{$blog->id}/" class="text-xlrg-heavy link tc-deep-blue">{$blog->name}</a>
 		{foreachelse}
 		<div class="push-t-med"></div>
-		No Blogs created yet
+		<p>No Blogs created yet</p>
 		{/foreach}
 	</div>
 {/block}

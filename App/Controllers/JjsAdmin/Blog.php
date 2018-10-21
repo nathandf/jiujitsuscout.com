@@ -6,12 +6,20 @@ use Core\Controller;
 
 class Blog extends Controller
 {
+    public $blog;
 
     public function before()
     {
         if ( !isset( $this->params[ "id" ] ) ) {
             $this->view->redirect( "jjs-admin/blogs" );
         }
+
+        $blogRepo = $this->load( "blog-repository" );
+
+        $this->blog = $blogRepo->getByID( $this->params[ "id" ] );
+
+        $this->view->assign( "blog", $this->blog );
+
         // Loading services
 		$userAuth = $this->load( "user-authenticator" );
 		$userRepo = $this->load( "user-repository" );
@@ -25,11 +33,19 @@ class Blog extends Controller
 
     public function indexAction()
     {
-        $blogRepo = $this->load( "blog-repository" );
+        $articleRepo = $this->load( "article-repository" );
+        $articles = $articleRepo->getAllByBlogID( $this->blog->id );
 
-        $blog = $blogRepo->getByID( $this->params[ "id" ] );
+        $this->view->assign( "articles", $articles );
 
-        vdumpd( $blog );
+        $this->view->setTemplate( "jjs-admin/blog/home.tpl" );
+        $this->view->render( "App/Views/JJSAdmin/Blog.php" );
+    }
+
+    public function newArticleAction()
+    {
+        $this->view->setTemplate( "jjs-admin/blog/create-article.tpl" );
+        $this->view->render( "App/Views/JJSAdmin/Blog.php" );
     }
 
 }
