@@ -5,7 +5,7 @@ namespace Model\Services;
 class ArticleRepository extends Service
 {
 
-    public function create( $blog_id, $name, $slug )
+    public function create( $blog_id, $title, $slug, $meta_title, $meta_description, $publisher, $author, $body, $status, $created_at = null, $updated_at = null )
     {
         $article = new \Model\Article();
         $article->blog_id = $blog_id;
@@ -16,8 +16,20 @@ class ArticleRepository extends Service
         $article->publisher = $publisher;
         $article->author = $author;
         $article->body = $body;
-        $article->created_at = $created_at;
-        $article->updated_at = $updated_at;
+        $article->status = $status;
+
+        $now = time();
+        $article->created_at = $now;
+        $article->updated_at = $now;
+
+        if ( !is_null( $created_at ) ) {
+            $article->created_at = $created_at;
+        }
+
+        if ( !is_null( $updated_at ) ) {
+            $article->updated_at = $updated_at;
+        }
+
         $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
         $articleMapper->create( $article );
 

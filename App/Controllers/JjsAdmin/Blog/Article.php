@@ -45,9 +45,8 @@ class Article extends Controller
 
     public function indexAction()
     {
-        foreach ( $this->params as $key => $param ) {
-            echo $key . ": " . $param . "<br>";
-        }
+        $this->view->setTemplate( "article.tpl" );
+        $this->view->render( "App/Views/JJSAdmin/Blog/Article.php" );
     }
 
 }

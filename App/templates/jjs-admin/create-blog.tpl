@@ -10,7 +10,7 @@
 		<div class="encapsulation-cnt-bare bg-white add-form push-t-med">
 			<p class="encap-header bg-green tc-white">Create Blog</p>
 			{if !empty($error_messages.create_blog)}
-				{foreach from=$error_messages.add_business item=message}
+				{foreach from=$error_messages.create_blog item=message}
 					<div class="con-message-failure mat-hov cursor-pt --c-hide">
 						<p class="user-message-body">{$message}</p>
 					</div>
