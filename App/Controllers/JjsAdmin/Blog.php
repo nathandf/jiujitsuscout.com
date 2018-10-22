@@ -24,6 +24,7 @@ class Blog extends Controller
         // Loading services
 		$userAuth = $this->load( "user-authenticator" );
 		$userRepo = $this->load( "user-repository" );
+
 		// If user not validated with session or cookie, send them to sign in
 		if ( !$userAuth->userValidate( [ "jjs-admin" ] ) ) {
 			$this->view->redirect( "jjs-admin/sign-in" );
@@ -48,6 +49,7 @@ class Blog extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $articleRepo = $this->load( "article-repository" );
+        $HTMLTagConverter = $this->load( "html-tag-converter" );
 
         if ( $input->exists() && $inputValidator->validate(
             $input,
@@ -96,6 +98,8 @@ class Blog extends Controller
                 $status = "published";
             }
 
+            $body = $HTMLTagConverter->replaceHTML( $input->get( "body", null ) );
+
             $article = $articleRepo->create(
                 $this->blog->id,
                 $input->get( "title" ),
@@ -104,9 +108,10 @@ class Blog extends Controller
                 $input->get( "meta_description" ),
                 "JiuJitsuScout LLC",
                 $this->user->getFullName(),
-                $input->get( "body" ),
+                $body,
                 $status
             );
+
             $this->view->redirect( "jjs-admin/blog/" . $this->params[ "id" ] . "/article/" . $article->id . "/" );
         }
 

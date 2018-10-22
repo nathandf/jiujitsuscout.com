@@ -17,6 +17,7 @@ class Article extends Controller
 
         $blogRepo = $this->load( "blog-repository" );
         $articleRepo = $this->load( "article-repository" );
+        $HTMLTagConverter = $this->load( "html-tag-converter" );
 
         $this->blog = $blogRepo->getByID( $this->params[ "blogid" ] );
 
@@ -28,6 +29,9 @@ class Article extends Controller
         if ( is_null( $this->article->id ) ) {
             $this->view->redirect( "jjs-admin/blogs" );
         }
+
+        // Replace tags with html
+        $this->article->body = $HTMLTagConverter->replaceTags( $this->article->body );
 
         $this->view->assign( "blog", $this->blog );
         $this->view->assign( "article", $this->article );

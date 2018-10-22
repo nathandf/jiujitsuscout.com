@@ -538,6 +538,11 @@ $container->register( "geometry", function() use ( $container ) {
 	return $Geometry;
 } );
 
+$container->register( "html-tag-converter", function() use ( $container ) {
+	$obj = new \Helpers\HTMLTagConverter;
+	return $obj;
+} );
+
 $container->register( "ip-info", function() use ( $container ) {
 	$IPInfo = new \Helpers\IPInfo( $container->getService( "config" ) );
 	return $IPInfo;
