@@ -100,6 +100,8 @@ class Blog extends Controller
 
             $body = $HTMLTagConverter->replaceHTML( $input->get( "body", null ) );
 
+            // vdumpd(filter_var( $body, FILTER_SANITIZE_FULL_SPECIAL_CHARS ));
+
             $article = $articleRepo->create(
                 $this->blog->id,
                 $input->get( "title" ),
@@ -108,7 +110,7 @@ class Blog extends Controller
                 $input->get( "meta_description" ),
                 "JiuJitsuScout LLC",
                 $this->user->getFullName(),
-                trim( $body ),
+                filter_var( $body, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES ),
                 $status
             );
 

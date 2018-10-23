@@ -43,3 +43,13 @@
 .article-content ul li{
 	line-height: 10px;
 }
+
+.article-content img {
+	box-sizing: border-box;
+	border: 1px solid #CCC;
+	width: 100%;
+	max-width: 800px;
+	max-height: 800px;
+	display: block;
+	margin: 0 auto;
+}

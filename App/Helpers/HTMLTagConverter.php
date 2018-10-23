@@ -4,6 +4,7 @@ namespace Helpers;
 
 class HTMLTagConverter
 {
+
 	public function replaceTags( $string )
 	{
 		// This pattern will match anything that:
@@ -16,15 +17,14 @@ class HTMLTagConverter
 		// Examples:
 		// ~ [*a href="somesite.com/hello.php"*]Some Text Here[*/a*]
 		// ~ [*p*]Some super long text here[*/p*]
-		$tagPattern = "/(\[\*)(\w{1,2})( href=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")?(\*\])([^<>()]*)(\[\*)(\/{1}\w{1,2})(\*\])/";
-		$openingPattern = "/(\[\*)(\w{1,2})( href=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")?(\*\])/";
-		$closingPattern = "/(\[\*)(\/\w{1,2})(\*\])/";
+		$openingPattern = "/\[\*(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)( [a-zA-Z\-]*=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")*\*\]/";
+		$closingPattern = "/\[\*\/(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)\*\]/";
 
 		// Replace openings
-		$string = preg_replace( $openingPattern, "<\\2\\3>", trim( $string ) );
+		$string = preg_replace( $openingPattern, "<\\1\\2>", trim( $string ) );
 
 		// Replace closings
-		$string = preg_replace( $closingPattern, "</\\2>", trim( $string ) );
+		$string = preg_replace( $closingPattern, "</\\1>", trim( $string ) );
 
 		return $string;
 	}
@@ -32,15 +32,13 @@ class HTMLTagConverter
 	public function replaceHTML( $string )
 	{
 		// Same as tagPattern but [* and *] are replaced by < and >
-	    $htmlPattern = "/(<)(\w{1,2})( href=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")?(>)([^<>()]*)(<)(\/{1}\w{1,2})(>)/";
-		$openingPattern = "/(<)(\w{1,2})( href=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")?(>)/";
-		$closingPattern = "/(<)(\/\w{1,2})(>)/";
+		$openingPattern = "/<(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)( [a-zA-Z\-]*=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")*>/";
+		$closingPattern = "/<\/(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)>/";
 
 		// Replace openings
-		$string = preg_replace( $openingPattern, "[*\\2\\3*]", $string );
-
+		$string = preg_replace( $openingPattern, "[*\\1\\2*]", trim( $string ) );
 		// Replace closings
-		$string = preg_replace( $openingPattern, "[*/\\2*]", $string );
+		$string = preg_replace( $closingPattern, "[*/\\1*]", trim ( $string ) );
 
 		return $string;
 	}
