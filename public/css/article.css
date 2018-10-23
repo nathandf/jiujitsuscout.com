@@ -35,3 +35,11 @@
 	cursor: pointer;
 	text-decoration: underline;
 }
+
+.article-content ul {
+	margin-left: 40px;
+}
+
+.article-content ul li{
+	line-height: 10px;
+}

@@ -108,7 +108,7 @@ class Blog extends Controller
                 $input->get( "meta_description" ),
                 "JiuJitsuScout LLC",
                 $this->user->getFullName(),
-                $body,
+                trim( $body ),
                 $status
             );
 

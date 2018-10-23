@@ -13,7 +13,9 @@
 {block name="body"}
 	<div class="article-content con-cnt-xlrg bg-white push-t-lrg push-b-lrg inner-pad-med-plus">
 		<h1>{$article->title}</h1>
-		<p class="push-t-lrg article-body">{$article->body}</p>
+		<div class="article-body">
+			{$article->body}
+		</div>
 		<div class="clear"></div>
 	</div>
 	<div class="clear"></div>

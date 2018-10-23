@@ -17,27 +17,30 @@ class HTMLTagConverter
 		// ~ [*a href="somesite.com/hello.php"*]Some Text Here[*/a*]
 		// ~ [*p*]Some super long text here[*/p*]
 		$tagPattern = "/(\[\*)(\w{1,2})( href=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")?(\*\])([^<>()]*)(\[\*)(\/{1}\w{1,2})(\*\])/";
+		$openingPattern = "/(\[\*)(\w{1,2})( href=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")?(\*\])/";
+		$closingPattern = "/(\[\*)(\/\w{1,2})(\*\])/";
 
-		preg_match( $tagPattern, $string, $matches );
-		vdumpd($matches);
-		$full_pattern_matches = $matches[ 0 ];
+		// Replace openings
+		$string = preg_replace( $openingPattern, "<\\2\\3>", trim( $string ) );
 
-		$new_string = "";
+		// Replace closings
+		$string = preg_replace( $closingPattern, "</\\2>", trim( $string ) );
 
-		foreach ( $full_pattern_matches as $match ) {
-			$new_string .= preg_replace( $tagPattern, "<\\2\\3>\\5<\\7>", $string );
-		}
-
-
-		return $new_string;
+		return $string;
 	}
 
 	public function replaceHTML( $string )
 	{
 		// Same as tagPattern but [* and *] are replaced by < and >
-		$htmlPattern = "/(<)(\w{1,2})( href=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")?(>)([^<>()]*)(<)(\/{1}\w{1,2})(>)/";
+	    $htmlPattern = "/(<)(\w{1,2})( href=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")?(>)([^<>()]*)(<)(\/{1}\w{1,2})(>)/";
+		$openingPattern = "/(<)(\w{1,2})( href=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")?(>)/";
+		$closingPattern = "/(<)(\/\w{1,2})(>)/";
 
-		$string = preg_replace( $htmlPattern, "[*\\2\\3*]\\5[*\\7*]", $string );
+		// Replace openings
+		$string = preg_replace( $openingPattern, "[*\\2\\3*]", $string );
+
+		// Replace closings
+		$string = preg_replace( $openingPattern, "[*/\\2*]", $string );
 
 		return $string;
 	}
