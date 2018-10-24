@@ -6,6 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="google" content="notranslate">
 	<meta http-equiv="Content-Language" content="en">
+	<script src="{$HOME}{$JS_SCRIPTS}article-builder.js"></script>
 {/block}
 
 {block name="body"}
@@ -28,23 +29,31 @@
 			<div class="clear col-100 push-b-med push-t-sml" style="border-top: 1px solid #CCC;"></div>
 			<label class="text-med">Article Title</label>
 			<div class="clear"></div>
-			<input type="text" class="article-builder-field mat-hov title" name="title" value="{$inputs.create_article.title|default:null}">
+			<input id="input_title" type="text" class="article-builder-field title" name="title" value="{$inputs.create_article.title|default:null}">
 			<div class="clear col-100 push-t-med push-b-med" style="border-top: 1px solid #CCC;"></div>
 			<label class="text-med">Slug</label>
 			<div class="clear"></div>
-			<input type="text" class="article-builder-field mat-hov title" name="slug" value="{$inputs.create_article.slug|default:null}">
+			<input id="input_slug" type="text" class="article-builder-field title" name="slug" value="{$inputs.create_article.slug|default:null}">
+			<div class="clear"></div>
+			<input type="checkbox" id="sluglock" class="checkbox" style="margin-right: 3px;"><i class="fa fa-lock" aria-hidden="true"></i>
 			<div class="clear push-t-sml"></div>
 			<label class="text-med">Meta Title</label>
 			<div class="clear"></div>
-			<input type="text" class="article-builder-field mat-hov title" name="meta_title" value="{$inputs.create_article.meta_title|default:null}">
+			<input id="input_meta_title" type="text" class="article-builder-field title" name="meta_title" value="{$inputs.create_article.meta_title|default:null}">
 			<div class="clear push-t-med"></div>
 			<label class="text-med">Meta Description</label>
 			<div class="clear"></div>
-			<textarea class="article-builder-field mat-hov description" name="meta_description">{$inputs.create_article.meta_description|default:null}</textarea>
+			<textarea id="input_meta_description" class="article-builder-field description" name="meta_description">{$inputs.create_article.meta_description|default:null}</textarea>
+			<p class="push-t-med push-b-sml">Search Result Mockup:</p>
+			<div class="inner-pad-med sr-mockup">
+				<p class="sr-mockup-link" id="meta_title"></p>
+				<p class="sr-mockup-url">https://www.jiujitsuscout.com/{$blog->url}/<span id="slug"></span></p>
+				<p class="sr-mockup-description" id="meta_description"></p>
+			</div>
 			<div class="clear col-100 push-t-med push-b-med" style="border-top: 1px solid #CCC;"></div>
 			<label class="text-med">Article Body</label>
 			<div class="clear"></div>
-			<textarea class="article-builder-field mat-hov body" name="body">{$inputs.create_article.body|default:null}</textarea>
+			<textarea class="article-builder-field body" name="body">{$inputs.create_article.body|default:null}</textarea>
 			<div class="clear col-100 push-t-med push-b-sml" style="border-top: 1px solid #CCC;"></div>
 			<button type="submit" name="publish" value="1" class="btn btn-inline bg-green article-btn">Publish</button>
 			<button type="submit" name="draft" value="1" class="btn btn-inline bg-deep-blue article-btn">Save draft</button>
