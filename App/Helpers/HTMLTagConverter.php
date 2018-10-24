@@ -17,14 +17,14 @@ class HTMLTagConverter
 		// Examples:
 		// ~ [*a href="somesite.com/hello.php"*]Some Text Here[*/a*]
 		// ~ [*p*]Some super long text here[*/p*]
-		$openingPattern = "/\[\*(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)( [a-zA-Z\-]*=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")*\*\]/";
+		$openingPattern = "/\[\*(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)(\s[a-zA-Z\-]*=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")*\*\]/";
 		$closingPattern = "/\[\*\/(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)\*\]/";
 
 		// Replace openings
-		$string = preg_replace( $openingPattern, "<\\1\\2>", trim( $string ) );
+		$string = preg_replace( $openingPattern, "<\\1\\2>", $string );
 
 		// Replace closings
-		$string = preg_replace( $closingPattern, "</\\1>", trim( $string ) );
+		$string = preg_replace( $closingPattern, "</\\1>", $string );
 
 		return $string;
 	}
@@ -32,13 +32,13 @@ class HTMLTagConverter
 	public function replaceHTML( $string )
 	{
 		// Same as tagPattern but [* and *] are replaced by < and >
-		$openingPattern = "/<(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)( [a-zA-Z\-]*=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")*>/";
+		$openingPattern = "/<(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)(\s[a-zA-Z\-]*=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")*>/";
 		$closingPattern = "/<\/(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)>/";
 
 		// Replace openings
-		$string = preg_replace( $openingPattern, "[*\\1\\2*]", trim( $string ) );
+		$string = preg_replace( $openingPattern, "[*\\1\\2*]", $string );
 		// Replace closings
-		$string = preg_replace( $closingPattern, "[*/\\1*]", trim ( $string ) );
+		$string = preg_replace( $closingPattern, "[*/\\1*]", $string );
 
 		return $string;
 	}

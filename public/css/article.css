@@ -9,14 +9,15 @@
 }
 
 .article-content h1 {
-	font-family: 'Raleway', 'Open Sans', sans-serif;
 	size: 38px;
-	color: #2F3033;
 }
 
 .article-content h2 {
-	font-family: 'Raleway', 'Open Sans', sans-serif;
 	size: 28px;
+}
+
+.article-content h1,h2,h3,h4,h5,h6 {
+	font-family: 'Raleway', 'Open Sans', sans-serif;
 	color: #2F3033;
 }
 
