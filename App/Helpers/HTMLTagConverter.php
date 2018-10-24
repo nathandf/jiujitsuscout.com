@@ -17,7 +17,7 @@ class HTMLTagConverter
 		// Examples:
 		// ~ [*a href="somesite.com/hello.php"*]Some Text Here[*/a*]
 		// ~ [*p*]Some super long text here[*/p*]
-		$openingPattern = "/\[\*(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)(\s[a-zA-Z\-]*=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")*\*\]/";
+		$openingPattern = "/\[\*(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)( \w*=\"[^\<\>\[\]\{\}\(\)\']*\"\s?\/?)*\*\]/";
 		$closingPattern = "/\[\*\/(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)\*\]/";
 
 		// Replace openings
@@ -32,7 +32,7 @@ class HTMLTagConverter
 	public function replaceHTML( $string )
 	{
 		// Same as tagPattern but [* and *] are replaced by < and >
-		$openingPattern = "/<(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)(\s[a-zA-Z\-]*=\"[a-zA-Z0-9:\/\.\-\_%=?]*\")*>/";
+		$openingPattern = "/<(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)( \w*=\"[^\<\>\[\]\{\}\(\)\']*\"\s?\/?)*>/";
 		$closingPattern = "/<\/(a|p|i|b|h1|h2|h3|h4|h5|h6|em|strong|mark|ul|ol|li|u|img)>/";
 
 		// Replace openings
