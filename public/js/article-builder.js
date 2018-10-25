@@ -1,9 +1,6 @@
 $( function() {
 
 	var html_tags = {
-		"paragraph": {
-			"tag": "p"
-		},
 		"bold": {
 			"tag": "b"
 		},
@@ -13,8 +10,11 @@ $( function() {
 		"underline": {
 			"tag": "u"
 		},
-		"header": {
+		"header2": {
 			"tag": "h2"
+		},
+		"header3": {
+			"tag": "h3"
 		}
 	};
 
@@ -71,10 +71,6 @@ $( function() {
 		selection = getSelectionText();
 	};
 
-	$( "#paragraph" ).on( "click", function() {
-		$( "#article-body" ).replaceSelectedText( addTags( html_tags[ this.id ][ "tag" ], selection ) );
-	} );
-
 	$( "#bold" ).on( "click", function() {
 		$( "#article-body" ).replaceSelectedText( addTags( html_tags[ this.id ][ "tag" ], selection ) );
 	} );
@@ -87,8 +83,12 @@ $( function() {
 		$( "#article-body" ).replaceSelectedText( addTags( html_tags[ this.id ][ "tag" ], selection ) );
 	} );
 
-	$( "#header" ).on( "click", function() {
-		$( "#article-body" ).replaceSelectedText( addTags( html_tags[ this.id ][ "tag" ], selection ) );
+	$( "#header2" ).on( "click", function() {
+		$( "#article-body" ).replaceSelectedText( "</p>" + addTags( html_tags[ this.id ][ "tag" ], selection ) + "<p>" );
+	} );
+
+	$( "#header3" ).on( "click", function() {
+		$( "#article-body" ).replaceSelectedText( "</p>" + addTags( html_tags[ this.id ][ "tag" ], selection ) + "<p>"  );
 	} );
 
 } );
