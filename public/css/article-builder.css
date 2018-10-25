@@ -43,6 +43,7 @@
 	color: #1A0DAB;
 	font-family: arial,sans-serif;
 	font-size: 18px;
+	line-height: 1.2em;
 }
 
 .sr-mockup-link:visited {
@@ -65,4 +66,21 @@
 	font-size: 15px;
 	color: #545454;
 	padding-top: 2px;
+}
+
+.style-button {
+	background: linear-gradient( #CCC, #AAA );
+	color: #000;
+	height: 25px;
+	width: 25px;
+	display: inline-block;
+	border: 1px solid #666;
+	border-radius: 2px;
+}
+
+.style-button:focus {
+	outline: solid;
+	outline-color: rgb(77, 144, 254); // #4D90FE
+	outline-offset: -2px;
+	outline-style: auto;
 }

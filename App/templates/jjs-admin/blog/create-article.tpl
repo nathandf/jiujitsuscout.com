@@ -6,6 +6,8 @@
 	<meta charset="UTF-8">
 	<meta name="google" content="notranslate">
 	<meta http-equiv="Content-Language" content="en">
+	<script src="{$HOME}{$JS_SCRIPTS}rangyinputs-jquery-src.js"></script>
+	<script src="{$HOME}{$JS_SCRIPTS}rangyinputs-jquery.js"></script>
 	<script src="{$HOME}{$JS_SCRIPTS}article-builder.js"></script>
 {/block}
 
@@ -53,7 +55,15 @@
 			<div class="clear col-100 push-t-med push-b-med" style="border-top: 1px solid #CCC;"></div>
 			<label class="text-med">Article Body</label>
 			<div class="clear"></div>
-			<textarea class="article-builder-field body" name="body">{$inputs.create_article.body|default:null}</textarea>
+			<button id="paragraph" type="button" class="style-button cursor-pt"><i class="fa fa-paragraph" aria-hidden="true"></i></button>
+			<button id="bold" type="button" class="style-button cursor-pt"><i class="fa fa-bold" aria-hidden="true"></i></button>
+			<button id="italic" type="button" class="style-button cursor-pt"><i class="fa fa-italic" aria-hidden="true"></i></button>
+			<button id="underline" type="button" class="style-button cursor-pt"><i class="fa fa-underline" aria-hidden="true"></i></button>
+			<button id="anchor" type="button" class="style-button cursor-pt"><i class="fa fa-anchor" aria-hidden="true"></i></button>
+			<button id="header" type="button" class="style-button cursor-pt"><i class="fa fa-header" aria-hidden="true"></i></button>
+			<button type="button" class="style-button cursor-pt"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
+			<div class="clear" style="margin-top: 3px;"></div>
+			<textarea id="article-body" class="article-builder-field body" name="body">{$inputs.create_article.body|default:null}</textarea>
 			<div class="clear col-100 push-t-med push-b-sml" style="border-top: 1px solid #CCC;"></div>
 			<button type="submit" name="publish" value="1" class="btn btn-inline bg-green article-btn">Publish</button>
 			<button type="submit" name="draft" value="1" class="btn btn-inline bg-deep-blue article-btn">Save draft</button>
