@@ -11,20 +11,34 @@ class Blog extends Controller
 
 	public function before()
 	{
-		$blogRepo = $this->load( "blog-repository" );
-		$this->blog = $blogRepo->getByURL( $this->params[ "blogurl" ] );
+        $blogRepo = $this->load( "blog-repository" );
+        $articleRepo = $this->load( "article-repository" );
+        $HTMLTagConverter = $this->load( "html-tag-converter" );
+
+        $this->blog = $blogRepo->getByURL( $this->params[ "blogurl" ] );
+
+        $this->view->assign( "blog", $this->blog );
 	}
 
 	public function indexAction()
 	{
-		echo "blog: " . $this->params[ "blogurl" ] . "<br>";
-		if ( $this->params[ "article" ] == "" ) {
-			echo "article: home page";
-			return;
-		}
+		$articleRepo = $this->load( "article-repository" );
+		$HTMLTagConverter = $this->load( "html-tag-converter" );
 
-		echo( "article: " . $this->params[ "article" ] );
-		return;
+		$article = $articleRepo->getBySlug( $this->params[ "article" ] );
+
+		$this->view->setTemplate( "article.tpl" );
+
+        if ( is_null( $article->id ) ) {
+            $this->view->setTemplate( "blog/home.tpl" );
+        }
+
+        // Replace tags with html
+        $article->body = $HTMLTagConverter->replaceTags( $article->body );
+
+		$this->view->assign( "article", $article );
+
+        $this->view->render( "App/Views/Blog/Article.php" );
 	}
 
 	public function taxonomyAction()

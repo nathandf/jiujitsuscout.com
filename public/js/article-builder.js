@@ -20,6 +20,39 @@ $( function() {
 
 	var selection = null;
 
+	counter = function() {
+	    var value = $('#article-body').val();
+
+	    if (value.length == 0) {
+	        $('#wordCount').html(0);
+	        $('#totalChars').html(0);
+	        $('#charCount').html(0);
+	        $('#charCountNoSpace').html(0);
+	        return;
+	    }
+
+	    var regex = /\s+/gi;
+	    var wordCount = value.trim().replace(regex, ' ').split(' ').length;
+	    var totalChars = value.length;
+	    var charCount = value.trim().length;
+	    var charCountNoSpace = value.replace(regex, '').length;
+
+	    $('#wordCount').html(wordCount);
+	    $('#totalChars').html(totalChars);
+	    $('#charCount').html(charCount);
+	    $('#charCountNoSpace').html(charCountNoSpace);
+	};
+
+	$(document).ready(function() {
+	    $('#count').click(counter);
+	    $('#article-body').change(counter);
+	    $('#article-body').keydown(counter);
+	    $('#article-body').keypress(counter);
+	    $('#article-body').keyup(counter);
+	    $('#article-body').blur(counter);
+	    $('#article-body').focus(counter);
+	});
+
 	function getSelectionText() {
 		var text = "";
 		var activeEl = document.activeElement;
