@@ -20,37 +20,60 @@ $( function() {
 
 	var selection = null;
 
-	counter = function() {
-	    var value = $('#article-body').val();
+	$( '#input_meta_title' ).on( "keyup", function() {
+	    $( "#charCountTitle" ).text( this.value.length );
+		if ( this.value.length < 42 ) {
+			$( "#charCountTitle" ).css( "color", "red" );
+		} else if ( this.value.length >= 42 && this.value.length <= 70 ) {
+			$( "#charCountTitle" ).css( "color", "green" );
+		} else {
+			$( "#charCountTitle" ).css( "color", "red" );
+		}
+	});
 
-	    if (value.length == 0) {
-	        $('#wordCount').html(0);
-	        $('#totalChars').html(0);
-	        $('#charCount').html(0);
-	        $('#charCountNoSpace').html(0);
+	$( '#input_meta_description' ).on( "keyup", function() {
+	    $( "#charCountDescription" ).text( this.value.length );
+		if ( this.value.length < 120 ) {
+			$( "#charCountDescription" ).css( "color", "red" );
+		} else if ( this.value.length >= 120 && this.value.length <= 158 ) {
+			$( "#charCountDescription" ).css( "color", "green" );
+		} else {
+			$( "#charCountDescription" ).css( "color", "red" );
+		}
+	});
+
+	// Get and display word count of article
+	counterBody = function() {
+	    var valueBody = $('#article-body').val();
+
+	    if (valueBody.length == 0) {
+	        $('#wordCountBody').html(0);
+	        $('#totalCharsBody').html(0);
+	        $('#charCountBody').html(0);
+	        $('#charCountNoSpaceBody').html(0);
 	        return;
 	    }
 
-	    var regex = /\s+/gi;
-	    var wordCount = value.trim().replace(regex, ' ').split(' ').length;
-	    var totalChars = value.length;
-	    var charCount = value.trim().length;
-	    var charCountNoSpace = value.replace(regex, '').length;
+	    var regexBody = /\s+/gi;
+	    var wordCountBody = valueBody.trim().replace(regexBody, ' ').split(' ').length;
+	    var totalCharsBody = valueBody.length;
+	    var charCountBody = valueBody.trim().length;
+	    var charCountNoSpaceBody = valueBody.replace(regexBody, '').length;
 
-	    $('#wordCount').html(wordCount);
-	    $('#totalChars').html(totalChars);
-	    $('#charCount').html(charCount);
-	    $('#charCountNoSpace').html(charCountNoSpace);
+	    $('#wordCountBody').html(wordCountBody);
+	    $('#totalCharsBody').html(totalCharsBody);
+	    $('#charCountBody').html(charCountBody);
+	    $('#charCountNoSpaceBody').html(charCountNoSpaceBody);
 	};
 
 	$(document).ready(function() {
-	    $('#count').click(counter);
-	    $('#article-body').change(counter);
-	    $('#article-body').keydown(counter);
-	    $('#article-body').keypress(counter);
-	    $('#article-body').keyup(counter);
-	    $('#article-body').blur(counter);
-	    $('#article-body').focus(counter);
+	    $('#countBody').click(counterBody);
+	    $('#article-body').change(counterBody);
+	    $('#article-body').keydown(counterBody);
+	    $('#article-body').keypress(counterBody);
+	    $('#article-body').keyup(counterBody);
+	    $('#article-body').blur(counterBody);
+	    $('#article-body').focus(counterBody);
 	});
 
 	function getSelectionText() {

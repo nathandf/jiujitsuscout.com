@@ -41,10 +41,12 @@
 			<div class="clear push-t-sml"></div>
 			<label class="text-med">Meta Title</label>
 			<div class="clear"></div>
+			<p class="text-sml">character count: <span id="charCountTitle"></span></p>
 			<input id="input_meta_title" type="text" class="article-builder-field title" name="meta_title" value="{$inputs.create_article.meta_title|default:null}">
 			<div class="clear push-t-med"></div>
 			<label class="text-med">Meta Description</label>
 			<div class="clear"></div>
+			<p class="text-sml">character count: <span id="charCountDescription"></span></p>
 			<textarea id="input_meta_description" class="article-builder-field description" name="meta_description">{$inputs.create_article.meta_description|default:null}</textarea>
 			<p class="push-t-med push-b-sml">Search Result Mockup:</p>
 			<div class="inner-pad-med sr-mockup">
@@ -55,7 +57,7 @@
 			<div class="clear col-100 push-t-med push-b-med" style="border-top: 1px solid #CCC;"></div>
 			<label class="text-med">Article Body</label>
 			<div class="clear"></div>
-			<p class="text-sml">word count: <span id="wordCount"></span></p>
+			<p class="text-sml">word count: <span id="wordCountBody"></span></p>
 			<div class="clear"></div>
 			<button id="bold" type="button" class="style-button cursor-pt"><i class="fa fa-bold" aria-hidden="true"></i></button>
 			<button id="italic" type="button" class="style-button cursor-pt"><i class="fa fa-italic" aria-hidden="true"></i></button>

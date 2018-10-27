@@ -24,7 +24,7 @@
 .article-content p {
 	font-family: 'Noto Sans', 'Merriweather', Tahoma, serif;
 	font-size: 18px;
-	line-height: 30px;
+	line-height: 45px;
 	color: #2F3033;
 }
 
@@ -53,4 +53,8 @@
 	max-height: 800px;
 	display: block;
 	margin: 0 auto;
+}
+
+.article-details {
+	font-size: 10px;
 }

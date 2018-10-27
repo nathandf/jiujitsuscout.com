@@ -25,6 +25,13 @@ class Blog extends Controller
 		$articleRepo = $this->load( "article-repository" );
 		$HTMLTagConverter = $this->load( "html-tag-converter" );
 
+		$allArticles = $articleRepo->getAllByBlogID( $this->blog->id );
+		$articles = [];
+		foreach ( $allArticles as $_article ) {
+			if ( $_article->status == "published" ) {
+				$articles[] = $_article;
+			}
+		}
 		$article = $articleRepo->getBySlug( $this->params[ "article" ] );
 
 		$this->view->setTemplate( "article.tpl" );
@@ -37,7 +44,7 @@ class Blog extends Controller
         $article->body = $HTMLTagConverter->replaceTags( $article->body );
 
 		$this->view->assign( "article", $article );
-
+		$this->view->assign( "articles", $articles );
         $this->view->render( "App/Views/Blog/Article.php" );
 	}
 
