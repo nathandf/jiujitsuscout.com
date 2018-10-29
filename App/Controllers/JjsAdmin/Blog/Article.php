@@ -17,6 +17,7 @@ class Article extends Controller
 
         $blogRepo = $this->load( "blog-repository" );
         $articleRepo = $this->load( "article-repository" );
+        $HTMLTagConverter = $this->load( "html-tag-converter" );
 
         $this->blog = $blogRepo->getByID( $this->params[ "blogid" ] );
 
@@ -28,6 +29,9 @@ class Article extends Controller
         if ( is_null( $this->article->id ) ) {
             $this->view->redirect( "jjs-admin/blogs" );
         }
+
+        // Replace tags with html
+        $this->article->body = $HTMLTagConverter->replaceTags( $this->article->body );
 
         $this->view->assign( "blog", $this->blog );
         $this->view->assign( "article", $this->article );
@@ -45,6 +49,17 @@ class Article extends Controller
 
     public function indexAction()
     {
+        $articleBlogCategoryRepo = $this->load( "article-blog-category-repository" );
+        $blogCategoryRepo = $this->load( "blog-category-repository" );
+
+        $blogCategories = [];
+        $articleBlogCategories = $articleBlogCategoryRepo->getAllByArticleID( $this->article->id );
+        foreach ( $articleBlogCategories as $articleBlogCategory ) {
+            $blogCategories[] = $blogCategoryRepo->getByID( $articleBlogCategory->blog_category_id );
+        }
+
+        $this->view->assign( "blogCategories", $blogCategories );
+
         $this->view->setTemplate( "article.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog/Article.php" );
     }

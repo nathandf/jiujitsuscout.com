@@ -9,21 +9,22 @@
 }
 
 .article-content h1 {
-	font-family: 'Raleway', 'Open Sans', sans-serif;
 	size: 38px;
-	color: #2F3033;
 }
 
 .article-content h2 {
-	font-family: 'Raleway', 'Open Sans', sans-serif;
 	size: 28px;
+}
+
+.article-content h1,h2,h3,h4,h5,h6 {
+	font-family: 'Raleway', 'Open Sans', sans-serif;
 	color: #2F3033;
 }
 
 .article-content p {
 	font-family: 'Noto Sans', 'Merriweather', Tahoma, serif;
 	font-size: 18px;
-	line-height: 30px;
+	line-height: 45px;
 	color: #2F3033;
 }
 
@@ -34,4 +35,26 @@
 .article-content a:hover {
 	cursor: pointer;
 	text-decoration: underline;
+}
+
+.article-content ul {
+	margin-left: 40px;
+}
+
+.article-content ul li{
+	line-height: 10px;
+}
+
+.article-content img {
+	box-sizing: border-box;
+	border: 1px solid #CCC;
+	width: 100%;
+	max-width: 800px;
+	max-height: 800px;
+	display: block;
+	margin: 0 auto;
+}
+
+.article-details {
+	font-size: 10px;
 }

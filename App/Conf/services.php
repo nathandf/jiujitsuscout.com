@@ -102,8 +102,23 @@ $container->register( "appointment-hash-repository", function() use ( $container
 	return $repo;
 } );
 
+$container->register( "article-blog-category-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ArticleBlogCategoryRepository( $container );
+	return $repo;
+} );
+
 $container->register( "article-repository", function() use ( $container ) {
 	$repo = new \Model\Services\ArticleRepository( $container );
+	return $repo;
+} );
+
+$container->register( "blog-category-repository", function() use ( $container ) {
+	$repo = new \Model\Services\BlogCategoryRepository( $container );
+	return $repo;
+} );
+
+$container->register( "blog-navigation-element-repository", function() use ( $container ) {
+	$repo = new \Model\Services\BlogNavigationElementRepository( $container );
 	return $repo;
 } );
 
@@ -536,6 +551,11 @@ $container->register( "geocoder", function() use ( $container ) {
 $container->register( "geometry", function() use ( $container ) {
 	$Geometry = new \Helpers\Geometry;
 	return $Geometry;
+} );
+
+$container->register( "html-tag-converter", function() use ( $container ) {
+	$obj = new \Helpers\HTMLTagConverter;
+	return $obj;
 } );
 
 $container->register( "ip-info", function() use ( $container ) {

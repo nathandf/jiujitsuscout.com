@@ -65,4 +65,15 @@ class ArticleMapper extends DataMapper
         return $article;
     }
 
+    public function mapFromSlugAndBlogID( \Model\Article $article, $slug, $blog_id )
+    {
+        $sql = $this->DB->prepare( "SELECT * FROM article WHERE slug = :slug AND blog_id = :blog_id" );
+        $sql->bindParam( ":slug", $slug );
+        $sql->bindParam( ":blog_id", $blog_id );
+        $sql->execute();
+        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
+        $this->populate( $article, $resp );
+        return $article;
+    }
+
 }

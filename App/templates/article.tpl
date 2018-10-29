@@ -8,12 +8,57 @@
 	<link href="https://fonts.googleapis.com/css?family=Raleway:800" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Josefin+Slab" rel="stylesheet">
 	<link rel="stylesheet" href="{$HOME}public/css/article.css">
+	<script type="application/ld+json">
+	{literal}
+		{
+			"@context": "http://schema.org",
+			"@type": "BlogPosting",
+			"mainEntityOfPage": {
+				"@type": "WebPage",
+				"@id": "https://jiujitsuscout.com/{/literal}{$blog->url}/{$article->slug}{literal}"
+			},
+			"headline": "{/literal}{$article->title}{literal}",
+			"image": [
+				"https://www.jiujitsuscout.com/public/img/jjslogoiconwhite.jpg"
+			],
+			"datePublished": "{/literal}{$article->created_at|date_format:'%a, %b %e %Y %l:%M%p'}{$article->created_at|date_format:"%a, %b %e %Y %l:%M%p"}{literal}",
+			"dateModified": "{/literal}{$article->updated_at|date_format:'%a, %b %e %Y %l:%M%p'}{literal}",
+			"author": {
+				"@type": "Person",
+				"name": "{/literal}{$article->author}{literal}"
+			},
+			"publisher": {
+				"@type": "Organization",
+				"name": "JiuJitsuScout",
+				"logo": {
+				  "@type": "ImageObject",
+				  "text": "Find Martial Arts Near Me",
+				  "url": "https://www.jiujitsuscout.com/public/img/jjslogoiconwhite.jpg"
+				}
+			},
+			"description": "{/literal}{$article->meta_description}{literal}"
+		}
+
+	{/literal}
+	</script>
 {/block}
 
 {block name="body"}
+	{include file="includes/navigation/blog-menu.tpl"}
 	<div class="article-content con-cnt-xlrg bg-white push-t-lrg push-b-lrg inner-pad-med-plus">
 		<h1>{$article->title}</h1>
-		<p class="push-t-lrg article-body">{$article->body}</p>
+		<span class="text-sml">Publish Date: <span>{$article->created_at|date_format:"%a, %b %e %Y %l:%M%p"}</span> | Author: <span>{$article->author}</span> | <span>JiuJitsuScout</span></span>
+		{if $blogCategories|@count > 0}
+		<div class="clear"></div>
+		<span class="text-sml">Categories:
+			{foreach from=$blogCategories item=blogCategory name=category_loop}
+				<a class="link tc-deep-blue text-sml-heavy" href="{$HOME}{$blog->url}/category/{$blogCategory->url}">{$blogCategory->name|capitalize}</a>{if !$smarty.foreach.category_loop.last} | {/if}
+			{/foreach}
+		</span>
+		{/if}
+		<div class="article-body">
+			<p>{$article->body}</p>
+		</div>
 		<div class="clear"></div>
 	</div>
 	<div class="clear"></div>
