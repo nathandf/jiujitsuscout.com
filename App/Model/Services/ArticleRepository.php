@@ -70,4 +70,13 @@ class ArticleRepository extends Service
 
         return $article;
     }
+
+    public function getBySlugAndBlogID( $slug, $blog_id )
+    {
+        $article = new \Model\Article();
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->mapFromSlugAndBlogID( $article, $slug, $blog_id );
+
+        return $article;
+    }
 }

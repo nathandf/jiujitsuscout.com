@@ -13,8 +13,11 @@
 
 {block name="body"}
 	{include file="includes/navigation/admin-menu.tpl"}
+	<div class="con-cnt-xlrg inner-pad-med push-t-med">
+		<p class="text-lrg-heavy push-b-med"><a class="link cursor-pt tc-deep-blue" href="{$HOME}jjs-admin/blogs">Blogs</a> > <a class="link cursor-pt tc-deep-blue" href="{$HOME}jjs-admin/blog/{$blog->id}/">{$blog->name}</a> > New Article</p>
+		{include file="includes/navigation/blog-admin-menu.tpl"}
+	</div>
 	<div class="con-cnt-xlrg inner-pad-med push-t-med push-b-med bg-white" style="border: 2px solid #CCC;">
-		<p class="text-lrg-heavy">Blog Name: <i>{$blog->name}</i></p>
 		{if !empty($error_messages.create_article)}
 			{foreach from=$error_messages.create_article item=message}
 				<div class="con-message-failure mat-hov cursor-pt --c-hide">
@@ -48,11 +51,30 @@
 			<div class="clear"></div>
 			<p class="text-sml">character count: <span id="charCountDescription"></span></p>
 			<textarea id="input_meta_description" class="article-builder-field description" name="meta_description">{$inputs.create_article.meta_description|default:null}</textarea>
-			<p class="push-t-med push-b-sml">Search Result Mockup:</p>
+			<p class="push-t-med push-b-sml text-med">Search Result Mockup:</p>
 			<div class="inner-pad-med sr-mockup">
 				<p class="sr-mockup-link" id="meta_title"></p>
 				<p class="sr-mockup-url">https://www.jiujitsuscout.com/{$blog->url}/<span id="slug"></span></p>
 				<p class="sr-mockup-description" id="meta_description"></p>
+			</div>
+			<div class="clear col-100 push-t-med push-b-med" style="border-top: 1px solid #CCC;"></div>
+			<div class="clear push-t-med">
+				<p class="push-b-sml text-med">Categories:</p>
+				{foreach from=$blogCategories item=blogCategory name=blogCategoryLoop}
+					<div style="min-width: 140px; display: inline-block; padding: 5px; box-sizing: border-box; width: 25%;" class="floatleft">
+						<table>
+							<tr>
+								<td><input id="cb{$blogCategory->id}" type="checkbox" name="blog_category_ids[]" value="{$blogCategory->id}" class="checkbox"></td>
+								<td><label class="cursor-pt" for="cb{$blogCategory->id}">{$blogCategory->name}</label></td>
+							</tr>
+						</table>
+					</div>
+					{if $smarty.foreach.blogCategoryLoop.last || $smarty.foreach.blogCategoryLoop.iteration % 4 == 0}
+					<div class="clear"></div>
+					{/if}
+				{foreachelse}
+				<p class="push-b-med">No categories have been created yet</p>
+				{/foreach}
 			</div>
 			<div class="clear col-100 push-t-med push-b-med" style="border-top: 1px solid #CCC;"></div>
 			<label class="text-med">Article Body</label>

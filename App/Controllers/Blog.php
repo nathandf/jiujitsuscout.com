@@ -16,7 +16,6 @@ class Blog extends Controller
         $HTMLTagConverter = $this->load( "html-tag-converter" );
 
         $this->blog = $blogRepo->getByURL( $this->params[ "blogurl" ] );
-
         $this->view->assign( "blog", $this->blog );
 	}
 
@@ -32,7 +31,7 @@ class Blog extends Controller
 				$articles[] = $_article;
 			}
 		}
-		$article = $articleRepo->getBySlug( $this->params[ "article" ] );
+		$article = $articleRepo->getBySlugAndBlogID( $this->params[ "article" ], $this->blog->id );
 
 		$this->view->setTemplate( "article.tpl" );
 

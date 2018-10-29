@@ -49,6 +49,17 @@ class Article extends Controller
 
     public function indexAction()
     {
+        $articleBlogCategoryRepo = $this->load( "article-blog-category-repository" );
+        $blogCategoryRepo = $this->load( "blog-category-repository" );
+
+        $blogCategories = [];
+        $articleBlogCategories = $articleBlogCategoryRepo->getAllByArticleID( $this->article->id );
+        foreach ( $articleBlogCategories as $articleBlogCategory ) {
+            $blogCategories[] = $blogCategoryRepo->getByID( $articleBlogCategory->blog_category_id );
+        }
+
+        $this->view->assign( "blogCategories", $blogCategories );
+
         $this->view->setTemplate( "article.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog/Article.php" );
     }

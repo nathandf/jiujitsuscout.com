@@ -842,6 +842,24 @@ td {
     height: 30px;
 }
 
+.field-saas {
+	font-size: 15px;
+	width: 85%;
+	box-sizing: border-box;
+	padding: 10px;
+	background: #FFF;
+	color: #555;
+	border: 2px solid #CCC;
+	border-radius: 4px;
+}
+
+.field-saas:focus {
+	outline: solid;
+	outline-color: rgb(77, 144, 254); // #4D90FE
+	outline-offset: -2px;
+	outline-style: auto;
+}
+
 .checkbox-sml {
     width: 15px;
     height: 15px;
