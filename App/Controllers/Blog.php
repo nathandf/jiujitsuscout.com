@@ -11,6 +11,7 @@ class Blog extends Controller
 
 	public function before()
 	{
+		$this->requireParam( "blogurl" );
         $blogRepo = $this->load( "blog-repository" );
         $articleRepo = $this->load( "article-repository" );
         $HTMLTagConverter = $this->load( "html-tag-converter" );
@@ -22,7 +23,6 @@ class Blog extends Controller
 	public function indexAction()
 	{
 		$articleRepo = $this->load( "article-repository" );
-		$HTMLTagConverter = $this->load( "html-tag-converter" );
 
 		$allArticles = $articleRepo->getAllByBlogID( $this->blog->id );
 		$articles = [];
@@ -31,20 +31,44 @@ class Blog extends Controller
 				$articles[] = $_article;
 			}
 		}
+
+        $this->view->setTemplate( "blog/home.tpl" );
+
+		$this->view->assign( "articles", $articles );
+        $this->view->render( "App/Views/Blog/Article.php" );
+	}
+
+	public function articleAction()
+	{
+		$articleRepo = $this->load( "article-repository" );
+		$HTMLTagConverter = $this->load( "html-tag-converter" );
+		$articleBlogCategoryRepo = $this->load( "article-blog-category-repository" );
+        $blogCategoryRepo = $this->load( "blog-category-repository" );
+        $imageRepo = $this->load( "image-repository" );
+
 		$article = $articleRepo->getBySlugAndBlogID( $this->params[ "article" ], $this->blog->id );
 
-		$this->view->setTemplate( "article.tpl" );
+		if ( is_null( $article->id ) ) {
+			$this->view->render404();
+		}
 
-        if ( is_null( $article->id ) ) {
-            $this->view->setTemplate( "blog/home.tpl" );
+        $blogCategories = [];
+        $articleBlogCategories = $articleBlogCategoryRepo->getAllByArticleID( $article->id );
+        foreach ( $articleBlogCategories as $articleBlogCategory ) {
+            $blogCategories[] = $blogCategoryRepo->getByID( $articleBlogCategory->blog_category_id );
         }
 
-        // Replace tags with html
+        $image = $imageRepo->getByID( $article->primary_image_id );
+
+		// Replace tags with html
         $article->body = $HTMLTagConverter->replaceTags( $article->body );
 
 		$this->view->assign( "article", $article );
-		$this->view->assign( "articles", $articles );
-        $this->view->render( "App/Views/Blog/Article.php" );
+        $this->view->assign( "blogCategories", $blogCategories );
+        $this->view->assign( "image", $image );
+
+        $this->view->setTemplate( "article.tpl" );
+        $this->view->render( "App/Views/JJSAdmin/Blog/Article.php" );
 	}
 
 	public function taxonomyAction()
@@ -53,6 +77,13 @@ class Blog extends Controller
 			$this->view->render404();
 		}
 
+		foreach ( $this->params as $key => $param ) {
+			echo( $key . ": " . $param . "<br>" );
+		}
+	}
+
+	public function taxonAction()
+	{
 		foreach ( $this->params as $key => $param ) {
 			echo( $key . ": " . $param . "<br>" );
 		}

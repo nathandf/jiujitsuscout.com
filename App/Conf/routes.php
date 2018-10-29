@@ -3,12 +3,22 @@
 // routes
 $Router->add( "", [ "controller" => "home", "action" => "index" ] );
 $Router->add( "{action}", [ "controller" => "home" ] );
-$Router->add( "{blogurl:blog}/{article:[a-zA-Z0-9-]*}", [ "controller" => "blog", "action" => "index" ] );
-$Router->add( "{blogurl:blog}/{taxonomy:[a-zA-Z0-9-]+}/{taxon:[a-zA-Z0-9-]+}/{article:[a-zA-Z0-9-]*}", [ "controller" => "blog", "action" => "taxonomy" ] );
+
+// Blogging engine routes
+$Router->add( "{blogurl:blog}/", [ "controller" => "blog", "action" => "index" ] );
+$Router->add( "{blogurl:blog}/{article:[a-zA-Z0-9-]*}", [ "controller" => "blog", "action" => "article" ] );
+$Router->add( "{blogurl:blog}/{taxonomy:[a-zA-Z0-9-]+}/", [ "controller" => "blog", "action" => "taxonomy" ] );
+$Router->add( "{blogurl:blog}/{taxonomy:[a-zA-Z0-9-]+}/{taxon:[a-zA-Z0-9-]+}/", [ "controller" => "blog", "action" => "taxon" ] );
+$Router->add( "{blogurl:blog}/{taxonomy:[a-zA-Z0-9-]+}/{taxon:[a-zA-Z0-9-]+}/{article:[a-zA-Z0-9-]+}", [ "controller" => "blog", "action" => "article" ] );
 $Router->add( "{blogurl:blog}/{year:[0-9][0-9][0-9][0-9]}/{monthnum:[0-9][0-9]}/{day:[0-9][0-9]}/{article:[a-zA-Z0-9-]*}", [ "controller" => "blog", "action" => "date" ] );
-$Router->add( "{blogurl:martial-arts-business-blog}/{article:[a-zA-Z0-9-]*}", [ "controller" => "blog", "action" => "index" ] );
-$Router->add( "{blogurl:martial-arts-business-blog}/{taxonomy:[a-zA-Z0-9-]+}/{taxon:[a-zA-Z0-9-]+}/{article:[a-zA-Z0-9-]*}", [ "controller" => "blog", "action" => "taxonomy" ] );
+
+$Router->add( "{blogurl:martial-arts-business-blog}/", [ "controller" => "blog", "action" => "index" ] );
+$Router->add( "{blogurl:martial-arts-business-blog}/{article:[a-zA-Z0-9-]*}", [ "controller" => "blog", "action" => "article" ] );
+$Router->add( "{blogurl:martial-arts-business-blog}/{taxonomy:[a-zA-Z0-9-]+}/", [ "controller" => "blog", "action" => "taxonomy" ] );
+$Router->add( "{blogurl:martial-arts-business-blog}/{taxonomy:[a-zA-Z0-9-]+}/{taxon:[a-zA-Z0-9-]+}/", [ "controller" => "blog", "action" => "taxon" ] );
+$Router->add( "{blogurl:martial-arts-business-blog}/{taxonomy:[a-zA-Z0-9-]+}/{taxon:[a-zA-Z0-9-]+}/{article:[a-zA-Z0-9-]+}", [ "controller" => "blog", "action" => "article" ] );
 $Router->add( "{blogurl:martial-arts-business-blog}/{year:[0-9][0-9][0-9][0-9]}/{monthnum:[0-9][0-9]}/{day:[0-9][0-9]}/{article:[a-zA-Z0-9-]*}", [ "controller" => "blog", "action" => "date" ] );
+
 $Router->add( "{controller:disciplines}/", [ "action" => "index" ] );
 $Router->add( "{controller:disciplines}/{discipline:[a-zA-Z0-9-]+}/", [ "action" => "discipline" ] );
 $Router->add( "{controller:disciplines}/{discipline:[a-zA-Z0-9-]+}/{action:near-me}/" );

@@ -5,10 +5,11 @@ namespace Model\Services;
 class ArticleRepository extends Service
 {
 
-    public function create( $blog_id, $title, $slug, $meta_title, $meta_description, $publisher, $author, $body, $status, $created_at = null, $updated_at = null )
+    public function create( $blog_id, $title, $slug, $meta_title, $meta_description, $publisher, $author, $body, $status, $created_at = null, $updated_at = null, $primary_image_id = null )
     {
         $article = new \Model\Article();
         $article->blog_id = $blog_id;
+        $article->primary_image_id = $primary_image_id;
         $article->title = $title;
         $article->slug = $slug;
         $article->meta_title = $meta_title;

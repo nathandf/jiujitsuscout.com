@@ -9,8 +9,8 @@ class ArticleMapper extends DataMapper
     {
         $id = $this->insert(
             "article",
-            [ "blog_id", "title", "slug", "meta_title", "meta_description", "publisher", "author", "body", "status", "created_at", "updated_at" ],
-            [ $article->blog_id, $article->title, $article->slug, $article->meta_title, $article->meta_description, $article->publisher, $article->author, $article->body, $article->status, $article->created_at, $article->updated_at ]
+            [ "blog_id", "title", "slug", "meta_title", "meta_description", "publisher", "author", "body", "status", "created_at", "updated_at", "primary_image_id" ],
+            [ $article->blog_id, $article->title, $article->slug, $article->meta_title, $article->meta_description, $article->publisher, $article->author, $article->body, $article->status, $article->created_at, $article->updated_at, $article->primary_image_id ]
         );
 
         $article->id = $id;

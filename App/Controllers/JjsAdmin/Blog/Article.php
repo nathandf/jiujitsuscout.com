@@ -51,6 +51,7 @@ class Article extends Controller
     {
         $articleBlogCategoryRepo = $this->load( "article-blog-category-repository" );
         $blogCategoryRepo = $this->load( "blog-category-repository" );
+        $imageRepo = $this->load( "image-repository" );
 
         $blogCategories = [];
         $articleBlogCategories = $articleBlogCategoryRepo->getAllByArticleID( $this->article->id );
@@ -58,7 +59,10 @@ class Article extends Controller
             $blogCategories[] = $blogCategoryRepo->getByID( $articleBlogCategory->blog_category_id );
         }
 
+        $image = $imageRepo->getByID( $this->article->primary_image_id );
+
         $this->view->assign( "blogCategories", $blogCategories );
+        $this->view->assign( "image", $image );
 
         $this->view->setTemplate( "article.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog/Article.php" );

@@ -46,15 +46,18 @@
 {block name="body"}
 	{include file="includes/navigation/blog-menu.tpl"}
 	<div class="article-content con-cnt-xlrg bg-white push-t-lrg push-b-lrg inner-pad-med-plus">
+		{if $blogCategories|@count > 0}
+			<span class="text-sml">
+				{foreach from=$blogCategories item=blogCategory name=category_loop}
+					<a class="link tc-deep-blue text-sml-heavy" href="{$HOME}{$blog->url}/category/{$blogCategory->url}/">{$blogCategory->name|capitalize}</a>{if !$smarty.foreach.category_loop.last} • {/if}
+				{/foreach}
+			</span>
+			<div class="clear"></div>
+		{/if}
 		<h1>{$article->title}</h1>
 		<span class="text-sml">Publish Date: <span>{$article->created_at|date_format:"%a, %b %e %Y %l:%M%p"}</span> | Author: <span>{$article->author}</span> | <span>JiuJitsuScout</span></span>
-		{if $blogCategories|@count > 0}
-		<div class="clear"></div>
-		<span class="text-sml">Categories:
-			{foreach from=$blogCategories item=blogCategory name=category_loop}
-				<a class="link tc-deep-blue text-sml-heavy" href="{$HOME}{$blog->url}/category/{$blogCategory->url}">{$blogCategory->name|capitalize}</a>{if !$smarty.foreach.category_loop.last} | {/if}
-			{/foreach}
-		</span>
+		{if isset($article->primary_image_id)}
+			<img src="{$HOME}public/img/uploads/{$image->filename}" alt="{$image->alt}">
 		{/if}
 		<div class="article-body">
 			<p>{$article->body}</p>
