@@ -48,7 +48,7 @@ class Blog extends Controller
 
 		$article = $articleRepo->getBySlugAndBlogID( $this->params[ "article" ], $this->blog->id );
 
-		if ( is_null( $article->id ) ) {
+		if ( is_null( $article->id ) || $article->status != "published" ) {
 			$this->view->render404();
 		}
 

@@ -761,7 +761,7 @@ td {
     box-sizing: border-box;
 }
 
-.inp {
+/* .inp {
     border-bottom: var(--std-border-bottom);
     transition: .25s;
     border-radius: 2px;
@@ -770,6 +770,24 @@ td {
 
 .inp:focus {
     border-bottom: var(--focused-border-bottom);
+} */
+
+.inp {
+	font-size: 15px;
+	width: 85%;
+	box-sizing: border-box;
+	background: #FFF;
+	color: #555;
+	border: 2px solid #CCC;
+	border-radius: 4px;
+    text-indent: 10px;
+}
+
+.inp:focus {
+	outline: solid;
+	outline-color: #4D90FE;
+	outline-offset: -2px;
+	outline-style: auto;
 }
 
 .inp::-webkit-input-placeholder {

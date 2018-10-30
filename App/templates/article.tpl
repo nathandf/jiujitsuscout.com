@@ -18,9 +18,17 @@
 				"@id": "https://jiujitsuscout.com/{/literal}{$blog->url}/{$article->slug}{literal}"
 			},
 			"headline": "{/literal}{$article->title}{literal}",
+			{/literal}
+			{if isset($image->filename)}
+			"image": [
+				"https://www.jiujitsuscout.com/public/img/uploads/{$image->filename}"
+			],
+			{else}
 			"image": [
 				"https://www.jiujitsuscout.com/public/img/jjslogoiconwhite.jpg"
 			],
+			{/if}
+			{literal}
 			"datePublished": "{/literal}{$article->created_at|date_format:'%a, %b %e %Y %l:%M%p'}{$article->created_at|date_format:"%a, %b %e %Y %l:%M%p"}{literal}",
 			"dateModified": "{/literal}{$article->updated_at|date_format:'%a, %b %e %Y %l:%M%p'}{literal}",
 			"author": {

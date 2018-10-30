@@ -25,9 +25,11 @@
 				</div>
 			{/foreach}
 		{/if}
-		<form class="first" id="add-business" method="post" action="">
+		<form class="first" method="post" action="">
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="create_article" value="{$csrf_token}">
+			<input id="chosen_image_input" type="hidden" name="chosen_image" value="{$inputs.create_article.chosen_image|default:null}">
+			<input id="files" type="hidden" name="files" value="{$inputs.create_article.files|default:null}">
 			<div class="clear col-100 push-t-med push-b-sml" style="border-top: 1px solid #CCC;"></div>
 			<button type="submit" name="publish" value="1" class="btn btn-inline bg-green article-btn">Publish</button>
 			<button type="submit" name="draft" value="1" class="btn btn-inline bg-deep-blue article-btn">Save draft</button>
@@ -36,6 +38,7 @@
 			<div class="clear"></div>
 			<input id="input_title" type="text" class="article-builder-field title" name="title" value="{$inputs.create_article.title|default:null}">
 			<div class="clear col-100 push-t-med push-b-med" style="border-top: 1px solid #CCC;"></div>
+			<div class="clear"></div>
 			<label class="text-med">Slug</label>
 			<div class="clear"></div>
 			<input id="input_slug" type="text" class="article-builder-field title" name="slug" value="{$inputs.create_article.slug|default:null}">
@@ -51,13 +54,17 @@
 			<div class="clear"></div>
 			<p class="text-sml">character count: <span id="charCountDescription"></span></p>
 			<textarea id="input_meta_description" class="article-builder-field description" name="meta_description">{$inputs.create_article.meta_description|default:null}</textarea>
-			<p class="push-t-med push-b-sml text-med">Search Result Mockup:</p>
-			<div class="inner-pad-med sr-mockup">
-				<p class="sr-mockup-link" id="meta_title"></p>
-				<p class="sr-mockup-url">https://www.jiujitsuscout.com/{$blog->url}/<span id="slug"></span></p>
-				<p class="sr-mockup-description" id="meta_description"></p>
-			</div>
+			<p class="push-t-med push-b-med text-med">Search Result Mockup:</p>
+			<p class="sr-mockup-link" id="meta_title"></p>
+			<p class="sr-mockup-url">https://www.jiujitsuscout.com/{$blog->url}/<span id="slug"></span></p>
+			<p class="sr-mockup-description" id="meta_description"></p>
 			<div class="clear col-100 push-t-med push-b-med" style="border-top: 1px solid #CCC;"></div>
+			<label class="text-med">Primary Image</label>
+			<div class="clear"></div>
+			<img id="primary_image_display" style="width:280px;" src="http://placehold.it/550x270&text=No+Attachment!"/>
+			<div class="clear"></div>
+			<input id="primary_image_upload" name="primary_image_upload" class="push-t push-b" type="file">
+			<div class="clear col-100 push-b-med push-t-sml" style="border-top: 1px solid #CCC;"></div>
 			<div class="clear push-t-med">
 				<p class="push-b-sml text-med">Categories:</p>
 				{foreach from=$blogCategories item=blogCategory name=blogCategoryLoop}
@@ -87,7 +94,7 @@
 			<button id="anchor" type="button" class="style-button cursor-pt"><i class="fa fa-link" aria-hidden="true"></i></button>
 			<button id="header2" type="button" class="style-button cursor-pt">h2</button>
 			<button id="header3" type="button" class="style-button cursor-pt">h3</button>
-			<button type="button" class="style-button cursor-pt"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
+			<button id="image" type="button" class="style-button cursor-pt"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
 			<div class="clear" style="margin-top: 3px;"></div>
 			<textarea id="article-body" class="article-builder-field body" name="body">{$inputs.create_article.body|default:null}</textarea>
 			<div class="clear col-100 push-t-med push-b-sml" style="border-top: 1px solid #CCC;"></div>

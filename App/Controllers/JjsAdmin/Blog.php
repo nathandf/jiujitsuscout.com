@@ -127,7 +127,7 @@ class Blog extends Controller
                     $articleBlogCategoryRepo->create( $article->id, $id );
                 }
             }
-        
+
             $this->view->redirect( "jjs-admin/blog/" . $this->params[ "id" ] . "/article/" . $article->id . "/" );
         }
 
@@ -135,6 +135,7 @@ class Blog extends Controller
         $inputs = [];
         // add_note
         if ( $input->issetField( "create_article" ) ) {
+            $inputs[ "create_article" ][ "chosen_image" ] = $input->get( "chosen_image" );
             $inputs[ "create_article" ][ "title" ] = $input->get( "title" );
             $inputs[ "create_article" ][ "slug" ] = $input->get( "slug" );
             $inputs[ "create_article" ][ "meta_title" ] = $input->get( "meta_title" );

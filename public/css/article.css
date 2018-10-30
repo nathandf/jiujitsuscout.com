@@ -55,8 +55,7 @@
 	box-sizing: border-box;
 	/* border: 1px solid #CCC; */
 	width: 100%;
-	max-width: 800px;
-	max-height: 800px;
+	max-width: 810px;
 	display: block;
 	margin: 0 auto;
 }

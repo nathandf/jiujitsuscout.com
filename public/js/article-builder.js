@@ -15,6 +15,12 @@ $( function() {
 		},
 		"header3": {
 			"tag": "h3"
+		},
+		"anchor": {
+			"tag": "a"
+		},
+		"image": {
+			"tag": "img"
 		}
 	};
 
@@ -94,7 +100,26 @@ $( function() {
 	}
 
 	function addTags( tag, selection ) {
-		return "<" + tag + ">" + selection + "</" + tag + ">";
+		var modified_selection = selection;
+		switch ( tag ) {
+			case "b":
+			case "i":
+			case "u":
+				modified_selection = "<" + tag + ">" + selection + "</" + tag + ">";
+				break;
+			case "h1":
+			case "h2":
+			case "h3":
+				modified_selection = "</p><" + tag + ">" + selection + "</" + tag + "><p>";
+				break;
+			case "a":
+				modified_selection = "<" + tag + " href=\"\">" + selection + "</" + tag + ">";
+				break;
+			case "img":
+				modified_selection = "<" + tag + " src=\"\"/>";
+				break;
+		}
+		return modified_selection;
 	}
 
 	meta_title = $( "#input_meta_title" ).val();
@@ -127,24 +152,34 @@ $( function() {
 		selection = getSelectionText();
 	};
 
-	$( "#bold" ).on( "click", function() {
+	$( "#bold, #italic, #underline, #header2, #header3" ).on( "click", function() {
 		$( "#article-body" ).replaceSelectedText( addTags( html_tags[ this.id ][ "tag" ], selection ) );
 	} );
 
-	$( "#italic" ).on( "click", function() {
+	$( "#anchor" ).on( "click", function() {
 		$( "#article-body" ).replaceSelectedText( addTags( html_tags[ this.id ][ "tag" ], selection ) );
 	} );
 
-	$( "#underline" ).on( "click", function() {
+	$( "#image" ).on( "click", function() {
 		$( "#article-body" ).replaceSelectedText( addTags( html_tags[ this.id ][ "tag" ], selection ) );
 	} );
 
-	$( "#header2" ).on( "click", function() {
-		$( "#article-body" ).replaceSelectedText( "</p>" + addTags( html_tags[ this.id ][ "tag" ], selection ) + "<p>" );
-	} );
-
-	$( "#header3" ).on( "click", function() {
-		$( "#article-body" ).replaceSelectedText( "</p>" + addTags( html_tags[ this.id ][ "tag" ], selection ) + "<p>"  );
-	} );
+	$( "#primary_image_upload" ).change( function () {
+        //Check if a file has been selected or not
+        if ( this.files && this.files[ 0 ] ) {
+            //Check if the uploaded file is an Image file
+            if ( this.files[ 0 ].type.startsWith( "image/" ) ) {
+                var reader = new FileReader();
+                reader.readAsDataURL( this.files[ 0 ] );
+                reader.onloadend = function () {
+                	$( "#primary_image_display" ).attr( "src", reader.result );
+                }
+            } else {
+                //If an image is not selected then show an other image.
+                $( "#primary_image_display" ).attr
+                ( "src", "http://placehold.it/550x270&text=No+PreView!" );
+            }
+        }
+    });
 
 } );
