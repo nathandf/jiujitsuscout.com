@@ -57,6 +57,13 @@ class Blog extends Controller
 
         $blogCategories = $blogCategoryRepo->getAllByBlogID( $this->blog->id );
 
+        $image_ids = [];
+        $images = $imageRepo->getAllByBusinessID( 0 );
+
+        foreach ( $images as $image ) {
+            $image_ids[] = $image->id;
+        }
+
         if ( $input->exists() && $inputValidator->validate(
             $input,
             [
@@ -98,6 +105,11 @@ class Blog extends Controller
                     "required" => true,
                     "min" => 1
                 ],
+                "primary_image_id" => [
+                    "name" => "Primary Image",
+                    "required" => true,
+                    "in_array" => $image_ids
+                ]
             ],
             "create_article"
             )
@@ -120,6 +132,8 @@ class Blog extends Controller
                 filter_var( $body, FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES ),
                 $status
             );
+
+            $articleRepo->updatePrimaryImageIDByID( $article->id, $input->get( "primary_image_id" ) );
 
             $blog_category_ids = $input->get( "blog_category_ids" );
             if ( $blog_category_ids != "" ) {
@@ -148,8 +162,46 @@ class Blog extends Controller
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->assign( "blogCategories", $blogCategories );
+        $this->view->assign( "images", $images );
+        $this->view->assign( "root", "./../../../../../" );
 
         $this->view->setTemplate( "jjs-admin/blog/create-article.tpl" );
+        $this->view->render( "App/Views/JJSAdmin/Blog.php" );
+    }
+
+    public function imagesAction()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $imageManager = $this->load( "image-manager" );
+        $config = $this->load( "config" );
+
+        if ( $input->exists() && $input->issetField( "upload_image" ) && $inputValidator->validate(
+
+                $input,
+
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "upload_image" => [
+                        "required" => true
+                    ]
+
+                ],
+
+                "upload_image" /* error index */
+            ) )
+        {
+
+            $this->view->redirect( "jjs-admin/blog/images" );
+        }
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+        $this->view->setTemplate( "account-manager/business/assets/logo.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog.php" );
     }
 
@@ -241,6 +293,14 @@ class Blog extends Controller
 
         $this->view->setTemplate( "jjs-admin/blog/categories.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog.php" );
+    }
+
+    public function uploadImageAction()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $imageRepo = $this->load( "image-repository" );
+        $imageManager = $this->load( "image-manager" );
     }
 
 }

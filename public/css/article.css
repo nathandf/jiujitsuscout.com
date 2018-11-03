@@ -28,7 +28,7 @@
 .article-content p {
 	font-family: 'Noto Sans', 'Merriweather', Tahoma, serif;
 	font-size: 22px;
-	line-height: 45px;
+	line-height: 40px;
 	color: #2F3033;
 }
 
@@ -67,6 +67,7 @@
 @media screen and (max-width: 800px) {
 	.article-content p {
 		font-size: 21px;
+		line-height: 35px;
 	}
 
 	.article-content h1 {

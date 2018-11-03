@@ -84,3 +84,16 @@
 	outline-offset: -2px;
 	outline-style: auto;
 }
+
+.image-picker-image {
+	max-width: 160px;
+	border: 2px solid #CCCCCC;
+}
+
+.image-picker-image:hover {
+	cursor: pointer;
+	outline: solid;
+	outline-color: rgb(77, 144, 254); // #4D90FE
+	outline-offset: -2px;
+	outline-style: auto;
+}

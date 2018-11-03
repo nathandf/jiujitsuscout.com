@@ -18,6 +18,11 @@ class ArticleMapper extends DataMapper
         return $article;
     }
 
+    public function updatePrimaryImageIDByID( $id, $primary_image_id )
+    {
+        $this->update( "article", "primary_image_id", $primary_image_id, "id", $id );
+    }
+
     public function mapAllFromBlogID( $blog_id )
     {
         $entityFactory = $this->container->getService( "entity-factory" );

@@ -13,6 +13,8 @@
 
 {block name="body"}
 	{include file="includes/navigation/admin-menu.tpl"}
+	{include file="includes/widgets/primary-image-picker.tpl"}
+	{include file="includes/widgets/insert-image-picker.tpl"}
 	<div class="con-cnt-xlrg inner-pad-med push-t-med">
 		<p class="text-lrg-heavy push-b-med"><a class="link cursor-pt tc-deep-blue" href="{$HOME}jjs-admin/blogs">Blogs</a> > <a class="link cursor-pt tc-deep-blue" href="{$HOME}jjs-admin/blog/{$blog->id}/">{$blog->name}</a> > New Article</p>
 		{include file="includes/navigation/blog-admin-menu.tpl"}
@@ -28,8 +30,7 @@
 		<form class="first" method="post" action="">
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="create_article" value="{$csrf_token}">
-			<input id="chosen_image_input" type="hidden" name="chosen_image" value="{$inputs.create_article.chosen_image|default:null}">
-			<input id="files" type="hidden" name="files" value="{$inputs.create_article.files|default:null}">
+			<input id="primary_image_id" type="hidden" name="primary_image_id" value="" required="required">
 			<div class="clear col-100 push-t-med push-b-sml" style="border-top: 1px solid #CCC;"></div>
 			<button type="submit" name="publish" value="1" class="btn btn-inline bg-green article-btn">Publish</button>
 			<button type="submit" name="draft" value="1" class="btn btn-inline bg-deep-blue article-btn">Save draft</button>
@@ -63,7 +64,7 @@
 			<div class="clear"></div>
 			<img id="primary_image_display" style="width:280px;" src="http://placehold.it/550x270&text=No+Attachment!"/>
 			<div class="clear"></div>
-			<input id="primary_image_upload" name="primary_image_upload" class="push-t push-b" type="file">
+			<button type="button" class="btn btn-inline" id="choose-primary-image">Choose Image</button>
 			<div class="clear col-100 push-b-med push-t-sml" style="border-top: 1px solid #CCC;"></div>
 			<div class="clear push-t-med">
 				<p class="push-b-sml text-med">Categories:</p>
@@ -94,7 +95,7 @@
 			<button id="anchor" type="button" class="style-button cursor-pt"><i class="fa fa-link" aria-hidden="true"></i></button>
 			<button id="header2" type="button" class="style-button cursor-pt">h2</button>
 			<button id="header3" type="button" class="style-button cursor-pt">h3</button>
-			<button id="image" type="button" class="style-button cursor-pt"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
+			<button id="choose-insert-image" type="button" class="style-button cursor-pt"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
 			<div class="clear" style="margin-top: 3px;"></div>
 			<textarea id="article-body" class="article-builder-field body" name="body">{$inputs.create_article.body|default:null}</textarea>
 			<div class="clear col-100 push-t-med push-b-sml" style="border-top: 1px solid #CCC;"></div>

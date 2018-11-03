@@ -37,6 +37,12 @@ class ArticleRepository extends Service
         return $article;
     }
 
+    public function updatePrimaryImageIDByID( $id, $primary_image_id )
+    {
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->updatePrimaryImageIDByID( $id, $primary_image_id );
+    }
+
     public function getAllByBlogID( $blog_id )
     {
         $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
