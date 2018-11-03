@@ -173,8 +173,11 @@ class Blog extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $imageRepo = $this->load( "image-repository" );
         $imageManager = $this->load( "image-manager" );
         $config = $this->load( "config" );
+
+        $images = $imageRepo->getAllByBusinessID( 0 );
 
         if ( $input->exists() && $input->issetField( "upload_image" ) && $inputValidator->validate(
 
@@ -187,6 +190,15 @@ class Blog extends Controller
                     ],
                     "upload_image" => [
                         "required" => true
+                    ],
+                    "description" => [
+
+                    ],
+                    "alt" => [
+
+                    ],
+                    "discipline_tags" => [
+                        "is_array" => true
                     ]
 
                 ],
@@ -194,14 +206,42 @@ class Blog extends Controller
                 "upload_image" /* error index */
             ) )
         {
+            $description = null;
+            $alt = null;
+            $discipline_tags = null;
 
-            $this->view->redirect( "jjs-admin/blog/images" );
+            if ( $input->get( "discipline_tags" ) != "" ) {
+                $discipline_tags = implode( ",", $input->get( "discipline_tags" ) );
+            }
+
+            if ( $input->get( "description" ) != "" ) {
+                $description = $input->get( "description" );
+            }
+
+            if ( $input->get( "alt" ) != "" ) {
+                $alt = $input->get( "alt" );
+            }
+
+            $image_name = $imageManager->saveImageTo( "image" );
+            if ( $image_name ) {
+                $imageRepo->create(
+                    $image_name,
+                    0,
+                    $description,
+                    $alt,
+                    $discipline_tags
+                );
+
+                $this->view->redirect( "jjs-admin/blog/" . $this->blog->id . "/images" );
+            }
         }
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
-        $this->view->setTemplate( "account-manager/business/assets/logo.tpl" );
+        $this->view->assign( "images", $images );
+
+        $this->view->setTemplate( "jjs-admin/blog/images.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog.php" );
     }
 
