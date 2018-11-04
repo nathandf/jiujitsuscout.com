@@ -36,6 +36,15 @@
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="new-category" value="{$csrf_token}">
 			<input type="text" name="name" class="field-saas">
+			<div class="clear push-t-med"></div>
+			<label class="" for="title">Title</label>
+			<div class="clear"></div>
+			<input id="title" type="text" name="title" class="field-saas">
+			<div class="clear push-t-med"></div>
+			<label id="description" class="" for="description">Description</label>
+			<div class="clear"></div>
+			<textarea type="text" name="description" class="field-saas description"></textarea>
+			<div class="clear"></div>
 			<button class="btn btn-inline bg-deep-blue tc-white push-t-med">Create Category +</button>
 		</form>
 	</div>

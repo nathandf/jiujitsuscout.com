@@ -5,12 +5,14 @@ namespace Model\Services;
 class BlogCategoryRepository extends Service
 {
 
-    public function create( $blog_id, $name )
+    public function create( $blog_id, $name, $title = null, $description = null )
     {
         $blogCategory = new \Model\BlogCategory();
         $blogCategory->blog_id = $blog_id;
         $blogCategory->name = $name;
         $blogCategory->url = $this->createURLFromName( $name );
+        $blogCategory->title = $title;
+        $blogCategory->description = $description;
         $blogCategoryMapper = new \Model\Mappers\BlogCategoryMapper( $this->container );
         $blogCategoryMapper->create( $blogCategory );
 

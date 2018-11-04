@@ -312,14 +312,27 @@ class Blog extends Controller
                 "name" => [
                     "required" => true,
                     "name" => "Category Name"
+                ],
+                "title" => [
+                    "name" => "Title",
+                    "alphanumeric" => true,
+                    "min" => 1
+                ],
+                "description" => [
+                    "name" => "Description",
+                    "alphanumeric" => true,
+                    "min" => 1
                 ]
             ],
             "new_category"
             )
         ) {
+            $title = $input->get( "title" ) != "" ? $input->get( "title" ) : null;
+            $description = $input->get( "description" ) != "" ? $input->get( "description" ) : null;
             $name = $input->get( "name" );
+
             if ( !in_array( $blogCategoryRepo->createURLFromName( $name ), $blogCategoryURLs ) ) {
-                $blogCategoryRepo->create( $this->blog->id, $name );
+                $blogCategoryRepo->create( $this->blog->id, $name, $title, $description );
                 $this->view->redirect( "jjs-admin/blog/" . $this->blog->id . "/categories" );
             }
 
