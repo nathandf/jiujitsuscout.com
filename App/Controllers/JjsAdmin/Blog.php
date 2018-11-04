@@ -252,7 +252,15 @@ class Blog extends Controller
         $blogCategoryRepo = $this->load( "blog-category-repository" );
         $blogNavigationElementRepo = $this->load( "blog-navigation-element-repository" );
 
+        $blogNavigationElements = $blogNavigationElementRepo->getAllByBlogID( $this->blog->id );
+
         $blogCategories = $blogCategoryRepo->getAllByBlogID( $this->blog->id );
+        $blogCategoryIDs = [];
+
+        foreach ( $blogCategories as $blogCategory ) {
+            $blogCategoryIDs[] = $blogCategory->id;
+        }
+
         $blogNavigationElements = $blogNavigationElementRepo->getAllByBlogID( $this->blog->id );
 
         if ( $input->exists() && $inputValidator->validate(
@@ -263,27 +271,40 @@ class Blog extends Controller
                     "required" => true
                 ],
                 "blog_category_id" => [
-                    "numeric" => true
+                    "numeric" => true,
+                    "in_array" => $blogCategoryIDs
                 ],
                 "url" => [
-                    "required" => true,
                     "min" => 1
                 ],
                 "text" => [
-                    "required" => true,
                     "min" => 1,
                     "max" => 25
-                ],
+                ]
             ],
             "new_navigation_element"
             )
         ) {
-
+            $blog_category_id = $input->get( "blog_category_id" ) != "" ? $input->get( "blog_category_id" ) : null;
+            if ( !is_null( $blog_category_id ) ) {
+                $blogCategory = $blogCategoryRepo->getByID( $blog_category_id );
+                $blogNavigationElementRepo->create( $this->blog->id, "category/" . $blogCategory->url . "/", $blogCategory->name, $blogCategory->id );
+                $this->view->redirect( "jjs-admin/blog/" . $this->blog->id . "/menu" );
+            } else {
+                if ( $input->get( "url" ) != "" && $input->get( "text" ) != "" ) {
+                    $blogNavigationElementRepo->create( $this->blog->id, $input->get( "url" ), $input->get( "text" ), null );
+                    $this->view->redirect( "jjs-admin/blog/" . $this->blog->id . "/menu" );
+                }
+                $inputValidator->addError( "new_navigation_element", "URL and Text fields cannot be empty" );
+            }
         }
 
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+
+        $this->view->assign( "blogCategories", $blogCategories );
+        $this->view->assign( "blogNavigationElements", $blogNavigationElements );
 
         $this->view->setTemplate( "jjs-admin/blog/menu.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog.php" );

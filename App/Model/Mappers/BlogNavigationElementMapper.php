@@ -8,7 +8,7 @@ class BlogNavigationElementMapper extends DataMapper
     public function create( \Model\BlogNavigationElement $blogNavigationElement )
     {
         $id = $this->insert(
-            "blogNavigationElement",
+            "blog_navigation_element",
             [ "blog_id", "blog_category_id", "url", "text" ],
             [ $blogNavigationElement->blog_id, $blogNavigationElement->blog_category_id, $blogNavigationElement->url, $blogNavigationElement->text ]
         );

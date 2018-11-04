@@ -14,10 +14,16 @@ class Blog extends Controller
 		$this->requireParam( "blogurl" );
         $blogRepo = $this->load( "blog-repository" );
         $articleRepo = $this->load( "article-repository" );
+		$blogNavigationElementRepo = $this->load( "blog-navigation-element-repository" );
         $HTMLTagConverter = $this->load( "html-tag-converter" );
 
         $this->blog = $blogRepo->getByURL( $this->params[ "blogurl" ] );
+
+		$blogNavigationElements = $blogNavigationElementRepo->getAllByBlogID( $this->blog->id );
+
+
         $this->view->assign( "blog", $this->blog );
+		$this->view->assign( "blogNavigationElements", $blogNavigationElements );
 	}
 
 	public function indexAction()

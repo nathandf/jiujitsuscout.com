@@ -9,7 +9,10 @@
     </div>
     <ul class="nav-top-ul" itemscope itemtype="http://schema.org/BreadcrumbList">
         <div id="nav-items-container" class="nav-items-container">
-            <li class="nav-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a class="nav-link-main" itemprop="item" href="{$HOME}{$blog->url}/category/"><span itemprop="name">Category</span></a><meta itemprop="position" content="1" /></li>
+            {foreach from=$blogNavigationElements item=blogNavigationElement name="nav_loop"}
+                <li class="nav-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a class="nav-link-main" itemprop="item" href="{$HOME}{$blog->url}/{$blogNavigationElement->url}"><span itemprop="name">{$blogNavigationElement->text|capitalize}</span></a><meta itemprop="position" content="{$smarty.foreach.nav_loop.iteration+1}"/></li>
+            {/foreach}
+            <li class="nav-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a class="nav-link-main" itemprop="item" href="{$HOME}{$blog->url}/"><span itemprop="name">Home</span></a><meta itemprop="position" content="1"/></li>
         </div>
     </ul>
     <div class="clear"></div>

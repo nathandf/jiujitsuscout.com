@@ -17,6 +17,7 @@ class Article extends Controller
 
         $blogRepo = $this->load( "blog-repository" );
         $articleRepo = $this->load( "article-repository" );
+        $blogNavigationElementRepo = $this->load( "blog-navigation-element-repository" );
         $HTMLTagConverter = $this->load( "html-tag-converter" );
 
         $this->blog = $blogRepo->getByID( $this->params[ "blogid" ] );
@@ -30,11 +31,14 @@ class Article extends Controller
             $this->view->redirect( "jjs-admin/blogs" );
         }
 
+        $blogNavigationElements = $blogNavigationElementRepo->getAllByBlogID( $this->blog->id );
+
         // Replace tags with html
         $this->article->body = $HTMLTagConverter->replaceTags( $this->article->body );
 
         $this->view->assign( "blog", $this->blog );
         $this->view->assign( "article", $this->article );
+        $this->view->assign( "blogNavigationElements", $blogNavigationElements );
 
         // Loading services
 		$userAuth = $this->load( "user-authenticator" );
