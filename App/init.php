@@ -10,7 +10,7 @@ require_once( "App/Helpers/debug.php" );
 $container = new Core\DI_Container;
 
 // Environment
-Conf\Config::setEnv( "development" );
+Conf\Config::setEnv( "staging" );
 
 // Load services using DI_Container
 require_once( "App/Conf/services.php" );

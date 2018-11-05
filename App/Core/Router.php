@@ -68,10 +68,10 @@ class Router
     $this->resetGETSuperGLobal( $url );
 
     if ( $this->match( $url ) ) {
-        $root = $this->environment == "production"
-        ? $this->configs[ "routing" ][ $this->environment ][ "root" ]
-        : $this->createRelativeURL( $url );
-        define( "HOME", $root );
+        // $root = $this->environment == "production"
+        // ? $this->configs[ "routing" ][ $this->environment ][ "root" ]
+        // : $this->createRelativeURL( $url );
+        define( "HOME", $this->configs[ "routing" ][ $this->environment ][ "root" ] );
 
 
       // checking to see a a "path" regex variable was created by the router.
