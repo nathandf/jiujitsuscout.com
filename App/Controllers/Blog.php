@@ -29,11 +29,13 @@ class Blog extends Controller
 	public function indexAction()
 	{
 		$articleRepo = $this->load( "article-repository" );
-
+		$imageRepo = $this->load( "image-repository" );
 		$allArticles = $articleRepo->getAllByBlogID( $this->blog->id );
 		$articles = [];
+
 		foreach ( $allArticles as $_article ) {
 			if ( $_article->status == "published" ) {
+				$_article->primary_image = $imageRepo->getByID( $_article->primary_image_id );
 				$articles[] = $_article;
 			}
 		}

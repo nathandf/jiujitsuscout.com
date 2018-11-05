@@ -2,7 +2,6 @@
 
 {block name="head"}
 	<title>{$blog->name}</title>
-	<link rel="canonical" href="https://www.jiujitsuscout.com/{$blog->url}/">
 	<meta name="description" content="">
 	<link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Raleway:800" rel="stylesheet">
@@ -12,14 +11,12 @@
 
 {block name="body"}
 	{include file="includes/navigation/blog-menu.tpl"}
-	<div class="con-cnt-xlrg inner-pad-med-plus">
-		<p>{$blog->name} | Home</p>
+	<div class="con-cnt-xxlrg bg-white push-t-lrg push-b-lrg inner-pad-med-plus">
+		<h1 class=""></h1>
 		{foreach from=$articles item=article}
-			<a class="test-xlrg link" href="{$HOME}{$blog->url}/{$article->slug}">{$article->title}</a>
-			<div class="clear"></div>
-		{foreachelse}
-		<p>No articles yet</p>
+			{include file="includes/snippets/article-snippet.tpl"}
 		{/foreach}
+		<div class="clear"></div>
 	</div>
 	<div class="clear"></div>
 {/block}
