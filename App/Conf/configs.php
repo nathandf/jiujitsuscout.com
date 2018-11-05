@@ -14,6 +14,19 @@ $config[ "default_logo" ] = "jjslogoiconwhite.jpg";
 // Logging
 $config[ "logs_directory" ] = "App/logs/";
 
+// Routing
+$config[ "routing" ] = [
+    "production" => [
+        "root" => "https://www.jiujitsuscout.com/"
+    ],
+    "staging" => [
+        "root" => "develop.jiujitsuscout.stupidsimple.tech/"
+    ],
+    "development" => [
+        "root" => "/jiujitsuscout.com/"
+    ]
+];
+
 // Email Settings
 $config[ "email_settings" ] = [
     "development" => [
@@ -37,8 +50,8 @@ $config[ "db" ] = [
     ],
     "staging" => [
         "host" => "localhost",
-        "dbname" => "jjs_main",
-        "user" => "jjspartner",
+        "dbname" => "yurigloc_jjs_development",
+        "user" => "yurigloc_develop",
         "password" => "Q7Np4WBUfCveynAy",
     ],
     "production" => [

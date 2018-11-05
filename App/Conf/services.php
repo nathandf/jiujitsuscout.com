@@ -3,6 +3,8 @@
 * Services and dependency injection on instanciation
 */
 
+// Core
+
 $container->register( "config", function() {
 	$config = new Conf\Config;
 	return $config;
@@ -16,6 +18,11 @@ $container->register( "error", function() use ( $container ) {
 $container->register( "session", function() {
     $session = new Core\Session;
     return $session;
+} );
+
+$container->register( "router", function() use ( $container ) {
+	$router = new Core\Router( $container->getService( "config" ) );
+	return $router;
 } );
 
 $container->register( "view", function() use( $container ) {
