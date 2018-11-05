@@ -20,7 +20,7 @@ $config[ "routing" ] = [
         "root" => "https://www.jiujitsuscout.com/"
     ],
     "staging" => [
-        "root" => "develop.jiujitsuscout.stupidsimple.tech/"
+        "root" => "/develop.jiujitsuscout.stupidsimple.tech/"
     ],
     "development" => [
         "root" => "/jiujitsuscout.com/"
