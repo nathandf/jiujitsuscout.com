@@ -43,4 +43,15 @@ class BlogCategoryMapper extends DataMapper
         $this->populate( $blogCategory, $resp );
         return $blogCategory;
     }
+
+    public function mapFromBlogIDAndURL( \Model\BlogCategory $blogCategory, $blog_id, $url )
+    {
+        $sql = $this->DB->prepare( "SELECT * FROM blog_category WHERE blog_id = :blog_id AND url = :url" );
+        $sql->bindParam( ":blog_id", $blog_id );
+        $sql->bindParam( ":url", $url );
+        $sql->execute();
+        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
+        $this->populate( $blogCategory, $resp );
+        return $blogCategory;
+    }
 }

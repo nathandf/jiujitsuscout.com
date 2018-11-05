@@ -36,6 +36,15 @@ class BlogCategoryRepository extends Service
         return $blogCategory;
     }
 
+    public function getByBlogIDAndURL( $blog_id, $url )
+    {
+        $blogCategory = new \Model\BlogCategory();
+        $blogCategoryMapper = new \Model\Mappers\BlogCategoryMapper( $this->container );
+        $blogCategoryMapper->mapFromBlogIDAndURL( $blogCategory, $blog_id, $url );
+
+        return $blogCategory;
+    }
+
     public function createURLFromName( $name )
     {
         $url = strtolower( trim( $name ) );

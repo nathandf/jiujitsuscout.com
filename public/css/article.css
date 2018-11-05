@@ -64,6 +64,39 @@
 	font-size: 10px;
 }
 
+.article-snippet-container {
+
+}
+
+.article-snippet {
+	min-width: 280px;
+}
+
+.article-snippet-image {
+	width: 320px;
+	box-sizing: border-box;
+}
+
+.article-snippet-title {
+	font-size: 28px;
+	font-family: 'Raleway', 'Open Sans', sans-serif;
+	font-weight: 800;
+	color: #2F3033;
+}
+
+.article-snippet-description {
+	font-family: 'Merriweather', 'Noto Sans', Tahoma, serif;
+	font-size: 18px;
+	line-height: 24px;
+	color: #2F3033;
+}
+
+.taxon {
+	height: 45px;
+	font-family: 'Raleway', 'Open Sans', sans-serif;
+	color: #2F3033;
+}
+
 @media screen and (max-width: 800px) {
 	.article-content p {
 		font-size: 21px;
@@ -98,5 +131,9 @@
 
 	.article-content h3 {
 		font-size: 24px;
+	}
+
+	.article-snippet-image {
+		width: 220px;
 	}
 }

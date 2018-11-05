@@ -74,7 +74,7 @@ class Blog extends Controller
         $this->view->assign( "image", $image );
 
         $this->view->setTemplate( "article.tpl" );
-        $this->view->render( "App/Views/JJSAdmin/Blog/Article.php" );
+        $this->view->render( "App/Views/Blog.php" );
 	}
 
 	public function taxonomyAction()
@@ -90,9 +90,31 @@ class Blog extends Controller
 
 	public function taxonAction()
 	{
-		foreach ( $this->params as $key => $param ) {
-			echo( $key . ": " . $param . "<br>" );
+		$this->requireParam( "taxon" );
+		$taxon = $this->params[ "taxon" ];
+
+		$articleRepo = $this->load( "article-repository" );
+		$imageRepo = $this->load( "image-repository" );
+		$blogCategoryRepo = $this->load( "blog-category-repository" );
+		$articleBlogCategoryRepo = $this->load( "article-blog-category-repository" );
+
+		$blogCategory = $blogCategoryRepo->getByBlogIDAndURL( $this->blog->id, $taxon );
+
+		$articleBlogCategories = $articleBlogCategoryRepo->getAllByBlogCategoryID( $blogCategory->id );
+
+		$articles = [];
+
+		foreach ( $articleBlogCategories as $articleBlogCategory ) {
+			$article = $articleRepo->getByID( $articleBlogCategory->article_id );
+			$article->primary_image = $imageRepo->getByID( $article->primary_image_id );
+			$articles[] = $article;
 		}
+
+		$this->view->assign( "articles", $articles );
+		$this->view->assign( "blogCategory", $blogCategory );
+
+		$this->view->setTemplate( "blog/taxon.tpl" );
+		$this->view->render( "App/Views/Blog.php" );
 	}
 
 	public function dateAction()
