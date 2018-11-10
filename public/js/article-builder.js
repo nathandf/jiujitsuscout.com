@@ -156,22 +156,7 @@ $( function() {
 		$( "#article-body" ).replaceSelectedText( addTags( html_tags[ this.id ][ "tag" ], selection ) );
 	} );
 
-	// Primary Image Picker Widget
-	$( ".primary-image-picker-image" ).on( "click", function () {
-		$( "#primary_image_id" ).val( this.dataset.id );
-		$( "#primary_image_display" ).attr( "src", $( this ).attr( "src" ) );
-		$( "#primary-image-picker-modal" ).hide();
-	} );
-
-	$( "#choose-primary-image" ).on( "click", function () {
-		$( "#primary-image-picker-modal" ).show();
-	} );
-
-	$( "#primary-image-picker-close" ).on( "click", function () {
-		$( "#primary-image-picker-modal" ).hide();
-	} );
-
-	// Inser Image Picker Widget
+	// Insert Image Picker Widget
 	$( ".insert-image-picker-image" ).on( "click", function () {
 		$( "#article-body" ).replaceSelectedText( "<img src=\"" + this.dataset.src + "\" alt=\"" + $( this ).attr( "alt" ) + "\"/>" );
 		$( "#insert-image-picker-modal" ).hide();

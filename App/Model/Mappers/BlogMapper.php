@@ -9,8 +9,8 @@ class BlogMapper extends DataMapper
     {
         $id = $this->insert(
             "blog",
-            [ "name", "url" ],
-            [ $blog->name, $blog->url ]
+            [ "name", "url", "title", "description", "image_id" ],
+            [ $blog->name, $blog->url, $blog->title, $blog->description, $blog->image_id ]
         );
 
         $blog->id = $id;

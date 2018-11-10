@@ -5,12 +5,15 @@ namespace Model\Services;
 class BlogRepository extends Service
 {
 
-    public function create( $name, $url )
+    public function create( $name, $url, $title, $description, $image_id )
     {
         $blog = new \Model\Blog();
         $blog->name = $name;
         $url = preg_replace( "/[ _]/", "-", strtolower( $url ) );
         $blog->url = preg_replace( "/[-+]/", "-", strtolower( $url ) );
+        $blog->title = $title;
+        $blog->description = $description;
+        $blog->image_id = $image_id;
         $blogMapper = new \Model\Mappers\BlogMapper( $this->container );
         $blogMapper->create( $blog );
 

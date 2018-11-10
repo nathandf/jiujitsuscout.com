@@ -387,11 +387,14 @@ class JjsAdmin extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $blogRepo = $this->load( "blog-repository" );
+        $imageRepo = $this->load( "image-repository" );
+
+        $images = $imageRepo->getAllByBusinessID( 0 );
 
         if (
-            $input->exists()
-            && $input->issetField( "create" )
-            && $inputValidator->validate(
+            $input->exists() &&
+            $input->issetField( "create" ) &&
+            $inputValidator->validate(
                 $input,
                 [
                     "token" => [
@@ -409,18 +412,32 @@ class JjsAdmin extends Controller
                         "required" => true,
                         "min" => 1,
                         "max" => 256
+                    ],
+                    "title" => [
+                        "name" => "Title",
+                        "required" => true,
+                    ],
+                    "description" => [
+                        "name" => "Description",
+                        "required" => true
+                    ],
+                    "image_id" => [
+                        "name" => "Image",
+                        "required" => true
                     ]
                 ],
 
                 "create"
             )
         ) {
-            $blog = $blogRepo->create( $input->get( "name" ), $input->get( "url" ) );
+            $blog = $blogRepo->create( $input->get( "name" ), $input->get( "url" ), $input->get( "title" ), $input->get( "description" ), $input->get( "image_id" ) );
             $this->view->redirect( "jjs-admin/blog/" . $blog->id . "/" );
         }
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 	    $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+        $this->view->assign( "images", $images );
 
         $this->view->setTemplate( "jjs-admin/create-blog.tpl" );
         $this->view->render( "App/Views/JJSAdmin.php" );

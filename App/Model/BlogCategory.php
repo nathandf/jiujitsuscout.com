@@ -12,4 +12,5 @@ class BlogCategory implements EntityInterface
     public $url;
     public $title;
     public $description;
+    public $image_id;
 }
