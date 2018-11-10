@@ -32,7 +32,7 @@
 					<b>Slug:</b>
 					<div class="clear"></div>
 					<input type="text" name="slug" id="input-slug" class="inp field-sml" value="{$page->slug}">
-					<p class="text-med">https://www.jiujitsuscout.com/martial-arts-gyms/{$business->site_slug}/promo/<b id="slug">{$page->slug}</b></p>
+					<p class="text-med">https://www.jiujitsuscout.com/martial-arts-gyms/{$business->id}/promo/<b id="slug">{$page->slug}</b></p>
 					<div class="hr"></div>
 					{if $business->facebook_pixel_id != null}
 					<h3 class="first last">Tracking</h3>

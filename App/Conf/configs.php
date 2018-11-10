@@ -82,7 +82,7 @@ $config[ "nexmo" ] = [
 
 // SendGrid API
 $config[ "sendgrid" ] = [
-  "api_key" => "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"
+    "api_key" => "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"
 ];
 
 // Twilio API

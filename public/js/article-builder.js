@@ -156,10 +156,6 @@ $( function() {
 		$( "#article-body" ).replaceSelectedText( addTags( html_tags[ this.id ][ "tag" ], selection ) );
 	} );
 
-	$( "#anchor" ).on( "click", function() {
-		$( "#article-body" ).replaceSelectedText( addTags( html_tags[ this.id ][ "tag" ], selection ) );
-	} );
-
 	// Primary Image Picker Widget
 	$( ".primary-image-picker-image" ).on( "click", function () {
 		$( "#primary_image_id" ).val( this.dataset.id );
@@ -187,6 +183,24 @@ $( function() {
 
 	$( "#insert-image-picker-close" ).on( "click", function () {
 		$( "#insert-image-picker-modal" ).hide();
+	} );
+
+	$( "#anchor" ).on( "click", function () {
+		$( "#anchor-widget" ).show();
+		$( "#anchor-text" ).val( selection );
+	} );
+
+	$( "#close-anchor" ).on( "click", function () {
+		$( "#anchor-widget" ).hide();
+		$( "#href" ).val( "" );
+		$( "#anchor-text" ).val( "" );
+	} );
+
+	$( "#link-button" ).on( "click", function() {
+		$( "#article-body" ).replaceSelectedText( "<a href=\"" + $( "#href" ).val() + "\">" + $( "#anchor-text" ).val() + "</a>");
+		$( "#href" ).val( "" );
+		$( "#anchor-text" ).val( "" );
+		$( "#anchor-widget" ).hide();
 	} );
 
 } );

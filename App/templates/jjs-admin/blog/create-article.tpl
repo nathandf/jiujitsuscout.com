@@ -97,6 +97,7 @@
 			<button id="header3" type="button" class="style-button cursor-pt">h3</button>
 			<button id="choose-insert-image" type="button" class="style-button cursor-pt"><i class="fa fa-file-image-o" aria-hidden="true"></i></button>
 			<div class="clear" style="margin-top: 3px;"></div>
+			{include file="includes/widgets/anchor-widget.tpl"}
 			<textarea id="article-body" class="article-builder-field body" name="body">{$inputs.create_article.body|default:null}</textarea>
 			<div class="clear col-100 push-t-med push-b-sml" style="border-top: 1px solid #CCC;"></div>
 			<button type="submit" name="publish" value="1" class="btn btn-inline bg-green article-btn">Publish</button>

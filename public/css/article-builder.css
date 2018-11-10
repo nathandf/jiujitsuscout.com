@@ -97,3 +97,39 @@
 	outline-offset: -2px;
 	outline-style: auto;
 }
+
+#anchor-widget {
+	max-width: 280px;
+	border-radius: 3px;
+	background: #CCC;
+	box-sizing: border-box;
+	padding: 5px;
+	margin-bottom: 10px;
+}
+
+#anchor-widget .element {
+	float: left;
+	height: 20px;
+	margin-right: 5px;
+}
+
+#anchor-widget #href {
+	width: 100px;
+	text-indent: 5px;
+}
+
+#anchor-widget #anchor-text {
+	width: 100px;
+	text-indent: 5px;
+}
+
+#anchor-widget #link-button {
+	width: 40px;
+	margin: 0px;
+	background: #448AFF;
+	color: #FFFFFF;
+	border-radius: 3px;
+}
+
+#anchor-widget #close-anchor {
+}
