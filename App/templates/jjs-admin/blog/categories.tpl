@@ -10,6 +10,7 @@
 
 {block name="body"}
 	{include file="includes/navigation/admin-menu.tpl"}
+	{include file="includes/widgets/primary-image-picker.tpl"}
 	<div class="con-cnt-xlrg inner-pad-med push-t-med">
 		<p class="text-lrg-heavy push-b-med"><a class="link cursor-pt tc-deep-blue" href="{$HOME}jjs-admin/blogs">Blogs</a> > <a class="link cursor-pt tc-deep-blue" href="{$HOME}jjs-admin/blog/{$blog->id}/">{$blog->name}</a> > Categories</p>
 		{include file="includes/navigation/blog-admin-menu.tpl"}
@@ -35,6 +36,7 @@
 		<form method="post" action="">
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="new-category" value="{$csrf_token}">
+			<input id="primary_image_id" type="hidden" name="image_id" value="">
 			<input type="text" name="name" class="field-saas">
 			<div class="clear push-t-med"></div>
 			<label class="" for="title">Title</label>
@@ -45,6 +47,13 @@
 			<div class="clear"></div>
 			<textarea type="text" name="description" class="field-saas description"></textarea>
 			<div class="clear"></div>
+			<div class="clear col-100 push-t-med push-b-med" style="border-top: 1px solid #CCC;"></div>
+			<label class="text-med">Primary Image</label>
+			<div class="clear"></div>
+			<img id="primary_image_display" style="width:280px;" src="http://placehold.it/550x270&text=No+Attachment!"/>
+			<div class="clear"></div>
+			<button type="button" class="btn btn-inline" id="choose-primary-image">Choose Image</button>
+			<div class="clear col-100 push-b-med push-t-sml" style="border-top: 1px solid #CCC;"></div>
 			<button class="btn btn-inline bg-deep-blue tc-white push-t-med">Create Category +</button>
 		</form>
 	</div>

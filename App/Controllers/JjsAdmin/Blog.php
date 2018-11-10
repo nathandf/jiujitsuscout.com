@@ -315,6 +315,7 @@ class Blog extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $blogCategoryRepo = $this->load( "blog-category-repository" );
+        $imageRepo = $this->load( "image-repository" );
 
         $blogCategories = $blogCategoryRepo->getAllByBlogID( $this->blog->id );
         $blogCategoryURLs = [];
@@ -322,6 +323,8 @@ class Blog extends Controller
         foreach ( $blogCategories as $category ) {
             $blogCategoryURLs[] = $category->url;
         }
+
+        $images = $imageRepo->getAllByBusinessID( 0 );
 
         if ( $input->exists() && $input->issetField( "new-category" ) && $inputValidator->validate(
             $input,
@@ -343,6 +346,10 @@ class Blog extends Controller
                     "name" => "Description",
                     "alphanumeric" => true,
                     "min" => 1
+                ],
+                "image_id" => [
+                    "name" => "Image",
+                    "required" => true
                 ]
             ],
             "new_category"
@@ -353,7 +360,7 @@ class Blog extends Controller
             $name = $input->get( "name" );
 
             if ( !in_array( $blogCategoryRepo->createURLFromName( $name ), $blogCategoryURLs ) ) {
-                $blogCategoryRepo->create( $this->blog->id, $name, $title, $description );
+                $blogCategoryRepo->create( $this->blog->id, $name, $input->get( "image_id" ), $title, $description );
                 $this->view->redirect( "jjs-admin/blog/" . $this->blog->id . "/categories" );
             }
 
@@ -361,9 +368,10 @@ class Blog extends Controller
         }
 
         $this->view->setErrorMessages( $inputValidator->getErrors() );
-
         $this->view->assign( "blogCategories", $blogCategories );
+
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "images", $images );
 
         $this->view->setTemplate( "jjs-admin/blog/categories.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog.php" );
