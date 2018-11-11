@@ -1,4 +1,4 @@
-<div class="article-snippet-container mat-box-shadow push-t-med inner-pad-med" style="border: 1px solid #EEE;">
+<div class="article-snippet-container push-t-med inner-pad-med">
 	<a style="text-decoration: none; display: block;" href="{$HOME}{$blog->url}/{$article->slug}">
 		<img class="article-snippet-image floatleft" src="{$HOME}public/img/uploads/{$article->primary_image->filename}" alt="{$article->primary_image->alt}">
 	</a>

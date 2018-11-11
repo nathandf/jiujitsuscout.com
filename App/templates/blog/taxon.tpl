@@ -11,7 +11,7 @@
 
 {block name="body"}
 	{include file="includes/navigation/blog-menu.tpl"}
-	<div class="con-cnt-xxlrg bg-white push-t-lrg push-b-lrg inner-pad-med-plus">
+	<div class="col-100 bg-white inner-pad-med-plus">
 		<h1 class="taxon">{$blogCategory->name}</h1>
 		<img class="taxon-image push-t-med" src="{$HOME}public/img/uploads/{$blogCategory->image->filename}" alt="{$blogCategory->image->alt}">
 		<h2 class="taxon-title push-t-med">{$blogCategory->title}</h2>

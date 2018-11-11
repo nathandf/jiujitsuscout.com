@@ -16,8 +16,11 @@ class Blog extends Controller
         $articleRepo = $this->load( "article-repository" );
 		$blogNavigationElementRepo = $this->load( "blog-navigation-element-repository" );
         $HTMLTagConverter = $this->load( "html-tag-converter" );
+		$imageRepo = $this->load( "image-repository" );
 
         $this->blog = $blogRepo->getByURL( $this->params[ "blogurl" ] );
+
+		$this->blog->image = $imageRepo->getByID( $this->blog->image_id );
 
 		$blogNavigationElements = $blogNavigationElementRepo->getAllByBlogID( $this->blog->id );
 
