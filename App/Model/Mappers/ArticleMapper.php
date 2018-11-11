@@ -81,4 +81,44 @@ class ArticleMapper extends DataMapper
         return $article;
     }
 
+    public function updateByPrimaryImageIDByID( $id, $primary_image_id )
+    {
+        $this->update( "article", "primary_image_id", $primary_image_id, "id", $id );
+    }
+
+    public function updateTitleByID( $id, $title )
+    {
+        $this->update( "article", "title", $title, "id", $id );
+    }
+
+    public function updateSlugByID( $id, $slug )
+    {
+        $this->update( "article", "slug", $slug, "id", $id );
+    }
+
+    public function updateMetaTitleByID( $id, $meta_title )
+    {
+        $this->update( "article", "meta_title", $meta_title, "id", $id );
+    }
+
+    public function updateMetaDescriptionByID( $id, $meta_description )
+    {
+        $this->update( "article", "meta_description", $meta_description, "id", $id );
+    }
+
+    public function updateStatusByID( $id, $status )
+    {
+        $this->update( "article", "status", $status, "id", $id );
+    }
+
+    public function updateBodyByID( $id, $body )
+    {
+        $this->update( "article", "body", $body, "id", $id );
+    }
+
+    public function updateUpdatedAtByID( $id, $updated_at )
+    {
+        $this->update( "article", "updated_at", $updated_at, "id", $id );
+    }
+
 }

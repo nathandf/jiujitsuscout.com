@@ -41,4 +41,22 @@ class ArticleBlogCategoryRepository extends Service
         return $articleBlogCategory;
     }
 
+    public function removeByID( $id )
+    {
+        $articleBlogCategoryMapper = new \Model\Mappers\ArticleBlogCategoryMapper( $this->container );
+        $articleBlogCategoryMapper->deleteByID( $id );
+    }
+
+    public function removeByBlogCategoryID( $blog_category_id )
+    {
+        $articleBlogCategoryMapper = new \Model\Mappers\ArticleBlogCategoryMapper( $this->container );
+        $articleBlogCategoryMapper->deleteByBlogCategoryID( $blog_category_id );
+    }
+
+    public function removeByArticleID( $article_id )
+    {
+        $articleBlogCategoryMapper = new \Model\Mappers\ArticleBlogCategoryMapper( $this->container );
+        $articleBlogCategoryMapper->deleteByArticleID( $article_id );
+    }
+
 }

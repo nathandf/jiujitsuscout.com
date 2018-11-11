@@ -137,8 +137,8 @@ class Blog extends Controller
 
             $blog_category_ids = $input->get( "blog_category_ids" );
             if ( $blog_category_ids != "" ) {
-                foreach ( $blog_category_ids as $id ) {
-                    $articleBlogCategoryRepo->create( $article->id, $id );
+                foreach ( $blog_category_ids as $blog_category_id ) {
+                    $articleBlogCategoryRepo->create( $article->id, $blog_category_id );
                 }
             }
 
@@ -163,7 +163,7 @@ class Blog extends Controller
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->assign( "blogCategories", $blogCategories );
         $this->view->assign( "images", $images );
-        $this->view->assign( "root", "./../../../../../" );
+        $this->view->assign( "root", HOME );
 
         $this->view->setTemplate( "jjs-admin/blog/create-article.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog.php" );
@@ -375,14 +375,6 @@ class Blog extends Controller
 
         $this->view->setTemplate( "jjs-admin/blog/categories.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog.php" );
-    }
-
-    public function uploadImageAction()
-    {
-        $input = $this->load( "input" );
-        $inputValidator = $this->load( "input-validator" );
-        $imageRepo = $this->load( "image-repository" );
-        $imageManager = $this->load( "image-manager" );
     }
 
 }

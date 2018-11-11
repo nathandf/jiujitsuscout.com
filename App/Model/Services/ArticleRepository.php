@@ -86,4 +86,52 @@ class ArticleRepository extends Service
 
         return $article;
     }
+
+    public function updateByPrimaryImageIDByID( $id, $primary_image_id )
+    {
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->updatePrimaryImageIDByID( $primary_image_id, $id );
+    }
+
+    public function updateTitleByID( $id, $title )
+    {
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->updateTitleByID( $id, $title );
+    }
+
+    public function updateSlugByID( $id, $slug )
+    {
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->updateSlugByID( $id, $slug );
+    }
+
+    public function updateMetaTitleByID( $id, $meta_title )
+    {
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->updateMetaTitleByID( $id, $meta_title );
+    }
+
+    public function updateMetaDescriptionByID( $id, $meta_description )
+    {
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->updateMetaDescriptionByID( $id, $meta_description );
+    }
+
+    public function updateStatusByID( $id, $status )
+    {
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->updateStatusByID( $id, $status );
+    }
+
+    public function updateBodyByID( $id, $body )
+    {
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->updateBodyByID( $id, $body );
+    }
+
+    public function updateUpdatedAtByID( $id, $updated_at )
+    {
+        $articleMapper = new \Model\Mappers\ArticleMapper( $this->container );
+        $articleMapper->updateUpdatedAtByID( $id, $updated_at );
+    }
 }

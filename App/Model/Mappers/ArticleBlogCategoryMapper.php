@@ -59,4 +59,25 @@ class ArticleBlogCategoryMapper extends DataMapper
         $this->populate( $articleBlogCategory, $resp );
         return $articleBlogCategory;
     }
+
+    public function deleteByID( $id )
+    {
+        $sql = $this->DB->prepare( "DELETE FROM article_blog_category WHERE id = :id" );
+        $sql->bindParam( ":id", $id );
+        $sql->execute();
+    }
+
+    public function deleteByArticleID( $article_id )
+    {
+        $sql = $this->DB->prepare( "DELETE FROM article_blog_category WHERE article_id = :article_id" );
+        $sql->bindParam( ":article_id", $article_id );
+        $sql->execute();
+    }
+
+    public function deleteByBlogCategoryID( $blog_category_id )
+    {
+        $sql = $this->DB->prepare( "DELETE FROM article_blog_category WHERE blog_category_id = :blog_category_id" );
+        $sql->bindParam( ":blog_category_id", $blog_category_id );
+        $sql->execute();
+    }
 }
