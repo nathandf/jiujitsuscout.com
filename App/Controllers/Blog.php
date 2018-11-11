@@ -85,9 +85,11 @@ class Blog extends Controller
 			$this->view->render404();
 		}
 
-		foreach ( $this->params as $key => $param ) {
-			echo( $key . ": " . $param . "<br>" );
-		}
+		$this->view->redirect( $this->blog->url . "/" );
+
+		// foreach ( $this->params as $key => $param ) {
+		// 	echo( $key . ": " . $param . "<br>" );
+		// }
 	}
 
 	public function taxonAction()
@@ -99,8 +101,10 @@ class Blog extends Controller
 		$imageRepo = $this->load( "image-repository" );
 		$blogCategoryRepo = $this->load( "blog-category-repository" );
 		$articleBlogCategoryRepo = $this->load( "article-blog-category-repository" );
+		$imageRepo = $this->load( "image-repository" );
 
 		$blogCategory = $blogCategoryRepo->getByBlogIDAndURL( $this->blog->id, $taxon );
+		$blogCategory->image = $imageRepo->getByID( $blogCategory->image_id );
 
 		$articleBlogCategories = $articleBlogCategoryRepo->getAllByBlogCategoryID( $blogCategory->id );
 
@@ -121,8 +125,9 @@ class Blog extends Controller
 
 	public function dateAction()
 	{
-		foreach ( $this->params as $key => $param ) {
-			echo( $key . ": " . $param . "<br>" );
-		}
+		$this->view->redirect( $this->blog->url . "/" );
+		// foreach ( $this->params as $key => $param ) {
+		// 	echo( $key . ": " . $param . "<br>" );
+		// }
 	}
 }

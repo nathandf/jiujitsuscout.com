@@ -110,6 +110,27 @@
 	color: #2F3033;
 }
 
+.taxon-image {
+	width: 80%;
+	max-width: 600px;
+}
+
+.taxon-title {
+	font-size: 28px;
+	font-family: 'Raleway', 'Open Sans', sans-serif;
+	font-weight: 800;
+	color: #2F3033;
+}
+
+.taxon-description {
+	font-family: 'Merriweather', 'Noto Sans', Tahoma, serif;
+	font-size: 18px;
+	line-height: 24px;
+	color: #2F3033;
+}
+
+
+
 @media screen and (max-width: 800px) {
 	.article-content p {
 		font-size: 21px;
