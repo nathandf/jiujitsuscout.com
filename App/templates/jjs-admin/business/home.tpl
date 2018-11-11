@@ -36,6 +36,23 @@
 					</td>
 				</tr>
 			</table>
+			<table cellspacing="0" class="con-cnt-xxlrg push-b-med">
+				<tr class="bg-green">
+					<th class="tc-white">Credit</th>
+					<th class="tc-white">Add credit</th>
+				</tr>
+				<tr class="bg-white">
+					<td class="text-center">{$account->credit}</td>
+					<td class="text-center">
+						<form action="" method="post">
+							<input type="hidden" name="token" value={$csrf_token}>
+							<input type="hidden" name="add_credit" value={$csrf_token}>
+							<input type="number" class="inp field-xsml push-t-med" name="credit" step="0.01">
+							<button type="submit" class="btn btn-inline">Add Credit</button>
+						</form>
+					</td>
+				</tr>
+			</table>
 			<div class="clear"></div>
 		</div>
 	</body>

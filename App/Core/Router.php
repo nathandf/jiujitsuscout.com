@@ -71,6 +71,7 @@ class Router
         // $root = $this->environment == "production"
         // ? $this->configs[ "routing" ][ $this->environment ][ "root" ]
         // : $this->createRelativeURL( $url );
+        // define( "HOME", $this->createRelativeURL( $url ) );
         define( "HOME", $this->configs[ "routing" ][ $this->environment ][ "root" ] );
 
 
