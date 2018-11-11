@@ -195,6 +195,26 @@ class JjsAdmin extends Controller
         $this->view->render( "App/Views/JJSAdmin.php" );
     }
 
+    public function appraisalsAction()
+    {
+        $businessRepo = $this->load( "business-repository" );
+        $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
+        $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
+        $prospectRepo = $this->load( "prospect-repository" );
+
+        $prospectAppraisals = array_reverse( $prospectAppraisalRepo->getAll() );
+
+        foreach ( $prospectAppraisals as $prospectAppraisal ) {
+            $prospectAppraisal->prospect = $prospectRepo->getByID( $prospectAppraisal->prospect_id );
+            $prospectAppraisal->purchase = $prospectPurchaseRepo->getByProspectID( $prospectAppraisal->prospect_id );
+        }
+
+        $this->view->assign( "prospectAppraisals", $prospectAppraisals );
+
+        $this->view->setTemplate( "jjs-admin/appraisals.tpl" );
+        $this->view->render( "App/Views/JJSAdmin.php" );
+    }
+
     public function forgotPassword()
 	{
 		$input = $this->load( "input" );

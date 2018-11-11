@@ -11,6 +11,8 @@
             <div class="nav-item-seperator"></div>
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}jjs-admin/leads">Leads</a></li>
             <div class="nav-item-seperator"></div>
+            <li class="nav-item"><a class="nav-link-main" href="{$HOME}jjs-admin/appraisals">Appraisals</a></li>
+            <div class="nav-item-seperator"></div>
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}jjs-admin/businesses">Businesses</a></li>
             <div class="nav-item-seperator"></div>
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}jjs-admin/">Dashboard</a></li>
