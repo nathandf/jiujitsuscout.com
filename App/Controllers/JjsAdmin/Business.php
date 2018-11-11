@@ -113,6 +113,29 @@ class Business extends Controller
             $this->view->redirect( "jjs-admin/business/" . $this->business->id . "/" );
         }
 
+        // Process account type update
+        if ( $input->exists() && $input->issetField( "add_credit" ) && $inputValidator->validate(
+
+                $input,
+
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "credit" => [
+                        "name" => "Credit",
+                        "required" => true,
+                        "number" => true
+                    ]
+                ],
+
+                "account_type_update" /* error index */
+            ) )
+        {
+            $accountRepo->addAccountCreditByID( $this->account->id, $input->get( "credit" ) );
+            $this->view->redirect( "jjs-admin/business/" . $this->business->id . "/" );
+        }
 
         $this->view->assign( "leads", $leads );
         $this->view->assign( "appointments", $appointments );

@@ -179,7 +179,7 @@ class JjsAdmin extends Controller
         // Load prospect phone resoure by phone_id and assign to prospect object
         $i = 0;
         foreach ( $prospects as $prospect ) {
-            if ( $i > 100 ) {
+            if ( $i > 200 ) {
                 break;
             }
             $phone = $phoneRepo->getByID( $prospect->phone_id );
