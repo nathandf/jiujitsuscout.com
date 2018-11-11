@@ -1,0 +1,173 @@
+.article-content {
+	box-sizing: border-box;
+	border-radius: 3px;
+	border: 2px solid #CCCCCC;
+}
+
+.article-body {
+	white-space: pre-wrap;
+}
+
+.article-content h1 {
+	font-size: 50px;
+}
+
+.article-content h2 {
+	font-size: 38px;
+}
+
+.article-content h3 {
+	font-size: 28px;
+}
+
+.article-content h1,h2,h3,h4,h5,h6 {
+	font-family: 'Raleway', 'Open Sans', sans-serif;
+	color: #2F3033;
+}
+
+.article-content p {
+	font-family: 'Merriweather', 'Noto Sans', Tahoma, serif;
+	font-size: 22px;
+	line-height: 40px;
+	color: #2F3033;
+}
+
+.article-content a {
+	color: #37BF91;
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.article-content a:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.article-content ul {
+	margin-left: 40px;
+}
+
+.article-content ul li{
+	line-height: 10px;
+}
+
+.article-content img {
+	box-sizing: border-box;
+	/* border: 1px solid #CCC; */
+	width: 100%;
+	max-width: 810px;
+	display: block;
+	margin: 0 auto;
+}
+
+.article-details {
+	font-size: 10px;
+}
+
+.article-snippet-container {
+
+}
+
+.article-snippet {
+	box-sizing: border-box;
+	width: 60%;
+	min-width: 210px;
+	max-width: 600px;
+}
+
+.article-snippet-image {
+	box-sizing: border-box;
+	width: 25%;
+	min-width: 150px;
+}
+
+.article-snippet-title {
+	font-size: 28px;
+	font-family: 'Raleway', 'Open Sans', sans-serif;
+	font-weight: 800;
+	color: #2F3033;
+}
+
+.article-snippet-link {
+	text-decoration: none;
+}
+
+.article-snippet-link:hover {
+	text-decoration: underline;
+	text-decoration-color: #2F3033;
+}
+
+.article-snippet-description {
+	font-family: 'Merriweather', 'Noto Sans', Tahoma, serif;
+	font-size: 18px;
+	line-height: 24px;
+	color: #2F3033;
+}
+
+.taxon {
+	height: 45px;
+	font-family: 'Raleway', 'Open Sans', sans-serif;
+	color: #2F3033;
+}
+
+.taxon-image {
+	max-width: 600px;
+	max-height: 300px;
+}
+
+.taxon-title {
+	font-size: 28px;
+	font-family: 'Raleway', 'Open Sans', sans-serif;
+	font-weight: 800;
+	color: #2F3033;
+}
+
+.taxon-description {
+	font-family: 'Merriweather', 'Noto Sans', Tahoma, serif;
+	font-size: 18px;
+	line-height: 24px;
+	color: #2F3033;
+}
+
+
+
+@media screen and (max-width: 800px) {
+	.article-content p {
+		font-size: 21px;
+		line-height: 35px;
+	}
+
+	.article-content h1 {
+		font-size: 45px;
+	}
+
+	.article-content h2 {
+		font-size: 31px;
+	}
+
+	.article-content h3 {
+		font-size: 25px;
+	}
+}
+
+@media screen and (max-width: 450px) {
+	.article-content p {
+		font-size: 18px;
+	}
+
+	.article-content h1 {
+		font-size: 38px;
+	}
+
+	.article-content h2 {
+		font-size: 28px;
+	}
+
+	.article-content h3 {
+		font-size: 24px;
+	}
+
+	.article-snippet-image {
+		width: 220px;
+	}
+}

@@ -195,6 +195,26 @@ class JjsAdmin extends Controller
         $this->view->render( "App/Views/JJSAdmin.php" );
     }
 
+    public function appraisalsAction()
+    {
+        $businessRepo = $this->load( "business-repository" );
+        $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
+        $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
+        $prospectRepo = $this->load( "prospect-repository" );
+
+        $prospectAppraisals = array_reverse( $prospectAppraisalRepo->getAll() );
+
+        foreach ( $prospectAppraisals as $prospectAppraisal ) {
+            $prospectAppraisal->prospect = $prospectRepo->getByID( $prospectAppraisal->prospect_id );
+            $prospectAppraisal->purchase = $prospectPurchaseRepo->getByProspectID( $prospectAppraisal->prospect_id );
+        }
+
+        $this->view->assign( "prospectAppraisals", $prospectAppraisals );
+
+        $this->view->setTemplate( "jjs-admin/appraisals.tpl" );
+        $this->view->render( "App/Views/JJSAdmin.php" );
+    }
+
     public function forgotPassword()
 	{
 		$input = $this->load( "input" );
@@ -367,6 +387,80 @@ class JjsAdmin extends Controller
         $this->view->setTemplate( "jjs-admin/searches.tpl" );
         $this->view->render( "App/Views/JJSAdmin.php" );
 
+    }
+
+    public function blogsAction()
+    {
+        $blogRepo = $this->load( "blog-repository" );
+
+        $blogs = $blogRepo->getAll();
+
+        $this->view->assign( "blogs", $blogs );
+
+        $this->view->setTemplate( "jjs-admin/blogs.tpl" );
+        $this->view->render( "App/Views/JJSAdmin.php" );
+
+    }
+
+    public function createBlog()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $blogRepo = $this->load( "blog-repository" );
+        $imageRepo = $this->load( "image-repository" );
+
+        $images = $imageRepo->getAllByBusinessID( 0 );
+
+        if (
+            $input->exists() &&
+            $input->issetField( "create" ) &&
+            $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "name" => [
+                        "name" => "Blog Name",
+                        "required" => true,
+                        "min" => 1,
+                        "max" => 256
+                    ],
+                    "url" => [
+                        "name" => "Blog URL",
+                        "required" => true,
+                        "min" => 1,
+                        "max" => 256
+                    ],
+                    "title" => [
+                        "name" => "Title",
+                        "required" => true,
+                    ],
+                    "description" => [
+                        "name" => "Description",
+                        "required" => true
+                    ],
+                    "image_id" => [
+                        "name" => "Image",
+                        "required" => true
+                    ]
+                ],
+
+                "create"
+            )
+        ) {
+            $blog = $blogRepo->create( $input->get( "name" ), $input->get( "url" ), $input->get( "title" ), $input->get( "description" ), $input->get( "image_id" ) );
+            $this->view->redirect( "jjs-admin/blog/" . $blog->id . "/" );
+        }
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+	    $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+        $this->view->assign( "images", $images );
+
+        $this->view->setTemplate( "jjs-admin/create-blog.tpl" );
+        $this->view->render( "App/Views/JJSAdmin.php" );
     }
 
 	public function invalidToken()

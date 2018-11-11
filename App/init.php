@@ -4,14 +4,13 @@
 */
 // autoloading native classes and third party libraries. Check composer.json for details
 require_once( "App/vendor/autoload.php" );
-
 require_once( "App/Helpers/debug.php" );
 
 // Dependency injection container
 $container = new Core\DI_Container;
 
 // Environment
-Conf\Config::setEnv( "production" );
+Conf\Config::setEnv( "development" );
 
 // Load services using DI_Container
 require_once( "App/Conf/services.php" );
@@ -26,7 +25,7 @@ set_exception_handler( "Core\Error::exceptionHandler" );
 $session = $container->getService( "session" );
 
 // routing
-$Router = new Core\Router;
+$Router = $container->getService( "router" );
 
 // routes
 require_once( "App/Conf/routes.php" );

@@ -8,6 +8,14 @@ class Router
   protected $routes = [];
   // Parameters from the matched routes
   protected $params = [];
+  private $configs;
+  private $environment;
+
+    public function __construct( \Conf\Config $Config )
+    {
+        $this->configs = $Config::$configs;
+        $this->environment = $Config::getEnv();
+    }
 
   // Add a route to the routing table
   public function add( $route, $params = [] )
@@ -60,9 +68,12 @@ class Router
     $this->resetGETSuperGLobal( $url );
 
     if ( $this->match( $url ) ) {
-      $root = $this->setDepth( $url ); // setting relative root url
-      define( "REL", $root );
-      define( "HOME", "./" . $root );
+        // $root = $this->environment == "production"
+        // ? $this->configs[ "routing" ][ $this->environment ][ "root" ]
+        // : $this->createRelativeURL( $url );
+        define( "HOME", $this->configs[ "routing" ][ $this->environment ][ "root" ] );
+
+
       // checking to see a a "path" regex variable was created by the router.
       // uses the regex variable "path" to construct the path to the controller
       // and create the namespace under which the controller exists
@@ -130,15 +141,17 @@ class Router
       unset( $_GET[ $url ] );
   }
 
-  protected function setDepth( $route )
-  {
-    $relative_root_ref = "";
-    $depth = ( count( explode( "/", $route ) ) ) - 1;
-    if ( $depth > 0 ) {
-      $relative_root_ref = str_repeat( "../", $depth );
+    protected function createRelativeURL( $url )
+    {
+        $relative_root_ref = "";
+        $depth = ( count( explode( "/", $url ) ) ) - 1;
+
+        if ( $depth > 0 ) {
+            $relative_root_ref = str_repeat( "../", $depth );
+        }
+
+        return $relative_root_ref;
     }
-    return $relative_root_ref;
-  }
 
   private function buildNamespace( $namespace )
   {
