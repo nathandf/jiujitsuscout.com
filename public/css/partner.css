@@ -6,6 +6,13 @@
     margin-top: 40px;
 }
 
+.headline {
+    color: #2F3033;
+	font-family: "Open Sans", sans-serif;
+	font-size: 35px;
+	margin-bottom: 20px;
+}
+
 .partner-sub-title {
   margin: 0 auto;
   letter-spacing: 1.5px;
@@ -41,13 +48,14 @@
 }
 
 .sign-up-field {
-  width: 300px;
+  width: 380px;
   height: 40px;
   border-radius: 3px;
   border: 1px solid #DDDDDD;
   text-indent: 10px;
   transition: .4s;
   margin-bottom: 15px;
+  box-sizing: border-box;
 }
 
 .sign-up-field:hover {
