@@ -9,8 +9,15 @@
 .headline {
     color: #2F3033;
 	font-family: "Open Sans", sans-serif;
-	font-size: 35px;
+	font-size: 30px;
 	margin-bottom: 20px;
+}
+
+.style-line {
+	margin-top: 8px;
+	border: 2px solid #0667D0;
+	border-radius: 2px;
+	width: 220px;
 }
 
 .partner-sub-title {
@@ -37,7 +44,6 @@
 .sign-up-button {
   width: 200px;
   height: 40px;
-  background: #448AFF;
   color: #FFFFFF;
   border-radius: 3px;
   font-weight: 600;
@@ -48,7 +54,7 @@
 }
 
 .sign-up-field {
-  width: 380px;
+  width: 260px;
   height: 40px;
   border-radius: 3px;
   border: 1px solid #DDDDDD;

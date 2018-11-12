@@ -9,7 +9,7 @@
 	</head>
 	<body>
 		{include file='includes/navigation/main-menu.tpl'}
-		<div class="clear"></div>
+		<div id="get-started" class="clear"></div>
 		<div>
 			<p class="push-t-lrg push-b-lrg headline" style="text-align: center;">Capture more leads{if isset($geoInfo->city)} in <span class="city-name" id="city-name">{$geoInfo->city}</span>{else}.{/if}</p>
 			<div class="con-cnt-lrg inner-pad-med">
@@ -22,31 +22,48 @@
 						<input type="text" name="gym_name" class="sign-up-field" placeholder="Name of your gym">
 					</div>
 					<div class="con-inline">
-						<input type="submit" class="sign-up-button mat-hov" value="Get Started"/>
+						<input type="submit" class="sign-up-button mat-hov bg-deep-blue" value="Get Started"/>
 					</div>
 					<p class="partner-title-bottom">Millions of people are searching for martial arts around the world everyday.<br>We'll help them find you.</p>
 				</form>
 			</div>
 			<div class="clear"></div>
-			<div class="col-100 sign-up-free-box inner-pad-med push-b-lrg">
-				<div class="con-cnt-lrg inner-pad-med" style="text-align: left;">
-					<p class="h2 dark">How It Works</p>
-					<p class="h2 push-t-lrg floatleft"> 1) Visitors search for martial arts gyms in their area</p>
-					<p class="h2 push-t-med floatleft"> 2) We qualify their level of interest...</p>
-					<p class="h2 push-t-med floatleft"> 3) And let you know when they become a lead</p>
-					<p class="h2 push-t-med floatleft"> 4) You evaluate the lead to see if it meets your standards</p>
-					<p class="h2 push-t-med floatleft"> 5) Purchase it and schedule them to come in for a free class!</p>
+			<div id="how-it-works" class="col-100 sign-up-free-box inner-pad-med push-b-lrg" style="border-top: 1px solid #CCCCCC;">
+				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
+					<p class="text-lrg push-t-med" style="color: #333;">HOW IT WORKS</p>
+					<div class="style-line"></div>
+					<h2 class="headline push-b-med">Lead generation. The easy way.</h2>
+					<p class="h3 push-t-med floatleft tc-deep-blue" style="font-weight: 600;">1. Create an account for your martial arts business</p>
 					<div class="clear"></div>
-					<a href="{$HOME}partner/sign-up" class="btn btn-med floatleft bg-deep-blue push-t-lrg">Get Started</a>
+					<p class="text-xlrg floatleft" style="margin-top: 5px; color: #777777;">Visitors search for martial arts gyms in their area. Create your free profile so they can find your on our platform</p>
+					<div class="clear"></div>
+					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">2. Visitors looking for classes explore your profile</p>
+					<div class="clear"></div>
+					<p class="text-xlrg push-t-sml floatleft" style="margin-top: 5px; color: #777777;">Encourage users to engage with your profile by filling it with useful information. Add Frequently asked question, programs, special offers, images and much more.</p>
+					<div class="clear"></div>
+					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">3. We qualify you profile visitors by determining their needs, wants, and level of interest</p>
+					<div class="clear"></div>
+					<p class="text-xlrg push-t-lrg floatleft" style="margin-top: 5px; color: #777777;">Not all leads are created equal. A prospect's value is determined by the actions they take on our platform. The hotter the lead, the more valuable they are.</p>
+					<div class="clear"></div>
+					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">4. Recieve real-time notifications when you get a new lead</p>
+					<div class="clear"></div>
+					<p class="text-xlrg push-t-lrg floatleft" style="margin-top: 5px; color: #777777;">The goal of marketing is get leads and turn the into paying customers. We make that quick and easy for you to follow up with them with our built-in lead management system.</p>
+					<div class="clear"></div>
+					<div class="clear"></div>
+					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">5. Review the lead and make an informed decision before you purchase it</p>
+					<div class="clear"></div>
+					<p class="text-xlrg push-t-lrg floatleft" style="margin-top: 5px; color: #777777;">Once you're satisfied with your leads, complete your purchase by adding account credit and get them scheduled to try a class.</p>
+					<div class="clear"></div>
+					<a href="#get-started" class="btn btn-med floatleft bg-deep-blue push-t-lrg">Get Started</a>
 					<div class="clear"></div>
 				</div>
 			</div>
 			<div class="clear"></div>
 			<div class="col-100 sign-up-free-box inner-pad-med push-b-lrg">
-				<div class="con-cnt-lrg inner-pad-med" style="text-align: left;">
-					<p class="h2 dark">JiuJitsuScout is more than a search engine</p>
+				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
+					<h2 class="headline">JiuJitsuScout is more than a search engine for martial arts gyms</h2>
 					<p class="h2 push-t-med floatleft">It's a lead geneation and marketing automation platform for martial arts business.</p>
-					<p class="h2 push-t-med floatleft">You can manage your prospects, set appointments, send reminders, track trial memeberships, and much more with our full functional CRM (Customer Relationship Manager)</p>
+					<p class="h2 push-t-med floatleft">You can manage your prospects, set appointments, send reminders, track trial memeberships, and much more with our fully functional CRM (Customer Relationship Manager)</p>
 					<div class="clear"></div>
 					<a href="{$HOME}partner/sign-up" class="btn btn-med floatleft bg-deep-blue push-t-lrg">Sign up</a>
 					<div class="clear"></div>
@@ -54,8 +71,8 @@
 			</div>
 			<div class="clear"></div>
 			<div class="col-100 sign-up-free-box inner-pad-med push-b-lrg">
-				<div class="con-cnt-lrg inner-pad-med" style="text-align: left;">
-					<p class="h2 dark">Need to generate even more leads?</p>
+				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
+					<h2 class="headline">Need to generate even more leads?</h2>
 					<p class="h2 push-t-med floatleft">That's what we do!</p>
 					<p class="h2 push-t-med floatleft">Let our marketing experts fill your gym with excited new students with our Social Media and Search Engine marketing servces.</p>
 					<div class="clear"></div>
@@ -65,8 +82,8 @@
 			</div>
 			<div class="clear"></div>
 			<div class="col-100 sign-up-free-box inner-pad-med push-b-lrg">
-				<div class="con-cnt-lrg inner-pad-med" style="text-align: left;">
-					<p class="h2 dark">Keep your business running at peak performance</p>
+				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
+					<h2 class="headline">Keep your business running at peak performance</h2>
 					<p class="h2 push-t-med floatleft">Follow our martial arts business blog to stay up-to-date with articles on marketing, sales, seo, staff development, and helpful tips for businesses in the martial arts industry.</p>
 					<div class="clear"></div>
 					<a href="{$HOME}martial-arts-business-blog/" class="btn btn-med floatleft bg-deep-blue push-t-lrg">Visit Blog</a>

@@ -76,35 +76,58 @@
 								{/if}
 								<button type="submit" class="" id="find-gyms-button"/><span class="dt">Find Gyms</span><span class="mo"><i class="fa fa-search" aria-hidden="true"></i></span></button>
 						    	</form>
+								<div class="clear push-t-med"></div>
+								<a href="#how-it-works" class="link how-it-works-link">How It Works</a>
 							</div>
 		        		</div>
 					</div>
 				</div>
 			</div><!-- end search-box -->
 			<div class="col-100" style="border-top: 1px solid #CCC;"></div>
-				<div class="con-cnt-xxlrg inner-pad-med">
-					<h2 style="color: #2F3033;" class="push-b-lrg">Search by martial arts discipline</h2>
-					{foreach from=$disciplines item=discipline name=discipline_loop}
-					{if $smarty.foreach.discipline_loop.iteration < 9}
-						<div class="discipline-container cursor-pt" style="box-sizing: border-box; padding: 5px; width: 25%; min-width: 150px; float: left;">
-							<a href="{$HOME}disciplines/{$discipline->url}/near-me/" class="text-lrg-heavy link" style="color: #2F3033;">> {$discipline->nice_name}</a>
-							<div class="clear push-b-sml"></div>
-						</div>
-						{if $smarty.foreach.discipline_loop.iteration % 4 == 0}
-						<div class="clear"></div>
-						{/if}
-					{elseif $smarty.foreach.discipline_loop.iteration == 9}
-						<div class="discipline-container cursor-pt" style="box-sizing: border-box; padding: 5px; width: 25%; min-width: 150px; float: left;">
-							<a href="{$HOME}disciplines/" class="text-lrg link tc-deep-blue">— all disciplines</a>
-							<div class="clear push-b-sml"></div>
-						</div>
+			<div class="con-cnt-xxlrg inner-pad-med">
+				<p class="headline push-b-lrg push-t-lrg">Search by martial arts discipline</p>
+				{foreach from=$disciplines item=discipline name=discipline_loop}
+				{if $smarty.foreach.discipline_loop.iteration < 9}
+					<div class="discipline-container cursor-pt" style="box-sizing: border-box; padding: 5px; width: 25%; min-width: 150px; float: left;">
+						<a href="{$HOME}disciplines/{$discipline->url}/near-me/" class="text-lrg-heavy link" style="color: #2F3033;">> {$discipline->nice_name}</a>
+						<div class="clear push-b-sml"></div>
+					</div>
+					{if $smarty.foreach.discipline_loop.iteration % 4 == 0}
+					<div class="clear"></div>
 					{/if}
-					{/foreach}
+				{elseif $smarty.foreach.discipline_loop.iteration == 9}
+					<div class="discipline-container cursor-pt" style="box-sizing: border-box; padding: 5px; width: 25%; min-width: 150px; float: left;">
+						<a href="{$HOME}disciplines/" class="text-lrg link tc-deep-blue">— all disciplines</a>
+						<div class="clear push-b-sml"></div>
+					</div>
+				{/if}
+				{/foreach}
+				<div class="clear push-b-lrg"></div>
+			</div>
+			<div id="how-it-works" class="col-100 sign-up-free-box inner-pad-med push-b-lrg" style="border-top: 1px solid #CCCCCC;">
+				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
+					<p class="text-lrg push-t-med" style="color: #333;">HOW IT WORKS</p>
+					<div class="style-line"></div>
+					<p class="headline push-b-med">Find professional martial arts instruction for any discipline</p>
+					<p class="h3 push-t-med floatleft tc-deep-blue" style="font-weight: 600;">1. Search for maritial arts in your area</p>
+					<div class="clear"></div>
+					<p class="text-xlrg floatleft" style="margin-top: 5px; color: #777777;">Choose the gym that fits your needs best.</p>
+					<div class="clear"></div>
+					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">2. Answer a few questions to help us show you the best gyms</p>
+					<div class="clear"></div>
+					<p class="text-xlrg push-t-sml floatleft" style="margin-top: 5px; color: #777777;">Let us know the reasons you're interested in martial arts and we'll bring you the gyms that fit your needs best.</p>
+					<div class="clear"></div>
+					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">3. Choose the gym you like the best and try it for free</p>
+					<div class="clear"></div>
+					<p class="text-xlrg push-t-lrg floatleft" style="margin-top: 5px; color: #777777;">Sign up to try out a class for free. Our professional martial artists will get in contact with you right away to schedule your visit.</p>
+					<div class="clear"></div>
+					<a href="#search-box" class="btn btn-med floatleft bg-deep-blue push-t-lrg">Search Now</a>
 					<div class="clear"></div>
 				</div>
+			</div>
 			<div class="col-100" style="border-top: 1px solid #CCC;"></div>
 			<div class="con-cnt-xxlrg inner-pad-med">
-				<h2 style="color: #2F3033;" class="push-b-lrg">Find martial arts gyms by region</h2>
+				<h2 class="push-b-lrg push-t-lrg headline">Find martial arts gyms by region</h2>
 				{foreach from=$businesses_geo_info item=businesses_geo_info_by_region name=by_region_loop key=key}
 					<div class="region-block" style="box-sizing: border-box; padding: 5px; width: 25%; min-width: 150px; float: left;">
 						{foreach from=$businesses_geo_info_by_region item=business_geo_info name=business_geo_info_loop}
