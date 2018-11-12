@@ -28,7 +28,7 @@
 				</form>
 			</div>
 			<div class="clear"></div>
-			<div id="how-it-works" class="col-100 sign-up-free-box inner-pad-med push-b-lrg" style="border-top: 1px solid #CCCCCC;">
+			<div id="how-it-works" class="col-100 bg-white push-t-lrg inner-pad-med" style="border-top: 1px solid #CCCCCC;">
 				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
 					<p class="text-lrg push-t-med" style="color: #333;">HOW IT WORKS</p>
 					<div class="style-line"></div>
@@ -54,39 +54,49 @@
 					<div class="clear"></div>
 					<p class="text-xlrg push-t-lrg floatleft" style="margin-top: 5px; color: #777777;">Once you're satisfied with your leads, complete your purchase by adding account credit and get them scheduled to try a class.</p>
 					<div class="clear"></div>
-					<a href="#get-started" class="btn btn-med floatleft bg-deep-blue push-t-lrg">Get Started</a>
+					<a href="#get-started" class="btn button-med floatleft bg-deep-blue push-t-lrg">Get Started</a>
 					<div class="clear"></div>
 				</div>
 			</div>
 			<div class="clear"></div>
-			<div class="col-100 sign-up-free-box inner-pad-med push-b-lrg">
+			<div class="col-100 inner-pad-med bg-white" style="border-top: 1px solid #CCCCCC;">
 				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
+					<p class="text-lrg push-t-med" style="color: #333;">FEATURES</p>
+					<div class="style-line"></div>
 					<h2 class="headline">JiuJitsuScout is more than a search engine for martial arts gyms</h2>
-					<p class="h2 push-t-med floatleft">It's a lead geneation and marketing automation platform for martial arts business.</p>
-					<p class="h2 push-t-med floatleft">You can manage your prospects, set appointments, send reminders, track trial memeberships, and much more with our fully functional CRM (Customer Relationship Manager)</p>
+					<p class="text-xlrg push-t-lrg floatleft" style="margin-top: 5px; color: #777777;">Here's a few ways JiuJitsuScout can help your martial arts business generate more revenue</p>
 					<div class="clear"></div>
-					<a href="{$HOME}partner/sign-up" class="btn btn-med floatleft bg-deep-blue push-t-lrg">Sign up</a>
+					<p class="h3 push-t-med tc-deep-blue" style="font-weight: 600;">- Set Appointments</p>
+					<p class="h3 push-t-med tc-deep-blue" style="font-weight: 600;">- Send Reminders</p>
+					<p class="h3 push-t-med tc-deep-blue" style="font-weight: 600;">- Track Trial Memberships</p>
+					<p class="h3 push-t-med tc-deep-blue" style="font-weight: 600;">- Manage Tasks </p>
+					<p class="h3 push-t-med tc-deep-blue" style="font-weight: 600;">- Create Landing Pages</p>
+					<div class="clear"></div>
+					<a href="{$HOME}partner/sign-up" class="btn button-med floatleft bg-deep-blue push-t-lrg">Sign up</a>
 					<div class="clear"></div>
 				</div>
 			</div>
 			<div class="clear"></div>
-			<div class="col-100 sign-up-free-box inner-pad-med push-b-lrg">
+			<div class="col-100 inner-pad-med bg-white" style="border-top: 1px solid #CCCCCC;">
 				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
+					<p class="text-lrg push-t-med" style="color: #333;">ADDITIONAL SERVICES</p>
+					<div class="style-line"></div>
 					<h2 class="headline">Need to generate even more leads?</h2>
-					<p class="h2 push-t-med floatleft">That's what we do!</p>
 					<p class="h2 push-t-med floatleft">Let our marketing experts fill your gym with excited new students with our Social Media and Search Engine marketing servces.</p>
 					<div class="clear"></div>
-					<a href="{$HOME}partner/sign-up" class="btn btn-med floatleft bg-deep-blue push-t-lrg">Learn More</a>
+					<a href="{$HOME}partner/sign-up" class="btn button-med floatleft bg-deep-blue push-t-lrg">Learn More</a>
 					<div class="clear"></div>
 				</div>
 			</div>
 			<div class="clear"></div>
-			<div class="col-100 sign-up-free-box inner-pad-med push-b-lrg">
+			<div class="col-100 bg-white inner-pad-med" style="border-top: 1px solid #CCCCCC;">
 				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
+					<p class="text-lrg push-t-med" style="color: #333;">RESOURCES</p>
+					<div class="style-line"></div>
 					<h2 class="headline">Keep your business running at peak performance</h2>
 					<p class="h2 push-t-med floatleft">Follow our martial arts business blog to stay up-to-date with articles on marketing, sales, seo, staff development, and helpful tips for businesses in the martial arts industry.</p>
 					<div class="clear"></div>
-					<a href="{$HOME}martial-arts-business-blog/" class="btn btn-med floatleft bg-deep-blue push-t-lrg">Visit Blog</a>
+					<a href="{$HOME}martial-arts-business-blog/" class="btn button-med floatleft bg-deep-blue push-t-lrg">Visit Blog</a>
 					<div class="clear"></div>
 				</div>
 			</div>

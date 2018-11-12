@@ -974,6 +974,17 @@ td {
     box-sizing: border-box;
 }
 
+.button-med-round {
+    width: 200px;
+    height: var(--button-height);
+    line-height: var(--button-med-line-height);
+    padding: 15px;
+    --button-med-round-border-radius: calc(var(--button-height) / 2);
+    border-radius: 25px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
 .button-sml {
     width: 100px;
     height: 50px;

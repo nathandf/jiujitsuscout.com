@@ -117,7 +117,7 @@
 					<div class="clear"></div>
 					<p class="text-xlrg push-t-sml floatleft" style="margin-top: 5px; color: #777777;">Let us know the reasons you're interested in martial arts and we'll bring you the gyms that fit your needs best.</p>
 					<div class="clear"></div>
-					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">3. Choose the gym you like the best and try it for free</p>
+					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">3. Choose the gym you like the most and try it for free</p>
 					<div class="clear"></div>
 					<p class="text-xlrg push-t-lrg floatleft" style="margin-top: 5px; color: #777777;">Sign up to try out a class for free. Our professional martial artists will get in contact with you right away to schedule your visit.</p>
 					<div class="clear"></div>
@@ -125,6 +125,16 @@
 					<div class="clear"></div>
 				</div>
 			</div>
+			<div class="clear"></div>
+			<div class="col-100 bg-deep-blue inner-pad-med">
+				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
+					<h2 class="headline tc-white">Own a martial arts gym? Create a free profile so our visitors can find you.</h2>
+					<div class="clear"></div>
+					<a href="{$HOME}partner/" class="btn button-med-round floatleft bg-gold tc-black">Join as a gym</a>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="clear"></div>
 			<div class="col-100" style="border-top: 1px solid #CCC;"></div>
 			<div class="con-cnt-xxlrg inner-pad-med">
 				<h2 class="push-b-lrg push-t-lrg headline">Find martial arts gyms by region</h2>
