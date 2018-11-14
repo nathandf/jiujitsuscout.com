@@ -5,10 +5,12 @@
 		<meta name="description" content="Generate new members for your martial arts gym. Lead generation services where you can pay per lead, or run monthly lead generation campaigns.">
 		{include file='includes/head/main-head.tpl'}
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/partner.css"/>
+		<script src="{$HOME}{$JS_SCRIPTS}partner.js"></script>
 		{$facebook_pixel|default:null}
 	</head>
 	<body>
 		{include file='includes/navigation/main-menu.tpl'}
+		{include file="includes/modals/marketing-consultation.tpl"}
 		<div id="get-started" class="clear"></div>
 		<div>
 			<p class="push-t-lrg push-b-lrg headline" style="text-align: center;">Capture more leads{if isset($geoInfo->city)} in <span class="city-name" id="city-name">{$geoInfo->city}</span>{else}.{/if}</p>
@@ -35,7 +37,7 @@
 					<h2 class="headline push-b-med">Lead generation. The easy way.</h2>
 					<p class="h3 push-t-med floatleft tc-deep-blue" style="font-weight: 600;">1. Create an account for your martial arts business</p>
 					<div class="clear"></div>
-					<p class="text-xlrg floatleft" style="margin-top: 5px; color: #777777;">Visitors search for martial arts gyms in their area. Create your free profile so they can find your on our platform</p>
+					<p class="text-xlrg floatleft" style="margin-top: 5px; color: #777777;">Visitors search for martial arts gyms in their area. Create your free profile so they can find you on our platform</p>
 					<div class="clear"></div>
 					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">2. Visitors looking for classes explore your profile</p>
 					<div class="clear"></div>
@@ -45,7 +47,7 @@
 					<div class="clear"></div>
 					<p class="text-xlrg push-t-lrg floatleft" style="margin-top: 5px; color: #777777;">Not all leads are created equal. A prospect's value is determined by the actions they take on our platform. The hotter the lead, the more valuable they are.</p>
 					<div class="clear"></div>
-					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">4. Recieve real-time notifications when you get a new lead</p>
+					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">4. Receive real-time notifications when you get a new lead</p>
 					<div class="clear"></div>
 					<p class="text-xlrg push-t-lrg floatleft" style="margin-top: 5px; color: #777777;">The goal of marketing is get leads and turn the into paying customers. We make that quick and easy for you to follow up with them with our built-in lead management system.</p>
 					<div class="clear"></div>
@@ -63,28 +65,31 @@
 				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
 					<p class="text-lrg push-t-med" style="color: #333;">FEATURES</p>
 					<div class="style-line"></div>
-					<h2 class="headline">JiuJitsuScout is more than a search engine for martial arts gyms</h2>
+					<h2 class="headline">We're more than a Lead Generation Platform</h2>
 					<p class="text-xlrg push-t-lrg floatleft" style="margin-top: 5px; color: #777777;">Here's a few ways JiuJitsuScout can help your martial arts business generate more revenue</p>
 					<div class="clear"></div>
-					<p class="h3 push-t-med tc-deep-blue" style="font-weight: 600;">- Set Appointments</p>
-					<p class="h3 push-t-med tc-deep-blue" style="font-weight: 600;">- Send Reminders</p>
-					<p class="h3 push-t-med tc-deep-blue" style="font-weight: 600;">- Track Trial Memberships</p>
-					<p class="h3 push-t-med tc-deep-blue" style="font-weight: 600;">- Manage Tasks </p>
-					<p class="h3 push-t-med tc-deep-blue" style="font-weight: 600;">- Create Landing Pages</p>
+					<p class="h3 push-t-lrg tc-deep-blue" style="font-weight: 600;">Manage your leads with a fully functional CRM</p>
+					<p class="text-xlrg" style="margin-top: 5px; color: #777777;">• Import prospects from other sources</p>
+					<p class="text-xlrg" style="margin-top: 5px; color: #777777;">• Set appointments</p>
+					<p class="text-xlrg" style="margin-top: 5px; color: #777777;">• Recieve automated appointment reminders for both the lead and appointment setter</p>
+					<p class="text-xlrg" style="margin-top: 5px; color: #777777;">• Track and manage trial memberships</p>
+					<p class="text-xlrg" style="margin-top: 5px; color: #777777;">• Create, delegate, and follow up with tasks</p>
+					<p class="h3 push-t-lrg tc-deep-blue" style="font-weight: 600;">Marketing Management Sytem</p>
+					<p class="text-xlrg" style="margin-top: 5px; color: #777777;">• Create lead capture pages perfect for social media campaigns</p>
+					<p class="text-xlrg" style="margin-top: 5px; color: #777777;">• Retarget your profile visiors with your Facebook Pixel</p>
+					<p class="text-xlrg" style="margin-top: 5px; color: #777777;">• Order Social Media and Search Engine Marketing Campigns</p>
 					<div class="clear"></div>
 					<a href="{$HOME}partner/sign-up" class="btn button-med floatleft bg-deep-blue push-t-lrg">Sign up</a>
 					<div class="clear"></div>
 				</div>
 			</div>
 			<div class="clear"></div>
-			<div class="col-100 inner-pad-med bg-white" style="border-top: 1px solid #CCCCCC;">
+			<div class="col-100 inner-pad-med bg-deep-blue" style="border-top: 1px solid #CCCCCC;">
 				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
-					<p class="text-lrg push-t-med" style="color: #333;">ADDITIONAL SERVICES</p>
-					<div class="style-line"></div>
-					<h2 class="headline">Need to generate even more leads?</h2>
-					<p class="h2 push-t-med floatleft">Let our marketing experts fill your gym with excited new students with our Social Media and Search Engine marketing servces.</p>
+					<h2 class="headline" style="color: #FFF;">Need to generate even more leads?</h2>
+					<p class="h2 push-t-med floatleft tc-white">Let our marketing experts fill your gym with excited new students with our Social Media and Search Engine marketing servces.</p>
 					<div class="clear"></div>
-					<a href="{$HOME}partner/sign-up" class="btn button-med floatleft bg-deep-blue push-t-lrg">Learn More</a>
+					<button type="button" id="marketing-consultation-button" class="btn button-med-round floatleft bg-gold tc-black push-t-lrg">Request Free Consultation</button>
 					<div class="clear"></div>
 				</div>
 			</div>

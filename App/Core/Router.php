@@ -144,7 +144,7 @@ class Router
 
     protected function createRelativeURL( $url )
     {
-        $relative_root_ref = "";
+        $relative_root_ref = "./";
         $depth = ( count( explode( "/", $url ) ) ) - 1;
 
         if ( $depth > 0 ) {

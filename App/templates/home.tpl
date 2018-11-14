@@ -53,7 +53,6 @@
 			}]
 		{/literal}
 		</script>
-
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/home.css"/>
 	    {include file='includes/head/main-head.tpl'}
 		{$facebook_pixel}
@@ -108,10 +107,10 @@
 				<div class="con-cnt-xxlrg inner-pad-med" style="text-align: left;">
 					<p class="text-lrg push-t-med" style="color: #333;">HOW IT WORKS</p>
 					<div class="style-line"></div>
-					<p class="headline push-b-med">Find professional martial arts instruction for any discipline</p>
-					<p class="h3 push-t-med floatleft tc-deep-blue" style="font-weight: 600;">1. Search for maritial arts in your area</p>
+					<p class="headline push-b-med">Find professional martial arts lessons near you</p>
+					<p class="h3 push-t-med floatleft tc-deep-blue" style="font-weight: 600;">1. Search for martial arts in your area</p>
 					<div class="clear"></div>
-					<p class="text-xlrg floatleft" style="margin-top: 5px; color: #777777;">Choose the gym that fits your needs best.</p>
+					<p class="text-xlrg floatleft" style="margin-top: 5px; color: #777777;">Type in your zip code or city and state in the search bar above and push the "Find&nbsp;Gyms" button to see results.</p>
 					<div class="clear"></div>
 					<p class="h3 push-t-lrg floatleft tc-deep-blue" style="font-weight: 600;">2. Answer a few questions to help us show you the best gyms</p>
 					<div class="clear"></div>
@@ -146,11 +145,11 @@
 								<a href="{$HOME}martial-arts-gyms/near-me/{$business_geo_info[ 'region_url' ]}/" class="text-lrg-heavy link" style="color: #2F3033;">{$key|capitalize}</a>
 								<div class="clear push-b-sml"></div>
 								{/if}
-							<a class="link text-med" style="color: #777;" href="{$HOME}martial-arts-gyms/near-me/{$business_geo_info[ 'region_url' ]}/{$business_geo_info[ 'locality_url' ]}/">{$business_geo_info[ "locality" ]}</a>
-							<div class="clear"></div>
-							{elseif $smarty.foreach.business_geo_info_loop.iteration == 5}
-							<a class="link text-med tc-deep-blue" href="{$HOME}martial-arts-gyms/near-me/{$business_geo_info[ 'region_url' ]}/">— more</a>
-							<div class="clear push-t-sml"></div>
+								<a class="link text-med" style="color: #777;" href="{$HOME}martial-arts-gyms/near-me/{$business_geo_info[ 'region_url' ]}/{$business_geo_info[ 'locality_url' ]}/">{$business_geo_info[ "locality" ]}</a>
+								<div class="clear"></div>
+								{elseif $smarty.foreach.business_geo_info_loop.iteration == 5}
+								<a class="link text-med tc-deep-blue" href="{$HOME}martial-arts-gyms/near-me/{$business_geo_info[ 'region_url' ]}/">— more</a>
+								<div class="clear push-t-sml"></div>
 							{/if}
 						{/foreach}
 					</div>
