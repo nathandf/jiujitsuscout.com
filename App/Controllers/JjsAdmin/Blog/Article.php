@@ -173,6 +173,7 @@ class Article extends Controller
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->assign( "blogCategories", $blogCategories );
         $this->view->assign( "images", $images );
+        $this->view->setFlashMessages( $this->session->getFlashMessages( "flash_messages" ) );
         $this->view->assign( "root", HOME );
 
         $this->view->setTemplate( "jjs-admin/blog/article/create-article.tpl" );

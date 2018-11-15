@@ -27,6 +27,13 @@
 				</div>
 			{/foreach}
 		{/if}
+		{if !empty($flash_messages)}
+			{foreach from=$flash_messages item=message}
+				<div class="con-message-success mat-hov cursor-pt --c-hide">
+					<p class="user-message-body">{$message}</p>
+				</div>
+			{/foreach}
+		{/if}
 		<p class="floatleft push-r-sml{if $article->status == 'published'} tc-green{elseif $article->status == 'draft'} tc-deep-blue{else} tc-red{/if}">{$article->status|capitalize}</p>
 		<a href="{$HOME}jjs-admin/blog/{$blog->id}/article/{$article->id}/preview" class="btn btn-inline text-med-heavy bg-deep-blue floatright push-r-sml">Preview</a>
 		<div class="clear"></div>

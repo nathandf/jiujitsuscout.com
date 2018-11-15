@@ -142,6 +142,10 @@ class Blog extends Controller
                 }
             }
 
+            // Notify of successful article creation
+            $this->session->addFlashMessage( "Article Successfully Created" );
+            $this->session->setFlashMessages();
+
             $this->view->redirect( "jjs-admin/blog/" . $this->params[ "id" ] . "/article/" . $article->id . "/" );
         }
 
