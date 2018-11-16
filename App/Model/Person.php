@@ -45,7 +45,7 @@ class Person
 			return $this->first_name . " " . $this->last_name;
 		}
 
-		return $first_name;
+		return $this->first_name;
 	}
 
     public function setPhoneNumber( $country_code, $national_number )

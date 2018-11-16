@@ -9,14 +9,16 @@
 			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Business</th>
 			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Name</th>
 			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Email</th>
-			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Phone Number</th>
+			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Phone</th>
+			<th class="bg-salmon tc-white" style="border: 1px solid #CCC;">Source</th>
 		{foreach from=$prospects item=prospect name="prospect_loop"}
-			{if $smarty.foreach.prospect_loop.iteration <= 100}
+			{if $smarty.foreach.prospect_loop.iteration <= 200}
 			<tr style="background: {cycle values='#FFF,#F6F7F9'}">
-				<td style="overflow: hidden; overflow: hidden; text-align: center; border: 1px solid #CCC;">{$prospect->business_name}</td>
-				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$prospect->first_name}{if isset($prospect->last_name)} {$prospect->last_name}{/if}</td>
-				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$prospect->email}</td>
-				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">+{$prospect->phone->country_code} {$prospect->phone->national_number}</td>
+				<td style="overflow: hidden; overflow: hidden; text-align: center; border: 1px solid #CCC;">{if isset($prospect->business_name)}{$prospect->business_name}{else}N/a{/if}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$prospect->getFullName()}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{if $prospect->email != "" || $prospect->phone->national_number != null}<i class="tc-good-green fa fa-check-square" aria-hidden="true"></i>{else}<i class="tc-red fa fa-close" aria-hidden="true"></i>{/if}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{if isset($prospect->phone)}{if $prospect->phone->national_number != "" || $prospect->phone->national_number != null}<i class="tc-good-green fa fa-check-square" aria-hidden="true"></i>{else}<i class="tc-red fa fa-close" aria-hidden="true"></i>{/if}{else}<i class="tc-red fa fa-close" aria-hidden="true">{/if}</td>
+				<td style="overflow: hidden; text-align: center; border: 1px solid #CCC;">{$prospect->source}</td>
 			<tr>
 			{/if}
 		{/foreach}

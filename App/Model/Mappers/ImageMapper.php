@@ -15,6 +15,17 @@ class ImageMapper extends DataMapper
         return $image->id = $id;
     }
 
+    public function mapFromID( \Model\Image $image, $id )
+    {
+        $sql = $this->DB->prepare( "SELECT * FROM image WHERE id = :id" );
+        $sql->bindParam( ":id", $id );
+        $sql->execute();
+        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
+        $this->populate( $image, $resp );
+
+        return $image;
+    }
+
     public function mapAllFromBusinessID( $business_id )
     {
         $entityFactory = $this->container->getService( "entity-factory" );
@@ -24,7 +35,7 @@ class ImageMapper extends DataMapper
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $image = $entityFactory->build( "Image" );
-            $this->populateImage( $image, $resp );
+            $this->populate( $image, $resp );
             $images[] = $image;
         }
 

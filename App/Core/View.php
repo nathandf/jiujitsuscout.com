@@ -51,7 +51,6 @@ class View extends CoreObject
         $this->templatingEngine->compile_dir = "App/templates/tmp";
         // Constants
         $this->templatingEngine->assign( "HOME", HOME );
-        $this->templatingEngine->assign( "REL", REL );
         $this->templatingEngine->assign( "JS_SCRIPTS", "public/js/" );
         $this->templatingEngine->assign( "PHP_SCRIPTS", "App/scripts/php/" );
 

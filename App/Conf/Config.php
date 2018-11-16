@@ -8,11 +8,6 @@ class Config
     public static $environment;
     public static $configs;
 
-    public function __construct()
-    {
-
-    }
-
     public static function setEnv( $environment )
     {
         require( "App/Conf/configs.php" );
