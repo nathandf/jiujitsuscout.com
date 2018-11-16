@@ -19,7 +19,7 @@ class FacebookPixelBuilder
 		}
 
 		// If not an array, add the single event to the events array
-		$this->events[] = "fbq('track', '{$events}'); \n";
+		$this->events[] = $events;
 
 		return;
 	}

@@ -22,6 +22,26 @@
   	/* text-shadow: 0px 0px 15px #000; */
 	margin-bottom: 20px;
 }
+
+.headline {
+	color: #2F3033;
+	font-family: "Open Sans", sans-serif;
+	font-size: 30px;
+  	/* text-shadow: 0px 0px 15px #000; */
+	margin-bottom: 20px;
+}
+
+.style-line {
+	margin-top: 8px;
+	border: 2px solid #0667D0;
+	border-radius: 2px;
+	width: 220px;
+}
+
+.how-it-works-link:visited {
+	color: #0667D0;
+}
+
 .search-sub-title {
 	display: table;
 	color: #000;

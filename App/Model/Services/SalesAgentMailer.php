@@ -30,6 +30,20 @@ class SalesAgentMailer
         return true;
     }
 
+    public function sendConsultationAlert( $name, $email, $phone_number, $budget = null, $students = null, $message = null )
+    {
+        $this->mailer->setRecipientName( "JJS Agent" );
+        $this->mailer->setRecipientEmailAddress( "jiujitsuscout@gmail.com" );
+        $this->mailer->setSenderName( "JJS Notification System" );
+        $this->mailer->setSenderEmailAddress( "alerts@jiujitsuscout.com" );
+        $this->mailer->setContentType( "text/html" );
+        $this->mailer->setEmailSubject( "Marketing Consultation Requested" );
+        $this->mailer->setEmailBody( "Name: $name<br>Email: $email<br>Phone Number: $phone_number<br>Monthly Marketing Budget: $budget<br># of Students: $students<br>Message: $message" );
+        $this->mailer->mail();
+
+        return true;
+    }
+
     public function sendAddBusinessAlert( $name, $gymname, $email, $phone_number )
     {
         $this->mailer->setRecipientName( "JJS Agent" );

@@ -93,7 +93,6 @@ class Article extends Controller
             $input,
             [
                 "token" => [
-                    "name" => "",
                     "equals-hidden" => $this->session->getSession( "csrf-token" ),
                     "required" => true
                 ],
@@ -136,7 +135,7 @@ class Article extends Controller
                     "in_array" => $image_ids
                 ]
             ],
-            "create_article"
+            "update_article"
             )
         ) {
             $status = "draft";
@@ -166,7 +165,6 @@ class Article extends Controller
                     $articleBlogCategoryRepo->create( $this->article->id, $blog_category_id );
                 }
             }
-
             $this->view->redirect( "jjs-admin/blog/" . $this->blog->id . "/article/" . $this->article->id . "/" );
         }
 
@@ -174,6 +172,9 @@ class Article extends Controller
         $this->view->assign( "blogCategories", $blogCategories );
         $this->view->assign( "images", $images );
         $this->view->assign( "root", HOME );
+
+        $this->view->setFlashMessages( $this->session->getFlashMessages( "flash_messages" ) );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setTemplate( "jjs-admin/blog/article/create-article.tpl" );
         $this->view->render( "App/Views/JJSAdmin/Blog/Article.php" );

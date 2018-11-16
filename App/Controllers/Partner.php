@@ -50,7 +50,65 @@ class Partner extends Controller
 
 	public function indexAction()
 	{
+		$input = $this->load( "input" );
+		$inputValidator = $this->load( "input-validator" );
+		$salesAgentMailer = $this->load( "sales-agent-mailer" );
+
+		if ( $input->exists() && $input->issetField( "marketing_consultation" ) && $inputValidator->validate(
+				$input,
+				[
+					"token" => [
+						"equals-hidden" => $this->session->getSession( "csrf-token" ),
+						"required" => true
+					],
+					"name" => [
+						"name" => "Name",
+						"required" => true
+					],
+					"email" => [
+						"name" => "Email",
+						"required" => true
+					],
+					"phone" => [
+						"name" => "Phone",
+						"required" => true
+					],
+					"budget" => [],
+					"students" => [],
+					"message" => []
+				],
+				"marketing_consultation"
+			)
+		) {
+			$salesAgentMailer->sendConsultationAlert(
+				$input->get( "name" ),
+				$input->get( "email" ),
+				$input->get( "phone" ),
+				$input->get( "budget" ),
+				$input->get( "students" ),
+				$input->get( "message" )
+			);
+			$this->view->redirect( "partner/thank-you" );
+		}
+
+		$this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
+
 		$this->view->setTemplate( "partner/partner.tpl" );
+		$this->view->render( "App/Views/Partner.php" );
+	}
+
+	public function thankYouAction()
+	{
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$facebookPixelBuilder->addEvent( "Lead" );
+
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
+		$this->view->setTemplate( "partner/thank-you.tpl" );
 		$this->view->render( "App/Views/Partner.php" );
 	}
 
