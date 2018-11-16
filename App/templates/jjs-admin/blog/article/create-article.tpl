@@ -20,8 +20,8 @@
 		{include file="includes/navigation/blog-admin-menu.tpl"}
 	</div>
 	<div class="con-cnt-xlrg inner-pad-med push-t-med push-b-med bg-white" style="border: 2px solid #CCC;">
-		{if !empty($error_messages.create_article)}
-			{foreach from=$error_messages.create_article item=message}
+		{if !empty($error_messages.update_article)}
+			{foreach from=$error_messages.update_article item=message}
 				<div class="con-message-failure mat-hov cursor-pt --c-hide">
 					<p class="user-message-body">{$message}</p>
 				</div>
