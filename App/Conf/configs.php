@@ -5,6 +5,11 @@ $config[ "approved_server_names" ] = [
     "develop.jiujitsuscout.stupidsimple.tech",
     "stupidsimple.tech"
 ];
+
+$config[ "indexable_domains" ] = [
+    "www.jiujitsuscout.com"
+];
+
 $config[ "sitemap_base_url" ] = "https://www.jiujitsuscout.com/";
 $config[ "sitemap_ignore" ] = [ "sitemap.xml", "account-manager/user/logout", "jjs-admin/logout", "test" ];
 $config[ "facebook" ][ "pixel_id" ] = '1842001532752101';

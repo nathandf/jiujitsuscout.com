@@ -22,9 +22,15 @@ class Config
         // Make sure people aint stealing my shit
         if ( $environment == "production" && $_SERVER[ "REMOTE_ADDR" ] != "::1" ) {
             if ( !in_array( $_SERVER[ "SERVER_NAME" ], self::$configs[ "approved_server_names" ] ) ) {
-                header( "location: https://www.jiujitsuscout.com" );
+                header( "location: " . self::$configs[ "routing" ][ "production" ][ "root" ] );
             }
         }
+
+        // Prohibit search engines from index develop or staging sites
+        if ( !in_array( $_SERVER[ "SERVER_NAME" ], self::$configs[ "indexable_domains" ] ) ) {
+            header( "X-Robots-Tag: noindex, nofollow", true );
+        }
+
     }
 
     public static function getEnv()
