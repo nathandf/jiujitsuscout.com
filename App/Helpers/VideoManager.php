@@ -10,7 +10,7 @@ class VideoManager
     public $video_name_iterator = 0;
     public $allowed_file_types = [ "video/mp4", "video/wma", "video/ogg" ];
 
-    public function saveVideoTo( $index, $save_to_path = "public/videos" )
+    public function saveVideoTo( $index, $save_to_path = "public/videos/" )
     {
         if ( isset( $_FILES[ $index ] ) ) {
             $file_name      = $_FILES[ $index ][ "name" ];

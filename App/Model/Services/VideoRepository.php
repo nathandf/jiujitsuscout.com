@@ -4,7 +4,7 @@ namespace Model\Services;
 
 class VideoRepository extends Service
 {
-    public function create( $filename, $type, $business_id = null, $description = null, $alt = null, $tags = null )
+    public function create( $filename, $type, $business_id = null  )
     {
         $video = new \Model\Video();
         $video->filename = $filename;
