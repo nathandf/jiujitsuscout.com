@@ -4,14 +4,12 @@ namespace Model;
 
 use Contracts\EntityInterface;
 
-class Image implements EntityInterface
+class Video implements EntityInterface
 {
 	public $id;
 	public $business_id;
 	public $filename;
-	public $description;
-	public $alt;
-	public $tags;
+	public $type;
 	public $created_at;
 	public $updated_at;
 }
