@@ -9,19 +9,7 @@
 	<body>
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
 	    {include file="includes/navigation/business-manager-menu.tpl"}
-	    <div class="con-cnt-xxlrg">
-			<table cellspacing="0" class="con-cnt-xxlrg push-t-med push-b-med">
-				<tr class="bg-green">
-					<!-- <th class="tc-white">Account Type</td> -->
-					<th class="tc-white">Leads</td>
-					<th class="tc-white">Listing Clicks</td>
-				</tr>
-				<tr class="bg-white">
-					<!-- <td class="text-center">{$account_type->name|capitalize}{if $account_type->id != 4}<br><a class="link text-sml tc-mango" target="_blank" href="{$HOME}account-manager/upgrade"><b>Upgrade</b></a>{/if}</p></td> -->
-					<td class="text-center">{$leads|@count}</td>
-					<td class="text-center">{$lisiting_clicks|@count}</td>
-				</tr>
-			</table>
+		<div class="con-cnt-xxlrg">
 			<div class="con-half-min-320 cnt-640 floatleft">
 				<p class="text-center text-xlrg-heavy push-b-med push-t-med">Lead Management</p>
 				<a href="{$HOME}account-manager/business/leads" class="f-lvl funnel-level-1 funnel-bg-2 mat-hov">Leads<br>{$leads|@count}</a>

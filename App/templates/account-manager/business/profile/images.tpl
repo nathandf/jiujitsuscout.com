@@ -8,7 +8,7 @@
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
 	    {include file="includes/navigation/business-manager-menu.tpl"}
 		<div style="border: 1px solid #CCC;" class="con-cnt-xxlrg settings-box push-t-med">
-			{include file="includes/navigation/business-assets-menu.tpl"}
+			{include file="includes/navigation/business-profile-menu.tpl"}
 			<div class="inner-pad-lrg">
 				<h2 class="h2">Upload Image</h2>
 				<!-- <img src="{$HOME}public/img/{if $business->logo_filename}uploads/{$business->logo_filename}{else}jjslogoiconblack.jpg{/if}" class="img-sml encapsulate bg-white first"/> -->

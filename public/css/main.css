@@ -555,6 +555,11 @@ td {
     width: 33.3%;
 }
 
+.col-33-no-min {
+    box-sizing: border-box;
+    width: 33.33%;
+}
+
 .col-50 {
     width: 50%;
 }

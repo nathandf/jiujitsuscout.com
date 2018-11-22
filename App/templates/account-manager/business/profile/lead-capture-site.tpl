@@ -9,7 +9,7 @@
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
 	    {include file="includes/navigation/business-manager-menu.tpl"}
 		<div class="con-cnt-xxlrg encapsulate settings-box first">
-			{include file="includes/navigation/business-assets-menu.tpl"}
+			{include file="includes/navigation/business-profile-menu.tpl"}
 			<div class="con-cnt-xlrg inner-pad-med push-t-med">
 				<h2>Message to your customers</h2>
 				<div class="clear push-t-med push-b-med"></div>
