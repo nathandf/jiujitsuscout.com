@@ -5,7 +5,7 @@
 {/block}
 
 {block name="bm-body"}
-	{include file="includes/navigation/profile-sub-menu.tpl"}
+	{include file="includes/navigation/business-manager-sub-menu.tpl"}
 	<div class="con-cnt-xxlrg inner-pad-med push-t-med">
 		<div class="">
 			{if !empty($error_messages.facebook_pixel)}
@@ -16,8 +16,8 @@
 				{/foreach}
 			{/if}
 			<div class="clear"></div>
-			<h2 class="">Tracking your leads</h2>
-			<p class="text-sml">Use your business's Facebook pixel to track the actions your leads take on your profile and landing pages.</p>
+			<h2 class="">Facebook Pixel</h2>
+			<p class="text-sml">Use your business's Facebook pixel to track the actions your leads take on landing pages.</p>
 			<form action="" method="post">
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="text" name="facebook_pixel_id" class="inp field-med first" value="{$business->facebook_pixel_id}" placeholder="Facebook Pixel ID">

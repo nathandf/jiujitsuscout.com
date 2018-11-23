@@ -172,41 +172,6 @@ class Profile extends Controller
         $this->view->render( "App/Views/AccountManager/Assets.php" );
     }
 
-    public function trackingCodesAction()
-    {
-        $input = $this->load( "input" );
-        $inputValidator = $this->load( "input-validator" );
-        $businessRepo = $this->load( "business-repository" );
-
-        if ( $input->exists() && $inputValidator->validate(
-
-                $input,
-
-                [
-                    "token" => [
-                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                        "required" => true
-                    ],
-                    "facebook_pixel_id" => [
-                        "name" => "Facebook Pixel ID",
-                        "max" => 50
-                    ]
-                ],
-
-                "facebook_pixel" /* error index */
-            ) )
-        {
-            $businessRepo->updateFacebookPixelIDByID( trim( $input->get( "facebook_pixel_id" ) ), $this->business->id );
-            $this->view->redirect( "account-manager/business/profile/tracking-codes" );
-        }
-
-        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
-        $this->view->setErrorMessages( $inputValidator->getErrors() );
-
-        $this->view->setTemplate( "account-manager/business/profile/tracking-codes.tpl" );
-        $this->view->render( "App/Views/AccountManager/Assets.php" );
-    }
-
     public function messageAction()
     {
         $input = $this->load( "input" );

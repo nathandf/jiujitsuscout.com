@@ -30,7 +30,7 @@
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/landing-page-main.css"/>
 		<script src="{$HOME}{$JS_SCRIPTS}main.js"></script>
 		<script src="{$HOME}{$JS_SCRIPTS}landing-page-main.js"></script>
-		{if $preview_active}
+		{if $preview_active || $template_view_active}
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/account-manager-main.css"/>
 		{/if}
 		{if $creator_active}

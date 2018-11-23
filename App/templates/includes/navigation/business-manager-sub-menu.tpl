@@ -5,6 +5,8 @@
         <div id="nav-items-container" class="nav-items-container">
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/settings/">Settings</a></li>
             <div class="nav-item-seperator"></div>
+            <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/assets/">Assets</a></li>
+            <div class="nav-item-seperator"></div>
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/schedules/">Schedules</a></li>
             <div class="nav-item-seperator"></div>
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/tasks/">Tasks</a></li>
