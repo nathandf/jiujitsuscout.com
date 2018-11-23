@@ -16,6 +16,8 @@
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/appointments">Appointments</a></li>
             <div class="nav-item-seperator"></div>
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/leads">Leads</a></li>
+            <div class="nav-item-seperator"></div>
+            <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/">Dashboard</a></li>
         </div>
     </ul>
     <div class="clear"></div>
