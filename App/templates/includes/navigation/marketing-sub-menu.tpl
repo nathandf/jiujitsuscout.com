@@ -9,8 +9,6 @@
             <div class="nav-item-seperator"></div>
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/landing-pages/">Landing Pages</a></li>
             <div class="nav-item-seperator"></div>
-            <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/">Dashboard</a></li>
-            <div class="nav-item-seperator"></div>
         </div>
     </ul>
     <div class="clear"></div>

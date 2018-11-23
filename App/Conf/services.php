@@ -439,6 +439,11 @@ $container->register( "user-registrar", function() use ( $container ) {
 	return $registrar;
 } );
 
+$container->register( "video-repository", function() use ( $container ) {
+	$repo = new \Model\Services\VideoRepository( $container );
+	return $repo;
+} );
+
 $container->register( "account-registrar", function() use ( $container ) {
 	$registrar = new \Model\Services\AccountRegistrar( $container->getService( "account-repository" ) );
 	return $registrar;
@@ -588,6 +593,11 @@ $container->register( "access-control", function() {
 $container->register( "image-manager", function() {
 	$imageManager = new \Helpers\ImageManager;
 	return $imageManager;
+} );
+
+$container->register( "video-manager", function() {
+	$helper = new \Helpers\VideoManager;
+	return $helper;
 } );
 
 // API Services

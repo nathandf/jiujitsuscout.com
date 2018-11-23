@@ -437,6 +437,50 @@ class Home extends Controller
         $this->view->render( "App/Views/Home.php" );
     }
 
+    public function video()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $videoManager = $this->load( "video-manager" );
+        $videoRepo = $this->load( "video-repository" );
+
+        $videos = $videoRepo->getAllByBusinessID( 0 );
+
+        if ( $input->exists() && $input->issetField( "video" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "video" => [
+                        "required" => true
+                    ]
+                ],
+                "upload_video"
+            )
+        ) {
+            $videoManager->saveVideoTo( "video" );
+            $videoRepo->create(
+                $videoManager->getNewVideoFileName(),
+                $videoManager->getNewVideoType(),
+                0
+            );
+            $this->session->addFlashMessage( "Video Uploaded" );
+            $this->session->setFlashMessages();
+            $this->view->redirect( "video" );
+        }
+
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages( "flash_messages" ) );
+        $this->view->assign( "videos", $videos );
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+        $this->view->setTemplate( "video.tpl" );
+        $this->view->render( "App/Views/Home.php" );
+    }
+
     // redirects
 
     public function accountManager()

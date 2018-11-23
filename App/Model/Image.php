@@ -12,4 +12,6 @@ class Image implements EntityInterface
 	public $description;
 	public $alt;
 	public $tags;
+	public $created_at;
+	public $updated_at;
 }

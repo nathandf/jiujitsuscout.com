@@ -3,6 +3,10 @@ body {
 	background: #EEF2F5;
 }
 
+.primary-nav-button-text {
+	font-size: 25px;
+}
+
 .leads {
 	background: #FF6373;
 }
@@ -474,6 +478,12 @@ header {
 
 .mobile {
 	display: none;
+}
+
+@media screen and (max-width: 600px) {
+	.primary-nav-button-text {
+		display: none;
+	}
 }
 
 @media screen and (max-width: 700px) {

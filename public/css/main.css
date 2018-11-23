@@ -550,7 +550,14 @@ td {
 }
 
 .col-33 {
+    box-sizing: border-box;
+    min-width: 300px;
     width: 33.3%;
+}
+
+.col-33-no-min {
+    box-sizing: border-box;
+    width: 33.33%;
 }
 
 .col-50 {
@@ -1099,6 +1106,10 @@ td {
 
 .bg-gold {
     background: #FFEA00;
+}
+
+.bg-real-gold {
+    background: #FFA500;
 }
 
 .bg-dark-creamsicle {
