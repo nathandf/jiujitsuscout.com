@@ -162,6 +162,12 @@ class BusinessRepository extends Service
         $businessMapper->updateUserNotificationRecipientIDsByID( $id, $user_ids );
     }
 
+    public function updateProfileCompleteByID( $id )
+    {
+        $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
+        $businessMapper->updateProfileCompleteByID( $id );
+    }
+
   public function getAllSiteSlugs()
   {
     $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
