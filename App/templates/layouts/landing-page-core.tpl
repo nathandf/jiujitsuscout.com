@@ -30,6 +30,9 @@
 		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/landing-page-main.css"/>
 		<script src="{$HOME}{$JS_SCRIPTS}main.js"></script>
 		<script src="{$HOME}{$JS_SCRIPTS}landing-page-main.js"></script>
+		{if $preview_active || $template_view_active}
+		<link rel="stylesheet" type="text/css" href="{$HOME}public/css/account-manager-main.css"/>
+		{/if}
 		{if $creator_active}
 		{assign var="creator_active_content_class" value=" lp-creator-content"}
 		{else}
@@ -45,7 +48,8 @@
 {block name="body"}
 	{if $template_view_active || $preview_active}
 		{include file="includes/navigation/business-manager-login-menu.tpl"}
-		{include file="includes/navigation/business-manager-marketing-menu.tpl"}
+		{include file="includes/navigation/business-manager-main-menu.tpl"}
+		{include file="includes/navigation/marketing-sub-menu.tpl"}
 	{/if}
 	{include file="includes/forms/standard-form-hidden.tpl"}
 	<div id="content" class="content{$creator_active_content_class}" style="background: {if $page->image_background}url({$HOME}public/img/uploads/{$page->image_background}){else}#FFF{/if}; background-attachment: fixed; background-repeat: no-repeat; background-size: 100%, 100%;">
