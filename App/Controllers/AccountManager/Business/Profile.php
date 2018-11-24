@@ -43,6 +43,80 @@ class Profile extends Controller
     {
         $clickRepo = $this->load( "click-repository" );
 
+        if ( !$this->business->profile_complete ) {
+            $imageRepo = $this->load( "image-repository" );
+            $faqRepo = $this->load( "faq-repository" );
+            $faqAnswerRepo = $this->load( "faq-answer-repository" );
+
+            $faqs_answered = true;
+            $business_location_added = true;
+            $profile_completion_percentage = 0;
+
+            // Determine whether all faqs were answered
+
+            $faqs = $faqRepo->getAll();
+
+            foreach ( $faqs as $faq ) {
+                $faqAnswer = $faqAnswerRepo->getByBusinessIDAndFAQID( $this->business->id, $faq->id );
+                if ( is_null( $faqAnswer->id ) ) {
+                    $faqAnswer = null;
+                    $faqs_answered = false;
+                    break;
+                }
+            }
+
+            if ( $faqs_answered ) {
+                $profile_completion_percentage += 20;
+            }
+
+            // Check if any location properties are null
+            $business_location_properties = [
+                $this->business->address_1,
+                $this->business->city,
+                $this->business->region,
+                $this->business->postal_code,
+                $this->business->country,
+            ];
+
+            foreach ( $business_location_properties as $prop ) {
+                if ( is_null( $prop ) ) {
+                    $business_location_added = false;
+                    break;
+                }
+            }
+
+            if ( $business_location_added ) {
+                $profile_completion_percentage += 20;
+            }
+
+            // Load images
+            $images = $imageRepo->getAllByBusinessID( $this->business->id );
+
+            if ( count( $images ) > 0 ) {
+                $profile_completion_percentage += 20;
+            }
+
+            if ( !is_null( $this->business->logo_filename ) ) {
+                $profile_completion_percentage += 20;
+            }
+
+            if ( !is_null( $this->business->message ) ) {
+                $profile_completion_percentage += 20;
+            }
+
+            if ( $profile_completion_percentage == 100 ) {
+                $businessRepo = $this->load( "business-repository" );
+                $businessRepo->updateProfileCompleteByID( $this->business->id );
+                $this->view->redirect( "account-manager/business/profile/" );
+            }
+
+            $this->view->assign( "images", $images );
+            $this->view->assign( "faqs_answered", $faqs_answered );
+            $this->view->assign( "business_location_added", $business_location_added );
+            $this->view->assign( "profile_completion_percentage", $profile_completion_percentage );
+        }
+
+
         $listing_clicks = $clickRepo->getAllByBusinessIDAndProperty( $this->business->id, "listing" );
 
         $this->view->assign( "lisiting_clicks", $listing_clicks );

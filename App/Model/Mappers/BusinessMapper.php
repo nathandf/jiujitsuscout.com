@@ -172,6 +172,11 @@ class BusinessMapper extends DataMapper
         $this->update( "business", "message", $message, "id", $id );
     }
 
+    public function updateProfileCompleteByID( $id )
+    {
+        $this->update( "business", "profile_complete", 1, "id", $id );
+    }
+
   public function updateVideoByID( $id, $video_link )
   {
     $this->update( "business", "video_link", $video_link, "id", $id );

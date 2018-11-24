@@ -232,7 +232,7 @@ class Partner extends Controller
 			$userAuth = $this->load( "user-authenticator" );
 			$userAuth->login( $email, $password );
 
-			$this->view->redirect( "account-manager/business/" );
+			$this->view->redirect( "account-manager/business/profile/" );
 
 		}
 
