@@ -34,7 +34,7 @@
 					<div class="clear push-t-med"></div>
 					<input type="password" class="inp field-med" id="confirm_password" name="confirm_password" placeholder="Confirm password"/>
 					<div class="clear push-t-med"></div>
-					<input type="hidden" name="terms_conditions_agreement" value="true"><label class="text-sml">By pressing "Create Account", I agree to the<br><a target="_blank" href="{$HOME}terms-and-conditions">Terms and Conditions</a> and <a target="_blank" href="{$HOME}privacy-policy">Privacy Policy</a></label>
+					<input type="hidden" name="terms_conditions_agreement" value="true"><label class="text-sml">By pressing "Create Account", you accept and agree to the<br><a target="_blank" href="{$HOME}terms-and-conditions">Terms and Conditions</a> and <a target="_blank" href="{$HOME}privacy-policy">Privacy Policy</a></label>
 					<div class="clear last"></div>
 					<input type="submit" class="btn btn-cnt button-med push-t-med" name="button" value="Create Account"/>
 				</form>
