@@ -185,8 +185,14 @@ class AccountManager extends Controller
 		$inputValidator = $this->load( "input-validator" );
 		$userRepo = $this->load( "user-repository" );
 
+		$business_ids = [];
+
+		foreach ( $this->businesses as $business ) {
+			$business_ids[] = $business->id;
+		}
+
 		// If form is submitted, set save the current business id and redirect to dashboard
-		if ( $input->exists() && $inputValidator->validate(
+		if ( $input->exists( "get" ) && $inputValidator->validate(
 
 				$input,
 
@@ -198,7 +204,7 @@ class AccountManager extends Controller
 					"business_id" => [
 						"name" => "Business ID",
 						"required" => true,
-						"min" => 1
+						"in_array" => $business_ids
 					],
 				],
 
@@ -210,9 +216,9 @@ class AccountManager extends Controller
 			$this->view->redirect( "account-manager/business/" );
 		}
 
-	    $csrf_token = $this->session->generateCSRFToken();
-	    $this->view->assign( "csrf_token", $csrf_token );
+	    $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 	    $this->view->setErrorMessages( $inputValidator->getErrors() );
+
 		$this->view->setTemplate( "account-manager/home.tpl" );
 		$this->view->render( "App/Views/AccountManager.php" );
 	}

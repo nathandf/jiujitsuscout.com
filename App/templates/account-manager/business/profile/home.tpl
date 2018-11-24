@@ -11,12 +11,12 @@
 	<div class="con-cnt-xxlrg inner-pad-med push-t-med">
 		{if !$business->profile_complete}
 			<div class="col-100 bg-white mat-box-shadow push-b-med" style="border-radius: 3px;">
-				<div class="onboarding-message bg-mango">
+				<div class="onboarding-message bg-deep-blue">
 					<p class="text-lrg-heavy">Profile Completion: {$profile_completion_percentage}%</p>
-					<p class="text-med push-t-sml">Complete your profile to give visitors an idea of what makes your business unique.</p>
+					<p class="text-med push-t-sml">Show your profile visitors what makes your business unique!</p>
 				</div>
 				<div class="inner-pad-med">
-					<p class="text-sml push-b-sml"><span class="text-sml-heavy tc-red">IMPORTANT: </span>Only the address of your business is needed to show it in the search listings, however, incomplete profiles rarely generate leads.</p>
+					<p class="text-sml push-b-sml"><span class="text-sml-heavy tc-red">IMPORTANT: </span>Only the address is needed for your business to show up in the search listings, however, incomplete profiles rarely generate leads.</p>
 					<table style="table-layout: auto;">
 						<tr>
 							<td>

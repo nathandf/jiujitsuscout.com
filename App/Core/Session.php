@@ -91,7 +91,7 @@ class Session
 
     public function generateToken()
     {
-        return base64_encode( openssl_random_pseudo_bytes( 32 ) );
+        return hash( "md5", base64_encode( openssl_random_pseudo_bytes( 32 ) ) );
     }
 
 }
