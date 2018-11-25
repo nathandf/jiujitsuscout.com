@@ -107,12 +107,7 @@
 				<div class="clear"></div>
 			</div>
 			{if !is_null($business->video->id)}
-			<div id="video" class="push-t-med push-b-med">
-				<video class="profile-video" style="border: 2px solid #CCCCCC;" controls>
-				  <source src="{$HOME}public/videos/{$business->video->filename}" type="{$business->video->type}">
-				  Your browser does not support the video tag.
-				</video>
-			</div>
+			{include file="includes/snippets/profile-video.tpl"}
 			{/if}
 			<div id="about" class="">
 				<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">About this gym:</p>
@@ -125,12 +120,7 @@
 				<div class="clear"></div>
 			</div>
 			{if !is_null($business->video->id)}
-			<div id="video" class="push-t-med push-b-med">
-				<video class="profile-video" style="border: 2px solid #CCCCCC;" controls>
-				  <source src="{$HOME}public/videos/{$business->video->filename}" type="{$business->video->type}">
-				  Your browser does not support the video tag.
-				</video>
-			</div>
+			{include file="includes/snippets/profile-video.tpl"}
 			{/if}
 			{/if}
 			{if $business->disciplines|@count > 0 }

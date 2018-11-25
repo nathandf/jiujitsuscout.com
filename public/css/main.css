@@ -822,6 +822,18 @@ td {
     font-family: var(--std-font-family);
 }
 
+.text-input {
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.textarea {
+    box-sizing: border-box;
+    text-indent: 0px;
+    padding: 8px;
+    height: 80px;
+}
+
 .field-med-plus-plus {
     text-indent: 10px;
     width: var(--med-plus-plus);

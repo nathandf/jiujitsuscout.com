@@ -70,8 +70,7 @@ $( function() {
         function() {
             if ( $( this ).val() ) {
                 $( ".file-upload-button" ).show();
-                // $( "input:submit" ).attr( "disabled", false );
-                // $( "input:submit" ).removeAttr('disabled');
+                $( ".file-upload-field-container" ).show();
             }
         }
     );

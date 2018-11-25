@@ -8,8 +8,8 @@ class VideoMapper extends DataMapper
     {
         $id = $this->insert(
             "video",
-            [ "business_id", "filename", "type", "created_at", "updated_at" ],
-            [ $video->business_id, $video->filename, $video->type, $video->created_at, $video->updated_at ]
+            [ "business_id", "filename", "type", "name", "description", "created_at", "updated_at" ],
+            [ $video->business_id, $video->filename, $video->type, $video->name, $video->description, $video->created_at, $video->updated_at ]
         );
 
         return $video->id = $id;
