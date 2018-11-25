@@ -36,4 +36,10 @@ class VideoRepository extends Service
 
         return $video;
     }
+
+    public function removeByID( $id )
+    {
+        $videoMapper = new \Model\Mappers\VideoMapper( $this->container );
+        $videoMapper->deleteByID( $id );
+    }
 }
