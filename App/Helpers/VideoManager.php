@@ -35,7 +35,7 @@ class VideoManager
         return false;
     }
 
-    public function overwriteVideo( $index, $save_to_path, $path_to_old_video )
+    public function overwriteVideo( $index, $path_to_old_video, $save_to_path = "public/videos/" )
     {
         if ( $this->saveVideoTo( $index, $save_to_path ) ) {
             $this->deleteVideo( $path_to_old_video );

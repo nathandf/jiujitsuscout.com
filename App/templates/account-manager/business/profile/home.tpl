@@ -42,7 +42,7 @@
 							</td>
 							<td>
 								<p class="text-lrg">
-									<a class="link tc-deep-blue" href="{$HOME}account-manager/business/settings/location">Update your business' location</a>
+									<a class="link tc-deep-blue" href="{$HOME}account-manager/business/settings/location">Update your business's location</a>
 								</p>
 							</td>
 						</tr>
@@ -84,7 +84,21 @@
 							</td>
 							<td>
 								<p class="text-lrg">
-									<a class="link tc-deep-blue" href="{$HOME}account-manager/business/profile/images">Upload some images of your business in action!</a>
+									<a class="link tc-deep-blue" href="{$HOME}account-manager/business/profile/images">Upload some images of your business</a>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								{if !is_null($business->video->id)}
+								<i class="fa fa-check tc-good-green push-r-sml" aria-hidden="true"></i>
+								{else}
+								<i class="fa fa-close tc-red push-r-sml" aria-hidden="true"></i>
+								{/if}
+							</td>
+							<td>
+								<p class="text-lrg">
+									<a class="link tc-deep-blue" href="{$HOME}account-manager/business/profile/video">Upload a video of your business in action!</a>
 								</p>
 							</td>
 						</tr>

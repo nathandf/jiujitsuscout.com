@@ -151,7 +151,7 @@ class MartialArtsGyms extends Controller
             $this->view->assign( "businesses", $businesses );
 
         } else {
-            // Load input and input validation helpers and services
+            // Show listing based on site slug or business id
             $accountRepo = $this->load( "account-repository" );
             $reviewRepo = $this->load( "review-repository" );
             $input = $this->load( "input" );
@@ -169,6 +169,7 @@ class MartialArtsGyms extends Controller
             $faqRepo = $this->load( "faq-repository" );
             $faqAnswerRepo = $this->load( "faq-answer-repository" );
             $faStars = $this->load( "fa-stars" );
+            $videoRepo = $this->load( "video-repository" );
 
             if ( isset( $this->params[ "id" ] ) ) {
                 // Get business by the unique URL slug
@@ -231,6 +232,9 @@ class MartialArtsGyms extends Controller
 
             // Load the account this business is associated with
             $this->account = $accountRepo->getByID( $this->business->account_id );
+
+            // Load businesses primary video
+            $this->business->video = $videoRepo->getByID( $this->business->video_id );
 
             // Get images for this business
             $images = $imageRepo->getAllByBusinessID( $this->business->id );

@@ -82,16 +82,39 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="col-100 inner-pad-med" style="padding-bottom: 0px; padding-top: 15px;">
+			{if !is_null($business->message)}
+			<a class="floatleft text-xlrg push-r-sml link" style="display: block; font-weight: 100; color: #888;"  href="#about">About</a>
+			{/if}
+			{if $business->reviews|@count > 0}
+			<a class="floatleft text-xlrg push-r-sml link" style="display: block; font-weight: 100; color: #888;"  href="#reviews">Reviews</a>
+			{/if}
+			{if $faqAnswers|@count > 0}
+			<a class="floatleft text-xlrg push-r-sml link" style="display: block; font-weight: 100; color: #888;"  href="#faqs">FAQs</a>
+			{/if}
+			{if $business->disciplines|@count > 0}
+			<a class="floatleft text-xlrg push-r-sml link" style="display: block; font-weight: 100; color: #888;"  href="#classes">Classes</a>
+			{/if}
 			<div class="clear"></div>
 		</div>
-		<div class="col-100 inner-pad-med">
+		<div class="col-100 inner-pad-med" style="padding-top: 15px;">
 			{if $business->message != null}
 			<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
 				<button class="btn btn-inline floatright bg-deep-blue text-med-heavy register-button" style="margin-bottom: 0;">Free Class</button>
 				<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
 				<div class="clear"></div>
 			</div>
-			<div class="">
+			{if !is_null($business->video->id)}
+			<div id="video" class="push-t-med push-b-med">
+				<video class="profile-video" style="border: 2px solid #CCCCCC;" controls>
+				  <source src="{$HOME}public/videos/{$business->video->filename}" type="{$business->video->type}">
+				  Your browser does not support the video tag.
+				</video>
+			</div>
+			{/if}
+			<div id="about" class="">
 				<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">About this gym:</p>
 				<p class="text-med-heavy" style="color: #333;"><span>{$business->message}</span></p>
 			</div>
@@ -101,9 +124,17 @@
 				<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
 				<div class="clear"></div>
 			</div>
+			{if !is_null($business->video->id)}
+			<div id="video" class="push-t-med push-b-med">
+				<video class="profile-video" style="border: 2px solid #CCCCCC;" controls>
+				  <source src="{$HOME}public/videos/{$business->video->filename}" type="{$business->video->type}">
+				  Your browser does not support the video tag.
+				</video>
+			</div>
+			{/if}
 			{/if}
 			{if $business->disciplines|@count > 0 }
-				<div class="push-b-med">
+				<div id="classes" class="push-b-med">
 					<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Classes:</p>
 					{foreach from=$business->disciplines item=discipline}
 						<p class="push-r cursor-pt push-t" style="display: inline-block; padding: 2px 5px 2px 5px; border: 1px solid #666; border-radius: 4px; color: #666;">{$discipline->nice_name}</p>
@@ -111,7 +142,7 @@
 				</div>
 			{/if}
 			{if $business->programs|@count > 0}
-				<div class="push-b-med">
+				<div id="programs" class="push-b-med">
 					<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Programs:</p>
 					{foreach from=$business->programs item=program}
 						<p class="push-r cursor-pt push-t" style="display: inline-block; padding: 2px 5px 2px 5px; border: 1px solid #666; border-radius: 4px; color: #666;">{$program|capitalize}</p>
@@ -119,7 +150,7 @@
 				</div>
 			{/if}
 			{if $images|@count > 0}
-				<div class="push-b-med">
+				<div id="photos" class="push-b-med">
 					<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Photos:</p>
 					{foreach from=$images item=image name=image_loop}
 						{if $smarty.foreach.image_loop.iteration <= 4}
@@ -133,7 +164,7 @@
 			{/if}
 		</div>
 	</div>
-	<div class="col-100 inner-pad-med">
+	<div id="reviews" class="col-100 inner-pad-med">
 		{if $business->reviews|@count > 0}
 			<p class="text-xlrg-heavy" style="color: #333;">Reviews:</p>
 			<div class="testimonials">
@@ -175,27 +206,29 @@
 		{/if}
 		{include file="includes/widgets/js-google-map.tpl"}
 		{if $faqAnswers|@count > 0}
-		<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Frequently Asked Questions:</p>
-		<table class="push-t-med">
-			{foreach from=$faqAnswers item=faqAnswer}
-			<tr class="push-t-med">
-				<td style="vertical-align: top;">
-					<p class="text-lrg-heavy push-r">Q:</p>
-				</td>
-				<td>
-					<p class="text-lrg-heavy">{$faqAnswer->faq->text}</p>
-				</td>
-			</tr>
-			<tr>
-				<td style="vertical-align: top;">
-					<p class="text-lrg push-r">A:</p>
-				</td>
-				<td>
-					<p class="text-lrg">{$faqAnswer->text}</p>
-				</td>
-			<tr>
-			{/foreach}
-		</table>
+		<div id="faqs">
+			<p class="text-xlrg-heavy push-b push-t-med" style="color: #333;">Frequently Asked Questions:</p>
+			<table class="push-t-med">
+				{foreach from=$faqAnswers item=faqAnswer}
+				<tr class="push-t-med">
+					<td style="vertical-align: top;">
+						<p class="text-lrg-heavy push-r">Q:</p>
+					</td>
+					<td>
+						<p class="text-lrg-heavy">{$faqAnswer->faq->text}</p>
+					</td>
+				</tr>
+				<tr>
+					<td style="vertical-align: top;">
+						<p class="text-lrg push-r">A:</p>
+					</td>
+					<td>
+						<p class="text-lrg">{$faqAnswer->text}</p>
+					</td>
+				<tr>
+				{/foreach}
+			</table>
+		</div>
 		{/if}
 		<div class="clear"></div>
 	</div>

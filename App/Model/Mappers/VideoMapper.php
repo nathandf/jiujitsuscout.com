@@ -41,4 +41,11 @@ class VideoMapper extends DataMapper
 
         return $videos;
     }
+
+    public function deleteByID( $id )
+    {
+        $sql = $this->DB->prepare( "DELETE FROM video WHERE id = :id" );
+        $sql->bindParam( ":id", $id );
+        $sql->execute();
+    }
 }
