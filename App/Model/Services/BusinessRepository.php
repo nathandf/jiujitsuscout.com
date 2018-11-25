@@ -168,6 +168,12 @@ class BusinessRepository extends Service
         $businessMapper->updateProfileCompleteByID( $id );
     }
 
+    public function updateVideoIDByID( $id, $video_id )
+    {
+        $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );
+        $businessMapper->updateVideoIDByID( $id, $video_id );
+    }
+
   public function getAllSiteSlugs()
   {
     $businessMapper = new \Model\Mappers\BusinessMapper( $this->container );

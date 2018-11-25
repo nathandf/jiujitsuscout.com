@@ -7,6 +7,7 @@ use Contracts\EntityInterface;
 class Business implements EntityInterface
 {
 
+    public $video_id;
     public $facebook_pixel_id;
     public $profile_complete;
 
