@@ -823,6 +823,7 @@ td {
 }
 
 .text-input {
+    text-indent: 0px;
     box-sizing: border-box;
     padding: 5px;
 }
