@@ -381,6 +381,15 @@ class Profile extends Controller
                     ],
                     "video" => [
                         "required" => true
+                    ],
+                    "name" => [
+                        "name" => "Video Title",
+                        "min" => 1,
+                        "max" => 512
+                    ],
+                    "description" => [
+                        "name" => "Description",
+                        "min" => 1
                     ]
                 ],
                 "upload_video"
@@ -388,23 +397,37 @@ class Profile extends Controller
         ) {
             if ( is_null( $video->id ) ) {
                 // If no video has been uploaded before, save the file and create a video reference in the database
-                $videoManager->saveVideoTo( "video" );
-                $newVideo = $videoRepo->create(
-                    $videoManager->getNewVideoFileName(),
-                    $videoManager->getNewVideoType(),
-                    $this->business->id
-                );
+                if ( $videoManager->saveVideoTo( "video" ) ) {
+                    $newVideo = $videoRepo->create(
+                        $videoManager->getNewVideoFileName(),
+                        $videoManager->getNewVideoType(),
+                        $this->business->id,
+                        $input->get( "name" ),
+                        $input->get( "description" )
+                    );
+                } else {
+                    // Redirect back to upload page if no video was uploaded
+                    $this->session->addFlashMessage( "No video was uploaded" );
+                    $this->session->setFlashMessages();
+                    $this->view->redirect( "account-manager/business/profile/video" );
+                }
             } else {
                 // If a video has been uploaded, overwrite the file, save the new reference, and remove the old
-                $videoManager->overwriteVideo( "video", "public/videos/" . $video->filename );
-
-                $newVideo = $videoRepo->create(
-                    $videoManager->getNewVideoFileName(),
-                    $videoManager->getNewVideoType(),
-                    $this->business->id
-                );
-
-                $videoRepo->removeByID( $this->business->video_id );
+                if ( $videoManager->overwriteVideo( "video", "public/videos/" . $video->filename ) ) {
+                    $newVideo = $videoRepo->create(
+                        $videoManager->getNewVideoFileName(),
+                        $videoManager->getNewVideoType(),
+                        $this->business->id,
+                        $input->get( "name" ),
+                        $input->get( "description" )
+                    );
+                    $videoRepo->removeByID( $this->business->video_id );
+                } else {
+                    // Redirect back to upload page if no video was uploaded
+                    $this->session->addFlashMessage( "No video was uploaded" );
+                    $this->session->setFlashMessages();
+                    $this->view->redirect( "account-manager/business/profile/video" );
+                }
             }
 
             $businessRepo->updateVideoIDByID( $this->business->id, $newVideo->id );

@@ -17,9 +17,21 @@
 					</div>
 				{/foreach}
 			{/if}
+			{include file="includes/snippets/flash-messages.tpl"}
 			<form action="" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input class="btn-std" type="file" name="video" size="25"/>
+				<div class="clear"></div>
+				<div style="display: none;" class="file-upload-field-container">
+					<label for="">Video Title:</label>
+					<div class="clear"></div>
+					<input type="text" class="inp text-input" name="name">
+					<div class="clear push-t-med"></div>
+					<label for="">Description:</label>
+					<div class="clear"></div>
+					<textarea class="inp textarea" name="description"></textarea>
+					<div class="clear"></div>
+				</div>
 				<input style="display: none;" class="btn file-upload-button" type="submit" value="Upload Photo" name="video" size="25" />
 				<div class="clear"></div>
 			</form>
