@@ -37,6 +37,13 @@
 			</form>
 			<div class="clear"></div>
 			{if !is_null($video->id)}
+			<h2 class="push-t-med">Current Video</h2>
+			<div class="clear push-t-med"></div>
+			<label class="text-med-heavy" for="">Video Title:</label>
+			<p class="text-med">{$video->name|default:"<i>None</i>"}</p>
+			<div class="clear push-t-med"></div>
+			<label class="text-med-heavy" for="">Description:</label>
+			<p style="max-width: 80ch;" class="text-med push-b-med">{$video->description|default:"<i>None</i>"}</p>
 			{include file="includes/snippets/video.tpl"}
 			{else}
 			<p>No videos have been uploaded</p>
