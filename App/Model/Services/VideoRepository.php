@@ -4,12 +4,14 @@ namespace Model\Services;
 
 class VideoRepository extends Service
 {
-    public function create( $filename, $type, $business_id = null  )
+    public function create( $filename, $type, $business_id = null, $name = null, $description = null  )
     {
         $video = new \Model\Video();
         $video->filename = $filename;
         $video->type = $type;
         $video->business_id = $business_id;
+        $video->name = $name;
+        $video->description = $description;
         $now = time();
         $video->created_at = $now;
         $video->updated_at = $now;
