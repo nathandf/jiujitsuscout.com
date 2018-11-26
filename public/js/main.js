@@ -83,4 +83,8 @@ $( function() {
     $( ".--c-advanced-options" ).on( "click", function() {
         $( "#advanced-options" ).slideToggle();
     } );
+
+    $( "#create-account" ).on( "submit", function () {
+        $( "#account-creation-loading-screen" ).show( "" );
+    } );
 } );

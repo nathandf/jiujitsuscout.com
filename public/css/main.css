@@ -235,6 +235,17 @@ td {
     background: #FFFFFF;
 }
 
+.loading-screen {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: linear-gradient( 45deg, #0667D0, #0646c6 );
+    z-index: 99999;
+    overflow-y: scroll;
+}
+
 .lightbox {
     width: 100%;
     height: 100%;
