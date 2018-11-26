@@ -188,4 +188,22 @@ $( function() {
 		$( "#anchor-widget" ).hide();
 	} );
 
+	$( "#add-button" ).on( "click", function () {
+		$( "#button-widget" ).show();
+		$( "#button-text" ).val( selection );
+	} );
+
+	$( "#close-button" ).on( "click", function () {
+		$( "#button-widget" ).hide();
+		$( "#button-href" ).val( "" );
+		$( "#button-text" ).val( "" );
+	} );
+
+	$( "#button-button" ).on( "click", function() {
+		$( "#article-body" ).replaceSelectedText( "<a class=\"button-link mat-hov cursor-pt\" href=\"" + $( "#button-href" ).val() + "\">" + $( "#button-text" ).val() + "</a>");
+		$( "#button-href" ).val( "" );
+		$( "#button-text" ).val( "" );
+		$( "#button-widget" ).hide();
+	} );
+
 } );

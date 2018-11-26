@@ -7,7 +7,8 @@
 		{$facebook_pixel|default:null}
 	</head>
 	<body>
-    {include file='includes/navigation/main-menu.tpl'}
+		{include file="includes/loading-screens/account-creation.tpl"}
+    	{include file='includes/navigation/main-menu.tpl'}
 		<div class="content">
 			<div class="encapsulation-cnt">
 				<p class="form-title">Find more students{if isset($gym_name)} for {$gym_name}{/if}!</p>
@@ -18,21 +19,21 @@
 						</div>
 					{/foreach}
 				{/if}
-				<form action="" method="post" id="submit-form">
+				<form action="" method="post" id="create-account">
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input type="hidden" name="create_account" value="{$csrf_token}">
 					<input type="hidden" name="country_code" value="{if isset($country)}{$country->phonecode}{else}1{/if}">
-					<input type="text" class="inp field-med" id="gym-name" name="gym_name" value="{if isset($gym_name)}{$gym_name}{else}{$inputs.create_account.gym_name|default:null}{/if}" placeholder="Gym name"/>
+					<input type="text" class="inp field-med" id="gym-name" name="gym_name" value="{if isset($gym_name)}{$gym_name}{else}{$inputs.create_account.gym_name|default:null}{/if}" placeholder="Gym name" required="required"/>
 					<div class="clear push-t-med"></div>
-					<input type="text" class="inp field-med" id="first_name" name="first_name" value="{$inputs.create_account.first_name|default:null}" placeholder="First Name"/>
+					<input type="text" class="inp field-med" id="first_name" name="first_name" value="{$inputs.create_account.first_name|default:null}" placeholder="First Name" required="required"/>
 					<div class="clear push-t-med"></div>
-					<input type="text" class="inp field-med" id="email" name="email" value="{$inputs.create_account.email|default:null}" placeholder="Email"/>
+					<input type="email" class="inp field-med" id="email" name="email" value="{$inputs.create_account.email|default:null}" placeholder="Email" required="required"/>
 					<div class="clear push-t-med"></div>
-					<input type="text" class="inp field-med" id="phone_number" name="phone_number" value="{$inputs.create_account.phone_number|default:null}" placeholder="Phone number"/>
+					<input type="text" class="inp field-med" id="phone_number" name="phone_number" value="{$inputs.create_account.phone_number|default:null}" placeholder="Phone number" required="required"/>
 					<div class="clear push-t-med"></div>
-					<input type="password" class="inp field-med" id="password" name="password" placeholder="Password"/>
+					<input type="password" class="inp field-med" id="password" name="password" placeholder="Password" required="required"/>
 					<div class="clear push-t-med"></div>
-					<input type="password" class="inp field-med" id="confirm_password" name="confirm_password" placeholder="Confirm password"/>
+					<input type="password" class="inp field-med" id="confirm_password" name="confirm_password" placeholder="Confirm password" required="required"/>
 					<div class="clear push-t-med"></div>
 					<input type="hidden" name="terms_conditions_agreement" value="true"><label class="text-sml">By pressing "Create Account", you accept and agree to the<br><a target="_blank" href="{$HOME}terms-and-conditions">Terms and Conditions</a> and <a target="_blank" href="{$HOME}privacy-policy">Privacy Policy</a></label>
 					<div class="clear last"></div>
