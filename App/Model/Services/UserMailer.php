@@ -45,7 +45,7 @@ class UserMailer
 
             <table cellspacing=0 style=\"border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;\">
                 <tr>
-                    <td><a href=\"https://www.jiujitsuscout.com/account-manager/\" style=\"background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;\">Log in</a></td>
+                    <td><a href=\"https://www.jiujitsuscout.com/account-manager/\" style=\"background: #0667D4; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;\">Log in</a></td>
                 </tr>
             </table>
         " );
@@ -88,7 +88,7 @@ class UserMailer
                 </table>
                 <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
                     <tr>
-                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #0667D4; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
                     </tr>
                 </table>
             </div>
@@ -115,7 +115,7 @@ class UserMailer
                 </table>
                 <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
                     <tr>
-                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #0667D4; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
                     </tr>
                 </table>
             </div>
@@ -159,7 +159,7 @@ class UserMailer
                 </table>
                 <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
                     <tr>
-                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #0667D4; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
                     </tr>
                 </table>
             </div>
@@ -184,7 +184,7 @@ class UserMailer
                         <td><p>People are interested in taking your classes and signing up on your JiuJitsuScout Profile! Fund your account to gain access to these leads.</p></td>
                     </tr>
                     <tr>
-                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">Account Manager</a></td>
+                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/" style="background: #0667D4; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">Account Manager</a></td>
                     </tr>
                 </table>
             </div>
@@ -258,7 +258,7 @@ class UserMailer
 
                 <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
                     <tr>
-                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #0667D4; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
                     </tr>
                 </table>
             </div>
@@ -296,7 +296,7 @@ class UserMailer
 
                 <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
                     <tr>
-                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #77DD77; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #0667D4; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
                     </tr>
                 </table>
             </div>
