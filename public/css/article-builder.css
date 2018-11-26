@@ -85,6 +85,24 @@
 	outline-style: auto;
 }
 
+.create-button-button {
+	padding-right: 3px;
+	padding-left: 3px;
+	background: linear-gradient( #DDD, #AAA );
+	color: #000;
+	height: 25px;
+	display: inline-block;
+	border: 1px solid #666;
+	border-radius: 2px;
+}
+
+.create-button-button:focus {
+	outline: solid;
+	outline-color: rgb(77, 144, 254); // #4D90FE
+	outline-offset: -2px;
+	outline-style: auto;
+}
+
 #anchor-widget {
 	max-width: 280px;
 	border-radius: 3px;
@@ -119,4 +137,40 @@
 }
 
 #anchor-widget #close-anchor {
+}
+
+#button-widget {
+	max-width: 280px;
+	border-radius: 3px;
+	background: #CCC;
+	box-sizing: border-box;
+	padding: 5px;
+	margin-bottom: 10px;
+}
+
+#button-widget .element {
+	float: left;
+	height: 20px;
+	margin-right: 5px;
+}
+
+#button-widget #button-href {
+	width: 100px;
+	text-indent: 5px;
+}
+
+#button-widget #button-text {
+	width: 100px;
+	text-indent: 5px;
+}
+
+#button-widget #button-button {
+	width: 40px;
+	margin: 0px;
+	background: #448AFF;
+	color: #FFFFFF;
+	border-radius: 3px;
+}
+
+#button-widget #close-button {
 }

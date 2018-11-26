@@ -43,6 +43,22 @@
 	text-decoration: underline;
 }
 
+.article-content .button-link {
+	color: #FFF;
+	background: #0667D4;
+	display: inline-block;
+	font-weight: 100;
+	padding: 0px 8px 0px 8px;
+	font-size: 14px;
+	border-radius: 3px;
+	text-decoration: none;
+}
+
+.article-content .button-link:hover {
+	text-decoration: none;
+	background: #0646c6;
+}
+
 .article-content ul {
 	margin-left: 40px;
 }
