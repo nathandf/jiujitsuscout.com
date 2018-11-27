@@ -202,6 +202,11 @@ class BusinessMapper extends DataMapper
         $this->update( "business", "video_id", $video_id, "id", $id );
     }
 
+    public function updateWebsiteIDByID( $id, $website )
+    {
+        $this->update( "business", "website", $website, "id", $id );
+    }
+
   public function getAllSiteSlugs()
   {
     $slugs = [];

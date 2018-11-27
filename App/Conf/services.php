@@ -20,6 +20,11 @@ $container->register( "session", function() {
     return $session;
 } );
 
+$container->register( "request", function() use ( $container ) {
+	$request = new Core\Request;
+	return $request;
+} );
+
 $container->register( "router", function() use ( $container ) {
 	$router = new Core\Router( $container->getService( "config" ) );
 	return $router;
