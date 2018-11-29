@@ -211,6 +211,26 @@ $container->register( "email-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "embeddable-form-element-type-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormElementTypeRepository( $container );
+	return $repo;
+} );
+
+$container->register( "embeddable-form-element-type-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormElementTypeRepository( $container );
+	return $repo;
+} );
+
+$container->register( "embeddable-form-element-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormElementRepository( $container );
+	return $repo;
+} );
+
+$container->register( "embeddable-form-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormRepository( $container );
+	return $repo;
+} );
+
 $container->register( "event-email-repository", function() use ( $container ) {
 	$repo = new \Model\Services\EventEmailRepository( $container );
 	return $repo;

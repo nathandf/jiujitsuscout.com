@@ -4,9 +4,8 @@ namespace Model;
 
 use Contracts\EntityInterface;
 
-class EmbeddableForm implements EntityInterface
+class EmbeddableFormElementType implements EntityInterface
 {
 	public $id;
-	public $business_id;
 	public $name;
 }
