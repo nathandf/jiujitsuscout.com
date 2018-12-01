@@ -50,11 +50,12 @@ class Forms extends Controller
         $embeddableFormElementRepo = $this->load( "embeddable-form-element-repository" );
         $embeddableFormRepo = $this->load( "embeddable-form-repository" );
 
-        $embeddableFormRepo->create( $this->business->id, "First Form" );
-        $embeddableFormElementRepo->create( 1, 1, 1, "Text here", 0 );
-        $embeddableFormElementTypeRepo->create( "Name" );
+        $forms = $embeddableFormRepo->getAllByBusinessID( $this->business->id );
 
+        $this->view->assign( "forms", $forms );
 
+        $this->view->setTemplate( "account-manager/business/forms/home.tpl" );
+        $this->view->render( "App/Views/AccountManager/Business/Forms.php" );
     }
 
 }

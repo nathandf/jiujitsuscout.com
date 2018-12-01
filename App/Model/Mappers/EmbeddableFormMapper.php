@@ -21,16 +21,16 @@ class EmbeddableFormMapper extends DataMapper
 
     public function mapFromID( \Model\EmbeddableForm $embeddableForm, $id )
     {
-        $sql = $this->DB->prepare( "SELECT * FROM embeddable_form_element WHERE id = :id" );
+        $sql = $this->DB->prepare( "SELECT * FROM embeddable_form WHERE id = :id" );
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateEmbeddableForm( $embeddableForm, $resp );
+        $this->populate( $embeddableForm, $resp );
 
         return $embeddableForm;
     }
 
-    public function mapAllFromBusinessD( $business_id )
+    public function mapAllFromBusinessID( $business_id )
     {
         $entityFactory = $this->container->getService( "entity-factory" );
         $embeddableForms = [];
@@ -49,7 +49,7 @@ class EmbeddableFormMapper extends DataMapper
 
     public function deleteByID( $id )
     {
-        $sql = $this->DB->prepare( "DELETE FROM embeddable_form_element WHERE id = :id" );
+        $sql = $this->DB->prepare( "DELETE FROM embeddable_form WHERE id = :id" );
         $sql->bindParam( ":id", $id );
         $sql->execute();
     }

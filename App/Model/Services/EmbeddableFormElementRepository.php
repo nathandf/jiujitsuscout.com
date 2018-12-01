@@ -30,11 +30,10 @@ class EmbeddableFormElementRepository extends Service
 
     public function getAllByEmbeddableFormID( $embeddable_form_id )
     {
-        $embeddableFormElement = new \Model\EmbeddableFormElement;
         $embeddableFormElementMapper = new \Model\Mappers\EmbeddableFormElementMapper( $this->container );
-        $embeddableFormElementMapper->mapAllFromEmbeddableFormID( $embeddableFormElement, $embeddable_form_id );
+        $embeddableFormElements = $embeddableFormElementMapper->mapAllFromEmbeddableFormID( $embeddable_form_id );
 
-        return $embeddableFormElement;
+        return $embeddableFormElements;
     }
 
     public function removeByID( $id )

@@ -37,7 +37,7 @@ class EmbeddableFormElementMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateEmbeddableFormElement( $embeddableFormElement, $resp );
+        $this->populate( $embeddableFormElement, $resp );
 
         return $embeddableFormElement;
     }

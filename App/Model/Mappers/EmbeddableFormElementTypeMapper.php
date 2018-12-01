@@ -25,9 +25,14 @@ class EmbeddableFormElementTypeMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateEmbeddableFormElementType( $embeddableFormElementType, $resp );
+        $this->populate( $embeddableFormElementType, $resp );
 
         return $embeddableFormElementType;
+    }
+
+    public function mapAll()
+    {
+        return $this->getAll( "embeddable_form_element_type" );
     }
 
     public function deleteByID( $id )

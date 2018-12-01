@@ -25,13 +25,12 @@ class EmbeddableFormRepository extends Service
         return $embeddableForm;
     }
 
-    public function getByBusinessID( $id )
+    public function getAllByBusinessID( $business_id )
     {
-        $embeddableForm = new \Model\EmbeddableForm;
         $embeddableFormMapper = new \Model\Mappers\EmbeddableFormMapper( $this->container );
-        $embeddableFormMapper->mapFromBusinessID( $embeddableForm, $business_id );
+        $embeddableForms = $embeddableFormMapper->mapAllFromBusinessID( $business_id );
 
-        return $embeddableForm;
+        return $embeddableForms;
     }
 
     public function removeByID( $id )

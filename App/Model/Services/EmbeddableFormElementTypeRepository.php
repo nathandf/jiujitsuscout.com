@@ -24,6 +24,14 @@ class EmbeddableFormElementTypeRepository extends Service
         return $embeddableFormElementType;
     }
 
+    public function getAll()
+    {
+        $embeddableFormElementTypeMapper = new \Model\Mappers\EmbeddableFormElementTypeMapper( $this->container );
+        $embeddableFormElementTypes = $embeddableFormElementTypeMapper->mapAll();
+
+        return $embeddableFormElementTypes;
+    }
+
     public function removeByID( $id )
     {
         $embeddableFormElementTypeMapper = new \Model\Mappers\EmbeddableFormElementTypeMapper( $this->container );
