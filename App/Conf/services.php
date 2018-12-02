@@ -590,6 +590,11 @@ $container->register( "geometry", function() use ( $container ) {
 	return $Geometry;
 } );
 
+$container->register( "html-form-builder", function() {
+	$helper = new \Helpers\HTMLFormBuilder;
+	return $helper;
+} );
+
 $container->register( "html-tag-converter", function() use ( $container ) {
 	$obj = new \Helpers\HTMLTagConverter;
 	return $obj;

@@ -12,45 +12,16 @@
 		<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/forms/">< Back</a>
 		<div class="clear push-t-med"></div>
 		<p class="text-xlrg-heavy">{$form->name}</p>
-		<div contenteditable id="form-html" class="inp" style="height: 300px; width: 80%; overflow-y: scroll;">
-			<pre>
+		<div contenteditable id="form-html" class="inp textarea" style="text-align: left; height: 300px; width: 80%; overflow-y: scroll; white-space: pre-wrap;">
 			{if $form->elements|@count < 1}
-				This form doesn't have any elements yet.
+			This form doesn't have any elements yet.
 			{else}
-				<!-- BEGIN JIUJITSUSCOUT FORM -->
-				<div>
-				<form action="https://www.jiujitsuscout.com/forms/" class="jiujitsuscout_prospect_form" id="new_prospect_form_1598_html" method="post">
-					<div style="position:absolute;left:-5000px;"><input type="text" name="test" tabindex="-1" value="--Some Value Here--" autocomplete="off"></div>
-					<input type="hidden" name="token" value="--Form Token Goes Here--" />
-					<table class='jiujitsuscout_form'>
-					{foreach from=$form->elements item=element }
-						{if $element->type->name != "submit"}
-						<tr>
-							<td>
-								<label for="">{$element->type->name|capitalize}</label>
-								<div class="clear"></div>
-								<input autocomplete="off" id="" name="" type="text" />
-							</td>
-						</tr>
-						{else}
-						<tr>
-							<td>
-								<label for="">{$element->type->name|capitalize}</label>
-								<div class="clear"></div>
-								<input autocomplete="off" id="" name="" type="text" />
-							</td>
-						</tr>
-						{/if}
-					{/foreach}
-					</table>
-				</form>
-				</div>
-				<!-- END JIUJITSUSCOUT FORM -->
+			{$formHTML}
 			{/if}
-			</pre>
 		</div>
 		<div class="clear"></div>
 		<a class="btn btn-inline bg-deep-blue text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/edit">Edit Form</a>
 		<div class="clear"></div>
 	</div>
+	<div>{$formHTML|unescape:"html"}</div>
 {/block}

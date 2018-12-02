@@ -53,17 +53,29 @@ class Form extends Controller
         $embeddableFormElementTypeRepo = $this->load( "embeddable-form-element-type-repository" );
         $embeddableFormElementRepo = $this->load( "embeddable-form-element-repository" );
         $embeddableFormRepo = $this->load( "embeddable-form-repository" );
+        $HTMLFormBuilder = $this->load( "html-form-builder" );
 
         $embeddableForm = $embeddableFormRepo->getByID( $this->params[ "id" ] );
         $embeddableForm->elements = $embeddableFormElementRepo->getAllByEmbeddableFormID( $this->params[ "id" ] );
 
+        $HTMLFormBuilder->setAction( "https://www.jiujitsuscout.com/forms/" );
+        $HTMLFormBuilder->setToken( "this-is-the-token" );
+
         if ( !empty( $embeddableForm->elements ) ) {
             foreach ( $embeddableForm->elements as $element ) {
-                $element->type = $embeddableFormElementTypeRepo->getByID( $element->id );
+                $element->type = $embeddableFormElementTypeRepo->getByID( $element->embeddable_form_element_type_id );
+                $HTMLFormBuilder->addField(
+                    $element->type->name,
+                    $element->type->name,
+                    $required = $element->required ? true : false,
+                    $text = $element->text,
+                    $value = null
+                );
             }
         }
 
         $this->view->assign( "form", $embeddableForm );
+        $this->view->assign( "formHTML", $HTMLFormBuilder->getFormHTML() );
 
         $this->view->setTemplate( "account-manager/business/form/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Form.php" );
