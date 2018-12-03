@@ -5,7 +5,7 @@ namespace Model\Services;
 class EmbeddableFormElementRepository extends Service
 {
 
-    public function create( $embeddable_form_id, $embeddable_form_element_type_id, $placement, $text, $required = false )
+    public function create( $embeddable_form_id, $embeddable_form_element_type_id, $placement, $text = null, $required = false )
     {
         $embeddableFormElement = new \Model\EmbeddableFormElement;
         $embeddableFormElementMapper = new \Model\Mappers\EmbeddableFormElementMapper( $this->container );

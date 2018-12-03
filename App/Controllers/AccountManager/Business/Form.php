@@ -73,6 +73,8 @@ class Form extends Controller
 
         $HTMLFormBuilder->setAction( "https://www.jiujitsuscout.com/forms/" );
         $HTMLFormBuilder->setToken( "this-is-the-token" );
+        $HTMLFormBuilder->setApplicationPrefix( "EmbeddableFormWidgetByJiuJitsuScout__" );
+        $HTMLFormBuilder->setJavascriptResourceURL( "https://www.jiujitsuscout.com/public/static/js/embeddable-form.js" );
 
         if ( !empty( $embeddableForm->elements ) ) {
             foreach ( $embeddableForm->elements as $element ) {
@@ -156,30 +158,97 @@ class Form extends Controller
 
     public function editAction()
     {
+        // Render 404 if 'id' is not present
+        $this->requireParam( "id" );
+
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
         $embeddableFormElementTypeRepo = $this->load( "embeddable-form-element-type-repository" );
         $embeddableFormElementRepo = $this->load( "embeddable-form-element-repository" );
         $embeddableFormRepo = $this->load( "embeddable-form-repository" );
 
+        // Get the current form
         $embeddableForm = $embeddableFormRepo->getByID( $this->params[ "id" ] );
+
+        // Get all elements for this form
         $embeddableFormElements = $embeddableFormElementRepo->getAllByEmbeddableFormID( $this->params[ "id" ] );
 
-        // Add element type object to element
-        foreach ( $embeddableFormElements as $embeddableFormElement ) {
-            $embeddableFormElement->type = $embeddableFormElementTypeRepo->getByID(
-                $embeddableFormElement->embeddable_form_element_type_id
-            );
-        }
-
-        // Set the last element
+        // Get the placement of the next element to be created
         $lastElement = end( $embeddableFormElements );
         $new_element_placement = $lastElement != false ? ( $lastElement->placement + 1 ) : 1;
 
+        // Get all form element types
         $embeddableFormElementTypes = $embeddableFormElementTypeRepo->getAll();
+
+        // 1. Assign respective form element type objects to elements
+        //
+        // 2. Create an array of embeddableFormElementType ids that are in use
+        // in the current form
+        $usedEmbeddableFormElementTypeIDs = [];
+        foreach ( $embeddableFormElements as $embeddableFormElement ) {
+            // 1.
+            $embeddableFormElement->type = $embeddableFormElementTypeRepo->getByID(
+                $embeddableFormElement->embeddable_form_element_type_id
+            );
+            // 2.
+            $usedEmbeddableFormElementTypeIDs[] = $embeddableFormElement->embeddable_form_element_type_id;
+        }
+
+        // 1. Create an array of all form element type ids. This will be used later
+        // to ensure that user submitted formElementTypeIDs are valid
+        //
+        // 2. Create an array of embeddableFormElementsTypes that have not been used
+        // on the current form
+        $embeddableFormElementTypeIDs = [];
+        $availableEmbeddableFormElementTypes = [];
+        foreach ( $embeddableFormElementTypes as $type ) {
+            // 1.
+            $embeddableFormElementTypeIDs[] = $type->id;
+            // 2.
+            if ( !in_array( $type->id, $usedEmbeddableFormElementTypeIDs ) ) {
+                $availableEmbeddableFormElementTypes[] = $type;
+            }
+        }
+
+        if ( $input->exists() && $input->issetField( "add_field" )  && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "placement" => [
+                    "required" => true
+                ],
+                "embeddable_form_element_type_id" => [
+                    "required" => true,
+                    "in_array" => $embeddableFormElementTypeIDs
+                ],
+                "required" => [
+                    "min" => 1
+                ]
+            ],
+            "add_field"
+            )
+        ) {
+            $embeddableFormElementRepo->create(
+                $this->params[ "id" ],
+                $input->get( "embeddable_form_element_type_id" ),
+                $input->get( "placement" ),
+                null,
+                $required = ( $input->get( "required" ) == "true" ) ? true : false
+            );
+
+            $this->view->redirect( "account-manager/business/form/" . $this->params[ "id" ] . "/edit" );
+        }
 
         $this->view->assign( "form", $embeddableForm );
         $this->view->assign( "new_element_placement", $new_element_placement );
         $this->view->assign( "embeddableFormElements", $embeddableFormElements );
-        $this->view->assign( "embeddableFormElementTypes", $embeddableFormElementTypes );
+        $this->view->assign( "availableEmbeddableFormElementTypes", $availableEmbeddableFormElementTypes );
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setTemplate( "account-manager/business/form/edit.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Form.php" );

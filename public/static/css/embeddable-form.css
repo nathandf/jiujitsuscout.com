@@ -6,6 +6,8 @@
 	padding: 20px;
 	display: block;
 	margin: 0 auto;
+	background-color: none;
+	background-color: rgba( 256, 256, 256, 0.5 );
 }
 
 .EmbeddableFormWidgetByJiuJitsuScout__form-offer {
@@ -20,15 +22,20 @@
 
 .EmbeddableFormWidgetByJiuJitsuScout__form-input {
 	box-sizing: border-box;
-	padding: 5px;
+	padding: 10px;
 	width: 100%;
 	border: 2px solid #CCC;
 	border-radius: 2px;
-	height: 35px;
+	height: 30px;
 }
 
 .EmbeddableFormWidgetByJiuJitsuScout__form-textarea {
-
+	box-sizing: border-box;
+	padding: 10px;
+	width: 100%;
+	border: 2px solid #CCC;
+	border-radius: 2px;
+	height: 100px;
 }
 
 .EmbeddableFormWidgetByJiuJitsuScout__form-submit-button {
@@ -57,4 +64,8 @@
 
 .EmbeddableFormWidgetByJiuJitsuScout__material-hover:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.EmbeddableFormWidgetByJiuJitsuScout__required {
+	color: red;
 }
