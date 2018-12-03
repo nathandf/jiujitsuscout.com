@@ -39,6 +39,19 @@ class Form extends Controller
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
 
+        $embeddableFormRepo = $this->load( "embeddable-form-repository" );
+
+        $embeddableForms = $embeddableFormRepo->getAllByBusinessID( $this->business->id );
+        $embeddableFormIDs = [];
+
+        foreach ( $embeddableForms as $form ) {
+            $embeddableFormIDs[] = $form->id;
+        }
+
+        if ( isset( $this->params[ "id" ] ) && !in_array( $this->params[ "id" ], $embeddableFormIDs ) ) {
+            $this->view->redirect( "account-manager/business/forms/" );
+        }
+
         $this->view->assign( "account", $this->account );
         $this->view->assign( "user", $this->user );
         $this->view->assign( "business", $this->business );

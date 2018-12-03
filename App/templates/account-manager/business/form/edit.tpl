@@ -13,9 +13,11 @@
 		<p class="text-sml">Add and edit fields on your form</p>
 		<div class="clear push-t-med"></div>
 		<select class="inp field-med cursor-pt" name="" id="embbeddable_form_element_types">
-			<option value="" selected="selected">-- Add a field --</option>
+			<option value="" selected="selected" hidden="hidden">-- Add a field --</option>
 			{foreach from=$embeddableFormElementTypes item=embeddableFormElementType}
+			{if $embeddableFormElementType->name != "submit"}
 			<option id="{$embeddableFormElementType->id}" value="{$embeddableFormElementType->id}">{$embeddableFormElementType->name|capitalize}</option>
+			{/if}
 			{/foreach}
 		</select>
 		<div class="clear push-t-med"></div>

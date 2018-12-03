@@ -11,6 +11,7 @@ class HTMLFormBuilder
 	public $form_beginning =
 	'
 	<!-- BEGIN FORM -->
+	<script type="text/javascript" src="https://www.jiujitsuscout.com/public/static/js/embeddable-form.js"></script>
 	<div>
 		<form action="{{action}}" class="" id="" method="post">
 			<div style="position:absolute;left:-10000px;"><input type="text" name="test" tabindex="-1" value="--Some Value Here--" autocomplete="off"></div>
