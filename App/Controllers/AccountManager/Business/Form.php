@@ -109,13 +109,18 @@ class Form extends Controller
                         "required" => true,
                         "min" => 1,
                         "max" => 200,
+                    ],
+                    "offer" => [
+                        "name" => "Offer",
+                        "required" => true,
+                        "max" => 256
                     ]
                 ],
 
                 "create_form" /* error index */
             ) )
         {
-            $embeddableForm = $embeddableFormRepo->create( $this->business->id, trim( $input->get( "name" ) ) );
+            $embeddableForm = $embeddableFormRepo->create( $this->business->id, trim( $input->get( "name" ) ), $input->get( "offer" ) );
             $this->view->redirect( "account-manager/business/form/" . $embeddableForm->id . "/edit" );
         }
 
@@ -123,6 +128,7 @@ class Form extends Controller
 
         if ( $input->issetField( "create_form" ) ) {
             $inputs[ "create_form" ][ "name" ] = $input->get( "name" );
+            $inputs[ "create_form" ][ "offer" ] = $input->get( "offer" );
         }
 
         // Input values submitted from form
@@ -141,7 +147,29 @@ class Form extends Controller
         $embeddableFormElementRepo = $this->load( "embeddable-form-element-repository" );
         $embeddableFormRepo = $this->load( "embeddable-form-repository" );
 
-        echo "edit";
+        $embeddableForm = $embeddableFormRepo->getByID( $this->params[ "id" ] );
+        $embeddableFormElements = $embeddableFormElementRepo->getAllByEmbeddableFormID( $this->params[ "id" ] );
+
+        // Add element type object to element
+        foreach ( $embeddableFormElements as $embeddableFormElement ) {
+            $embeddableFormElement->type = $embeddableFormElementTypeRepo->getByID(
+                $embeddableFormElement->embeddable_form_element_type_id
+            );
+        }
+
+        // Set the last element
+        $lastElement = end( $embeddableFormElements );
+        $new_element_placement = $lastElement != false ? ( $lastElement->placement + 1 ) : 1;
+
+        $embeddableFormElementTypes = $embeddableFormElementTypeRepo->getAll();
+
+        $this->view->assign( "form", $embeddableForm );
+        $this->view->assign( "new_element_placement", $new_element_placement );
+        $this->view->assign( "embeddableFormElements", $embeddableFormElements );
+        $this->view->assign( "embeddableFormElementTypes", $embeddableFormElementTypes );
+
+        $this->view->setTemplate( "account-manager/business/form/edit.tpl" );
+        $this->view->render( "App/Views/AccountManager/Business/Form.php" );
     }
 
 }

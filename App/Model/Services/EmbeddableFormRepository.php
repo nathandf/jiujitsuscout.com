@@ -5,12 +5,13 @@ namespace Model\Services;
 class EmbeddableFormRepository extends Service
 {
 
-    public function create( $business_id, $name )
+    public function create( $business_id, $name, $offer = null )
     {
         $embeddableForm = new \Model\EmbeddableForm;
         $embeddableFormMapper = new \Model\Mappers\EmbeddableFormMapper( $this->container );
         $embeddableForm->name = $name;
         $embeddableForm->business_id = $business_id;
+        $embeddableForm->offer = $offer;
         $embeddableFormMapper->create( $embeddableForm );
 
         return $embeddableForm;

@@ -12,7 +12,10 @@
 		<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/forms/">< Back</a>
 		<div class="clear push-t-med"></div>
 		<p class="text-xlrg-heavy">{$form->name}</p>
-		<div contenteditable id="form-html" class="inp textarea" style="text-align: left; height: 300px; width: 80%; overflow-y: scroll; white-space: pre-wrap;">
+		<div class="clear"></div>
+		<a class="btn btn-inline bg-deep-blue text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/edit">Edit Form</a>
+		<div class="clear"></div>
+		<div contenteditable id="form-html" class="inp textarea" style="text-align: left; height: 300px; width: 100%; overflow-y: scroll; white-space: pre-wrap;">
 			{if $form->elements|@count < 1}
 			This form doesn't have any elements yet.
 			{else}
@@ -20,8 +23,5 @@
 			{/if}
 		</div>
 		<div class="clear"></div>
-		<a class="btn btn-inline bg-deep-blue text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/edit">Edit Form</a>
-		<div class="clear"></div>
 	</div>
-	<div>{$formHTML|unescape:"html"}</div>
 {/block}

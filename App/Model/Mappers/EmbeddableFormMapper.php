@@ -11,8 +11,8 @@ class EmbeddableFormMapper extends DataMapper
     {
         $id = $this->insert(
             "embeddable_form",
-            [ "business_id", "name" ],
-            [ $embeddableForm->business_id, $embeddableForm->name ]
+            [ "business_id", "name", "offer" ],
+            [ $embeddableForm->business_id, $embeddableForm->name, $embeddableForm->offer ]
         );
         $embeddableForm->id = $id;
 

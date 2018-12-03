@@ -28,6 +28,10 @@
 						<p><b>Form Name:</b></p>
 						<input type="text" name="name" value="{$inputs.create_form.name|default:null}" class="inp field-sml" placeholder="Form name">
 						<div class="clear push-t-med"></div>
+						<p><b>Offer:</b></p>
+						<p class="text-sml">What are you offering in exchange for filling out this form?</p>
+						<textarea name="offer" value="{$inputs.create_form.offer|default:null}" class="inp textarea" placeholder="Ex. Try a class for free!"></textarea>
+						<div class="clear push-t-med"></div>
 						<input type="submit" class="btn btn-inline" value="Build Form">
 					</form>
 				</div>

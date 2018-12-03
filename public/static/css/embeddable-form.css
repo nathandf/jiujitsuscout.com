@@ -1,0 +1,60 @@
+.EmbeddableFormWidgetByJiuJitsuScout__form-container {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 400px;
+	border: 2px solid #CCC;
+	padding: 20px;
+	display: block;
+	margin: 0 auto;
+}
+
+.EmbeddableFormWidgetByJiuJitsuScout__form-offer {
+	text-align: center;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.EmbeddableFormWidgetByJiuJitsuScout__form-input-label {
+	font-size: 13px;
+}
+
+.EmbeddableFormWidgetByJiuJitsuScout__form-input {
+	box-sizing: border-box;
+	padding: 5px;
+	width: 100%;
+	border: 2px solid #CCC;
+	border-radius: 2px;
+	height: 35px;
+}
+
+.EmbeddableFormWidgetByJiuJitsuScout__form-textarea {
+
+}
+
+.EmbeddableFormWidgetByJiuJitsuScout__form-submit-button {
+	color:#FFF;
+	font-size: 18px;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 8px;
+	text-align: center;
+	border-radius: 2px;
+	background: red;
+	display: block;
+	margin: 0 auto;
+}
+
+.EmbeddableFormWidgetByJiuJitsuScout__form-submit-button:hover {
+	cursor: pointer;
+	transition: .4s;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.EmbeddableFormWidgetByJiuJitsuScout__material-hover {
+    transition: .4s;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.EmbeddableFormWidgetByJiuJitsuScout__material-hover:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
