@@ -15,7 +15,7 @@
 		<div class="clear"></div>
 		<a class="btn btn-inline bg-deep-blue text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/edit">Edit Form</a>
 		<div class="clear"></div>
-		<div contenteditable id="form-html" class="inp textarea" style="text-align: left; height: 300px; width: 100%; overflow-y: scroll; white-space: pre-wrap;">
+		<div contenteditable id="form-html" tabindex="-1" class="inp textarea" style="font-size: 10px; text-align: left; height: 300px; width: 100%; overflow-y: scroll; white-space: pre-wrap;">
 			{if $form->elements|@count < 1}
 			This form doesn't have any elements yet.
 			{else}

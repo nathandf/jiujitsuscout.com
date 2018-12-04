@@ -10,22 +10,26 @@ class HTMLFormBuilder
 	// Application prefix will be prepended to class names and ids
 	public $application_prefix;
 	public $javascript_resource_url;
+	public $form_offer;
 
 	public $form_beginning =
 	'
 	<!-- BEGIN FORM -->
 	<script type="text/javascript" src="{{javascript_resource_url}}"></script>
 	<div class="{{application_prefix}}form-container">
+		<p class="{{application_prefix}}form-offer">{{form_offer}}</p>
 		<form action="{{action}}" id="" method="post">
-			<div style="position:absolute;left:-10000px;"><input type="text" name="test" tabindex="-1" value="--Some Value Here--" autocomplete="off"></div>
-			<input type="hidden" name="token" value="{{token}}" />
-			<table class="">';
+			<div style="position:absolute;left:-9999px;">
+				<input id="f873f916d9706847402b08cd30c5d584" type="text" name="f873f916d9706847402b08cd30c5d584" tabindex="-1" autocomplete="off">
+			</div>
+			<input type="hidden" name="token" value="{{token}}" />';
 
 	public $form_body = "";
 
 	public $form_end =
 	'
-			</table>
+			<br\>
+			<button type="submit" class="EmbeddableFormWidgetByJiuJitsuScout__form-submit-button EmbeddableFormWidgetByJiuJitsuScout__material-hover"/>Get Offer Now ></button>
 		</form>
 	</div>
 	<!-- END FORM -->
@@ -56,16 +60,14 @@ class HTMLFormBuilder
 		$this->javascript_resource_url = $url;
 	}
 
+	public function setFormOffer( $form_offer )
+	{
+		$this->form_offer = $form_offer;
+	}
+
 	public function addField( $name, $type, $required = false, $text = null, $value = null )
 	{
-		$isSubmitType = true;
-		$inputType = "submit";
-
-		if ( $type != "submit" ) {
-			$isSubmitType = false;
-			$inputType = "text";
-		}
-
+		$inputType = "text";
 		$hasText = true;
 
 		if ( is_null( $text ) ) {
@@ -81,22 +83,18 @@ class HTMLFormBuilder
 
 		if ( $type == "message" ) {
 			$this->form_body = $this->form_body . '
-			<tr>
-				<td>
-					<label class="{{application_prefix}}form-label" for="">' . ucwords( $name ) . '</label>' . $requiredIndicator . '
-					<br/>
-					<textarea autocomplete="off" class="{{application_prefix}}form-textarea" id=""' . $requiredAttribute . ' name="' . preg_replace( "/[\s]+/", "_", strtolower( trim( $name ) ) ) . '"/></textarea>
-				</td>
-			</tr>';
+			<div class="{{application_prefix}}field-container">
+				<label class="{{application_prefix}}form-label" for="">' . ucwords( $name ) . '</label>' . $requiredIndicator . '
+				<br/>
+				<textarea autocomplete="off" class="{{application_prefix}}form-textarea" id=""' . $requiredAttribute . ' name="' . preg_replace( "/[\s]+/", "_", strtolower( trim( $name ) ) ) . '"/></textarea>
+			</div>';
 		} else {
 			$this->form_body = $this->form_body . '
-			<tr>
-				<td>
-					<label class="{{application_prefix}}form-label" for="">' . ucwords( $name ) . '</label>' . $requiredIndicator . '
-					<br/>
-					<input autocomplete="off" class="{{application_prefix}}form-input" id=""' . $requiredAttribute . ' name="' . preg_replace( "/[\s]+/", "_", strtolower( trim( $name ) ) ) . '" type="' . $inputType . '" />
-				</td>
-			</tr>';
+			<div class="{{application_prefix}}field-container">
+				<label class="{{application_prefix}}form-label" for="">' . ucwords( $name ) . '</label>' . $requiredIndicator . '
+				<br/>
+				<input autocomplete="off" class="{{application_prefix}}form-input" id=""' . $requiredAttribute . ' name="' . preg_replace( "/[\s]+/", "_", strtolower( trim( $name ) ) ) . '" type="' . $inputType . '" />
+			</div>';
 		}
 
 	}
@@ -120,6 +118,7 @@ class HTMLFormBuilder
 		$this->form = preg_replace( "/\{\{token\}\}/", $this->token, $this->form );
 		$this->form = preg_replace( "/\{\{application_prefix\}\}/", $this->application_prefix, $this->form );
 		$this->form = preg_replace( "/\{\{javascript_resource_url\}\}/", $this->javascript_resource_url, $this->form );
+		$this->form = preg_replace( "/\{\{form_offer\}\}/", $this->form_offer, $this->form );
 	}
 
 	public function getFormHTML()

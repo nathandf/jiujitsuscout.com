@@ -16,6 +16,11 @@
 	font-weight: 600;
 }
 
+.EmbeddableFormWidgetByJiuJitsuScout__field-container {
+	display: block;
+	margin-top: 15px;
+}
+
 .EmbeddableFormWidgetByJiuJitsuScout__form-input-label {
 	font-size: 13px;
 }
@@ -49,6 +54,7 @@
 	background: red;
 	display: block;
 	margin: 0 auto;
+	margin-top: 15px;
 }
 
 .EmbeddableFormWidgetByJiuJitsuScout__form-submit-button:hover {

@@ -75,6 +75,7 @@ class Form extends Controller
         $HTMLFormBuilder->setToken( "this-is-the-token" );
         $HTMLFormBuilder->setApplicationPrefix( "EmbeddableFormWidgetByJiuJitsuScout__" );
         $HTMLFormBuilder->setJavascriptResourceURL( "https://www.jiujitsuscout.com/public/static/js/embeddable-form.js" );
+        $HTMLFormBuilder->setFormOffer( $embeddableForm->offer );
 
         if ( !empty( $embeddableForm->elements ) ) {
             foreach ( $embeddableForm->elements as $element ) {
