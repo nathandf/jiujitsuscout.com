@@ -7,4 +7,4 @@ function loadEmbeddableFormByJiuJitsuScoutCSS( filename ) {
    document.head.appendChild( file );
 }
 
-loadEmbeddableFormByJiuJitsuScoutCSS( "/jiujitsuscout.com/public/static/css/embeddable-form.css" );
+loadEmbeddableFormByJiuJitsuScoutCSS( "https://www.jiujitsuscout.com/public/static/css/embeddable-form.css" );
