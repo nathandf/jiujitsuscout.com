@@ -116,6 +116,11 @@ class InputValidator
                                     $this->addError( $error_index,"{$field_name} is not valid" );
                                 }
 								break;
+							case "required-empty":
+                                if ( $value != "" ) {
+                                    $this->addError( $error_index,"{$field_name} is not valid" );
+                                }
+								break;
 							case "rule-value-true":
                                 if ( !$rule_value ) {
                                     $this->addError( $error_index,"{$field_name} is not valid" );

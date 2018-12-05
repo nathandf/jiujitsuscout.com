@@ -20,6 +20,11 @@ $container->register( "session", function() {
     return $session;
 } );
 
+$container->register( "request", function() use ( $container ) {
+	$request = new Core\Request;
+	return $request;
+} );
+
 $container->register( "router", function() use ( $container ) {
 	$router = new Core\Router( $container->getService( "config" ) );
 	return $router;
@@ -203,6 +208,26 @@ $container->register( "discipline-repository", function() use ( $container ) {
 
 $container->register( "email-repository", function() use ( $container ) {
 	$repo = new \Model\Services\EmailRepository( $container );
+	return $repo;
+} );
+
+$container->register( "embeddable-form-element-type-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormElementTypeRepository( $container );
+	return $repo;
+} );
+
+$container->register( "embeddable-form-element-type-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormElementTypeRepository( $container );
+	return $repo;
+} );
+
+$container->register( "embeddable-form-element-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormElementRepository( $container );
+	return $repo;
+} );
+
+$container->register( "embeddable-form-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormRepository( $container );
 	return $repo;
 } );
 
@@ -563,6 +588,11 @@ $container->register( "geocoder", function() use ( $container ) {
 $container->register( "geometry", function() use ( $container ) {
 	$Geometry = new \Helpers\Geometry;
 	return $Geometry;
+} );
+
+$container->register( "html-form-builder", function() {
+	$helper = new \Helpers\HTMLFormBuilder;
+	return $helper;
 } );
 
 $container->register( "html-tag-converter", function() use ( $container ) {
