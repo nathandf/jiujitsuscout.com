@@ -14,6 +14,11 @@ class Phone
     return $this->getCountryCode() . $this->getNationalNumber();
   }
 
+  public function getNicePhoneNumber()
+  {
+    return "+" . $this->getCountryCode() . " " . $this->getNationalNumber();
+  }
+
   public function setCountryCode( $country_code )
   {
     $this->country_code = preg_replace("/[^0-9]/", "", $country_code );

@@ -8,11 +8,11 @@
 	{include file="includes/navigation/marketing-sub-menu.tpl"}
 	<div>
 		<div class="clear"></div>
-		<div class="con con-cnt-xlrg first inner-pad-med">
-			<h2 class="first">Landing Pages</h2>
-			<p class="text-sml first">Capture leads with landing pages you create! The JiuJitsuScout Landing Page builder makes it super easy to build effective landing pages that drive action and capture leads.</p>
+		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
+			<h2 class="">Landing Pages</h2>
+			<p class="text-sml push-t-med">Capture leads with landing pages you create! The JiuJitsuScout Landing Page builder makes it super easy to build effective landing pages that drive action and capture leads.</p>
 			<div class="hr-sml"></div>
-			<a href="{$HOME}account-manager/business/landing-page/choose-template" class="btn btn-inline first mat-hov"><span class="text-med">Create Landing Page <i class="fa fa-plus" aria-hidden="true"></i></span></a>
+			<a href="{$HOME}account-manager/business/landing-page/choose-template" class="btn btn-inline push-t-med mat-hov"><span class="text-med">Create Landing Page <i class="fa fa-plus" aria-hidden="true"></i></span></a>
 			{foreach from=$pages item=page}
 			<div class="landing-page-tag">
 				<div class="landing-page-icon bg-deep-blue push-r floatleft"><i class="fa fa-2x fa-globe" aria-hidden="true"></i></div>

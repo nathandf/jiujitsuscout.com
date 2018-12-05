@@ -89,7 +89,6 @@ class Input
         }
 
         return true;
-
     }
 
     public function issetField( $field )

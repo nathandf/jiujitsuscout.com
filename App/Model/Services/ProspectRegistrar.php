@@ -42,7 +42,7 @@ class ProspectRegistrar
     public function getProspect()
     {
         if ( isset( $this->prospect ) ) {
-            return $this->prospect;
+            return $this->repo->getByID( $this->prospect->id );
         }
 
         return null;

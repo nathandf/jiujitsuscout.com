@@ -41,10 +41,45 @@ class Assets extends Controller
 
     public function indexAction()
     {
-        $this->view->redirect( "account-manager/business/assets/tracking-codes" );
+        $this->view->redirect( "account-manager/business/assets/facebook-pixel" );
     }
 
-    public function trackingCodesAction()
+    public function websiteAction()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $businessRepo = $this->load( "business-repository" );
+
+        if ( $input->exists() && $inputValidator->validate(
+
+                $input,
+
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "website" => [
+                        "name" => "Website URL",
+                        "max" => 50
+                    ]
+                ],
+
+                "website" /* error index */
+            ) )
+        {
+            $businessRepo->updateWebsiteByID( $this->business->id, trim( $input->get( "website" ) ) );
+            $this->view->redirect( "account-manager/business/assets/website" );
+        }
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+        $this->view->setTemplate( "account-manager/business/assets/website.tpl" );
+        $this->view->render( "App/Views/AccountManager/Assets.php" );
+    }
+
+    public function facebookPixelAction()
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
@@ -69,13 +104,13 @@ class Assets extends Controller
             ) )
         {
             $businessRepo->updateFacebookPixelIDByID( trim( $input->get( "facebook_pixel_id" ) ), $this->business->id );
-            $this->view->redirect( "account-manager/business/assets/tracking-codes" );
+            $this->view->redirect( "account-manager/business/assets/facebook-pixel" );
         }
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
-        $this->view->setTemplate( "account-manager/business/assets/tracking-codes.tpl" );
+        $this->view->setTemplate( "account-manager/business/assets/facebook-pixel.tpl" );
         $this->view->render( "App/Views/AccountManager/Assets.php" );
     }
 }
