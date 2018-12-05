@@ -41,6 +41,7 @@ class Request
 		} else {
 			$origin = $_SERVER[ "REMOTE_ADDR" ];
 		}
+		vdumpd( $origin );
 
 		return $origin;
 	}
