@@ -12,6 +12,7 @@ class EmbeddableFormRepository extends Service
         $embeddableForm->name = $name;
         $embeddableForm->business_id = $business_id;
         $embeddableForm->offer = $offer;
+        $embeddableForm->token = md5( base64_encode( openssl_random_pseudo_bytes( 32 ) ) );
         $embeddableFormMapper->create( $embeddableForm );
 
         return $embeddableForm;
@@ -22,6 +23,15 @@ class EmbeddableFormRepository extends Service
         $embeddableForm = new \Model\EmbeddableForm;
         $embeddableFormMapper = new \Model\Mappers\EmbeddableFormMapper( $this->container );
         $embeddableFormMapper->mapFromID( $embeddableForm, $id );
+
+        return $embeddableForm;
+    }
+
+    public function getByToken( $token )
+    {
+        $embeddableForm = new \Model\EmbeddableForm;
+        $embeddableFormMapper = new \Model\Mappers\EmbeddableFormMapper( $this->container );
+        $embeddableFormMapper->mapFromToken( $embeddableForm, $token );
 
         return $embeddableForm;
     }

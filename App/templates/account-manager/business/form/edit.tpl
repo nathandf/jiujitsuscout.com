@@ -47,35 +47,16 @@
 			{/foreach}
 		</select>
 		<div class="clear"></div>
+		<div class="hr-sml"></div>
+		<p class="text-xlrg">Form fields</p>
+		{foreach from=$embeddableFormElements item=element}
+		<p class="text-lrg-heavy push-t-med">{$element->placement}. {$element->type->name|capitalize}</p>
+		{foreachelse}
+		-- No Form Elements Added Yet --
+		{/foreach}
 		<div class="hr-sml push-t-med"></div>
-		<p class="push-b-med">Form Preview</p>
-		<script type="text/javascript" src="{$HOME}public/static/js/embeddable-form.js"></script>
-		<div id="display-form" class="EmbeddableFormWidgetByJiuJitsuScout__form-container">
-			{if $embeddableFormElements|@count < 0}
-			<p>No Fields added to your form yet</p>
-			{else}
-			<p class="EmbeddableFormWidgetByJiuJitsuScout__form-offer">{$form->offer}</p>
-			<br/>
-			{foreach from=$embeddableFormElements item=$element name="element_loop"}
-			<div class="EmbeddableFormWidgetByJiuJitsuScout__field-container">
-				<label class="EmbeddableFormWidgetByJiuJitsuScout__form-input-label" for="">{$element->type->name|capitalize}</label>
-				{if $element->required}<span class="EmbeddableFormWidgetByJiuJitsuScout__required">*</span>{/if}
-				<br/>
-				{if $element->type->name != 'message'}
-				<input autocomplete="off" class="EmbeddableFormWidgetByJiuJitsuScout__form-input" name="" type=""/>
-				{else}
-				<textarea autocomplete="off" class="EmbeddableFormWidgetByJiuJitsuScout__form-textarea" name="" type=""/></textarea>
-				{/if}
-				<br/>
-			</div>
-			{foreachelse}
-			<p class="text-sml">-- No Fields Added Yet --</p>
-			{/foreach}
-			<br/>
-			<button type="submit" class="EmbeddableFormWidgetByJiuJitsuScout__form-submit-button EmbeddableFormWidgetByJiuJitsuScout__material-hover"/>Get Offer Now ></button>
-			{/if}
-			<div class="clear"></div>
-		</div>
+		<!-- <p class="push-b-med">Form Preview</p> -->
+		{*$formHTML|unescape*}
 		<div class="clear"></div>
 	</div>
 {/block}

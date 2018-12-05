@@ -6,11 +6,11 @@ class Request
 {
 	private $origin_whitelist = [];
 
-	public function whitelistOrigin( $origins )
+	public function populateWhitelist( $origins )
 	{
 		if ( is_array( $origins ) ) {
 			foreach ( $origins as $origin ) {
-				$this->origin_whitelist[] = $origin
+				$this->origin_whitelist[] = $origin;
 			}
 
 			return;

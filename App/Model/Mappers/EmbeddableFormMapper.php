@@ -11,8 +11,8 @@ class EmbeddableFormMapper extends DataMapper
     {
         $id = $this->insert(
             "embeddable_form",
-            [ "business_id", "name", "offer" ],
-            [ $embeddableForm->business_id, $embeddableForm->name, $embeddableForm->offer ]
+            [ "business_id", "name", "offer", "token" ],
+            [ $embeddableForm->business_id, $embeddableForm->name, $embeddableForm->offer, $embeddableForm->token ]
         );
         $embeddableForm->id = $id;
 
@@ -23,6 +23,17 @@ class EmbeddableFormMapper extends DataMapper
     {
         $sql = $this->DB->prepare( "SELECT * FROM embeddable_form WHERE id = :id" );
         $sql->bindParam( ":id", $id );
+        $sql->execute();
+        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
+        $this->populate( $embeddableForm, $resp );
+
+        return $embeddableForm;
+    }
+
+    public function mapFromToken( \Model\EmbeddableForm $embeddableForm, $token )
+    {
+        $sql = $this->DB->prepare( "SELECT * FROM embeddable_form WHERE token = :token" );
+        $sql->bindParam( ":token", $token );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
         $this->populate( $embeddableForm, $resp );

@@ -71,8 +71,8 @@ class Form extends Controller
         $embeddableForm = $embeddableFormRepo->getByID( $this->params[ "id" ] );
         $embeddableForm->elements = $embeddableFormElementRepo->getAllByEmbeddableFormID( $this->params[ "id" ] );
 
-        $HTMLFormBuilder->setAction( "https://www.jiujitsuscout.com/forms/" );
-        $HTMLFormBuilder->setToken( "this-is-the-token" );
+        $HTMLFormBuilder->setAction( "https://www.jiujitsuscout.com/form/" . $embeddableForm->token . "/new-prospect" );
+        $HTMLFormBuilder->setToken( $embeddableForm->token );
         $HTMLFormBuilder->setApplicationPrefix( "EmbeddableFormWidgetByJiuJitsuScout__" );
         $HTMLFormBuilder->setJavascriptResourceURL( "https://www.jiujitsuscout.com/public/static/js/embeddable-form.js" );
         $HTMLFormBuilder->setFormOffer( $embeddableForm->offer );
@@ -167,12 +167,36 @@ class Form extends Controller
         $embeddableFormElementTypeRepo = $this->load( "embeddable-form-element-type-repository" );
         $embeddableFormElementRepo = $this->load( "embeddable-form-element-repository" );
         $embeddableFormRepo = $this->load( "embeddable-form-repository" );
+        $HTMLFormBuilder = $this->load( "html-form-builder" );
 
         // Get the current form
         $embeddableForm = $embeddableFormRepo->getByID( $this->params[ "id" ] );
 
         // Get all elements for this form
         $embeddableFormElements = $embeddableFormElementRepo->getAllByEmbeddableFormID( $this->params[ "id" ] );
+
+        // Add an elements property to form
+        $embeddableForm->elements = $embeddableFormElements;
+
+        // Prepare a preview of the form
+        $HTMLFormBuilder->setAction( "https://jiujitsuscout.com/form/" . $embeddableForm->token . "/new-prospect" );
+        $HTMLFormBuilder->setToken( $embeddableForm->token );
+        $HTMLFormBuilder->setApplicationPrefix( "EmbeddableFormWidgetByJiuJitsuScout__" );
+        $HTMLFormBuilder->setJavascriptResourceURL( "https://www.jiujitsuscout.com/public/static/js/embeddable-form.js" );
+        $HTMLFormBuilder->setFormOffer( $embeddableForm->offer );
+
+        if ( !empty( $embeddableForm->elements ) ) {
+            foreach ( $embeddableForm->elements as $element ) {
+                $element->type = $embeddableFormElementTypeRepo->getByID( $element->embeddable_form_element_type_id );
+                $HTMLFormBuilder->addField(
+                    $element->type->name,
+                    $element->type->name,
+                    $required = $element->required ? true : false,
+                    $text = $element->text,
+                    $value = null
+                );
+            }
+        }
 
         // Get the placement of the next element to be created
         $lastElement = end( $embeddableFormElements );
@@ -181,7 +205,8 @@ class Form extends Controller
         // Get all form element types
         $embeddableFormElementTypes = $embeddableFormElementTypeRepo->getAll();
 
-        // 1. Assign respective form element type objects to elements
+        // 1. Assign respective form element type objects to elements and create
+        // a define a name property for the input
         //
         // 2. Create an array of embeddableFormElementType ids that are in use
         // in the current form
@@ -191,6 +216,7 @@ class Form extends Controller
             $embeddableFormElement->type = $embeddableFormElementTypeRepo->getByID(
                 $embeddableFormElement->embeddable_form_element_type_id
             );
+            $embeddableFormElement->name_property = preg_replace( "/[\s]+/", "_", trim( strtolower( $embeddableFormElement->type->name ) ) );
             // 2.
             $usedEmbeddableFormElementTypeIDs[] = $embeddableFormElement->embeddable_form_element_type_id;
         }
@@ -244,6 +270,7 @@ class Form extends Controller
         }
 
         $this->view->assign( "form", $embeddableForm );
+        $this->view->assign( "formHTML", $HTMLFormBuilder->getFormHTML() );
         $this->view->assign( "new_element_placement", $new_element_placement );
         $this->view->assign( "embeddableFormElements", $embeddableFormElements );
         $this->view->assign( "availableEmbeddableFormElementTypes", $availableEmbeddableFormElementTypes );

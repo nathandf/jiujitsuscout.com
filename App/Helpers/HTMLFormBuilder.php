@@ -89,6 +89,14 @@ class HTMLFormBuilder
 				<textarea autocomplete="off" class="{{application_prefix}}form-textarea" id=""' . $requiredAttribute . ' name="' . preg_replace( "/[\s]+/", "_", strtolower( trim( $name ) ) ) . '"/></textarea>
 			</div>';
 		} else {
+			switch ( $type ) {
+				case "email":
+					$inputType = "email";
+					break;
+				case "phone number":
+					$inputType = "number";
+					break;
+			}
 			$this->form_body = $this->form_body . '
 			<div class="{{application_prefix}}field-container">
 				<label class="{{application_prefix}}form-label" for="">' . ucwords( $name ) . '</label>' . $requiredIndicator . '
