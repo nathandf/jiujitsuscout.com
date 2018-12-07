@@ -5,7 +5,7 @@
 {/block}
 
 {block name="bm-body"}
-	{include file="includes/navigation/business-manager-sub-menu.tpl"}
+	{include file="includes/navigation/marketing-sub-menu.tpl"}
 	<div class="con-cnt-xxlrg push-t-med encapsulate bg-white">
 		{include file="includes/navigation/business-manager-assets-inner-menu.tpl"}
 		<div class="inner-pad-med">
