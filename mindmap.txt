@@ -1,0 +1,25 @@
+SequenceTemplate
+    EventTemplates
+        EmailTemplates
+        TextMessageTemplates
+
+Sequence
+ 	Event
+        EventEmail
+		    Email
+        EventTextMessage
+		    TextMessage
+
+
+SequenceDispatcher
+	SequenceRepository
+	EventDispatcher
+		EventRepository
+		EventEmailDispatcher
+			EventEmailRepository
+			EmailRepository
+			MailerInterface
+		EventTextMessageDispatcher
+			EventTextMessageRepository
+			TextMessageRepository
+			SMSMessagerInterface

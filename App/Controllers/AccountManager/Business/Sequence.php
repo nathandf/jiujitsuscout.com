@@ -35,6 +35,19 @@ class Sequence extends Controller
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
 
+        // Verify that this sequence is owned by this business
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $sequenceTemplates = $sequenceTemplateRepo->getAllByBusinessID( $this->business->id );
+        $sequence_template_ids = [];
+
+        foreach ( $sequenceTemplates as $sequenceTemplate ) {
+            $sequence_template_ids[] = $sequenceTemplate->id;
+        }
+
+        if ( isset( $this->params[ "id" ] ) && !in_array( $this->params[ "id" ], $sequence_template_ids ) ) {
+            $this->view->redirect( "account-manager/business/sequences/" );
+        }
+
         $this->view->assign( "account", $this->account );
         $this->view->assign( "user", $this->user );
         $this->view->assign( "business", $this->business );
@@ -46,11 +59,14 @@ class Sequence extends Controller
             $this->view->redirect( "account-manager/business/sequences/" );
         }
 
-        $sequenceRepo = $this->load( "sequence-repository" );
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $eventRepo = $this->load( "event-repository" );
 
-        $sequence = $sequenceRepo->getByID( $this->params[ "id" ] );
+        $sequenceTemplate = $sequenceTemplateRepo->getByID( $this->params[ "id" ] );
+        $events = $eventRepo->getAllBySequenceID( $sequenceTemplate->id );
 
-        $this->view->assign( "sequence", $sequence );
+        $this->view->assign( "events", $events );
+        $this->view->assign( "sequence", $sequenceTemplate );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 
         $this->view->setTemplate( "account-manager/business/sequence/home.tpl" );
@@ -83,14 +99,14 @@ class Sequence extends Controller
             "create_sequence"
             )
         ) {
-            $sequenceRepo = $this->load( "sequence-repository" );
-            $sequence = $sequenceRepo->create(
+            $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+            $sequenceTemplate = $sequenceTemplateRepo->create(
                 $this->business->id,
                 $input->get( "name" ),
                 $input->get( "description" )
             );
 
-            $this->view->redirect( "account-manager/business/sequence/" . $sequence->id . "/add-event" );
+            $this->view->redirect( "account-manager/business/sequence/" . $sequenceTemplate->id . "/add-event" );
         }
 
         $this->view->setErrorMessages( $inputValidator->getErrors() );
@@ -102,7 +118,23 @@ class Sequence extends Controller
 
     public function addEventAction()
     {
-        echod( "add event" );
-    }
+        if ( !$this->issetParam( "id" ) ) {
+            $this->view->redirect( "account-manager/business/sequences/" );
+        }
 
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $eventTypeRepo = $this->load( "event-type-repository" );
+        $eventRepo = $this->load( "event-repository" );
+
+        $sequenceTemplate = $sequenceTemplateRepo->getByID( $this->params[ "id" ] );
+        $eventTypes = $eventTypeRepo->getAll();
+
+        $this->view->assign( "sequence", $sequenceTemplate );
+        $this->view->assign( "eventTypes", $eventTypes );
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+
+        $this->view->setTemplate( "account-manager/business/sequence/add-event.tpl" );
+        $this->view->render( "App/Views/AccountManager/Business.php" );
+    }
 }

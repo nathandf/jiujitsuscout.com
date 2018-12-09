@@ -211,6 +211,11 @@ $container->register( "email-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "email-template-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmailTemplateRepository( $container );
+	return $repo;
+} );
+
 $container->register( "embeddable-form-element-type-repository", function() use ( $container ) {
 	$repo = new \Model\Services\EmbeddableFormElementTypeRepository( $container );
 	return $repo;
@@ -240,6 +245,12 @@ $container->register( "event-repository", function() use ( $container ) {
 	$repo = new \Model\Services\EventRepository( $container );
 	return $repo;
 } );
+
+$container->register( "event-template-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EventTemplateRepository( $container );
+	return $repo;
+} );
+
 
 $container->register( "event-text-message-repository", function() use ( $container ) {
 	$repo = new \Model\Services\EventTextMessageRepository( $container );
@@ -416,6 +427,11 @@ $container->register( "search-results-dispatcher", function() use ( $container )
 
 $container->register( "sequence-repository", function() use ( $container ) {
 	$repo = new \Model\Services\SequenceRepository( $container );
+	return $repo;
+} );
+
+$container->register( "sequence-template-repository", function() use ( $container ) {
+	$repo = new \Model\Services\SequenceTemplateRepository( $container );
 	return $repo;
 } );
 

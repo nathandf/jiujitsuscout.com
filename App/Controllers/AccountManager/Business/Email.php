@@ -35,6 +35,19 @@ class Email extends Controller
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
 
+        // Verify that this email template is owned by this business
+        $emailTemplateRepo = $this->load( "email-template-repository" );
+        $emailTemplates = $emailTemplateRepo->getAllByBusinessID( $this->business->id );
+        $email_template_ids = [];
+
+        foreach ( $emailTemplates as $emailTemplate ) {
+            $email_template_ids[] = $emailTemplate->id;
+        }
+
+        if ( isset( $this->params[ "id" ] ) && !in_array( $this->params[ "id" ], $email_template_ids ) ) {
+            $this->view->redirect( "account-manager/business/emails/" );
+        }
+
         $this->view->assign( "account", $this->account );
         $this->view->assign( "user", $this->user );
         $this->view->assign( "business", $this->business );
@@ -57,9 +70,9 @@ class Email extends Controller
 
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
-        $emailRepo = $this->load( "email-repository" );
+        $emailTemplateRepo = $this->load( "email-template-repository" );
 
-        $email = $emailRepo->getByID( $this->params[ "id" ] );
+        $emailTemplate = $emailTemplateRepo->getByID( $this->params[ "id" ] );
 
 
         if ( $input->exists() && $input->issetField( "update_email" ) && $inputValidator->validate(
@@ -85,7 +98,7 @@ class Email extends Controller
             "create_email"
             )
         ) {
-            $emailRepo->updateByID(
+            $emailTemplateRepo->updateByID(
                 $this->params[ "id" ],
                 $input->get( "name" ),
                 $input->get( "description" ),
@@ -95,10 +108,10 @@ class Email extends Controller
 
             $this->session->addFlashMessage( "Email Updated" );
             $this->session->setFlashMessages();
-            $this->view->redirect( "account-manager/business/email/" . $email->id . "/" );
+            $this->view->redirect( "account-manager/business/email/" . $emailTemplate->id . "/" );
         }
 
-        $this->view->assign( "email", $email );
+        $this->view->assign( "email", $emailTemplate );
 
         $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
@@ -141,8 +154,8 @@ class Email extends Controller
             "create_email"
             )
         ) {
-            $emailRepo = $this->load( "email-repository" );
-            $email = $emailRepo->create(
+            $emailTemplateRepo = $this->load( "email-template-repository" );
+            $emailTemplate = $emailTemplateRepo->create(
                 $this->business->id,
                 $input->get( "name" ),
                 $input->get( "description" ),
@@ -150,7 +163,7 @@ class Email extends Controller
                 $input->get( "body" )
             );
 
-            $this->view->redirect( "account-manager/business/email/" . $email->id . "/" );
+            $this->view->redirect( "account-manager/business/email/" . $emailTemplate->id . "/" );
         }
 
         $this->view->setErrorMessages( $inputValidator->getErrors() );

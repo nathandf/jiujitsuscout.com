@@ -11,7 +11,14 @@
 	<div>
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
-			<a class="btn btn-inline bg-deep-blue text-med last" href="{$HOME}account-manager/business/sequences/">< All Emails</a>
+			<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/sequences/">< All Sequences</a>
+			<div class="hr-sml"></div>
+			<a class="btn btn-inline bg-lavender text-med push-b-med push-t-med" href="{$HOME}account-manager/business/sequence/{$sequence->id}/add-event">Add Events +</a>
+			{foreach from=$events item=event}
+			<p class="text-med">{$event->name}</p>
+			{foreachelse}
+			<p>-- You have not created any events for this sequence --</p>
+			{/foreach}
 			<div class="hr-sml"></div>
 			{if !empty($error_messages.update_sequence)}
 				{foreach from=$error_messages.update_sequence item=message}
@@ -31,7 +38,7 @@
 				<p><b>Description:</b></p>
 				<textarea name="description" class="inp textarea" placeholder="">{$sequence->description}</textarea>
 				<div class="clear push-t-med"></div>
-				<input type="submit" class="btn btn-inline" value="Update Email">
+				<input type="submit" class="btn btn-inline" value="Update Sequences">
 			</form>
 		</div>
 	</div><!-- end content -->
