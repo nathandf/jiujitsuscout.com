@@ -26,10 +26,10 @@
 						<input type="hidden" name="create_sequence" value="{$csrf_token}">
 						<div class="clear push-t-med"></div>
 						<p><b>Sequence Name:</b></p>
-						<input type="text" name="name" value="{$inputs.create_sequence.name|default:null}" class="inp field-sml" placeholder="">
+						<input style="padding: 3px;" type="text" name="name" value="{$inputs.create_sequence.name|default:null}" class="inp" placeholder="">
 						<div class="clear push-t-med"></div>
 						<p><b>Description:</b></p>
-						<textarea name="offer" value="{$inputs.create_sequence.offer|default:null}" class="inp textarea" placeholder=""></textarea>
+						<textarea name="description" class="inp textarea" placeholder="">{$inputs.create_sequence.description|default:null}</textarea>
 						<div class="clear push-t-med"></div>
 						<input type="submit" class="btn btn-inline" value="Create Sequence">
 					</form>

@@ -42,6 +42,12 @@ class Sequences extends Controller
 
     public function indexAction()
     {
+        $sequenceRepo = $this->load( "sequence-repository" );
+
+        $sequences = $sequenceRepo->getAllByBusinessID( $this->business->id );
+
+        $this->view->assign( "sequences", $sequences );
+        
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 
         $this->view->setTemplate( "account-manager/business/sequences/home.tpl" );

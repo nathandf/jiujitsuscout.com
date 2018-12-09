@@ -46,6 +46,11 @@ class Sequence extends Controller
             $this->view->redirect( "account-manager/business/sequences/" );
         }
 
+        $sequenceRepo = $this->load( "sequence-repository" );
+
+        $sequence = $sequenceRepo->getByID( $this->params[ "id" ] );
+
+        $this->view->assign( "sequence", $sequence );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 
         $this->view->setTemplate( "account-manager/business/sequence/home.tpl" );
@@ -58,10 +63,46 @@ class Sequence extends Controller
             $this->view->redirect( "account-manager/business/sequence/" . $this->params[ "id" ] . "/" );
         }
 
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+
+        if ( $input->exists() && $input->issetField( "create_sequence" ) && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "name" => [
+                    "required" => true
+                ],
+                "description" => [
+                    "required" => true
+                ]
+            ],
+            "create_sequence"
+            )
+        ) {
+            $sequenceRepo = $this->load( "sequence-repository" );
+            $sequence = $sequenceRepo->create(
+                $this->business->id,
+                $input->get( "name" ),
+                $input->get( "description" )
+            );
+
+            $this->view->redirect( "account-manager/business/sequence/" . $sequence->id . "/add-event" );
+        }
+
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 
         $this->view->setTemplate( "account-manager/business/sequence/new.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
+    }
+
+    public function addEventAction()
+    {
+        echod( "add event" );
     }
 
 }

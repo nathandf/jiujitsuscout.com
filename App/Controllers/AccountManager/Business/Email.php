@@ -46,9 +46,65 @@ class Email extends Controller
             $this->view->redirect( "account-manager/business/emails/" );
         }
 
-        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->redirect( "account-manager/business/email/" . $this->params[ "id" ] . "/edit" );
+    }
 
-        $this->view->setTemplate( "account-manager/business/email/new.tpl" );
+    public function editAction()
+    {
+        if ( !$this->issetParam( "id" ) ) {
+            $this->view->redirect( "account-manager/business/emails/" );
+        }
+
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $emailRepo = $this->load( "email-repository" );
+
+        $email = $emailRepo->getByID( $this->params[ "id" ] );
+
+
+        if ( $input->exists() && $input->issetField( "update_email" ) && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "name" => [
+                    "required" => true
+                ],
+                "description" => [
+                    "required" => true
+                ],
+                "subject" => [
+                    "required" => true,
+                ],
+                "body" => [
+                    "required" => true
+                ]
+            ],
+            "create_email"
+            )
+        ) {
+            $emailRepo->updateByID(
+                $this->params[ "id" ],
+                $input->get( "name" ),
+                $input->get( "description" ),
+                $input->get( "subject" ),
+                $input->get( "body" )
+            );
+
+            $this->session->addFlashMessage( "Email Updated" );
+            $this->session->setFlashMessages();
+            $this->view->redirect( "account-manager/business/email/" . $email->id . "/" );
+        }
+
+        $this->view->assign( "email", $email );
+
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setFlashMessages( $this->session->getFlashMessages( "flash_messages" ) );
+
+        $this->view->setTemplate( "account-manager/business/email/edit.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
 
     }
@@ -59,6 +115,45 @@ class Email extends Controller
             $this->view->redirect( "account-manager/business/email/" . $this->params[ "id" ] . "/" );
         }
 
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+
+        if ( $input->exists() && $input->issetField( "create_email" ) && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "name" => [
+                    "required" => true
+                ],
+                "description" => [
+                    "required" => true
+                ],
+                "subject" => [
+                    "required" => true,
+                ],
+                "body" => [
+                    "required" => true
+                ]
+            ],
+            "create_email"
+            )
+        ) {
+            $emailRepo = $this->load( "email-repository" );
+            $email = $emailRepo->create(
+                $this->business->id,
+                $input->get( "name" ),
+                $input->get( "description" ),
+                $input->get( "subject" ),
+                $input->get( "body" )
+            );
+
+            $this->view->redirect( "account-manager/business/email/" . $email->id . "/" );
+        }
+
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 
         $this->view->setTemplate( "account-manager/business/email/new.tpl" );

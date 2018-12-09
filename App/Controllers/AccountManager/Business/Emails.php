@@ -42,6 +42,12 @@ class Emails extends Controller
 
     public function indexAction()
     {
+        $emailRepo = $this->load( "email-repository" );
+
+        $emails = $emailRepo->getAllByBusinessID( $this->business->id );
+
+        $this->view->assign( "emails", $emails );
+        
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 
         $this->view->setTemplate( "account-manager/business/emails/home.tpl" );
