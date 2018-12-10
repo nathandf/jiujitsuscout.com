@@ -21,7 +21,6 @@ class Sequence extends Controller
         $accountUserRepo = $this->load( "account-user-repository" );
         $businessRepo = $this->load( "business-repository" );
         $userRepo = $this->load( "user-repository" );
-        $taskRepo = $this->load( "task-repository" );
         // If user not validated with session or cookie, send them to sign in
         if ( !$userAuth->userValidate() ) {
             $this->view->redirect( "account-manager/sign-in" );
@@ -68,6 +67,7 @@ class Sequence extends Controller
         $this->view->assign( "events", $events );
         $this->view->assign( "sequence", $sequenceTemplate );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/sequence/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
@@ -122,17 +122,108 @@ class Sequence extends Controller
             $this->view->redirect( "account-manager/business/sequences/" );
         }
 
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
         $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
         $eventTypeRepo = $this->load( "event-type-repository" );
-        $eventRepo = $this->load( "event-repository" );
+        $eventTemplateRepo = $this->load( "event-template-repository" );
+        $emailTemplateRepo = $this->load( "email-template-repository" );
+        $textMessageTemplateRepo = $this->load( "text-message-template-repository" );
 
         $sequenceTemplate = $sequenceTemplateRepo->getByID( $this->params[ "id" ] );
         $eventTypes = $eventTypeRepo->getAll();
+        $event_type_ids = [];
+
+        foreach ( $eventTypes as $eventType ) {
+            $event_type_ids[] = $eventType->id;
+        }
+
+        $emailTemplates = $emailTemplateRepo->getAllByBusinessID( $this->business->id );
+        $email_template_ids = [];
+
+        foreach ( $emailTemplates as $emailTemplate ) {
+            $email_template_ids[] = $emailTemplate->id;
+        }
+
+        $textMessageTemplates = $textMessageTemplateRepo->getAllByBusinessID( $this->business->id );
+        $text_message_template_ids = [];
+
+        foreach ( $textMessageTemplates as $textMessageTemplate ) {
+            $text_message_template_ids[] = $textMessageTemplate->id;
+        }
+
+        if ( $input->exists() && $input->issetField( "add_event" ) && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "event_type_id" => [
+                    "requried" => true,
+                    "in_array" => $event_type_ids
+                ],
+                "email_template_id" => [
+                    "in_array" => $email_template_ids
+                ],
+                "text_message_template_id" => [
+                    "in_array" => $text_message_template_ids
+                ],
+                "wait_duration" => [
+                    "numeric" => true
+                ]
+            ],
+            "add_event"
+            )
+        ) {
+            switch ( $input->get( "event_type_id" ) ) {
+                // Email
+                case 1:
+                    $eventTemlateRepo->create(
+                        $sequenceTemplate->id,
+                        $input->get( "event_type_id" ),
+                        $input->get( "email_template_id" ),
+                        null,
+                        null
+                    );
+                    break;
+                // Text Message
+                case 2:
+                    $eventTemlateRepo->create(
+                        $sequenceTemplate->id,
+                        $input->get( "event_type_id" ),
+                        null,
+                        $input->get( "text_message_template_id" ),
+                        null
+                    );
+                    break;
+                // Wait
+                case 3:
+                    $eventTemlateRepo->create(
+                        $sequenceTemplate->id,
+                        $input->get( "event_type_id" ),
+                        null,
+                        null,
+                        $input->get( "wait_duration" )
+                    );
+                    break;
+            }
+
+            $this->session->addFlashMessage( "Event Created" );
+            $this->session->setFlashMessages();
+
+            if ( $input->get( "add_another_event" ) == "true" ) {
+                $this->view->redirect( "account-manager/business/sequence/" . $this->params[ "id" ] . "/add-event" );
+            }
+
+            $this->view->redirect( "account-manager/business/sequence/" . $this->params[ "id" ] . "/" );
+        }
 
         $this->view->assign( "sequence", $sequenceTemplate );
         $this->view->assign( "eventTypes", $eventTypes );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/sequence/add-event.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );

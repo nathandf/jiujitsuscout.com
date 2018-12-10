@@ -11,6 +11,8 @@
             <div class="nav-item-seperator"></div>
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/groups/">Groups</a></li>
             <div class="nav-item-seperator"></div>
+            <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/text-messages/">Text Messages</a></li>
+            <div class="nav-item-seperator"></div>
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/emails/">Emails</a></li>
             <div class="nav-item-seperator"></div>
             <li class="nav-item"><a class="nav-link-main" href="{$HOME}account-manager/business/sequences/">Sequences</a></li>

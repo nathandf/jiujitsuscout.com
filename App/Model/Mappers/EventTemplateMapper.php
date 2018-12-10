@@ -4,6 +4,18 @@ namespace Model\Mappers;
 
 class EventTemplateMapper extends DataMapper
 {
+    public function create( \Model\EventTemplate $eventTemplate )
+    {
+        $id = $this->insert(
+            "event_template",
+            [ "sequence_template_id", "event_type_id", "email_template_id", "text_message_template_id", "wait_duration" ],
+            [ $eventTemplate->sequence_template_id, $eventTemplate->event_type_id, $eventTemplate->email_template_id, $eventTemplate->text_message_template_id, $eventTemplate->wait_duration ]
+        );
+
+        $eventTemplate->id = $id;
+
+        return $eventTemplate;
+    }
 
     public function mapAll()
     {

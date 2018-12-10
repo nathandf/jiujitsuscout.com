@@ -21,7 +21,6 @@ class Emails extends Controller
         $accountUserRepo = $this->load( "account-user-repository" );
         $businessRepo = $this->load( "business-repository" );
         $userRepo = $this->load( "user-repository" );
-        $taskRepo = $this->load( "task-repository" );
         // If user not validated with session or cookie, send them to sign in
         if ( !$userAuth->userValidate() ) {
             $this->view->redirect( "account-manager/sign-in" );

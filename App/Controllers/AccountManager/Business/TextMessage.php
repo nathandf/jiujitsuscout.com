@@ -4,7 +4,7 @@ namespace Controllers\AccountManager\Business;
 
 use Core\Controller;
 
-class Email extends Controller
+class TextMessage extends Controller
 {
     private $accountRepo;
     private $account;
@@ -21,6 +21,7 @@ class Email extends Controller
         $accountUserRepo = $this->load( "account-user-repository" );
         $businessRepo = $this->load( "business-repository" );
         $userRepo = $this->load( "user-repository" );
+
         // If user not validated with session or cookie, send them to sign in
         if ( !$userAuth->userValidate() ) {
             $this->view->redirect( "account-manager/sign-in" );
@@ -34,17 +35,17 @@ class Email extends Controller
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
 
-        // Verify that this email template is owned by this business
-        $emailTemplateRepo = $this->load( "email-template-repository" );
-        $emailTemplates = $emailTemplateRepo->getAllByBusinessID( $this->business->id );
-        $email_template_ids = [];
+        // Verify that this text message template is owned by this business
+        $textMessageTemplateRepo = $this->load( "text-message-template-repository" );
+        $textMessageTemplates = $textMessageTemplateRepo->getAllByBusinessID( $this->business->id );
+        $text_message_template_ids = [];
 
-        foreach ( $emailTemplates as $emailTemplate ) {
-            $email_template_ids[] = $emailTemplate->id;
+        foreach ( $textMessageTemplates as $textMessageTemplate ) {
+            $text_message_template_ids[] = $textMessageTemplate->id;
         }
 
-        if ( isset( $this->params[ "id" ] ) && !in_array( $this->params[ "id" ], $email_template_ids ) ) {
-            $this->view->redirect( "account-manager/business/emails/" );
+        if ( isset( $this->params[ "id" ] ) && !in_array( $this->params[ "id" ], $text_message_template_ids ) ) {
+            $this->view->redirect( "account-manager/business/text-messages/" );
         }
 
         $this->view->assign( "account", $this->account );
@@ -55,26 +56,26 @@ class Email extends Controller
     public function indexAction()
     {
         if ( !$this->issetParam( "id" ) ) {
-            $this->view->redirect( "account-manager/business/emails/" );
+            $this->view->redirect( "account-manager/business/text-messages/" );
         }
 
-        $this->view->redirect( "account-manager/business/email/" . $this->params[ "id" ] . "/edit" );
+        $this->view->redirect( "account-manager/business/text-message/" . $this->params[ "id" ] . "/edit" );
     }
 
     public function editAction()
     {
         if ( !$this->issetParam( "id" ) ) {
-            $this->view->redirect( "account-manager/business/emails/" );
+            $this->view->redirect( "account-manager/business/text-messages/" );
         }
 
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
-        $emailTemplateRepo = $this->load( "email-template-repository" );
+        $textMessageTemplateRepo = $this->load( "text-message-template-repository" );
 
-        $emailTemplate = $emailTemplateRepo->getByID( $this->params[ "id" ] );
+        $textMessageTemplate = $textMessageTemplateRepo->getByID( $this->params[ "id" ] );
 
 
-        if ( $input->exists() && $input->issetField( "update_email" ) && $inputValidator->validate(
+        if ( $input->exists() && $input->issetField( "update_text_message" ) && $inputValidator->validate(
             $input,
             [
                 "token" => [
@@ -87,36 +88,32 @@ class Email extends Controller
                 "description" => [
                     "required" => true
                 ],
-                "subject" => [
-                    "required" => true,
-                ],
                 "body" => [
                     "required" => true
                 ]
             ],
-            "create_email"
+            "create_text_message"
             )
         ) {
-            $emailTemplateRepo->updateByID(
+            $textMessageTemplateRepo->updateByID(
                 $this->params[ "id" ],
                 $input->get( "name" ),
                 $input->get( "description" ),
-                $input->get( "subject" ),
                 $input->get( "body" )
             );
 
-            $this->session->addFlashMessage( "Email Updated" );
+            $this->session->addFlashMessage( "Text Message Updated" );
             $this->session->setFlashMessages();
-            $this->view->redirect( "account-manager/business/email/" . $emailTemplate->id . "/" );
+            $this->view->redirect( "account-manager/business/text-message/" . $textMessageTemplate->id . "/" );
         }
 
-        $this->view->assign( "email", $emailTemplate );
+        $this->view->assign( "textMessage", $textMessageTemplate );
 
         $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setFlashMessages( $this->session->getFlashMessages( "flash_messages" ) );
 
-        $this->view->setTemplate( "account-manager/business/email/edit.tpl" );
+        $this->view->setTemplate( "account-manager/business/text-message/edit.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
 
     }
@@ -124,13 +121,13 @@ class Email extends Controller
     public function newAction()
     {
         if ( $this->issetParam( "id" ) ) {
-            $this->view->redirect( "account-manager/business/email/" . $this->params[ "id" ] . "/" );
+            $this->view->redirect( "account-manager/business/text-message/" . $this->params[ "id" ] . "/" );
         }
 
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
 
-        if ( $input->exists() && $input->issetField( "create_email" ) && $inputValidator->validate(
+        if ( $input->exists() && $input->issetField( "create_text_message" ) && $inputValidator->validate(
             $input,
             [
                 "token" => [
@@ -143,32 +140,28 @@ class Email extends Controller
                 "description" => [
                     "required" => true
                 ],
-                "subject" => [
-                    "required" => true,
-                ],
                 "body" => [
                     "required" => true
                 ]
             ],
-            "create_email"
+            "create_text_message"
             )
         ) {
-            $emailTemplateRepo = $this->load( "email-template-repository" );
-            $emailTemplate = $emailTemplateRepo->create(
+            $textMessageTemplateRepo = $this->load( "text-message-template-repository" );
+            $textMessageTemplate = $textMessageTemplateRepo->create(
                 $this->business->id,
                 $input->get( "name" ),
                 $input->get( "description" ),
-                $input->get( "subject" ),
                 $input->get( "body" )
             );
 
-            $this->view->redirect( "account-manager/business/email/" . $emailTemplate->id . "/" );
+            $this->view->redirect( "account-manager/business/text-message/" . $textMessageTemplate->id . "/" );
         }
 
         $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 
-        $this->view->setTemplate( "account-manager/business/email/new.tpl" );
+        $this->view->setTemplate( "account-manager/business/text-message/new.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
     }
 

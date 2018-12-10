@@ -450,6 +450,11 @@ $container->register( "text-message-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "text-message-template-repository", function() use ( $container ) {
+	$repo = new \Model\Services\TextMessageTemplateRepository( $container );
+	return $repo;
+} );
+
 $container->register( "transaction-repository", function() use ( $container ) {
 	$repo = new \Model\Services\TransactionRepository( $container );
 	return $repo;

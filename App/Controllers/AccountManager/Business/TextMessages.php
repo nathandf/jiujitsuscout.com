@@ -4,7 +4,7 @@ namespace Controllers\AccountManager\Business;
 
 use Core\Controller;
 
-class Sequences extends Controller
+class TextMessages extends Controller
 {
     private $accountRepo;
     private $account;
@@ -41,15 +41,15 @@ class Sequences extends Controller
 
     public function indexAction()
     {
-        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $textMessageTemplateRepo = $this->load( "text-message-template-repository" );
 
-        $sequenceTemplates = $sequenceTemplateRepo->getAllByBusinessID( $this->business->id );
+        $textMessageTemplates = $textMessageTemplateRepo->getAllByBusinessID( $this->business->id );
 
-        $this->view->assign( "sequences", $sequenceTemplates );
+        $this->view->assign( "textMessages", $textMessageTemplates );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 
-        $this->view->setTemplate( "account-manager/business/sequences/home.tpl" );
+        $this->view->setTemplate( "account-manager/business/text-messages/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
     }
 
