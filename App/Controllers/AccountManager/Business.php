@@ -187,7 +187,10 @@ class Business extends Controller
                 $trials[] = $prospect;
             }
 
-            // Create rray of all lead's ids
+            // Get all appointmments for prospects
+            $prospect->appointments = $appointmentRepo->getAllByProspectID( $prospect->id );
+
+            // Create array of all lead's ids
             $prospect_ids[] = $prospect->id;
         }
 

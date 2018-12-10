@@ -15,13 +15,7 @@
 		<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/leads">Leads</a> > {$lead->getFullName()}</p>
 		<div class="clear"></div>
 		<button id="lead-actions-button" class="btn btn-inline bg-deep-blue tc-white push-t-med">Actions +</button>
-		{if !empty($flash_messages)}
-			{foreach from=$flash_messages item=message}
-				<div class="con-message-success mat-hov cursor-pt --c-hide">
-					<p class="user-message-body">{$message}</p>
-				</div>
-			{/foreach}
-		{/if}
+		{include file="includes/snippets/flash-messages.tpl"}
 		<p class="section-title-outer push-t-sml">Interactions: <b>{$lead->times_contacted}</b></p>
 		<table class="" style="border-collapse: collapse; width: 100%;">
 			<tr>

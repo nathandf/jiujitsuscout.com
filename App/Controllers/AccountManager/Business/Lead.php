@@ -121,6 +121,7 @@ class Lead extends Controller
         $groupsAll = $groupRepo->getAllByBusinessID( $this->business->id );
         $groups = [];
         $group_ids = explode( ",", $this->prospect->group_ids );
+
         foreach ( $groupsAll as $group ) {
             if ( in_array( $group->id, $group_ids ) ) {
                 $groups[] = $group;
@@ -132,11 +133,6 @@ class Lead extends Controller
         $emailerHelper->setSenderEmail( $this->user->email );
         $emailerHelper->setRecipientName( $this->prospect->first_name );
         $emailerHelper->setRecipientEmail( $this->prospect->email );
-
-        $recipient_first_name = $this->prospect->first_name;
-        $recipient_email = $this->prospect->email;
-        $sender_first_name = $this->user->first_name;
-        $sender_email = $this->user->email;
 
         // If validation rules are passed, send an email
         if ( $input->exists() &&  $input->issetField( "send_email" ) && $inputValidator->validate(
@@ -170,16 +166,17 @@ class Lead extends Controller
                 $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/?error=invalid_email" );
             }
             // Send email
-            $email_subject = $input->get( "subject" );
-            $email_body = $input->get( "body" );
-            $mailer->setRecipientName( $recipient_first_name );
-            $mailer->setRecipientEmailAddress( $recipient_email );
-            $mailer->setSenderName( $sender_first_name );
-            $mailer->setSenderEmailAddress( $sender_email );
+            $mailer->setRecipientName( $emailerHelper->recipient_name );
+            $mailer->setRecipientEmailAddress( $emailerHelper->recipient_email );
+            $mailer->setSenderName( $emailerHelper->sender_name );
+            $mailer->setSenderEmailAddress( $emailerHelper->sender_email );
             $mailer->setContentType( "text/html" );
-            $mailer->setEmailSubject( $email_subject );
-            $mailer->setEmailBody( $email_body );
+            $mailer->setEmailSubject( $input->get( "subject" ) );
+            $mailer->setEmailBody( $input->get( "body" ) );
             $mailer->mail();
+
+            $this->session->addFlashMessage( "Email Sent" );
+            $this->session->setFlashMessages();
 
             // Record email interaction
             $prospectRepo->updateTimesContactedByID( ( $this->prospect->times_contacted + 1 ), $this->prospect->id );
@@ -187,6 +184,7 @@ class Lead extends Controller
             // Create a note for this interaction
             $note_body = "Sent with JiuJitsuScout: " . $input->get( "body" );
             $noteRegistrar->save( $note_body, $this->business->id, $this->user->id, $this->prospect->id );
+
             $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/" );
         }
 
@@ -314,18 +312,12 @@ class Lead extends Controller
         $this->view->assign( "inputs", $inputs );
 
         // Set CSRF token and assign to view
-        $csrf_token = $this->session->generateCSRFToken();
-        $this->view->assign( "csrf_token", $csrf_token );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->setFlashMessages( $this->session->getFlashMessages( "flash_messages" ) );
 
         // where the form should get posted to
         $this->view->assign( "action", HOME . "account-manager/business/lead/" . $this->prospect->id . "/" );
-
-        $this->view->assign( "recipient_first_name", $recipient_first_name );
-        $this->view->assign( "recipient_email", $recipient_email );
-        $this->view->assign( "sender_first_name", $sender_first_name );
-        $this->view->assign( "sender_email", $sender_email );
 
         $this->view->assign( "emailerHelper", $emailerHelper );
 

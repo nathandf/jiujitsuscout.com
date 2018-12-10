@@ -97,6 +97,16 @@
 													</div>
 												</a>
 											{else}
+												{if $prospect->appointments|@count > 0}
+												<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag first mat-hov floatleft" style="border: 2px solid #7A6FF0;">
+													<span class="lead-icon bg-lavender"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+													<div class="lead-data">
+														<p class="lead-name">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
+														<p>{$prospect->phone_number|default:"Number: N/a"}</p>
+														<p>{if $prospect->email}{$prospect->email|lower|truncate:23:"..."}{else}email: N/a{/if}</p>
+													</div>
+												</a>
+												{else}
 												<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag first mat-hov floatleft">
 													<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$prospect->first_name|substr:0:1|upper}</span>
 													<div class="lead-data">
@@ -105,6 +115,7 @@
 														<p>{if $prospect->email}{$prospect->email|lower|truncate:23:"..."}{else}email: N/a{/if}</p>
 													</div>
 												</a>
+												{/if}
 											{/if}
 										{/if}
 									</td>
