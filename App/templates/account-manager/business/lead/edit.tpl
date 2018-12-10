@@ -6,8 +6,8 @@
 
 {block name="bm-body"}
 {include file="includes/navigation/business-manager-sub-menu.tpl"}
-	<div class="con-cnt-xlrg first inner-pad-med">
-		<a class="btn btn-inline bg-salmon text-med first" href="{$HOME}account-manager/business/lead/{$lead->id}/">< Lead Manager</a>
+	<div class="con-cnt-xxlrg push-t-med inner-pad-med">
+		<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/leads">Leads</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/lead/{$lead->id}/">{$lead->getFullName()}</a> > Edit</p>
 		{if !empty($error_messages.edit)}
 			{foreach from=$error_messages.edit item=message}
 				<div class="con-message-failure mat-hov cursor-pt --c-hide">
@@ -60,12 +60,6 @@
 			<input type="text" class="inp field-sml" name="region" value="{$lead->region}" placeholder="State/Region/Province">
 			<div class="clear"></div>
 			<input type="submit" class="btn bnt-inline floatleft push-r push-t-med" value="Update Lead">
-		</form>
-		<form method="post" action="">
-			<input type="hidden" name="token" value="{$csrf_token}">
-			<input type="hidden" name="trash" value="{$csrf_token}">
-			<input type="hidden" name="prospect_id" value="{$lead->id}">
-			<button type="submit" class="btn btn-inline bg-red push-t-med push-l floatleft --c-trash"><i class="fa fa-trash" aria-hidden="true"></i></button>
 		</form>
 		<div class="clear"></div>
 	</div>

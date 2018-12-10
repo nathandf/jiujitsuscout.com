@@ -6,10 +6,11 @@
 
 {block name="bm-body"}
 {include file="includes/navigation/business-manager-sub-menu.tpl"}
-	<div class="con-cnt-xlrg first inner-pad-med">
-		<a href="{$HOME}account-manager/business/lead/{$lead->id}/" class="btn btn-inline text-med bg-salmon first">< Lead Manager</a>
-		<div class="clear first"></div>
-		<h2 class="first last">Groups</h2>
+	<div class="con-cnt-xxlrg push-t-med inner-pad-med">
+		<div class="clear"></div>
+		<h2>Groups</h2>
+		<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/leads">Leads</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/lead/{$lead->id}/">{$lead->getFullName()}</a> > Groups</p>
+		<div class="push-b-med"></div>
 		{if $groups}
 		<form action="{$HOME}account-manager/business/lead/{$lead->id}/groups" method="post">
 			<input type="hidden" name="update_groups">

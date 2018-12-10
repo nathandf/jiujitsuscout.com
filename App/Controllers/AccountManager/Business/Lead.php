@@ -90,6 +90,7 @@ class Lead extends Controller
         $prospectRepo = $this->load( "prospect-repository" );
         $groupRepo = $this->load( "group-repository" );
         $mailer = $this->load( "mailer" );
+        $emailerHelper = $this->load( "emailer-helper" );
 
         // If prospect requires purchase, redirect to purchase page
         if ( isset( $this->prospect->appraisal ) && ( isset( $this->prospect->purchase ) == false ) ) {
@@ -127,6 +128,11 @@ class Lead extends Controller
         }
 
         // Set variables for sending an email
+        $emailerHelper->setSenderName( $this->user->first_name );
+        $emailerHelper->setSenderEmail( $this->user->email );
+        $emailerHelper->setRecipientName( $this->prospect->first_name );
+        $emailerHelper->setRecipientEmail( $this->prospect->email );
+
         $recipient_first_name = $this->prospect->first_name;
         $recipient_email = $this->prospect->email;
         $sender_first_name = $this->user->first_name;
@@ -320,6 +326,8 @@ class Lead extends Controller
         $this->view->assign( "recipient_email", $recipient_email );
         $this->view->assign( "sender_first_name", $sender_first_name );
         $this->view->assign( "sender_email", $sender_email );
+
+        $this->view->assign( "emailerHelper", $emailerHelper );
 
         $this->view->assign( "groups", $groups );
         $this->view->assign( "appointments", $appointments );

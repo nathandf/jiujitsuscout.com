@@ -474,6 +474,12 @@ td {
     box-sizing: border-box;
 }
 
+.inner-pad-xsml {
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+
 .inner-pad-sml {
     box-sizing: border-box;
     padding: 10px;
@@ -788,21 +794,11 @@ td {
     box-sizing: border-box;
 }
 
-/* .inp {
-    border-bottom: var(--std-border-bottom);
-    transition: .25s;
-    border-radius: 2px;
-    text-indent: 10px;
-}
-
-.inp:focus {
-    border-bottom: var(--focused-border-bottom);
-} */
-
 .inp {
 	font-size: 15px;
 	width: 85%;
 	box-sizing: border-box;
+    padding: 3px;
 	background: #FFF;
 	color: #555;
 	border: 2px solid #CCC;
@@ -1102,6 +1098,11 @@ td {
 
 .bg-good-green {
     background: #00C853;
+}
+
+.bg-algae
+{
+    background: #4CAF50;
 }
 
 .bg-approved-green {

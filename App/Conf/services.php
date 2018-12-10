@@ -566,6 +566,11 @@ $container->register( "access-control", function() {
 	return $helper;
 } );
 
+$container->register( "emailer-helper", function() {
+	$helper = new \Helpers\EmailerHelper;
+	return $helper;
+} );
+
 $container->register( "form", function() {
 	$form = new \Helpers\Form;
 	return $form;

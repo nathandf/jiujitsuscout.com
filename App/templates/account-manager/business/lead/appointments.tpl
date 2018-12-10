@@ -8,7 +8,7 @@
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
 	<div class="con-cnt-xxlrg push-t-med inner-pad-med">
 		<h2>Appointments</h2>
-		<a href="{$HOME}account-manager/business/lead/{$lead->id}/" class="btn btn-inline bg-salmon text-med first">< Lead Manager</a>
+		<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/leads">Leads</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/lead/{$lead->id}/">{$lead->getFullName()}</a> > Appointments</p>
 		<div class="clear"></div>
 		<div id="lead-tag-container">
 			<p class='results_count_message'>Showing ({$appointments_total}) Appointments</p>
