@@ -71,12 +71,14 @@ class Member extends Controller
         $mailer = $this->load( "mailer" );
         $noteRegistrar = $this->load( "note-registrar" );
         $groupRepo = $this->load( "group-repository" );
+        $emailerHelper = $this->load( "emailer-helper" );
 
         // Get all notes for this member
         $notes = $noteRepo->getAllByMemberID( $this->member->id );
 
         // Create a list of all note ids.
         $note_ids = [];
+
         foreach ( $notes as $note ) {
             $note_ids[] = $note->id;
         }
@@ -91,10 +93,11 @@ class Member extends Controller
             }
         }
 
-        $recipient_first_name = $this->member->first_name;
-        $recipient_email = $this->member->email;
-        $sender_first_name = $this->user->first_name;
-        $sender_email = $this->user->email;
+        // Set variables for sending an email
+        $emailerHelper->setSenderName( $this->user->getFullName() );
+        $emailerHelper->setSenderEmail( $this->user->email );
+        $emailerHelper->setRecipientName( $this->member->getFullName());
+        $emailerHelper->setRecipientEmail( $this->member->email );
 
         if ( $input->exists() && $input->issetField( "send_email" ) && $inputValidator->validate(
 
@@ -126,13 +129,14 @@ class Member extends Controller
             if ( is_null( $this->member->email ) || $this->member->email == "" ) {
                 $this->view->redirect( "account-manager/business/member/" . $this->member->id . "/?error=invalid_email" );
             }
+
             // Send email
             $email_subject = $input->get( "subject" );
             $email_body = $input->get( "body" );
-            $mailer->setRecipientName( $recipient_first_name );
-            $mailer->setRecipientEmailAddress( $recipient_email );
-            $mailer->setSenderName( $sender_first_name );
-            $mailer->setSenderEmailAddress( $sender_email );
+            $mailer->setRecipientName( $emailerHelper->recipient_name );
+            $mailer->setRecipientEmailAddress( $emailerHelper->recipient_email );
+            $mailer->setSenderName( $emailerHelper->sender_name );
+            $mailer->setSenderEmailAddress( $emailerHelper->sender_email );
             $mailer->setContentType( "text/html" );
             $mailer->setEmailSubject( $email_subject );
             $mailer->setEmailBody( $email_body );
@@ -196,10 +200,7 @@ class Member extends Controller
             $this->view->redirect( "account-manager/business/member/" . $this->params[ "id" ] . "/#notes" );
         }
 
-        $this->view->assign( "recipient_first_name", $recipient_first_name );
-        $this->view->assign( "recipient_email", $recipient_email );
-        $this->view->assign( "sender_first_name", $sender_first_name );
-        $this->view->assign( "sender_email", $sender_email );
+        $this->view->assign( "emailerHelper", $emailerHelper );
 
         $this->view->assign( "notes", $notes );
 
@@ -300,7 +301,7 @@ class Member extends Controller
             $member->prospect_id            = null;
             // Save member and get new id
             $member = $memberRegistrar->register( $member );
-            
+
             $this->view->redirect( "account-manager/business/member/" . $member->id . "/" );
         }
 

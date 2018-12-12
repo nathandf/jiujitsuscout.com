@@ -38,7 +38,7 @@
 				<p><b>Description:</b></p>
 				<textarea name="description" class="inp textarea" placeholder="">{$sequence->description}</textarea>
 				<div class="clear push-t-med"></div>
-				<input type="submit" class="btn btn-inline" value="Update Sequences">
+				<input type="submit" class="btn btn-inline" value="Update Sequence">
 			</form>
 		</div>
 	</div><!-- end content -->
