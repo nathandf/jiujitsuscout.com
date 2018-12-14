@@ -25,6 +25,7 @@ class EventTemplateMapper extends DataMapper
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $eventTemplate = $entityFactory->build( "EventTemplate" );
             $this->populate( $eventTemplate, $resp );
             $eventTemplates[] = $eventTemplate;
         }
@@ -41,6 +42,7 @@ class EventTemplateMapper extends DataMapper
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $eventTemplate = $entityFactory->build( "EventTemplate" );
             $this->populate( $eventTemplate, $resp );
             $eventTemplates[] = $eventTemplate;
         }

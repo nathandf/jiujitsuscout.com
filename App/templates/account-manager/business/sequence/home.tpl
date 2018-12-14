@@ -1,7 +1,7 @@
 {extends file="layouts/business-manager-core.tpl"}
 
 {block name="bm-head"}
-	<link rel="stylesheet" type="text/css" href="{$HOME}public/css/landing-pages.css">
+	<link rel="stylesheet" type="text/css" href="{$HOME}public/css/sequence.css">
 	<script src="{$HOME}{$JS_SCRIPTS}site-slug-updater.js" type="text/javascript"></script>
 {/block}
 
@@ -14,11 +14,19 @@
 			<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/sequences/">< All Sequences</a>
 			<div class="hr-sml"></div>
 			<a class="btn btn-inline bg-lavender text-med push-b-med push-t-med" href="{$HOME}account-manager/business/sequence/{$sequence->id}/add-event">Add Events +</a>
-			{foreach from=$events item=event}
-			<p class="text-med">{$event->name}</p>
+			<div class="clear push-t-med"></div>
+			{foreach from=$events item=event name="event_loop"}
+				{if $event->event_type_id == 1}
+				<p class="floatleft push-r-med"><span class="h2 push-r-sml">{$smarty.foreach.event_loop.iteration}.</span><i class="bg-mango event fa fa-2x fa-envelope" aria-hidden="true"></i></p>
+				{elseif $event->event_type_id == 2}
+				<p class="floatleft push-r-med"><span class="h2 push-r-sml">{$smarty.foreach.event_loop.iteration}.</span><i class="bg-lavender event fa fa-2x fa-comments-o" aria-hidden="true"></i></p>
+				{elseif $event->event_type_id == 3}
+				<p class="floatleft push-r-med"><span class="h2 push-r-sml">{$smarty.foreach.event_loop.iteration}.</span><i class="bg-deep-blue event fa fa-2x fa-clock-o" aria-hidden="true"></i></p>
+				{/if}
 			{foreachelse}
 			<p>-- You have not created any events for this sequence --</p>
 			{/foreach}
+			<div class="clear"></div>
 			<div class="hr-sml"></div>
 			{if !empty($error_messages.update_sequence)}
 				{foreach from=$error_messages.update_sequence item=message}

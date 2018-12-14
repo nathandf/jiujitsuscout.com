@@ -59,10 +59,10 @@ class Sequence extends Controller
         }
 
         $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
-        $eventRepo = $this->load( "event-repository" );
+        $eventTemplateRepo = $this->load( "event-template-repository" );
 
         $sequenceTemplate = $sequenceTemplateRepo->getByID( $this->params[ "id" ] );
-        $events = $eventRepo->getAllBySequenceID( $sequenceTemplate->id );
+        $events = $eventTemplateRepo->getAllBySequenceTemplateID( $sequenceTemplate->id );
 
         $this->view->assign( "events", $events );
         $this->view->assign( "sequence", $sequenceTemplate );
@@ -163,13 +163,11 @@ class Sequence extends Controller
                     "requried" => true,
                     "in_array" => $event_type_ids
                 ],
-                "email_template_id" => [
-                    "in_array" => $email_template_ids
+                "template_id" => [
+                    "required" => true,
+                    "numeric" => true
                 ],
-                "text_message_template_id" => [
-                    "in_array" => $text_message_template_ids
-                ],
-                "wait_duration" => [
+                "duration" => [
                     "numeric" => true
                 ]
             ],
@@ -179,33 +177,25 @@ class Sequence extends Controller
             switch ( $input->get( "event_type_id" ) ) {
                 // Email
                 case 1:
-                    $eventTemlateRepo->create(
+                    $eventTemplateRepo->create(
                         $sequenceTemplate->id,
                         $input->get( "event_type_id" ),
-                        $input->get( "email_template_id" ),
+                        $input->get( "template_id" ),
                         null,
                         null
                     );
                     break;
                 // Text Message
                 case 2:
-                    $eventTemlateRepo->create(
+                    $eventTemplateRepo->create(
                         $sequenceTemplate->id,
                         $input->get( "event_type_id" ),
                         null,
-                        $input->get( "text_message_template_id" ),
+                        $input->get( "template_id" ),
                         null
                     );
                     break;
-                // Wait
-                case 3:
-                    $eventTemlateRepo->create(
-                        $sequenceTemplate->id,
-                        $input->get( "event_type_id" ),
-                        null,
-                        null,
-                        $input->get( "wait_duration" )
-                    );
+                default:
                     break;
             }
 
@@ -219,6 +209,8 @@ class Sequence extends Controller
             $this->view->redirect( "account-manager/business/sequence/" . $this->params[ "id" ] . "/" );
         }
 
+        $this->view->assign( "emailTemplates", $emailTemplates );
+        $this->view->assign( "textMessageTemplates", $textMessageTemplates );
         $this->view->assign( "sequence", $sequenceTemplate );
         $this->view->assign( "eventTypes", $eventTypes );
 
