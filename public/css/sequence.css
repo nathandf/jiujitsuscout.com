@@ -1,3 +1,12 @@
+.sequence-tag {
+	width: 100%;
+	box-sizing: border-box;
+	border-radius: 5px;
+	border: 2px solid #CCC;
+	padding: 10px;
+	background: #FFF;
+}
+
 .event-type-tag {
 	width: 100%;
 	border-radius: 2px;
@@ -15,4 +24,25 @@
 	border-radius: 5px;
 	text-align: center;
 	display: inline-block;
+}
+
+.event-number-container {
+	background: #FFFFFF;
+	color: #666;
+	display: block;
+	height: 20px;
+	width: 20px;
+	line-height: 9px;
+	font-size: 12px;
+	box-sizing: border-box;
+	border-radius: 20px;
+	border: 1px solid #666;
+	padding: 5px;
+	font-weight: 600;
+	margin-right: 10px;
+}
+
+.event-number {
+	margin-left: 1px;
+	margin-top: -1px;
 }

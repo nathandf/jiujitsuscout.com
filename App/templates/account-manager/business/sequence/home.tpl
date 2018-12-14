@@ -13,16 +13,25 @@
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
 			<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/sequences/">< All Sequences</a>
 			<div class="hr-sml"></div>
+			{include file="includes/snippets/flash-messages.tpl"}
 			<a class="btn btn-inline bg-lavender text-med push-b-med push-t-med" href="{$HOME}account-manager/business/sequence/{$sequence->id}/add-event">Add Events +</a>
-			<div class="clear push-t-med"></div>
+			<div class="clear"></div>
 			{foreach from=$events item=event name="event_loop"}
-				{if $event->event_type_id == 1}
-				<p class="floatleft push-r-med"><span class="h2 push-r-sml">{$smarty.foreach.event_loop.iteration}.</span><i class="bg-mango event fa fa-2x fa-envelope" aria-hidden="true"></i></p>
-				{elseif $event->event_type_id == 2}
-				<p class="floatleft push-r-med"><span class="h2 push-r-sml">{$smarty.foreach.event_loop.iteration}.</span><i class="bg-lavender event fa fa-2x fa-comments-o" aria-hidden="true"></i></p>
-				{elseif $event->event_type_id == 3}
-				<p class="floatleft push-r-med"><span class="h2 push-r-sml">{$smarty.foreach.event_loop.iteration}.</span><i class="bg-deep-blue event fa fa-2x fa-clock-o" aria-hidden="true"></i></p>
-				{/if}
+				<div class="floatleft event-container push-t-sml">
+					<div class="floatleft event-number-container">
+						<p class="event-number">{$smarty.foreach.event_loop.iteration}</p>
+					</div>
+					<p class="floatleft push-r-med">
+						{if $event->event_type_id == 1}
+						<i class="bg-mango event mat-hov cursor-pt fa fa-2x fa-envelope" aria-hidden="true"></i>
+						{elseif $event->event_type_id == 2}
+						<i class="bg-lavender event mat-hov cursor-pt fa fa-2x fa-comments-o" aria-hidden="true"></i>
+						{elseif $event->event_type_id == 3}
+						<i class="bg-deep-blue event mat-hov cursor-pt fa fa-2x fa-clock-o" aria-hidden="true"></i>
+						{/if}
+					</p>
+					<div class="clear"></div>
+				</div>
 			{foreachelse}
 			<p>-- You have not created any events for this sequence --</p>
 			{/foreach}
@@ -35,7 +44,6 @@
 					</div>
 				{/foreach}
 			{/if}
-			{include file="includes/snippets/flash-messages.tpl"}
 			<form method="post" action="{$HOME}account-manager/business/sequence/{$sequence->id}/">
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="update_sequence" value="{$csrf_token}">
