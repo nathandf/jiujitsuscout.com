@@ -8,8 +8,8 @@ class EventTemplateMapper extends DataMapper
     {
         $id = $this->insert(
             "event_template",
-            [ "sequence_template_id", "event_type_id", "email_template_id", "text_message_template_id", "wait_duration" ],
-            [ $eventTemplate->sequence_template_id, $eventTemplate->event_type_id, $eventTemplate->email_template_id, $eventTemplate->text_message_template_id, $eventTemplate->wait_duration ]
+            [ "sequence_template_id", "event_type_id", "email_template_id", "text_message_template_id", "wait_duration", "placement" ],
+            [ $eventTemplate->sequence_template_id, $eventTemplate->event_type_id, $eventTemplate->email_template_id, $eventTemplate->text_message_template_id, $eventTemplate->wait_duration, $eventTemplate->placement ]
         );
 
         $eventTemplate->id = $id;
@@ -37,7 +37,7 @@ class EventTemplateMapper extends DataMapper
     {
         $entityFactory = $this->container->getService( "entity-factory" );
         $eventTemplates = [];
-        $sql = $this->DB->prepare( "SELECT * FROM event_template WHERE sequence_template_id = :sequence_template_id" );
+        $sql = $this->DB->prepare( "SELECT * FROM event_template WHERE sequence_template_id = :sequence_template_id ORDER BY placement ASC" );
         $sql->bindParam( ":sequence_template_id", $sequence_template_id );
         $sql->execute();
 

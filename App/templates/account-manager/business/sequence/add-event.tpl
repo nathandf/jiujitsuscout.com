@@ -19,7 +19,8 @@
 				<input type="hidden" name="add_another_event" value="false">
 				<input type="hidden" name="duration" value="0">
 			</form>
-			<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/sequence/{$sequence->id}/">< Back</a>
+			<a class="tc-deep-blue link text-med-heavy push-b-med" href="{$HOME}account-manager/business/sequences/">Sequences</a> > <a href="{$HOME}account-manager/business/sequence/{$sequence->id}/" class="tc-deep-blue link text-med-heavy">{$sequence->name}</a> > <span class="text-med-heavy">Add Event</span>
+			<div class="hr-sml"></div>
 			{if !empty($error_messages.update_sequence)}
 				{foreach from=$error_messages.add_event item=message}
 					<div class="con-message-failure mat-hov cursor-pt --c-hide">
@@ -28,7 +29,7 @@
 				{/foreach}
 			{/if}
 			{include file="includes/snippets/flash-messages.tpl"}
-			<div id="event-buttons-container">
+			<div id="event-buttons-container" class="push-t-med">
 			{foreach from=$eventTypes item=eventType}
 				{if $eventType->id != 3}
 					<button id="event-type-{$eventType->id}" class="btn btn-inline" value="{$eventType->id}"><span class="push-r-sml">{$eventType->name|capitalize} Event</span><i class="fa fa-plus-circle" aria-hidden="true"></i></button>

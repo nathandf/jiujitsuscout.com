@@ -12,4 +12,5 @@ class EventTemplate implements EntityInterface
     public $email_template_id;
     public $text_message_template_id;
     public $wait_duration; // in seconds
+    public $placement;
 }

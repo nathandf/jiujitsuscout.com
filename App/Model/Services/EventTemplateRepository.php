@@ -19,6 +19,20 @@ class EventTemplateRepository extends Service
         $eventTemplate->text_message_template_id = $text_message_template_id;
         $eventTemplate->wait_duration = $wait_duration;
 
+        // Check for existing event templates. If any exist, increment the placement
+        // of the last event template by one. If not, set the placement
+        // for this event template as 1
+        $placement = 1;
+
+        $eventTemplates = $this->getAllBySequenceTemplateID( $sequence_template_id );
+        $total_events = count( $eventTemplates );
+
+        if ( $total_events > 0 ) {
+            $placement = $total_events + 1;
+        }
+
+        $eventTemplate->placement = $placement;
+
         $eventTemplate = $eventTemplateMapper->create( $eventTemplate );
 
         return $eventTemplate;

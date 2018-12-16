@@ -11,15 +11,15 @@
 	<div>
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
-			<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/sequences/">< All Sequences</a>
+			<a class="tc-deep-blue link text-med-heavy push-b-med" href="{$HOME}account-manager/business/sequences/">Sequences</a> > <span class="text-med-heavy">{$sequence->name}</span>
 			<div class="hr-sml"></div>
 			{include file="includes/snippets/flash-messages.tpl"}
-			<a class="btn btn-inline bg-lavender text-med push-b-med push-t-med" href="{$HOME}account-manager/business/sequence/{$sequence->id}/add-event">Add Events +</a>
+			<a class="btn btn-inline bg-algae text-med push-b-med push-t-med" href="{$HOME}account-manager/business/sequence/{$sequence->id}/add-event">Add Events +</a>
 			<div class="clear"></div>
 			{foreach from=$events item=event name="event_loop"}
-				<div class="floatleft event-container push-t-sml">
+				<div class="event-container push-t-sml">
 					<div class="floatleft event-number-container">
-						<p class="event-number">{$smarty.foreach.event_loop.iteration}</p>
+						<p class="event-number{if $smarty.foreach.event_loop.iteration > 9}-dd{/if}">{$event->placement}</p>
 					</div>
 					<p class="floatleft push-r-med">
 						{if $event->event_type_id == 1}
@@ -32,6 +32,7 @@
 					</p>
 					<div class="clear"></div>
 				</div>
+				<div class="clear"></div>
 			{foreachelse}
 			<p>-- You have not created any events for this sequence --</p>
 			{/foreach}

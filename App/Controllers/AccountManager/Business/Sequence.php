@@ -58,11 +58,34 @@ class Sequence extends Controller
             $this->view->redirect( "account-manager/business/sequences/" );
         }
 
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
         $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
         $eventTemplateRepo = $this->load( "event-template-repository" );
 
         $sequenceTemplate = $sequenceTemplateRepo->getByID( $this->params[ "id" ] );
         $events = $eventTemplateRepo->getAllBySequenceTemplateID( $sequenceTemplate->id );
+
+        if ( $input->exists() && $input->issetField( "update_sequence" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "name" => [
+                        "required" => true
+                    ],
+                    "description" => [
+                        "required" => true
+                    ]
+                ],
+                "update_sequence"
+            )
+        ) {
+            $sequenceTemplateRepo->updateByID( $this->params[ "id" ], $this->get( "name" ), $this->get( "description" ) );
+            $this->view->redirect( "account-manager/business/sequence/" . $this->params[ "id" ] . "/" );
+        }
 
         $this->view->assign( "events", $events );
         $this->view->assign( "sequence", $sequenceTemplate );
