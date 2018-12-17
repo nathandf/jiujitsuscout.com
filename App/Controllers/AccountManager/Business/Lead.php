@@ -90,6 +90,7 @@ class Lead extends Controller
         $prospectRepo = $this->load( "prospect-repository" );
         $groupRepo = $this->load( "group-repository" );
         $mailer = $this->load( "mailer" );
+        $emailTemplateRepo = $this->load( "email-template-repository" );
         $emailerHelper = $this->load( "emailer-helper" );
 
         // If prospect requires purchase, redirect to purchase page
@@ -133,6 +134,9 @@ class Lead extends Controller
         $emailerHelper->setSenderEmail( $this->user->email );
         $emailerHelper->setRecipientName( $this->prospect->first_name );
         $emailerHelper->setRecipientEmail( $this->prospect->email );
+
+        // Set email templates if any exist
+        $emailerHelper->emailTemplates = $emailTemplateRepo->getAllByBusinessID( $this->business->id );
 
         // If validation rules are passed, send an email
         if ( $input->exists() &&  $input->issetField( "send_email" ) && $inputValidator->validate(
