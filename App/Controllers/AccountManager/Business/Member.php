@@ -71,6 +71,7 @@ class Member extends Controller
         $mailer = $this->load( "mailer" );
         $noteRegistrar = $this->load( "note-registrar" );
         $groupRepo = $this->load( "group-repository" );
+        $emailTemplateRepo = $this->load( "email-template-repository" );
         $emailerHelper = $this->load( "emailer-helper" );
 
         // Get all notes for this member
@@ -98,6 +99,9 @@ class Member extends Controller
         $emailerHelper->setSenderEmail( $this->user->email );
         $emailerHelper->setRecipientName( $this->member->getFullName());
         $emailerHelper->setRecipientEmail( $this->member->email );
+
+        // Set email templates if any exist
+        $emailerHelper->emailTemplates = $emailTemplateRepo->getAllByBusinessID( $this->business->id );
 
         if ( $input->exists() && $input->issetField( "send_email" ) && $inputValidator->validate(
 
