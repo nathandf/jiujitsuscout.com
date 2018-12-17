@@ -113,4 +113,169 @@ class Assets extends Controller
         $this->view->setTemplate( "account-manager/business/assets/facebook-pixel.tpl" );
         $this->view->render( "App/Views/AccountManager/Assets.php" );
     }
+
+    public function imagesAction()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $imageManager = $this->load( "image-manager" );
+        $disciplineRepo = $this->load( "discipline-repository" );
+        $imageRepo = $this->load( "image-repository" );
+        $config = $this->load( "config" );
+
+        $images = $imageRepo->getAllByBusinessID( $this->business->id );
+        $disciplines = $disciplineRepo->getAll();
+
+        if ( $input->exists() && $input->issetField( "upload_image" ) && $inputValidator->validate(
+
+                $input,
+
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "upload_image" => [
+                        "required" => true
+                    ],
+                    "description" => [
+
+                    ],
+                    "alt" => [
+
+                    ],
+                    "discipline_tags" => [
+                        "is_array" => true
+                    ]
+
+                ],
+
+                "upload_image" /* error index */
+            ) )
+        {
+            $description = null;
+            $alt = null;
+            $discipline_tags = null;
+
+            if ( $input->get( "discipline_tags" ) != "" ) {
+                $discipline_tags = implode( ",", $input->get( "discipline_tags" ) );
+            }
+
+            if ( $input->get( "description" ) != "" ) {
+                $description = $input->get( "description" );
+            }
+
+            if ( $input->get( "alt" ) != "" ) {
+                $alt = $input->get( "alt" );
+            }
+
+            $image_name = $imageManager->saveImageTo( "image" );
+            if ( $image_name ) {
+                $imageRepo->create(
+                    $image_name,
+                    $this->business->id,
+                    $description,
+                    $alt,
+                    $discipline_tags
+                );
+
+                $this->view->redirect( "account-manager/business/assets/images" );
+            }
+        }
+
+        $this->view->assign( "images", $images );
+        $this->view->assign( "disciplines", $disciplines );
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+        $this->view->setTemplate( "account-manager/business/assets/images.tpl" );
+        $this->view->render( "App/Views/AccountManager/Assets.php" );
+    }
+
+    public function videosAction()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $videoManager = $this->load( "video-manager" );
+        $videoRepo = $this->load( "video-repository" );
+        $businessRepo = $this->load( "business-repository" );
+
+        $video = $videoRepo->getByID( $this->business->video_id );
+
+        if ( $input->exists() && $input->issetField( "video" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "video" => [
+                        "required" => true
+                    ],
+                    "name" => [
+                        "name" => "Video Title",
+                        "min" => 1,
+                        "max" => 512
+                    ],
+                    "description" => [
+                        "name" => "Description",
+                        "min" => 1
+                    ]
+                ],
+                "upload_video"
+            )
+        ) {
+            if ( is_null( $video->id ) ) {
+                // If no video has been uploaded before, save the file and create a video reference in the database
+                if ( $videoManager->saveVideoTo( "video" ) ) {
+                    $newVideo = $videoRepo->create(
+                        $videoManager->getNewVideoFileName(),
+                        $videoManager->getNewVideoType(),
+                        $this->business->id,
+                        $input->get( "name" ),
+                        $input->get( "description" )
+                    );
+                } else {
+                    // Redirect back to upload page if no video was uploaded
+                    $this->session->addFlashMessage( "No video was uploaded" );
+                    $this->session->setFlashMessages();
+                    $this->view->redirect( "account-manager/business/assets/videos" );
+                }
+            } else {
+                // If a video has been uploaded, overwrite the file, save the new reference, and remove the old
+                if ( $videoManager->overwriteVideo( "video", "public/videos/" . $video->filename ) ) {
+                    $newVideo = $videoRepo->create(
+                        $videoManager->getNewVideoFileName(),
+                        $videoManager->getNewVideoType(),
+                        $this->business->id,
+                        $input->get( "name" ),
+                        $input->get( "description" )
+                    );
+                    $videoRepo->removeByID( $this->business->video_id );
+                } else {
+                    // Redirect back to upload page if no video was uploaded
+                    $this->session->addFlashMessage( "No video was uploaded" );
+                    $this->session->setFlashMessages();
+                    $this->view->redirect( "account-manager/business/assets/videos" );
+                }
+            }
+
+            $businessRepo->updateVideoIDByID( $this->business->id, $newVideo->id );
+
+            $this->session->addFlashMessage( "Video Uploaded" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/assets/videos" );
+        }
+
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages( "flash_messages" ) );
+        $this->view->assign( "video", $video );
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
+
+        $this->view->setTemplate( "account-manager/business/assets/videos.tpl" );
+        $this->view->render( "App/Views/Home.php" );
+    }
 }
