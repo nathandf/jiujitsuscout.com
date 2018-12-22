@@ -16,8 +16,9 @@
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input id="event-type-id" type="hidden" name="event_type_id">
 				<input id="template-id-input" type="hidden" name="template_id">
-				<input type="hidden" name="add_another_event" value="false">
-				<input type="hidden" name="duration" value="0">
+				<input id="add-wait-duration" type="hidden" name="add_wait_duration" value="false">
+				<input id="wait-duration-input" type="hidden" name="wait_duration" value="0">
+				<input id="wait-duration-interval-input" type="hidden" name="wait_duration_interval" value="months">
 			</form>
 			<a class="tc-deep-blue link text-med-heavy push-b-med" href="{$HOME}account-manager/business/sequences/">Sequences</a> > <a href="{$HOME}account-manager/business/sequence/{$sequence->id}/" class="tc-deep-blue link text-med-heavy">{$sequence->name}</a> > <span class="text-med-heavy">Add Event</span>
 			<div class="hr-sml"></div>
@@ -36,7 +37,26 @@
 				{/if}
 			{/foreach}
 			</div>
-			<div id="email-templates-container" style="display: none;">
+			<div id="add-wait-event-container" style="display: none;">
+				<p class="text-med">Add a wait event after creating this event</p>
+				<input class="checkbox cursor-pt" type="checkbox" id="wait-checkbox" >
+				<div id="wait-duration-container" style="display: none;">
+					<div class="hr-sml"></div>
+					<p class="text-med-heavy">Wait Duration</p>
+					<p class="text-sml">How long to wait until the next event occurs</p>
+					<input id="wait-duration" type="number" class="inp field-sml push-t-sml" placeholder="ex. 6">
+					<select class="inp field-sml push-t-sml" id="wait-duration-interval">
+						<option value="hours">Hours</option>
+						<option value="days">Days</option>
+						<option value="months" selected="selected">Months</option>
+					</select>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<button id="finish-button" class="btn btn-inline push-t-sml">Finish</button>
+				<div class="clear"></div>
+			</div>
+			<div id="email-templates-container"  class="event-templates-container" style="display: none;">
 				<p class="push-t-med">Choose the email you would like to send</p>
 				{foreach from=$emailTemplates item=$emailTemplate}
 				<div class="event-type-tag">
@@ -56,7 +76,7 @@
 				<div class="clear"></div>
 				{/foreach}
 			</div>
-			<div id="text-message-templates-container" style="display: none;">
+			<div id="text-message-templates-container" class="event-templates-container" style="display: none;">
 				<p class="push-t-med">Choose the text message you would like to send</p>
 				{foreach from=$textMessageTemplates item=$textMessageTemplate}
 				<div class="event-type-tag">

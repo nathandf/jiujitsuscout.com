@@ -41,4 +41,10 @@ class SequenceTemplateRepository extends Service
         return $sequenceTemplates;
     }
 
+    public function updateByID( $id, $name, $description )
+    {
+        $sequenceTemplateMapper = new \Model\Mappers\SequenceTemplateMapper( $this->container );
+        $sequenceTemplateMapper->updateByID( $id, $name, $description );
+    }
+
 }

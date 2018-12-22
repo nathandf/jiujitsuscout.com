@@ -66,9 +66,4 @@ class SequenceTemplateMapper extends DataMapper
         $this->update( "sequence_template", "description", $description, "id", $id );
     }
 
-    public function updateCheckedOutByID( $checked_out, $id )
-    {
-        $this->update( "sequence_template", "checked_out", $checked_out, "id", $id );
-    }
-
 }

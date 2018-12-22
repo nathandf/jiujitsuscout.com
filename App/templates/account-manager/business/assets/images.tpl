@@ -6,7 +6,7 @@
 
 {block name="bm-body"}
 	{include file="includes/navigation/marketing-sub-menu.tpl"}
-	<div class="con-cnt-xxlrg push-t-med bg-white encapsulate">
+	<div class="con-cnt-xlrg push-t-med bg-white encapsulate">
 		{include file="includes/navigation/business-manager-assets-inner-menu.tpl"}
 		<div class="inner-pad-med">
 			<h2 class="h2">Upload Image</h2>

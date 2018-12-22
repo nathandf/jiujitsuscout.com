@@ -15,20 +15,34 @@
 			<div class="hr-sml"></div>
 			{include file="includes/snippets/flash-messages.tpl"}
 			<a class="btn btn-inline bg-algae text-med push-b-med push-t-med" href="{$HOME}account-manager/business/sequence/{$sequence->id}/add-event">Add Events +</a>
+			<a class="btn btn-inline bg-deep-blue text-med push-b-med push-t-med" href="{$HOME}account-manager/business/sequence/{$sequence->id}/edit">Edit Sequence</a>
 			<div class="clear"></div>
 			{foreach from=$events item=event name="event_loop"}
 				<div class="event-container push-t-sml">
-					<div class="floatleft event-number-container">
-						<p class="event-number{if $smarty.foreach.event_loop.iteration > 9}-dd{/if}">{$event->placement}</p>
-					</div>
-					<p class="floatleft push-r-med">
+					<div class="event">
+						<div class="floatleft event-number-container">
+							<p class="event-number{if $smarty.foreach.event_loop.iteration > 9}-dd{/if}">{$event->placement}</p>
+						</div>
 						{if $event->event_type_id == 1}
-						<i class="bg-mango event mat-hov cursor-pt fa fa-2x fa-envelope" aria-hidden="true"></i>
+						<i class="bg-mango event-icon fa fa-envelope" aria-hidden="true"></i>
+						<div class="col-100 push-t-sml push-b-sml" style="border-top: 1px solid #CCCCCC;"></div>
 						{elseif $event->event_type_id == 2}
-						<i class="bg-lavender event mat-hov cursor-pt fa fa-2x fa-comments-o" aria-hidden="true"></i>
+						<i class="bg-lavender event-icon fa fa-comments-o" aria-hidden="true"></i>
+						<div class="col-100 push-t-sml push-b-sml" style="border-top: 1px solid #CCCCCC;"></div>
 						{elseif $event->event_type_id == 3}
-						<i class="bg-deep-blue event mat-hov cursor-pt fa fa-2x fa-clock-o" aria-hidden="true"></i>
+						<i class="bg-deep-blue event-icon fa fa-clock-o" aria-hidden="true"></i>
 						{/if}
+						<p>{$event->template->name}</p>
+						<p>{$event->template->description}</p>
+						<div class="col-100 push-t-sml push-b-sml" style="border-top: 1px solid #CCCCCC;"></div>
+						<p class="bg-deep-blue tc-white wait">
+							{if $event->wait_duration|@count > 0}
+							<i class="fa fa-clock-o push-l-sml push-r-sml" aria-hidden="true"></i>
+							{else}
+							<i class="fa fa-clock-o push-l-sml push-r-sml" aria-hidden="true"></i>
+							{/if}
+							Wait for {if $event->wait_duration <= 86400}{$event->wait_duration/3600} Hours{elseif $event->wait_duration > 86400 && $event->wait_duration <= 2592000}{($event->wait_duration/86400)|string_format:"%.1f"} Days{elseif $event->wait_duration > 2592000}{($event->wait_duration/2592000)|string_format:"%.1f"} Months{/if}
+						</p>
 					</p>
 					<div class="clear"></div>
 				</div>
@@ -37,26 +51,6 @@
 			<p>-- You have not created any events for this sequence --</p>
 			{/foreach}
 			<div class="clear"></div>
-			<div class="hr-sml"></div>
-			{if !empty($error_messages.update_sequence)}
-				{foreach from=$error_messages.update_sequence item=message}
-					<div class="con-message-failure mat-hov cursor-pt --c-hide">
-						<p class="user-message-body">{$message}</p>
-					</div>
-				{/foreach}
-			{/if}
-			<form method="post" action="{$HOME}account-manager/business/sequence/{$sequence->id}/">
-				<input type="hidden" name="token" value="{$csrf_token}">
-				<input type="hidden" name="update_sequence" value="{$csrf_token}">
-				<div class="clear push-t-med"></div>
-				<p class="push-t-med"><b>Name:</b></p>
-				<input style="padding: 3px;" type="text" name="name" value="{$sequence->name}" class="inp" placeholder="">
-				<div class="clear push-t-med"></div>
-				<p><b>Description:</b></p>
-				<textarea name="description" class="inp textarea" placeholder="">{$sequence->description}</textarea>
-				<div class="clear push-t-med"></div>
-				<input type="submit" class="btn btn-inline" value="Update Sequence">
-			</form>
 		</div>
 	</div><!-- end content -->
 {/block}

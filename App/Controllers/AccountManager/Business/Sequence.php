@@ -62,29 +62,29 @@ class Sequence extends Controller
         $inputValidator = $this->load( "input-validator" );
         $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
         $eventTemplateRepo = $this->load( "event-template-repository" );
+        $emailTemplateRepo = $this->load( "email-template-repository" );
+        $textMessageTemplateRepo = $this->load( "text-message-template-repository" );
 
         $sequenceTemplate = $sequenceTemplateRepo->getByID( $this->params[ "id" ] );
         $events = $eventTemplateRepo->getAllBySequenceTemplateID( $sequenceTemplate->id );
 
-        if ( $input->exists() && $input->issetField( "update_sequence" ) && $inputValidator->validate(
-                $input,
-                [
-                    "token" => [
-                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                        "required" => true
-                    ],
-                    "name" => [
-                        "required" => true
-                    ],
-                    "description" => [
-                        "required" => true
-                    ]
-                ],
-                "update_sequence"
-            )
-        ) {
-            $sequenceTemplateRepo->updateByID( $this->params[ "id" ], $this->get( "name" ), $this->get( "description" ) );
-            $this->view->redirect( "account-manager/business/sequence/" . $this->params[ "id" ] . "/" );
+        // Get all event email and message templates
+        foreach ( $events as $event ) {
+            switch ( $event->event_type_id ) {
+                case 1:
+                    $event->template = $emailTemplateRepo->getByID(
+                        $event->email_template_id
+                    );
+                    break;
+                case 2:
+                    $event->template = $textMessageTemplateRepo->getByID(
+                        $event->text_message_template_id
+                    );
+                    break;
+                default:
+                    $event->template = null;
+                    break;
+            }
         }
 
         $this->view->assign( "events", $events );
@@ -190,13 +190,36 @@ class Sequence extends Controller
                     "required" => true,
                     "numeric" => true
                 ],
-                "duration" => [
+                "add_wait_duration" => [
+                    "in_array" => [ "true", "false" ]
+                ],
+                "wait_duration" => [
                     "numeric" => true
+                ],
+                "wait_duration_interval" => [
+                    "in_array" => [ "hours", "days", "months" ]
                 ]
             ],
             "add_event"
             )
         ) {
+            $wait_duration = 0;
+
+            if ( $input->get( "add_wait_duration" ) == "true" ) {
+                // Calculate wait duration in seconds
+                switch ( $input->get( "wait_duration_interval" ) ) {
+                    case "hours":
+                        $wait_duration = $input->get( "wait_duration" ) * 60 * 60;
+                        break;
+                    case "days":
+                        $wait_duration = $input->get( "wait_duration" ) * 60 * 60 * 24;
+                        break;
+                    case "months":
+                        $wait_duration = $input->get( "wait_duration" ) * 60 * 60 * 24 * 30;
+                        break;
+                }
+            }
+
             switch ( $input->get( "event_type_id" ) ) {
                 // Email
                 case 1:
@@ -205,7 +228,7 @@ class Sequence extends Controller
                         $input->get( "event_type_id" ),
                         $input->get( "template_id" ),
                         null,
-                        null
+                        $wait_duration
                     );
                     break;
                 // Text Message
@@ -215,7 +238,7 @@ class Sequence extends Controller
                         $input->get( "event_type_id" ),
                         null,
                         $input->get( "template_id" ),
-                        null
+                        $wait_duration
                     );
                     break;
                 default:
@@ -241,6 +264,49 @@ class Sequence extends Controller
         $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/sequence/add-event.tpl" );
+        $this->view->render( "App/Views/AccountManager/Business.php" );
+    }
+
+    public function editAction()
+    {
+        if ( !$this->issetParam( "id" ) ) {
+            $this->view->redirect( "account-manager/business/sequences/" );
+        }
+
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+
+        $sequenceTemplate = $sequenceTemplateRepo->getByID( $this->params[ "id" ] );
+
+        if ( $input->exists() && $input->issetField( "update_sequence" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "name" => [
+                        "required" => true
+                    ],
+                    "description" => [
+                        "required" => true
+                    ]
+                ],
+                "update_sequence"
+            )
+        ) {
+            $this->session->addFlashMessage( "Sequence updated" );
+            $this->session->setFlashMessages();
+            $sequenceTemplateRepo->updateByID( $this->params[ "id" ], $input->get( "name" ), $input->get( "description" ) );
+            $this->view->redirect( "account-manager/business/sequence/" . $this->params[ "id" ] . "/edit" );
+        }
+
+        $this->view->assign( "sequence", $sequenceTemplate );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
+
+        $this->view->setTemplate( "account-manager/business/sequence/edit.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
     }
 }

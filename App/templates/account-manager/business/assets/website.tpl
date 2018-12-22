@@ -6,7 +6,7 @@
 
 {block name="bm-body"}
 	{include file="includes/navigation/marketing-sub-menu.tpl"}
-	<div class="con-cnt-xxlrg push-t-med encapsulate bg-white">
+	<div class="con-cnt-xlrg push-t-med encapsulate bg-white">
 		{include file="includes/navigation/business-manager-assets-inner-menu.tpl"}
 		<div class="inner-pad-med">
 			{if !empty($error_messages.website)}

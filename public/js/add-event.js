@@ -16,6 +16,29 @@ $( function () {
 	// Submit form
 	$( ".template-button" ).on( "click", function () {
 		$( "#template-id-input" ).val( this.dataset.template_id );
+		$( ".event-templates-container" ).hide();
+		$( "#event-buttons-container" ).hide();
+		$( "#add-wait-event-container" ).show();
+	} );
+
+	$( "#wait-checkbox" ).on( "change", function () {
+		if ( $( "#add-wait-duration" ).val() == "false" ) {
+			$( "#add-wait-duration" ).val( "true" );
+		} else {
+			$( "#add-wait-duration" ).val( "false" );
+		}
+		$( "#wait-duration-container" ).toggle();
+	} );
+
+	$( "#wait-duration" ).on( "keyup", function () {
+		$( "#wait-duration-input" ).val( $( "#wait-duration" ).val() );
+	} );
+
+	$( "#wait-duration-interval" ).on( "change", function () {
+		$( "#wait-duration-interval-input" ).val( $( this ).children( "option:selected" ).val() );
+	} );
+
+	$( "#finish-button" ).on( "click", function () {
 		$( "#add-event-form" ).submit();
 	} );
 } );
