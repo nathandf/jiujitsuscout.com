@@ -43,7 +43,19 @@
 							{/if}
 							Wait for {if $event->wait_duration <= 86400}{$event->wait_duration/3600} Hours{elseif $event->wait_duration > 86400 && $event->wait_duration <= 2592000}{($event->wait_duration/86400)|string_format:"%.1f"} Days{elseif $event->wait_duration > 2592000}{($event->wait_duration/2592000)|string_format:"%.1f"} Months{/if}
 						</p>
-					</p>
+						<form method="post" action="">
+							<input type="hidden" name="token" value="{$csrf_token}">
+							<input type="hidden" name="event_template_id" value="{$event->id}">
+							<input type="hidden" name="bump" value="true">
+							{if !$smarty.foreach.event_loop.last}
+							<button class="push-l-sml placement-button floatright bg-deep-blue cursor-pt mat-hov push-t-sml" type="submit" name="direction" value="up"><i class="tc-white fa fa-caret-right" aria-hidden="true"></i></button>
+							{/if}
+							{if !$smarty.foreach.event_loop.first}
+							<button class="placement-button floatright bg-deep-blue cursor-pt mat-hov push-t-sml" type="submit" name="direction" value="down"><i class="tc-white fa fa-caret-left" aria-hidden="true"></i></button>
+							{/if}
+						</form>
+						<div class="clear"></div>
+					</div>
 					<div class="clear"></div>
 				</div>
 				<div class="clear"></div>

@@ -62,4 +62,10 @@ class EventTemplateRepository extends Service
 
         return $eventTemplate;
     }
+
+    public function bumpPlacementByID( $id, $bump_direction )
+    {
+        $eventTemplateMapper = new \Model\Mappers\EventTemplateMapper( $this->container );
+        $eventTemplateMapper->bumpPlacementByID( $id, $bump_direction );
+    }
 }

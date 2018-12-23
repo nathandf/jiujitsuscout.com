@@ -68,8 +68,12 @@ class Sequence extends Controller
         $sequenceTemplate = $sequenceTemplateRepo->getByID( $this->params[ "id" ] );
         $events = $eventTemplateRepo->getAllBySequenceTemplateID( $sequenceTemplate->id );
 
-        // Get all event email and message templates
+        $event_template_ids = [];
+
+        // Get all event email and message templates and create an array of event
+        // template ids
         foreach ( $events as $event ) {
+            $event_template_ids[] = $event->id;
             switch ( $event->event_type_id ) {
                 case 1:
                     $event->template = $emailTemplateRepo->getByID(
@@ -85,6 +89,33 @@ class Sequence extends Controller
                     $event->template = null;
                     break;
             }
+        }
+
+        if ( $input->exists() && $input->issetField( "bump" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "direction" => [
+                        "required" => true,
+                        "in_array" => [ "up", "down" ]
+                    ],
+                    "event_template_id" => [
+                        "required" => true,
+                        "in_array" => $event_template_ids,
+                    ]
+                ],
+                "bump"
+            )
+        ) {
+            $eventTemplateRepo->bumpPlacementByID(
+                $input->get( "event_template_id" ),
+                $input->get( "direction" )
+            );
+
+            $this->view->redirect( "account-manager/business/sequence/" . $this->params[ "id" ] . "/" );
         }
 
         $this->view->assign( "events", $events );

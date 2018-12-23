@@ -79,3 +79,13 @@
 	font-weight: 600;
 	margin-right: 10px;
 }
+
+.placement-button {
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 15px;
+	font-weight: 600;
+	color: #FFFFFF;
+	border-radius: 3px;
+}

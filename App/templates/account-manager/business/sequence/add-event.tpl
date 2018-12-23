@@ -18,7 +18,7 @@
 				<input id="template-id-input" type="hidden" name="template_id">
 				<input id="add-wait-duration" type="hidden" name="add_wait_duration" value="false">
 				<input id="wait-duration-input" type="hidden" name="wait_duration" value="0">
-				<input id="wait-duration-interval-input" type="hidden" name="wait_duration_interval" value="months">
+				<input id="wait-duration-interval-input" type="hidden" name="wait_duration_interval" value="days">
 			</form>
 			<a class="tc-deep-blue link text-med-heavy push-b-med" href="{$HOME}account-manager/business/sequences/">Sequences</a> > <a href="{$HOME}account-manager/business/sequence/{$sequence->id}/" class="tc-deep-blue link text-med-heavy">{$sequence->name}</a> > <span class="text-med-heavy">Add Event</span>
 			<div class="hr-sml"></div>
@@ -47,8 +47,8 @@
 					<input id="wait-duration" type="number" class="inp field-sml push-t-sml" placeholder="ex. 6">
 					<select class="inp field-sml push-t-sml" id="wait-duration-interval">
 						<option value="hours">Hours</option>
-						<option value="days">Days</option>
-						<option value="months" selected="selected">Months</option>
+						<option value="days" selected="selected">Days</option>
+						<option value="months">Months</option>
 					</select>
 					<div class="clear"></div>
 				</div>

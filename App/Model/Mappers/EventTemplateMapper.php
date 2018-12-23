@@ -60,4 +60,65 @@ class EventTemplateMapper extends DataMapper
 
         return $eventTemplate;
     }
+
+    public function bumpPlacementByID( $id, $direction )
+    {
+        if ( !in_array( $direction, [ "up", "down" ] ) ) {
+            throw new \Exception( "\"$direction\" is not a valid direct. It must be either \"up\" or \"down\"." );
+        }
+
+        $entityFactory = $this->container->getService( "entity-factory" );
+
+        // Get event template by id
+        $eventTemplate = $entityFactory->build( "EventTemplate" );
+        $eventTemplate = $this->mapFromID( $eventTemplate, $id );
+
+        // Do not allow bumping placement to 0
+        if ( $eventTemplate->placement == 1 && $direction == "down" ) {
+            return;
+        }
+
+        switch ( $direction ) {
+
+            case "down":
+                $previous_placement = $eventTemplate->placement - 1;
+                $new_placement = $eventTemplate->placement;
+
+                // Increment placement of the previous event by one
+                $sql = $this->DB->prepare( "UPDATE event_template SET placement = :new_placement WHERE placement = :previous_placement AND sequence_template_id = :sequence_template_id" );
+                $sql->bindParam( ":new_placement", $new_placement );
+                $sql->bindParam( ":previous_placement", $previous_placement );
+                $sql->bindParam( ":sequence_template_id", $eventTemplate->sequence_template_id );
+                $sql->execute();
+
+                // Decrement the placement of the current event by one
+                $sql = $this->DB->prepare( "UPDATE event_template SET placement = :previous_placement WHERE id = :id" );
+                $sql->bindParam( ":id", $id );
+                $sql->bindParam( ":previous_placement", $previous_placement );
+                $sql->execute();
+
+                break;
+
+            case "up":
+                $next_placement = $eventTemplate->placement + 1;
+                $new_placement = $eventTemplate->placement;
+
+                // Decrement placement of the next event by one
+                $sql = $this->DB->prepare( "UPDATE event_template SET placement = :new_placement WHERE placement = :next_placement AND sequence_template_id = :sequence_template_id" );
+                $sql->bindParam( ":new_placement", $new_placement );
+                $sql->bindParam( ":next_placement", $next_placement );
+                $sql->bindParam( ":sequence_template_id", $eventTemplate->sequence_template_id );
+                $sql->execute();
+
+                // Increment the placement of the current event by one
+                $sql = $this->DB->prepare( "UPDATE event_template SET placement = :next_placement WHERE id = :id" );
+                $sql->bindParam( ":id", $id );
+                $sql->bindParam( ":next_placement", $next_placement );
+                $sql->execute();
+
+                break;
+        }
+
+        return;
+    }
 }
