@@ -18,7 +18,7 @@
 			<a class="btn btn-inline bg-deep-blue text-med push-b-med push-t-med" href="{$HOME}account-manager/business/sequence/{$sequence->id}/edit">Edit Sequence</a>
 			<div class="clear"></div>
 			{foreach from=$events item=event name="event_loop"}
-				<div class="event-container push-t-sml">
+				<div id="event{$event->id}" class="event-container push-t-sml">
 					<div class="event">
 						<div class="floatleft event-number-container">
 							<p class="event-number{if $smarty.foreach.event_loop.iteration > 9}-dd{/if}">{$event->placement}</p>
@@ -35,14 +35,7 @@
 						<p>{$event->template->name}</p>
 						<p>{$event->template->description}</p>
 						<div class="col-100 push-t-sml push-b-sml" style="border-top: 1px solid #CCCCCC;"></div>
-						<p class="bg-deep-blue tc-white wait">
-							{if $event->wait_duration|@count > 0}
-							<i class="fa fa-clock-o push-l-sml push-r-sml" aria-hidden="true"></i>
-							{else}
-							<i class="fa fa-clock-o push-l-sml push-r-sml" aria-hidden="true"></i>
-							{/if}
-							Wait for {if $event->wait_duration <= 86400}{$event->wait_duration/3600} Hours{elseif $event->wait_duration > 86400 && $event->wait_duration <= 2592000}{($event->wait_duration/86400)|string_format:"%.1f"} Days{elseif $event->wait_duration > 2592000}{($event->wait_duration/2592000)|string_format:"%.1f"} Months{/if}
-						</p>
+
 						<form method="post" action="">
 							<input type="hidden" name="token" value="{$csrf_token}">
 							<input type="hidden" name="event_template_id" value="{$event->id}">
@@ -58,6 +51,19 @@
 					</div>
 					<div class="clear"></div>
 				</div>
+				{if !$smarty.foreach.event_loop.last}
+				<p class="bg-deep-blue tc-white wait push-t-sml">
+					{if $event->wait_duration == 0}
+					<i class="fa fa-clock-o push-l-sml push-r-sml" aria-hidden="true"></i>
+					No Wait
+					{else}
+					<i class="fa fa-clock-o push-l-sml push-r-sml" aria-hidden="true"></i>
+					Wait for {if $event->wait_duration <= 86400}{$event->wait_duration/3600} Hours{elseif $event->wait_duration > 86400 && $event->wait_duration <= 2592000}{($event->wait_duration/86400)|string_format:"%.1f"} Days{elseif $event->wait_duration > 2592000}{($event->wait_duration/2592000)|string_format:"%.1f"} Months{/if}
+					{/if}
+				</p>
+				{else}
+				<p class="bg-good-green tc-white wait push-t-sml"><i class="fa fa-check push-l-sml push-r-sml" aria-hidden="true"></i>End of Sequence</p>
+				{/if}
 				<div class="clear"></div>
 			{foreachelse}
 			<p>-- You have not created any events for this sequence --</p>

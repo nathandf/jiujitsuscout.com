@@ -65,6 +65,7 @@
 	box-sizing: border-box;
 	border-radius: 5px;
 	text-align: left;
+	/* border: 2px solid #CCCCCC; */
 }
 
 .event-number-container-hidden {

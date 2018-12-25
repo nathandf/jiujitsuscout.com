@@ -115,7 +115,10 @@ class Sequence extends Controller
                 $input->get( "direction" )
             );
 
-            $this->view->redirect( "account-manager/business/sequence/" . $this->params[ "id" ] . "/" );
+            $this->session->addFlashMessage( "Event moved " . $input->get( "direction" ) . "." );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/sequence/" . $this->params[ "id" ] . "/#event" . $input->get( "event_template_id" ) );
         }
 
         $this->view->assign( "events", $events );
