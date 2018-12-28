@@ -2,49 +2,49 @@
 
 namespace Model\Services;
 
-class OrderProductRepository extends Service
+class OrderProductRepository extends Repository
 {
     public function create( $order_id, $product_id, $quantity, $description = null )
     {
-        $orderProduct = new \Model\OrderProduct();
-        $orderProductMapper = new \Model\Mappers\OrderProductMapper( $this->container );
+        $mapper = $this->getMapper();
+        $orderProduct = $mapper->build( $this->entityName );
         $orderProduct->order_id = $order_id;
         $orderProduct->product_id = $product_id;
         $orderProduct->quantity = $quantity;
         $orderProduct->description = $description;
-        $orderProductMapper->create( $orderProduct );
+        $mapper->create( $orderProduct );
 
         return $orderProduct;
     }
 
     public function getAll()
     {
-        $orderProductMapper = new \Model\Mappers\OrderProductMapper( $this->container );
-        $orderProducts = $orderProductMapper->mapAll();
+        $mapper = $this->getMapper();
+        $orderProducts = $mapper->mapAll();
 
         return $orderProducts;
     }
 
     public function getAllByOrderID( $order_id )
     {
-        $orderProductMapper = new \Model\Mappers\OrderProductMapper( $this->container );
-        $orderProducts = $orderProductMapper->mapAllFromOrderID( $order_id );
+        $mapper = $this->getMapper();
+        $orderProducts = $mapper->mapAllFromOrderID( $order_id );
 
         return $orderProducts;
     }
 
     public function getByID( $id )
     {
-        $orderProduct = new \Model\OrderProduct();
-        $orderProductMapper = new \Model\Mappers\OrderProductMapper( $this->container );
-        $orderProductMapper->mapFromID( $orderProduct, $id );
+        $mapper = $this->getMapper();
+        $orderProduct = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $orderProduct, $id );
 
         return $orderProduct;
     }
 
     public function removeByID( $id )
     {
-        $orderProductMapper = new \Model\Mappers\OrderProductMapper( $this->container );
-        $orderProductMapper->delete( $id );
+        $mapper = $this->getMapper();
+        $mapper->delete( $id );
     }
 }

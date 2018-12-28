@@ -2,44 +2,44 @@
 
 namespace Model\Services;
 
-class EmbeddableFormElementRepository extends Service
+class EmbeddableFormElementRepository extends Repository
 {
 
     public function create( $embeddable_form_id, $embeddable_form_element_type_id, $placement, $text = null, $required = false )
     {
-        $embeddableFormElement = new \Model\EmbeddableFormElement;
-        $embeddableFormElementMapper = new \Model\Mappers\EmbeddableFormElementMapper( $this->container );
+        $mapper = $this->getMapper();
+        $embeddableFormElement = $mapper->build( $this->entityName );
         $embeddableFormElement->embeddable_form_id = $embeddable_form_id;
         $embeddableFormElement->embeddable_form_element_type_id = $embeddable_form_element_type_id;
         $embeddableFormElement->placement = $placement;
         $embeddableFormElement->text = $text;
         $embeddableFormElement->required = $required ? 1 : 0;
-        $embeddableFormElementMapper->create( $embeddableFormElement );
+        $mapper->create( $embeddableFormElement );
 
         return $embeddableFormElement;
     }
 
     public function getByID( $id )
     {
-        $embeddableFormElement = new \Model\EmbeddableFormElement;
-        $embeddableFormElementMapper = new \Model\Mappers\EmbeddableFormElementMapper( $this->container );
-        $embeddableFormElementMapper->mapFromID( $embeddableFormElement, $id );
+        $mapper = $this->getMapper();
+        $embeddableFormElement = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $embeddableFormElement, $id );
 
         return $embeddableFormElement;
     }
 
     public function getAllByEmbeddableFormID( $embeddable_form_id )
     {
-        $embeddableFormElementMapper = new \Model\Mappers\EmbeddableFormElementMapper( $this->container );
-        $embeddableFormElements = $embeddableFormElementMapper->mapAllFromEmbeddableFormID( $embeddable_form_id );
+        $mapper = $this->getMapper();
+        $embeddableFormElements = $mapper->mapAllFromEmbeddableFormID( $embeddable_form_id );
 
         return $embeddableFormElements;
     }
 
     public function removeByID( $id )
     {
-        $embeddableFormElementMapper = new \Model\Mappers\EmbeddableFormElementMapper( $this->container );
-        $embeddableFormElementMapper->deleteByID( $id );
+        $mapper = $this->getMapper();
+        $mapper->deleteByID( $id );
     }
 
 }

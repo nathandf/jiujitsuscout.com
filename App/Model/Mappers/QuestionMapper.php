@@ -20,12 +20,12 @@ class QuestionMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $questions = [];
         $sql = $this->DB->prepare( "SELECT * FROM question" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $question = $entityFactory->build( "Question" );
+            $question = $this->entityFactory->build( "Question" );
             $this->populateQuestion( $question, $resp );
             $questions[] = $question;
         }
@@ -46,13 +46,13 @@ class QuestionMapper extends DataMapper
 
     public function mapAllFromQuestionnaireID( $questionnaire_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $questions = [];
         $sql = $this->DB->prepare( "SELECT * FROM question WHERE questionnaire_id = :questionnaire_id ORDER BY placement ASC" );
         $sql->bindParam( ":questionnaire_id", $questionnaire_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $question = $entityFactory->build( "Question" );
+            $question = $this->entityFactory->build( "Question" );
             $this->populateQuestion( $question, $resp );
             $questions[] = $question;
         }

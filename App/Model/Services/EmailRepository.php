@@ -2,42 +2,42 @@
 
 namespace Model\Services;
 
-class EmailRepository extends Service
+class EmailRepository extends Repository
 {
     public function create( $business_id, $name, $description, $subject, $body )
     {
-        $email = new \Model\Email;
-        $emailMapper = new \Model\Mappers\EmailMapper( $this->container );
+        $mapper = $this->getMapper();
+        $email = $mapper->build( $this->entityName );
         $email->business_id = $business_id;
         $email->name = $name;
         $email->description = $description;
         $email->subject = $subject;
         $email->body = $body;
-        $emailMapper->create( $email );
+        $mapper->create( $email );
 
         return $email;
     }
 
     public function getAllByBusinessID( $business_id )
     {
-        $emailMapper = new \Model\Mappers\EmailMapper( $this->container );
-        $emails = $emailMapper->mapAllFromBusinessID( $business_id );
+        $mapper = $this->getMapper();
+        $emails = $mapper->mapAllFromBusinessID( $business_id );
 
         return $emails;
     }
 
     public function getByID( $id )
     {
-        $email = new \Model\Email();
-        $emailMapper = new \Model\Mappers\EmailMapper( $this->container );
-        $emailMapper->mapFromID( $email, $id );
+        $mapper = $this->getMapper();
+        $email = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $email, $id );
 
         return $email;
     }
 
     public function updateByID( $id, $name, $description, $subject, $body )
     {
-        $emailMapper = new \Model\Mappers\EmailMapper( $this->container );
-        $emailMapper->updateByID( $id, $name, $description, $subject, $body );
+        $mapper = $this->getMapper();
+        $mapper->updateByID( $id, $name, $description, $subject, $body );
     }
 }

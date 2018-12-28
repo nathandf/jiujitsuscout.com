@@ -2,41 +2,40 @@
 
 namespace Model\Services;
 
-class UserMemberInteractionRepository extends Service
+class UserMemberInteractionRepository extends Repository
 {
+    public function getAll()
+    {
+        $mapper = $this->getMapper();
+        $userProspectInteractions = $mapper->mapAll();
 
-  public function getAll()
-  {
-    $userProspectInteractionMapper = new \Model\Mappers\UserProspectInteractionMapper( $this->container );
-    $userProspectInteractions = $userProspectInteractionMapper->mapAll();
-    return $userProspectInteractions;
-  }
+        return $userProspectInteractions;
+    }
 
-  public function getByID( $id )
-  {
-    $userProspectInteraction = new \Model\UserProspectInteraction();
-    $userProspectInteractionMapper = new \Model\Mappers\UserProspectInteractionMapper( $this->container );
-    $userProspectInteractionMapper->mapFromID( $userProspectInteraction, $id );
+    public function getByID( $id )
+    {
+        $mapper = $this->getMapper();
+        $userProspectInteraction = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $userProspectInteraction, $id );
 
-    return $userProspectInteraction;
-  }
+        return $userProspectInteraction;
+    }
 
-  public function getByUserID( $id )
-  {
-    $userProspectInteraction = new \Model\UserProspectInteraction();
-    $userProspectInteractionMapper = new \Model\Mappers\UserProspectInteractionMapper( $this->container );
-    $userProspectInteractionMapper->mapFromUserID( $userProspectInteraction, $id );
+    public function getByUserID( $id )
+    {
+        $mapper = $this->getMapper();
+        $userProspectInteraction = $mapper->build( $this->entityName );
+        $mapper->mapFromUserID( $userProspectInteraction, $id );
 
-    return $userProspectInteraction;
-  }
+        return $userProspectInteraction;
+    }
 
-  public function getByMemberID( $id )
-  {
-    $userProspectInteraction = new \Model\UserProspectInteraction();
-    $userProspectInteractionMapper = new \Model\Mappers\UserProspectInteractionMapper( $this->container );
-    $userProspectInteractionMapper->mapFromMemberID( $userProspectInteraction, $id );
+    public function getByMemberID( $id )
+    {
+        $mapper = $this->getMapper();
+        $userProspectInteraction = $mapper->build( $this->entityName );
+        $mapper->mapFromMemberID( $userProspectInteraction, $id );
 
-    return $userProspectInteraction;
-  }
-
+        return $userProspectInteraction;
+    }
 }

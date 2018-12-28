@@ -2,49 +2,49 @@
 
 namespace Model\Services;
 
-class NonceTokenRepository extends Service
+class NonceTokenRepository extends Repository
 {
     public function create( $expiration = 3600 )
     {
-        $nonceToken = new \Model\NonceToken();
-        $nonceTokenMapper = new \Model\Mappers\NonceTokenMapper( $this->container );
+        $mapper = $this->getMapper();
+        $nonceToken = $mapper->build( $this->entityName );
         $nonceToken->value = md5( microtime() . uniqid() );
         $nonceToken->expiration = time() + $expiration;
-        $nonceTokenMapper->create( $nonceToken );
+        $mapper->create( $nonceToken );
 
         return $nonceToken;
     }
 
     public function getAll()
     {
-        $nonceTokenMapper = new \Model\Mappers\NonceTokenMapper( $this->container );
-        $nonceTokens = $nonceTokenMapper->mapAll();
+        $mapper = $this->getMapper();
+        $nonceTokens = $mapper->mapAll();
 
         return $nonceTokens;
     }
 
     public function getByID( $id )
     {
-        $nonceToken = new \Model\NonceToken();
-        $nonceTokenMapper = new \Model\Mappers\NonceTokenMapper( $this->container );
-        $nonceTokenMapper->mapFromID( $nonceToken, $id );
+        $mapper = $this->getMapper();
+        $nonceToken = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $nonceToken, $id );
 
         return $nonceToken;
     }
 
     public function getByValue( $value )
     {
-        $nonceToken = new \Model\NonceToken();
-        $nonceTokenMapper = new \Model\Mappers\NonceTokenMapper( $this->container );
-        $nonceTokenMapper->mapFromValue( $nonceToken, $value );
+        $mapper = $this->getMapper();
+        $nonceToken = $mapper->build( $this->entityName );
+        $mapper->mapFromValue( $nonceToken, $value );
 
         return $nonceToken;
     }
 
     public function removeByID( $id )
     {
-        $nonceTokenMapper = new \Model\Mappers\NonceTokenMapper( $this->container );
-        $nonceTokenMapper->deleteByID( $id );
+        $mapper = $this->getMapper();
+        $mapper->deleteByID( $id );
     }
 
 }

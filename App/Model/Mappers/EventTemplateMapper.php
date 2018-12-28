@@ -19,13 +19,13 @@ class EventTemplateMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $eventTemplates = [];
         $sql = $this->DB->prepare( "SELECT * FROM event_template" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $eventTemplate = $entityFactory->build( "EventTemplate" );
+            $eventTemplate = $this->entityFactory->build( "EventTemplate" );
             $this->populate( $eventTemplate, $resp );
             $eventTemplates[] = $eventTemplate;
         }
@@ -35,14 +35,14 @@ class EventTemplateMapper extends DataMapper
 
     public function mapAllFromSequenceTemplateID( $sequence_template_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $eventTemplates = [];
         $sql = $this->DB->prepare( "SELECT * FROM event_template WHERE sequence_template_id = :sequence_template_id ORDER BY placement ASC" );
         $sql->bindParam( ":sequence_template_id", $sequence_template_id );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $eventTemplate = $entityFactory->build( "EventTemplate" );
+            $eventTemplate = $this->entityFactory->build( "EventTemplate" );
             $this->populate( $eventTemplate, $resp );
             $eventTemplates[] = $eventTemplate;
         }
@@ -67,10 +67,10 @@ class EventTemplateMapper extends DataMapper
             throw new \Exception( "\"$direction\" is not a valid direct. It must be either \"up\" or \"down\"." );
         }
 
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
 
         // Get event template by id
-        $eventTemplate = $entityFactory->build( "EventTemplate" );
+        $eventTemplate = $this->entityFactory->build( "EventTemplate" );
         $eventTemplate = $this->mapFromID( $eventTemplate, $id );
 
         // Do not allow bumping placement to 0

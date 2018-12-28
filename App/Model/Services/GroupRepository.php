@@ -2,48 +2,48 @@
 
 namespace Model\Services;
 
-class GroupRepository extends Service
+class GroupRepository extends Repository
 {
 
     public function create( $business_id, $name, $description )
     {
-        $group = new \Model\Group();
-        $groupMapper = new \Model\Mappers\GroupMapper( $this->container );
+        $mapper = $this->getMapper();
+        $group = $mapper->build( $this->entityName );
         $group->business_id = $business_id;
         $group->name = $name;
         $group->description = $description;
-        $groupMapper->create( $group );
+        $mapper->create( $group );
 
         return $group;
     }
 
     public function getByID( $id )
     {
-        $group = new \Model\Group();
-        $groupMapper = new \Model\Mappers\GroupMapper( $this->container );
-        $groupMapper->mapFromID( $group, $id );
+        $mapper = $this->getMapper();
+        $group = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $group, $id );
 
         return $group;
     }
 
     public function getAllByBusinessID( $business_id )
     {
-        $groupMapper = new \Model\Mappers\GroupMapper( $this->container );
-        $groups = $groupMapper->mapAllFromBusinessID( $business_id );
+        $mapper = $this->getMapper();
+        $groups = $mapper->mapAllFromBusinessID( $business_id );
 
         return $groups;
     }
 
     public function updateGroupByID( $group_id, $name, $description )
     {
-        $groupMapper = new \Model\Mappers\GroupMapper( $this->container );
-        $groupMapper->updateGroupByID( $group_id, $name, $description );
+        $mapper = $this->getMapper();
+        $mapper->updateGroupByID( $group_id, $name, $description );
     }
 
     public function removeByID( $id )
     {
-        $groupMapper = new \Model\Mappers\GroupMapper( $this->container );
-        $groupMapper->delete( $id );
+        $mapper = $this->getMapper();
+        $mapper->delete( $id );
     }
 
 }

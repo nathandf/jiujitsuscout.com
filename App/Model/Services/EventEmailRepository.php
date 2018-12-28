@@ -2,31 +2,31 @@
 
 namespace Model\Services;
 
-class EventEmailRepository extends Service
+class EventEmailRepository extends Repository
 {
 
     public function getAll()
     {
-        $eventEmailMapper = new \Model\Mappers\EventEmailMapper( $this->container );
-        $eventEmails = $eventEmailMapper->mapAll();
+        $mapper = $this->getMapper();
+        $eventEmails = $mapper->mapAll();
 
         return $eventEmails;
     }
 
     public function getByID( $id )
     {
-        $eventEmail = new \Model\EventEmail();
-        $eventEmailMapper = new \Model\Mappers\EventEmailMapper( $this->container );
-        $eventEmailMapper->mapFromID( $eventEmail, $id );
+        $mapper = $this->getMapper();
+        $eventEmail = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $eventEmail, $id );
 
         return $eventEmail;
     }
 
     public function getByEventID( $event_id )
     {
-        $eventEmail = new \Model\EventEmail();
-        $eventEmailMapper = new \Model\Mappers\EventEmailMapper( $this->container );
-        $eventEmailMapper->mapFromEventID( $eventEmail, $event_id );
+        $mapper = $this->getMapper();
+        $eventEmail = $mapper->build( $this->entityName );
+        $mapper->mapFromEventID( $eventEmail, $event_id );
 
         return $eventEmail;
     }

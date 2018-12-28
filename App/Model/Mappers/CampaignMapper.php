@@ -30,13 +30,13 @@ class CampaignMapper extends DataMapper
 
   public function mapAllFromBusinessID( $business_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $campaigns = [];
     $sql = $this->DB->prepare( "SELECT * FROM campaign WHERE business_id = :business_id" );
     $sql->bindParam( ":business_id", $business_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $campaign = $entityFactory->build( "Campaign" );
+      $campaign = $this->entityFactory->build( "Campaign" );
       $this->populateCampaign( $campaign, $resp );
 
       $campaigns[] = $campaign;

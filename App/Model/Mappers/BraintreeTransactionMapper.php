@@ -29,12 +29,12 @@ class BraintreeTransactionMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $braintreeTransactions = [];
         $sql = $this->DB->prepare( "SELECT * FROM braintree_transaction" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $braintreeTransaction = $entityFactory->build( "BraintreeTransaction" );
+            $braintreeTransaction = $this->entityFactory->build( "BraintreeTransaction" );
             $this->populateBraintreeTransaction( $braintreeTransaction, $resp );
             $braintreeTransactions[] = $braintreeTransaction;
         }

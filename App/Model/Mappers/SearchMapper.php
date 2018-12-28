@@ -41,7 +41,7 @@ class SearchMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
 
         $searches = [];
 
@@ -49,7 +49,7 @@ class SearchMapper extends DataMapper
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $search = $entityFactory->build( "Search" );
+            $search = $this->entityFactory->build( "Search" );
             $this->populateSearch( $search, $resp );
 
             $searches[] = $search;

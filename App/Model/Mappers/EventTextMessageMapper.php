@@ -7,12 +7,12 @@ class EventTextMessageMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $eventTextMessages = [];
     $sql = $this->DB->prepare( "SELECT * FROM event_text_message" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $eventTextMessage = $entityFactory->build( "EventTextMessage" );
+      $eventTextMessage = $this->entityFactory->build( "EventTextMessage" );
       $this->populateEventTextMessage( $eventTextMessage, $resp );
       $eventTextMessages[] = $eventTextMessage;
     }

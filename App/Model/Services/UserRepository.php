@@ -5,13 +5,12 @@ namespace Model\Services;
 use Model\User;
 use Model\Mappers\UserMapper;
 
-class UserRepository extends Service
+class UserRepository extends Repository
 {
-
     public function create( $account_id, $business_id, $first_name, $last_name, $phone_id, $email, $role, $password, $terms_conditions_agreement )
     {
-        $user = new User();
-        $userMapper = new UserMapper( $this->container );
+        $mapper = $this->getMapper();
+        $user = $mapper->build( $this->entityName );
         $user->account_id = $account_id;
         $user->current_business_id = $business_id;
         $user->first_name = $first_name;
@@ -21,141 +20,145 @@ class UserRepository extends Service
         $user->role = $role;
         $user->password = $password;
         $user->terms_conditions_agreement = $terms_conditions_agreement;
-        $userMapper->create( $user );
+        $mapper->create( $user );
 
         return $user;
     }
 
-  public function getAll()
-  {
-    $userMapper = new \Model\Mappers\UserMapper( $this->container );
-    $users = $userMapper->mapAll();
-    return $users;
-  }
-
-  public function getByID( $id )
-  {
-    $user = new User();
-    $userMapper = new UserMapper( $this->container );
-    $this->setMapper( $userMapper );
-    $userMapper->mapFromID( $user, $id );
-
-    return $user;
-  }
-
-    public function getAllByAccountID( $id )
+    public function getAll()
     {
-        $userMapper = new \Model\Mappers\UserMapper( $this->container );
-        $users = $userMapper->mapAllFromAccountID( $id );
+        $mapper = $this->getMapper();
+        $users = $mapper->mapAll();
 
         return $users;
     }
 
-  public function getByEmail( $email )
-  {
-    $user = new User();
-    $userMapper = new UserMapper( $this->container );
-    $this->setMapper( $userMapper );
-    $userMapper->mapFromEmail( $user, $email );
-    return $user;
-  }
+    public function getByID( $id )
+    {
+        $mapper = $this->getMapper();
+        $user = $mapper->build( $this->entityName );
+        $this->setMapper( $mapper );
+        $mapper->mapFromID( $user, $id );
 
-  public function getByToken( $token )
-  {
-    $user = new User();
-    $userMapper = new UserMapper( $this->container );
-    $this->setMapper( $userMapper );
-    $userMapper->mapFromToken( $token );
-    return $user;
-  }
+        return $user;
+    }
+
+    public function getAllByAccountID( $id )
+    {
+        $mapper = $this->getMapper();
+        $users = $mapper->mapAllFromAccountID( $id );
+
+        return $users;
+    }
+
+    public function getByEmail( $email )
+    {
+        $mapper = $this->getMapper();
+        $user = $mapper->build( $this->entityName );
+        $this->setMapper( $mapper );
+        $mapper->mapFromEmail( $user, $email );
+
+        return $user;
+    }
+
+    public function getByToken( $token )
+    {
+        $mapper = $this->getMapper();
+        $user = $mapper->build( $this->entityName );
+        $this->setMapper( $mapper );
+        $mapper->mapFromToken( $token );
+
+        return $user;
+    }
 
     public function getAllEmails()
     {
-        $userMapper = new UserMapper( $this->container );
-        $emails = $userMapper->getAllEmails();
+        $mapper = $this->getMapper();
+        $emails = $mapper->getAllEmails();
 
         return $emails;
     }
 
-  public function save( User $user )
-  {
-    $required_properties = [ $user->first_name, $user->last_name, $user->email,
-                             $user->phone_id, $user->role, $user->account_id,
-                             $user->password ];
-    foreach ( $required_properties as $properties ) {
-      if ( !empty( $properties ) ) {
-        return false;
-      }
+    public function save( User $user )
+    {
+        $required_properties = [ $user->first_name, $user->last_name, $user->email,
+            $user->phone_id, $user->role, $user->account_id,
+            $user->password
+        ];
+
+        foreach ( $required_properties as $properties ) {
+            if ( !empty( $properties ) ) {
+                return false;
+            }
+        }
+
+        $mapper = $this->getMapper();
+        $mapper->create( $user );
+
+        return true;
     }
 
-    $userMapper = new UserMapper( $this->container );
-    $userMapper->create( $user );
+    public function updateUserByID( $id, \Model\User $user )
+    {
+        $mapper = $this->getMapper();
+        $mapper->updateUserByID( $id, $user );
+    }
 
-    return true;
-  }
+    public function updateCurrentBusinessID( User $user )
+    {
+        $mapper = $this->getMapper();
+        $mapper->updateCurrentBusinessIDbyID( $user->getCurrentBusinessID(), $user->id );
 
-  public function updateUserByID( $id, \Model\User $user )
-  {
-    $userMapper = new \Model\Mappers\UserMapper( $this->container );
-    $userMapper->updateUserByID( $id, $user );
-  }
+        return true;
+    }
 
-  public function updateCurrentBusinessID( User $user )
-  {
-    $userMapper = new UserMapper( $this->container );
-    $userMapper->updateCurrentBusinessIDbyID( $user->getCurrentBusinessID(), $user->id );
+    public function updatePhoneIDByID( $phone_id, $id )
+    {
+        $mapper = $this->getMapper();
+        $mapper->updatePhoneIDByID( $phone_id, $id );
 
-    return true;
-  }
+        return true;
+    }
 
-  public function updatePhoneIDByID( $phone_id, $id )
-  {
-    $userMapper = new UserMapper( $this->container );
-    $userMapper->updatePhoneIDByID( $phone_id, $id );
+    public function updateAddressIDByID( $address_id, $id )
+    {
+        $mapper = $this->getMapper();
+        $mapper->updateAddressIDByID( $address_id, $id );
 
-    return true;
-  }
+        return true;
+    }
 
-  public function updateAddressIDByID( $address_id, $id )
-  {
-    $userMapper = new UserMapper( $this->container );
-    $userMapper->updateAddressIDByID( $address_id, $id );
+    public function updateTokenByEmail( $token, $email )
+    {
+        $mapper = $this->getMapper();
+        $mapper->updateTokenByEmail( $token, $email );
 
-    return true;
-  }
-
-  public function updateTokenByEmail( $token, $email )
-  {
-    $userMapper = new UserMapper( $this->container );
-    $userMapper->updateTokenByEmail( $token, $email );
-
-    return true;
-  }
+        return true;
+    }
 
     public function updatePasswordByID( $password, $id )
     {
         $hashed_password = password_hash( $password, PASSWORD_BCRYPT );
 
-        $userMapper = new UserMapper( $this->container );
-        $userMapper->updatePasswordByID( $hashed_password, $id );
+        $mapper = $this->getMapper();
+        $mapper->updatePasswordByID( $hashed_password, $id );
 
         return true;
     }
 
-  public function updateTokenByID( $token, $id )
-  {
-    $userMapper = new UserMapper( $this->container );
-    $userMapper->updateTokenByID( $token, $id );
+    public function updateTokenByID( $token, $id )
+    {
+        $mapper = $this->getMapper();
+        $mapper->updateTokenByID( $token, $id );
 
-    return true;
-  }
+        return true;
+    }
 
     public function updateRoleByID( $id, $role )
     {
-        $userMapper = new UserMapper( $this->container );
-        $userMapper->updateRoleByID( $id, $role );
+        $mapper = $this->getMapper();
+        $mapper->updateRoleByID( $id, $role );
 
         return true;
     }
-
 }

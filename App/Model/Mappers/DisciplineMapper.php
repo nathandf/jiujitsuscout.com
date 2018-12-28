@@ -8,14 +8,14 @@ class DisciplineMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $disciplines = [];
 
         $sql = $this->DB->prepare( "SELECT * FROM discipline" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $discipline = $entityFactory->build( "Discipline" );
+            $discipline = $this->entityFactory->build( "Discipline" );
             $this->populateDiscipline( $discipline, $resp );
             $disciplines[] = $discipline;
         }
@@ -25,14 +25,14 @@ class DisciplineMapper extends DataMapper
 
     public function mapFromID( $id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
 
         $sql = $this->DB->prepare( "SELECT * FROM discipline WHERE id = :id" );
         $sql->bindParam( ":id", $id );
         $sql->execute();
 
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $discipline = $entityFactory->build( "Discipline" );
+        $discipline = $this->entityFactory->build( "Discipline" );
         $this->populateDiscipline( $discipline, $resp );
 
         return $discipline;
@@ -40,14 +40,14 @@ class DisciplineMapper extends DataMapper
 
     public function mapFromName( $name )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
 
         $sql = $this->DB->prepare( "SELECT * FROM discipline WHERE name = :name" );
         $sql->bindParam( ":name", $name );
         $sql->execute();
 
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $discipline = $entityFactory->build( "Discipline" );
+        $discipline = $this->entityFactory->build( "Discipline" );
         $this->populateDiscipline( $discipline, $resp );
 
         return $discipline;

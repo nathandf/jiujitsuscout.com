@@ -30,13 +30,13 @@ class ReviewMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $reviews = [];
         $sql = $this->DB->prepare( 'SELECT * FROM review WHERE business_id = :business_id' );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $review = $entityFactory->build( "Review" );
+            $review = $this->entityFactory->build( "Review" );
             $this->populateReview( $review, $resp );
             $reviews[] = $review;
         }

@@ -44,12 +44,12 @@ class MemberMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $members = [];
     $sql = $this->DB->prepare( "SELECT * FROM member" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $member = $entityFactory->build( "Member" );
+      $member = $this->entityFactory->build( "Member" );
       $this->populateMember( $member, $resp );
       $members[] = $member;
     }
@@ -68,13 +68,13 @@ class MemberMapper extends DataMapper
 
   public function mapAllFromBusinessID( $business_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $members = [];
     $sql = $this->DB->prepare( 'SELECT * FROM member WHERE business_id = :business_id' );
     $sql->bindParam( ":business_id", $business_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $member = $entityFactory->build( "Member" );
+      $member = $this->entityFactory->build( "Member" );
       $this->populateMember( $member, $resp );
       $members[] = $member;
     }

@@ -7,13 +7,13 @@ use Contracts\DataMapperInterface;
 abstract class DataMapper implements DataMapperInterface
 {
     protected $DB;
-    public $data;
-    public $container;
+    protected $table;
+    public $entityFactory;
 
-    public function __construct( \Core\DI_Container $container )
+    public function __construct( $dao, \Model\Services\EntityFactory $entityFactory )
     {
-        $this->container = $container;
-        $this->DB = $this->container->getService( "dao" ); // data access object
+        $this->DB = $dao;
+        $this->entityFactory = $entityFactory;
     }
 
     public function insert( $table, array $columns_array, array $values_array )
@@ -75,6 +75,11 @@ abstract class DataMapper implements DataMapperInterface
         return $data;
     }
 
+    public function build( $class_name )
+    {
+        return $this->entityFactory->build( $class_name );
+    }
+
     protected function populate( $entity, $data )
     {
         if ( !is_object( $entity ) ) {
@@ -86,5 +91,10 @@ abstract class DataMapper implements DataMapperInterface
                 $entity->{$key} = $data[ $key ];
             }
         }
+    }
+
+    public function setTable( $table )
+    {
+        $this->table = $table;
     }
 }

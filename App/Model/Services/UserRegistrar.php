@@ -4,7 +4,6 @@ namespace Model\Services;
 
 class UserRegistrar
 {
-
     public $userRepo;
     public $accountUserRepo;
     public $mailer;
@@ -49,5 +48,4 @@ class UserRegistrar
 
         return null;
     }
-
 }

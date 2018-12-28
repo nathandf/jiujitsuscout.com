@@ -39,12 +39,12 @@ class TransactionMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $transactions = [];
         $sql = $this->DB->prepare( "SELECT * FROM transaction" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $transaction = $entityFactory->build( "Transaction" );
+            $transaction = $this->entityFactory->build( "Transaction" );
             $this->populateTransaction( $transaction, $resp );
             $transactions[] = $transaction;
         }

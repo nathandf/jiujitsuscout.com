@@ -7,12 +7,12 @@ class AddressMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $addresss = [];
     $sql = $this->DB->prepare( "SELECT * FROM address" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $address = $entityFactory->build( "Address" );
+      $address = $this->entityFactory->build( "Address" );
       $this->populateAddress( $address, $resp );
       $addresss[] = $address;
     }

@@ -20,13 +20,13 @@ class NonceTokenMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $nonceTokens = [];
         $sql = $this->DB->prepare( "SELECT * FROM nonce_token" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $nonceToken = $entityFactory->build( "NonceToken" );
+            $nonceToken = $this->entityFactory->build( "NonceToken" );
             $this->populateNonceToken( $nonceToken, $resp );
             $nonceTokens[] = $nonceToken;
         }

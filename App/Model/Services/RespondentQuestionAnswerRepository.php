@@ -2,60 +2,60 @@
 
 namespace Model\Services;
 
-class RespondentQuestionAnswerRepository extends Service
+class RespondentQuestionAnswerRepository extends Repository
 {
     public function create( $respondent_id, $question_id, $question_choice_id, $text = null )
     {
-        $respondentQuestionAnswer = new \Model\RespondentQuestionAnswer();
-        $respondentQuestionAnswerMapper = new \Model\Mappers\RespondentQuestionAnswerMapper( $this->container );
+        $mapper = $this->getMapper();
+        $respondentQuestionAnswer = $mapper->build( $this->entityName );
         $respondentQuestionAnswer->respondent_id = $respondent_id;
         $respondentQuestionAnswer->question_id = $question_id;
         $respondentQuestionAnswer->question_choice_id = $question_choice_id;
         $respondentQuestionAnswer->text = $text;
-        $respondentQuestionAnswerMapper->create( $respondentQuestionAnswer );
+        $mapper->create( $respondentQuestionAnswer );
 
         return $respondentQuestionAnswer;
     }
 
     public function getAll()
     {
-        $respondentQuestionAnswerMapper = new \Model\Mappers\RespondentQuestionAnswerMapper( $this->container );
-        $respondentQuestionAnswers = $respondentQuestionAnswerMapper->mapAll();
+        $mapper = $this->getMapper();
+        $respondentQuestionAnswers = $mapper->mapAll();
 
         return $respondentQuestionAnswers;
     }
 
     public function getAllByRespondentID( $respondent_id )
     {
-        $respondentQuestionAnswerMapper = new \Model\Mappers\RespondentQuestionAnswerMapper( $this->container );
-        $respondentQuestionAnswers = $respondentQuestionAnswerMapper->mapAllFromRespondentID( $respondent_id );
+        $mapper = $this->getMapper();
+        $respondentQuestionAnswers = $mapper->mapAllFromRespondentID( $respondent_id );
 
         return $respondentQuestionAnswers;
     }
 
     public function getByID( $id )
     {
-        $respondentQuestionAnswer = new \Model\RespondentQuestionAnswer();
-        $respondentQuestionAnswerMapper = new \Model\Mappers\RespondentQuestionAnswerMapper( $this->container );
-        $respondentQuestionAnswerMapper->mapFromID( $respondentQuestionAnswer, $id );
+        $mapper = $this->getMapper();
+        $respondentQuestionAnswer = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $respondentQuestionAnswer, $id );
 
         return $respondentQuestionAnswer;
     }
 
     public function getByQuestionID( $question_id )
     {
-        $respondentQuestionAnswer = new \Model\RespondentQuestionAnswer();
-        $respondentQuestionAnswerMapper = new \Model\Mappers\RespondentQuestionAnswerMapper( $this->container );
-        $respondentQuestionAnswerMapper->mapFromQuestionID( $respondentQuestionAnswer, $question_id );
+        $mapper = $this->getMapper();
+        $respondentQuestionAnswer = $mapper->build( $this->entityName );
+        $mapper->mapFromQuestionID( $respondentQuestionAnswer, $question_id );
 
         return $respondentQuestionAnswer;
     }
 
     public function getByQuestionChoiceID( $question_choice_id )
     {
-        $respondentQuestionAnswer = new \Model\RespondentQuestionAnswer();
-        $respondentQuestionAnswerMapper = new \Model\Mappers\RespondentQuestionAnswerMapper( $this->container );
-        $respondentQuestionAnswerMapper->mapFromQuestionID( $respondentQuestionAnswer, $question_choice_id );
+        $mapper = $this->getMapper();
+        $respondentQuestionAnswer = $mapper->build( $this->entityName );
+        $mapper->mapFromQuestionID( $respondentQuestionAnswer, $question_choice_id );
 
         return $respondentQuestionAnswer;
     }

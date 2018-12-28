@@ -7,7 +7,7 @@ class EventMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $events = [];
     $sql = $this->DB->prepare( "SELECT * FROM event" );
     $sql->execute();
@@ -20,7 +20,7 @@ class EventMapper extends DataMapper
 
   public function mapAllFromSequenceID( $sequence_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $events = [];
     $sql = $this->DB->prepare( "SELECT * FROM event WHERE sequence_id = :sequence_id" );
     $sql->bindParam( ":sequence_id", $sequence_id );
@@ -34,7 +34,7 @@ class EventMapper extends DataMapper
 
   public function mapAllFromBusinessID( $busines_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $events = [];
     $sql = $this->DB->prepare( "SELECT * FROM event WHERE business_id = :business_id" );
     $sql->bindParam( ":business_id", $business_id );

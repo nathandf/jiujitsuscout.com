@@ -33,13 +33,13 @@ class CourseScheduleMapper extends DataMapper
 
     public function mapAllFromScheduleID( $schedule_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $courseSchedules = [];
         $sql = $this->DB->prepare( "SELECT * FROM course_schedule WHERE schedule_id = :schedule_id" );
         $sql->bindParam( ":schedule_id", $schedule_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $courseSchedule = $entityFactory->build( "CourseSchedule" );
+            $courseSchedule = $this->entityFactory->build( "CourseSchedule" );
             $this->populateCourseSchedule( $courseSchedule, $resp );
             $courseSchedules[] = $courseSchedule;
         }
@@ -49,13 +49,13 @@ class CourseScheduleMapper extends DataMapper
 
     public function mapAllFromCourseID( $course_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $courseSchedules = [];
         $sql = $this->DB->prepare( "SELECT * FROM course_schedule WHERE course_id = :course_id" );
         $sql->bindParam( ":course_id", $course_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $courseSchedule = $entityFactory->build( "CourseSchedule" );
+            $courseSchedule = $this->entityFactory->build( "CourseSchedule" );
             $this->populateCourseSchedule( $courseSchedule, $resp );
             $courseSchedules[] = $courseSchedule;
         }

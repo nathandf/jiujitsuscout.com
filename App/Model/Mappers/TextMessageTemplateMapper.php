@@ -19,7 +19,7 @@ class TextMessageTemplateMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $textMessageTemplates = [];
         $sql = $this->DB->prepare( "SELECT * FROM text_message_template" );
         $sql->execute();
@@ -34,14 +34,14 @@ class TextMessageTemplateMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $textMessageTemplates = [];
         $sql = $this->DB->prepare( "SELECT * FROM text_message_template WHERE business_id = :business_id" );
         $sql->bindParam( "business_id", $business_id );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $textMessageTemplate = $entityFactory->build( "TextMessageTemplate" );
+            $textMessageTemplate = $this->entityFactory->build( "TextMessageTemplate" );
             $this->populate( $textMessageTemplate, $resp );
             $textMessageTemplates[] = $textMessageTemplate;
         }

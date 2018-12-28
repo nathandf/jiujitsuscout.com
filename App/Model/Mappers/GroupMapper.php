@@ -32,13 +32,13 @@ class GroupMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $groups = [];
         $sql = $this->DB->prepare( "SELECT * FROM `group` WHERE business_id = :business_id" );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-        $group = $entityFactory->build( "Group" );
+        $group = $this->entityFactory->build( "Group" );
         $this->populateGroup( $group, $resp );
 
         $groups[] = $group;

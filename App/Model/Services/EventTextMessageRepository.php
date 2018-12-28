@@ -2,32 +2,31 @@
 
 namespace Model\Services;
 
-class EventTextMessageRepository extends Service
+class EventTextMessageRepository extends Repository
 {
+    public function getAll()
+    {
+        $mapper = $this->getMapper();
+        $eventTextMessages = $mapper->mapAll();
 
-  public function getAll()
-  {
-    $eventTextMessageMapper = new \Model\Mappers\EventTextMessageMapper( $this->container );
-    $eventTextMessages = $eventTextMessageMapper->mapAll();
-    return $eventTextMessages;
-  }
+        return $eventTextMessages;
+    }
 
-  public function getByID( $id )
-  {
-    $eventTextMessage = new \Model\EventTextMessage();
-    $eventTextMessageMapper = new \Model\Mappers\EventTextMessageMapper( $this->container );
-    $eventTextMessageMapper->mapFromID( $eventTextMessage, $id );
+    public function getByID( $id )
+    {
+        $mapper = $this->getMapper();
+        $eventTextMessage = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $eventTextMessage, $id );
 
-    return $eventTextMessage;
-  }
+        return $eventTextMessage;
+    }
 
-  public function getByEventID( $event_id )
-  {
-    $eventTextMessage = new \Model\EventTextMessage();
-    $eventTextMessageMapper = new \Model\Mappers\EventTextMessageMapper( $this->container );
-    $eventTextMessageMapper->mapFromEventID( $eventTextMessage, $event_id );
+    public function getByEventID( $event_id )
+    {
+        $mapper = $this->getMapper();
+        $eventTextMessage = $mapper->build( $this->entityName );
+        $mapper->mapFromEventID( $eventTextMessage, $event_id );
 
-    return $eventTextMessage;
-  }
-
+        return $eventTextMessage;
+    }
 }

@@ -7,12 +7,12 @@ class LandingPageTemplateMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $landingPageTemplates = [];
     $sql = $this->DB->prepare( "SELECT * FROM landing_page_template" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $landingPageTemplate = $entityFactory->build( "LandingPageTemplate" );
+      $landingPageTemplate = $this->entityFactory->build( "LandingPageTemplate" );
       $this->populateLandingPageTemplate( $landingPageTemplate, $resp );
       $landingPageTemplates[] = $landingPageTemplate;
     }

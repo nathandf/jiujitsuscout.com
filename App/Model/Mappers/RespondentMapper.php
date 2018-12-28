@@ -20,12 +20,12 @@ class RespondentMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $respondents = [];
         $sql = $this->DB->prepare( "SELECT * FROM respondent" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $respondent = $entityFactory->build( "Respondent" );
+            $respondent = $this->entityFactory->build( "Respondent" );
             $this->populateRespondent( $respondent, $resp );
             $respondents[] = $respondent;
         }

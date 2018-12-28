@@ -2,23 +2,22 @@
 
 namespace Model\Services;
 
-class LandingPageTemplateRepository extends Service
+class LandingPageTemplateRepository extends Repository
 {
+    public function getAll()
+    {
+        $mapper = $this->getMapper();
+        $landingPageTemplates = $mapper->mapAll();
 
-  public function getAll()
-  {
-    $landingPageTemplateMapper = new \Model\Mappers\LandingPageTemplateMapper( $this->container );
-    $landingPageTemplates = $landingPageTemplateMapper->mapAll();
-    return $landingPageTemplates;
-  }
+        return $landingPageTemplates;
+    }
 
-  public function getByID( $id )
-  {
-    $landingPageTemplate = new \Model\LandingPageTemplate();
-    $landingPageTemplateMapper = new \Model\Mappers\LandingPageTemplateMapper( $this->container );
-    $landingPageTemplateMapper->mapFromID( $landingPageTemplate, $id );
+    public function getByID( $id )
+    {
+        $mapper = $this->getMapper();
+        $landingPageTemplate = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $landingPageTemplate, $id );
 
-    return $landingPageTemplate;
-  }
-
+        return $landingPageTemplate;
+    }
 }

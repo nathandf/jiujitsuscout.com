@@ -7,12 +7,12 @@ class EventEmailMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $eventEmails = [];
     $sql = $this->DB->prepare( "SELECT * FROM event_email" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $eventEmail = $entityFactory->build( "EventEmail" );
+      $eventEmail = $this->entityFactory->build( "EventEmail" );
       $this->populateEventEmail( $eventEmail, $resp );
       $eventEmails[] = $eventEmail;
     }

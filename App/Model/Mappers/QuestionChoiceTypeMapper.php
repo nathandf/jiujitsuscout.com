@@ -20,12 +20,12 @@ class QuestionChoiceTypeMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $question_choice_types = [];
         $sql = $this->DB->prepare( "SELECT * FROM question_choice_type" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $question_choice_type = $entityFactory->build( "QuestionChoiceType" );
+            $question_choice_type = $this->entityFactory->build( "QuestionChoiceType" );
             $this->populateQuestionChoiceType( $question_choice_type, $resp );
             $question_choice_types[] = $question_choice_type;
         }

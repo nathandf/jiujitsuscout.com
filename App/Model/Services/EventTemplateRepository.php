@@ -2,7 +2,7 @@
 
 namespace Model\Services;
 
-class EventTemplateRepository extends Service
+class EventTemplateRepository extends Repository
 {
     public function create(
         $sequence_template_id,
@@ -11,8 +11,8 @@ class EventTemplateRepository extends Service
         $text_message_template_id = null,
         $wait_duration = null
     ) {
-        $eventTemplate = new \Model\EventTemplate;
-        $eventTemplateMapper = new \Model\Mappers\EventTemplateMapper( $this->container );
+        $mapper = $this->getMapper();
+        $eventTemplate = $mapper->build( $this->entityName );
         $eventTemplate->sequence_template_id = $sequence_template_id;
         $eventTemplate->event_type_id = $event_type_id;
         $eventTemplate->email_template_id = $email_template_id;
@@ -33,39 +33,39 @@ class EventTemplateRepository extends Service
 
         $eventTemplate->placement = $placement;
 
-        $eventTemplate = $eventTemplateMapper->create( $eventTemplate );
+        $eventTemplate = $mapper->create( $eventTemplate );
 
         return $eventTemplate;
     }
 
     public function getAll()
     {
-        $eventTemplateMapper = new \Model\Mappers\EventTemplateMapper( $this->container );
-        $eventTemplates = $eventTemplateMapper->mapAll();
+        $mapper = $this->getMapper();
+        $eventTemplates = $mapper->mapAll();
 
         return $eventTemplates;
     }
 
     public function getAllBySequenceTemplateID( $sequence_template_id )
     {
-        $eventTemplateMapper = new \Model\Mappers\EventTemplateMapper( $this->container );
-        $eventTemplates = $eventTemplateMapper->mapAllFromSequenceTemplateID( $sequence_template_id );
+        $mapper = $this->getMapper();
+        $eventTemplates = $mapper->mapAllFromSequenceTemplateID( $sequence_template_id );
 
         return $eventTemplates;
     }
 
     public function getByID( $id )
     {
-        $eventTemplate = new \Model\EventTemplate();
-        $eventTemplateMapper = new \Model\Mappers\EventTemplateMapper( $this->container );
-        $eventTemplateMapper->mapFromID( $eventTemplate, $id );
+        $mapper = $this->getMapper();
+        $eventTemplate = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $eventTemplate, $id );
 
         return $eventTemplate;
     }
 
     public function bumpPlacementByID( $id, $bump_direction )
     {
-        $eventTemplateMapper = new \Model\Mappers\EventTemplateMapper( $this->container );
-        $eventTemplateMapper->bumpPlacementByID( $id, $bump_direction );
+        $mapper = $this->getMapper();
+        $mapper->bumpPlacementByID( $id, $bump_direction );
     }
 }

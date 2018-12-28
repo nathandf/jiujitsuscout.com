@@ -50,13 +50,13 @@ class BusinessMapper extends DataMapper
 
   public function mapAllFromAccountID( $account_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $businesses = [];
     $sql = $this->DB->prepare( 'SELECT * FROM business WHERE account_id = :account_id' );
     $sql->bindParam( ":account_id", $account_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $business = $entityFactory->build( "Business" );
+      $business = $this->entityFactory->build( "Business" );
       $this->populate( $business, $resp );
       $businesses[] = $business;
     }
@@ -66,13 +66,13 @@ class BusinessMapper extends DataMapper
 
     public function mapAllFromDisciplineID( $discipline_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $businesses = [];
         $sql = $this->DB->prepare( "SELECT * FROM business" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $business = $entityFactory->build( "Business" );
+            $business = $this->entityFactory->build( "Business" );
             $this->populate( $business, $resp );
             $discipline_ids = explode( ",", $business->discipline_ids );
             if ( in_array( $discipline_id, $discipline_ids ) ) {
@@ -85,7 +85,7 @@ class BusinessMapper extends DataMapper
 
     public function mapAllFromLocalityAndRegion( $locality, $region )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $businesses = [];
         $sql = $this->DB->prepare( "SELECT * FROM business WHERE city = :city AND region = :region" );
         $sql->bindParam( ":city", $locality );
@@ -93,7 +93,7 @@ class BusinessMapper extends DataMapper
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $business = $entityFactory->build( "Business" );
+            $business = $this->entityFactory->build( "Business" );
             $this->populate( $business, $resp );
             $businesses[] = $business;
         }
@@ -103,14 +103,14 @@ class BusinessMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $businesses = [];
 
         $sql = $this->DB->prepare( 'SELECT * FROM business' );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $business = $entityFactory->build( "Business" );
+            $business = $this->entityFactory->build( "Business" );
             $this->populate( $business, $resp );
             $businesses[] = $business;
         }

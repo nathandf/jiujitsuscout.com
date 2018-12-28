@@ -20,12 +20,12 @@ class FAQMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $faqs = [];
         $sql = $this->DB->prepare( "SELECT * FROM faq" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $faq = $entityFactory->build( "FAQ" );
+            $faq = $this->entityFactory->build( "FAQ" );
             $this->populateFAQ( $faq, $resp );
             $faqs[] = $faq;
         }

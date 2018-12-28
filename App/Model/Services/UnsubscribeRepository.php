@@ -5,42 +5,41 @@ namespace Model\Services;
 use Model\Unsubscribe;
 use Model\Mappers\UnsubscribeMapper;
 
-class UnsubscribeRepository extends Service
+class UnsubscribeRepository extends Repository
 {
-
     public function create( $email )
     {
-        $unsubscribe = new Unsubscribe();
-        $unsubscribeMapper = new UnsubscribeMapper( $this->container );
+        $mapper = $this->getMapper();
+        $unsubscribe = $mapper->build( $this->entityName );
         $unsubscribe->email = $email;
 
-        $unsubscribeMapper->create( $unsubscribe );
+        $mapper->create( $unsubscribe );
 
         return $unsubscribe;
     }
 
     public function getByID( $id )
     {
-        $unsubscribe = new Unsubscribe();
-        $unsubscribeMapper = new UnsubscribeMapper( $this->container );
-        $unsubscribeMapper->mapFromID( $unsubscribe, $id );
+        $mapper = $this->getMapper();
+        $unsubscribe = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $unsubscribe, $id );
 
         return $unsubscribe;
     }
 
     public function getByEmail( $email )
     {
-        $unsubscribe = new Unsubscribe();
-        $unsubscribeMapper = new UnsubscribeMapper( $this->container );
-        $unsubscribeMapper->mapFromID( $unsubscribe, $email );
+        $mapper = $this->getMapper();
+        $unsubscribe = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $unsubscribe, $email );
 
         return $unsubscribe;
     }
 
     public function getAll()
     {
-        $unsubscribeMapper = new \Model\Mappers\UnsubscribeMapper( $this->container );
-        $unsubscribes = $unsubscribeMapper->mapAll();
+        $mapper = $this->getMapper();
+        $unsubscribes = $mapper->mapAll();
 
         return $unsubscribes;
     }
@@ -57,5 +56,4 @@ class UnsubscribeRepository extends Service
 
         return $emails;
     }
-
 }

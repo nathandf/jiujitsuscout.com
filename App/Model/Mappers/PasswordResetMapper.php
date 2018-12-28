@@ -20,13 +20,13 @@ class PasswordResetMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $passwordResets = [];
         $sql = $this->DB->prepare( "SELECT * FROM password_reset" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $passwordReset = $entityFactory->build( "PasswordReset" );
+            $passwordReset = $this->entityFactory->build( "PasswordReset" );
             $this->populatePasswordReset( $passwordReset, $resp );
             $passwordResets[] = $passwordReset;
         }

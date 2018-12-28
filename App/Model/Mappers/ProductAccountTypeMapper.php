@@ -7,12 +7,12 @@ class ProductAccountTypeMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $productAccountTypes = [];
         $sql = $this->DB->prepare( "SELECT * FROM product_account_type" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $productAccountType = $entityFactory->build( "ProductAccountType" );
+            $productAccountType = $this->entityFactory->build( "ProductAccountType" );
             $this->populateProductAccountType( $productAccountType, $resp );
             $productAccountTypes[] = $productAccountType;
         }

@@ -2,28 +2,9 @@
 
 namespace Model\Services;
 
-use Core\DI_Container;
-use Model\Mappers\DataMapper;
+use Model\Services\Repository;
 
-abstract class Service
+abstract class Service extends Repository
 {
-
-  protected $container;
-  protected $mapper;
-
-  public function __construct( DI_Container $container )
-  {
-    $this->container = $container;
-  }
-
-  protected function setMapper( DataMapper $mapper )
-  {
-    $this->mapper = $mapper;
-  }
-
-  protected function getMapper()
-  {
-    return $this->mapper;
-  }
 
 }

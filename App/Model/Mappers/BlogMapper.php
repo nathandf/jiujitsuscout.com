@@ -20,12 +20,12 @@ class BlogMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $blogs = [];
         $sql = $this->DB->prepare( 'SELECT * FROM blog' );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $blog = $entityFactory->build( "Blog" );
+            $blog = $this->entityFactory->build( "Blog" );
             $this->populate( $blog, $resp );
             $blogs[] = $blog;
         }

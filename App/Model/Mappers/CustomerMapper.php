@@ -20,12 +20,12 @@ class CustomerMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $customers = [];
         $sql = $this->DB->prepare( "SELECT * FROM customer" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $customer = $entityFactory->build( "Customer" );
+            $customer = $this->entityFactory->build( "Customer" );
             $this->populateCustomer( $customer, $resp );
             $customers[] = $customer;
         }

@@ -2,40 +2,40 @@
 
 namespace Model\Services;
 
-class EmbeddableFormElementTypeRepository extends Service
+class EmbeddableFormElementTypeRepository extends Repository
 {
 
     public function create( $name )
     {
-        $embeddableFormElementType = new \Model\EmbeddableFormElementType;
-        $embeddableFormElementTypeMapper = new \Model\Mappers\EmbeddableFormElementTypeMapper( $this->container );
+        $mapper = $this->getMapper();
+        $embeddableFormElementType = $mapper->build( $this->entityName );
         $embeddableFormElementType->name = $name;
-        $embeddableFormElementTypeMapper->create( $embeddableFormElementType );
+        $mapper->create( $embeddableFormElementType );
 
         return $embeddableFormElementType;
     }
 
     public function getByID( $id )
     {
-        $embeddableFormElementType = new \Model\EmbeddableFormElementType;
-        $embeddableFormElementTypeMapper = new \Model\Mappers\EmbeddableFormElementTypeMapper( $this->container );
-        $embeddableFormElementTypeMapper->mapFromID( $embeddableFormElementType, $id );
+        $mapper = $this->getMapper();
+        $embeddableFormElementType = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $embeddableFormElementType, $id );
 
         return $embeddableFormElementType;
     }
 
     public function getAll()
     {
-        $embeddableFormElementTypeMapper = new \Model\Mappers\EmbeddableFormElementTypeMapper( $this->container );
-        $embeddableFormElementTypes = $embeddableFormElementTypeMapper->mapAll();
+        $mapper = $this->getMapper();
+        $embeddableFormElementTypes = $mapper->mapAll();
 
         return $embeddableFormElementTypes;
     }
 
     public function removeByID( $id )
     {
-        $embeddableFormElementTypeMapper = new \Model\Mappers\EmbeddableFormElementTypeMapper( $this->container );
-        $embeddableFormElementTypeMapper->deleteByID( $id );
+        $mapper = $this->getMapper();
+        $mapper->deleteByID( $id );
     }
 
 }

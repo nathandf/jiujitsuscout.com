@@ -33,13 +33,13 @@ class ScheduleMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $schedules = [];
         $sql = $this->DB->prepare( 'SELECT * FROM schedule WHERE business_id = :business_id' );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $schedule = $entityFactory->build( "Schedule" );
+            $schedule = $this->entityFactory->build( "Schedule" );
             $this->populateSchedule( $schedule, $resp );
             $schedules[] = $schedule;
         }

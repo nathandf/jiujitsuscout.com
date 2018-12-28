@@ -20,12 +20,12 @@ class FAQAnswerMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $faqAnswers = [];
         $sql = $this->DB->prepare( "SELECT * FROM faq_answer" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $faqAnswer = $entityFactory->build( "FAQAnswer" );
+            $faqAnswer = $this->entityFactory->build( "FAQAnswer" );
             $this->populateFAQAnswer( $faqAnswer, $resp );
             $faqAnswers[] = $faqAnswer;
         }
@@ -35,13 +35,13 @@ class FAQAnswerMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $faqAnswers = [];
         $sql = $this->DB->prepare( "SELECT * FROM faq_answer WHERE business_id = :business_id" );
         $sql->bindParam( "business_id", $business_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $faqAnswer = $entityFactory->build( "FAQAnswer" );
+            $faqAnswer = $this->entityFactory->build( "FAQAnswer" );
             $this->populateFAQAnswer( $faqAnswer, $resp );
             $faqAnswers[] = $faqAnswer;
         }

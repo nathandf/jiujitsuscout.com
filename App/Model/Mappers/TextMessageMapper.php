@@ -19,7 +19,7 @@ class TextMessageMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $textMessages = [];
         $sql = $this->DB->prepare( "SELECT * FROM text_message" );
         $sql->execute();

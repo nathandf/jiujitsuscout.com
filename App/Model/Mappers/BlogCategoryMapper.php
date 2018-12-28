@@ -20,13 +20,13 @@ class BlogCategoryMapper extends DataMapper
 
     public function mapAllFromBlogID( $blog_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $blogCategories = [];
         $sql = $this->DB->prepare( 'SELECT * FROM blog_category WHERE blog_id = :blog_id' );
         $sql->bindParam( ":blog_id", $blog_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $blogCategory = $entityFactory->build( "BlogCategory" );
+            $blogCategory = $this->entityFactory->build( "BlogCategory" );
             $this->populate( $blogCategory, $resp );
             $blogCategories[] = $blogCategory;
         }

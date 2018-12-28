@@ -7,12 +7,12 @@ class EventTypeMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $eventTypes = [];
     $sql = $this->DB->prepare( "SELECT * FROM event_type" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $eventType = $entityFactory->build( "EventType" );
+      $eventType = $this->entityFactory->build( "EventType" );
       $this->populateEventType( $eventType, $resp );
       $eventTypes[] = $eventType;
     }

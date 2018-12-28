@@ -20,12 +20,12 @@ class OrderProductMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $orderProducts = [];
         $sql = $this->DB->prepare( "SELECT * FROM order_product" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $orderProduct = $entityFactory->build( "OrderProduct" );
+            $orderProduct = $this->entityFactory->build( "OrderProduct" );
             $this->populateOrderProduct( $orderProduct, $resp );
             $orderProducts[] = $orderProduct;
         }
@@ -35,13 +35,13 @@ class OrderProductMapper extends DataMapper
 
     public function mapAllFromOrderID( $order_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $orderProducts = [];
         $sql = $this->DB->prepare( "SELECT * FROM order_product WHERE order_id = :order_id" );
         $sql->bindParam( ":order_id", $order_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $orderProduct = $entityFactory->build( "OrderProduct" );
+            $orderProduct = $this->entityFactory->build( "OrderProduct" );
             $this->populateOrderProduct( $orderProduct, $resp );
             $orderProducts[] = $orderProduct;
         }

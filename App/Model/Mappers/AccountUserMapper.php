@@ -13,12 +13,12 @@ class AccountUserMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $accountUsers = [];
     $sql = $this->DB->prepare( "SELECT * FROM account_user" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $accountUser = $entityFactory->build( "AccountUser" );
+      $accountUser = $this->entityFactory->build( "AccountUser" );
       $this->populateAccountUser( $accountUser, $resp );
       $accountUsers[] = $accountUser;
     }
@@ -48,14 +48,14 @@ class AccountUserMapper extends DataMapper
 
     public function mapAllFromAccountID( $account_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $accountUsers = [];
         $sql = $this->DB->prepare( 'SELECT * FROM account_user WHERE account_id = :account_id' );
         $sql->bindParam( ":account_id", $account_id );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $accountUser = $entityFactory->build( "AccountUser" );
+            $accountUser = $this->entityFactory->build( "AccountUser" );
             $this->populateAccountUser( $accountUser, $resp );
             $accountUsers[] = $accountUser;
         }

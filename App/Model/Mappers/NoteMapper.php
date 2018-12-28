@@ -28,13 +28,13 @@ class NoteMapper extends DataMapper
 
   public function mapAllFromProspectID( $prospect_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $notes = [];
     $sql = $this->DB->prepare( 'SELECT * FROM note WHERE prospect_id = :prospect_id ORDER BY time DESC' );
     $sql->bindParam( ":prospect_id", $prospect_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $note = $entityFactory->build( "Note" );
+      $note = $this->entityFactory->build( "Note" );
       $this->populateNote( $note, $resp );
       $notes[] = $note;
     }
@@ -44,13 +44,13 @@ class NoteMapper extends DataMapper
 
   public function mapAllFromMemberID( $member_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $notes = [];
     $sql = $this->DB->prepare( 'SELECT * FROM note WHERE member_id = :member_id ORDER BY time DESC' );
     $sql->bindParam( ":member_id", $member_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $note = $entityFactory->build( "Note" );
+      $note = $this->entityFactory->build( "Note" );
       $this->populateNote( $note, $resp );
       $notes[] = $note;
     }
@@ -60,13 +60,13 @@ class NoteMapper extends DataMapper
 
   public function mapAllFromAppointmentID( $appointment_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $notes = [];
     $sql = $this->DB->prepare( 'SELECT * FROM note WHERE appointment_id = :appointment_id ORDER BY time DESC' );
     $sql->bindParam( ":appointment_id", $appointment_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $note = $entityFactory->build( "Note" );
+      $note = $this->entityFactory->build( "Note" );
       $this->populateNote( $note, $resp );
       $notes[] = $note;
     }

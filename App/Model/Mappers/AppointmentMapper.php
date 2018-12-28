@@ -30,13 +30,13 @@ class AppointmentMapper extends DataMapper
 
   public function mapAllFromBusinessID( $business_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $appointments = [];
     $sql = $this->DB->prepare( "SELECT * FROM appointment WHERE business_id = :business_id ORDER BY appointment_time DESC" );
     $sql->bindParam( ":business_id", $business_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $appointment = $entityFactory->build( "Appointment" );
+      $appointment = $this->entityFactory->build( "Appointment" );
       $this->populateAppointment( $appointment, $resp );
 
       $appointments[] = $appointment;
@@ -47,13 +47,13 @@ class AppointmentMapper extends DataMapper
 
   public function mapAllFromProspectID( $prospect_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $appointments = [];
     $sql = $this->DB->prepare( "SELECT * FROM appointment WHERE prospect_id = :prospect_id ORDER BY appointment_time DESC" );
     $sql->bindParam( ":prospect_id", $prospect_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $appointment = $entityFactory->build( "Appointment" );
+      $appointment = $this->entityFactory->build( "Appointment" );
       $this->populateAppointment( $appointment, $resp );
 
       $appointments[] = $appointment;
@@ -64,13 +64,13 @@ class AppointmentMapper extends DataMapper
 
     public function mapAllFromStatus( $status )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $appointments = [];
         $sql = $this->DB->prepare( "SELECT * FROM appointment WHERE status = :status ORDER BY appointment_time DESC" );
         $sql->bindParam( ":status", $status );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $appointment = $entityFactory->build( "Appointment" );
+            $appointment = $this->entityFactory->build( "Appointment" );
             $this->populateAppointment( $appointment, $resp );
 
             $appointments[] = $appointment;

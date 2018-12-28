@@ -20,12 +20,12 @@ class QuestionChoiceWeightMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $questionChoiceWeights = [];
         $sql = $this->DB->prepare( "SELECT * FROM question_choice" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $questionChoiceWeight = $entityFactory->build( "QuestionChoiceWeight" );
+            $questionChoiceWeight = $this->entityFactory->build( "QuestionChoiceWeight" );
             $this->populateQuestionChoiceWeight( $questionChoiceWeight, $resp );
             $questionChoiceWeights[] = $questionChoiceWeight;
         }

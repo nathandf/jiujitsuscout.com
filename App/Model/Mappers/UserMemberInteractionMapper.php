@@ -13,12 +13,12 @@ class UserMemberInteractionMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $userMemberInteractions = [];
     $sql = $this->DB->prepare( "SELECT * FROM user_member_interaction" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $userMemberInteraction = $entityFactory->build( "UserMemberInteraction" );
+      $userMemberInteraction = $this->entityFactory->build( "UserMemberInteraction" );
       $this->populateUserMemberInteraction( $userMemberInteraction, $resp );
       $userMemberInteractions[] = $userMemberInteraction;
     }

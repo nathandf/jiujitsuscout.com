@@ -20,12 +20,12 @@ class OrderMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $orders = [];
         $sql = $this->DB->prepare( "SELECT * FROM `order`" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $order = $entityFactory->build( "Order" );
+            $order = $this->entityFactory->build( "Order" );
             $this->populateOrder( $order, $resp );
             $orders[] = $order;
         }

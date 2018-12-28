@@ -42,13 +42,13 @@ class LandingPageMapper extends DataMapper
 
   public function mapAllFromBusinessID( $business_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $landingPages = [];
     $sql = $this->DB->prepare( 'SELECT * FROM landing_page WHERE business_id = :business_id' );
     $sql->bindParam( ":business_id", $business_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $landingPage = $entityFactory->build( "LandingPage" );
+      $landingPage = $this->entityFactory->build( "LandingPage" );
       $this->populateLandingPage( $landingPage, $resp );
       $landingPages[] = $landingPage;
     }

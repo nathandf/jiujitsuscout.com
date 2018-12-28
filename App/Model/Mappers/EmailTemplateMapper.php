@@ -18,14 +18,14 @@ class EmailTemplateMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $emailTemplates = [];
         $sql = $this->DB->prepare( "SELECT * FROM email_template WHERE business_id = :business_id" );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $emailTemplate = $entityFactory->build( "EmailTemplate" );
+            $emailTemplate = $this->entityFactory->build( "EmailTemplate" );
             $this->populate( $emailTemplate, $resp );
             $emailTemplates[] = $emailTemplate;
         }

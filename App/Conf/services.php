@@ -90,52 +90,82 @@ $container->register( "entity-factory", function() {
 } );
 
 $container->register( "account-repository", function() use ( $container ) {
-	$repo = new \Model\Services\AccountRepository( $container );
+	$repo = new \Model\Services\AccountRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "account-type-repository", function() use ( $container ) {
-	$repo = new \Model\Services\AccountTypeRepository( $container );
+	$repo = new \Model\Services\AccountTypeRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "account-user-repository", function() use ( $container ) {
-	$repo = new \Model\Services\AccountUserRepository( $container );
+	$repo = new \Model\Services\AccountUserRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "appointment-repository", function() use ( $container ) {
-	$repo = new \Model\Services\AppointmentRepository( $container );
+	$repo = new \Model\Services\AppointmentRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "appointment-hash-repository", function() use ( $container ) {
-	$repo = new \Model\Services\AppointmentHashRepository( $container );
+	$repo = new \Model\Services\AppointmentHashRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "article-blog-category-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ArticleBlogCategoryRepository( $container );
+	$repo = new \Model\Services\ArticleBlogCategoryRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "article-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ArticleRepository( $container );
+	$repo = new \Model\Services\ArticleRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "blog-category-repository", function() use ( $container ) {
-	$repo = new \Model\Services\BlogCategoryRepository( $container );
+	$repo = new \Model\Services\BlogCategoryRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "blog-navigation-element-repository", function() use ( $container ) {
-	$repo = new \Model\Services\BlogNavigationElementRepository( $container );
+	$repo = new \Model\Services\BlogNavigationElementRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "blog-repository", function() use ( $container ) {
-	$repo = new \Model\Services\BlogRepository( $container );
+	$repo = new \Model\Services\BlogRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
@@ -147,268 +177,427 @@ $container->register( "braintree-api-manager", function() use ( $container ) {
 } );
 
 $container->register( "braintree-transaction-repository", function() use ( $container ) {
-	$repo = new \Model\Services\BraintreeTransactionRepository( $container );
+	$repo = new \Model\Services\BraintreeTransactionRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "business-repository", function() use ( $container ) {
-	$repo = new \Model\Services\BusinessRepository( $container );
+	$repo = new \Model\Services\BusinessRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "campaign-repository", function() use ( $container ) {
-	$repo = new \Model\Services\CampaignRepository( $container );
+	$repo = new \Model\Services\CampaignRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "campaign-type-repository", function() use ( $container ) {
-	$repo = new \Model\Services\CampaignTypeRepository( $container );
+	$repo = new \Model\Services\CampaignTypeRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "click-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ClickRepository( $container );
+	$repo = new \Model\Services\ClickRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "country-repository", function() use ( $container ) {
-	$repo = new \Model\Services\CountryRepository( $container );
+	$repo = new \Model\Services\CountryRepository(
+		$container->getService( "dao" ),
+		$container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "course-repository", function() use ( $container ) {
-	$repo = new \Model\Services\CourseRepository( $container );
+	$repo = new \Model\Services\CourseRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "course-schedule-repository", function() use ( $container ) {
-	$repo = new \Model\Services\CourseScheduleRepository( $container );
+	$repo = new \Model\Services\CourseScheduleRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "currency-repository", function() use ( $container ) {
-	$repo = new \Model\Services\CurrencyRepository( $container );
+	$repo = new \Model\Services\CurrencyRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "customer-braintree-customer-repository", function() use ( $container ) {
-	$repo = new \Model\Services\CustomerBraintreeCustomerRepository( $container );
+	$repo = new \Model\Services\CustomerBraintreeCustomerRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "customer-repository", function() use ( $container ) {
-	$repo = new \Model\Services\CustomerRepository( $container );
+	$repo = new \Model\Services\CustomerRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "discipline-repository", function() use ( $container ) {
-	$repo = new \Model\Services\DisciplineRepository( $container );
+	$repo = new \Model\Services\DisciplineRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "email-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EmailRepository( $container );
+	$repo = new \Model\Services\EmailRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "email-template-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EmailTemplateRepository( $container );
+	$repo = new \Model\Services\EmailTemplateRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "embeddable-form-element-type-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EmbeddableFormElementTypeRepository( $container );
+	$repo = new \Model\Services\EmbeddableFormElementTypeRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "embeddable-form-element-type-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EmbeddableFormElementTypeRepository( $container );
+	$repo = new \Model\Services\EmbeddableFormElementTypeRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "embeddable-form-element-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EmbeddableFormElementRepository( $container );
+	$repo = new \Model\Services\EmbeddableFormElementRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "embeddable-form-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EmbeddableFormRepository( $container );
+	$repo = new \Model\Services\EmbeddableFormRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "event-email-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EventEmailRepository( $container );
+	$repo = new \Model\Services\EventEmailRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "event-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EventRepository( $container );
+	$repo = new \Model\Services\EventRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "event-template-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EventTemplateRepository( $container );
+	$repo = new \Model\Services\EventTemplateRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 
 $container->register( "event-text-message-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EventTextMessageRepository( $container );
+	$repo = new \Model\Services\EventTextMessageRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "event-type-repository", function() use ( $container ) {
-	$repo = new \Model\Services\EventTypeRepository( $container );
+	$repo = new \Model\Services\EventTypeRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "faq-repository", function() use ( $container ) {
-	$repo = new \Model\Services\FAQRepository( $container );
+	$repo = new \Model\Services\FAQRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "faq-answer-repository", function() use ( $container ) {
-	$repo = new \Model\Services\FAQAnswerRepository( $container );
+	$repo = new \Model\Services\FAQAnswerRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "group-repository", function() use ( $container ) {
-	$repo = new \Model\Services\GroupRepository( $container );
+	$repo = new \Model\Services\GroupRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "image-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ImageRepository( $container );
+	$repo = new \Model\Services\ImageRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "landing-page-repository", function() use ( $container ) {
-	$repo = new \Model\Services\LandingPageRepository( $container );
+	$repo = new \Model\Services\LandingPageRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "landing-page-template-repository", function() use ( $container ) {
-	$repo = new \Model\Services\LandingPageTemplateRepository( $container );
+	$repo = new \Model\Services\LandingPageTemplateRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "member-repository", function() use ( $container ) {
-	$repo = new \Model\Services\MemberRepository( $container );
+	$repo = new \Model\Services\MemberRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "nonce-token-repository", function() use ( $container ) {
-	$repo = new \Model\Services\NonceTokenRepository( $container );
+	$repo = new \Model\Services\NonceTokenRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "note-repository", function() use ( $container ) {
-	$repo = new \Model\Services\NoteRepository( $container );
+	$repo = new \Model\Services\NoteRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "order-repository", function() use ( $container ) {
-	$repo = new \Model\Services\OrderRepository( $container );
+	$repo = new \Model\Services\OrderRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "order-product-repository", function() use ( $container ) {
-	$repo = new \Model\Services\OrderProductRepository( $container );
+	$repo = new \Model\Services\OrderProductRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "password-reset-repository", function() use ( $container ) {
-	$repo = new \Model\Services\PasswordResetRepository( $container );
+	$repo = new \Model\Services\PasswordResetRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "phone-repository", function() use ( $container ) {
-	$repo = new \Model\Services\PhoneRepository( $container );
+	$repo = new \Model\Services\PhoneRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "product-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ProductRepository( $container );
+	$repo = new \Model\Services\ProductRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "product-account-type-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ProductAccountTypeRepository( $container );
+	$repo = new \Model\Services\ProductAccountTypeRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "program-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ProgramRepository( $container );
+	$repo = new \Model\Services\ProgramRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "prospect-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ProspectRepository( $container );
+	$repo = new \Model\Services\ProspectRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "prospect-appraisal-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ProspectAppraisalRepository( $container );
+	$repo = new \Model\Services\ProspectAppraisalRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "prospect-purchase-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ProspectPurchaseRepository( $container );
+	$repo = new \Model\Services\ProspectPurchaseRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "question-choice-repository", function() use ( $container ) {
-	$repo = new \Model\Services\QuestionChoiceRepository( $container );
+	$repo = new \Model\Services\QuestionChoiceRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "question-choice-type-repository", function() use ( $container ) {
-	$repo = new \Model\Services\QuestionChoiceTypeRepository( $container );
+	$repo = new \Model\Services\QuestionChoiceTypeRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "question-choice-weight-repository", function() use ( $container ) {
-	$repo = new \Model\Services\QuestionChoiceWeightRepository( $container );
+	$repo = new \Model\Services\QuestionChoiceWeightRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "questionnaire-repository", function() use ( $container ) {
-	$repo = new \Model\Services\QuestionnaireRepository( $container );
+	$repo = new \Model\Services\QuestionnaireRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "question-repository", function() use ( $container ) {
-	$repo = new \Model\Services\QuestionRepository( $container );
+	$repo = new \Model\Services\QuestionRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "respondent-repository", function() use ( $container ) {
-	$repo = new \Model\Services\RespondentRepository( $container );
+	$repo = new \Model\Services\RespondentRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "respondent-question-answer-repository", function() use ( $container ) {
-	$repo = new \Model\Services\RespondentQuestionAnswerRepository( $container );
+	$repo = new \Model\Services\RespondentQuestionAnswerRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "review-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ReviewRepository( $container );
+	$repo = new \Model\Services\ReviewRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "result-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ResultRepository( $container );
+	$repo = new \Model\Services\ResultRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "schedule-repository", function() use ( $container ) {
-	$repo = new \Model\Services\ScheduleRepository( $container );
+	$repo = new \Model\Services\ScheduleRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "search-repository", function() use ( $container ) {
-	$repo = new \Model\Services\SearchRepository( $container );
+	$repo = new \Model\Services\SearchRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
@@ -426,47 +615,74 @@ $container->register( "search-results-dispatcher", function() use ( $container )
 } );
 
 $container->register( "sequence-repository", function() use ( $container ) {
-	$repo = new \Model\Services\SequenceRepository( $container );
+	$repo = new \Model\Services\SequenceRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "sequence-template-repository", function() use ( $container ) {
-	$repo = new \Model\Services\SequenceTemplateRepository( $container );
+	$repo = new \Model\Services\SequenceTemplateRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "sms-message-repository", function() use ( $container ) {
-	$repo = new \Model\Services\SMSMessageRepository( $container );
+	$repo = new \Model\Services\SMSMessageRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "task-repository", function() use ( $container ) {
-	$repo = new \Model\Services\TaskRepository( $container );
+	$repo = new \Model\Services\TaskRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "text-message-repository", function() use ( $container ) {
-	$repo = new \Model\Services\TextMessageRepository( $container );
+	$repo = new \Model\Services\TextMessageRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "text-message-template-repository", function() use ( $container ) {
-	$repo = new \Model\Services\TextMessageTemplateRepository( $container );
+	$repo = new \Model\Services\TextMessageTemplateRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "transaction-repository", function() use ( $container ) {
-	$repo = new \Model\Services\TransactionRepository( $container );
+	$repo = new \Model\Services\TransactionRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "unsubscribe-repository", function() use ( $container ) {
-	$repo = new \Model\Services\UnsubscribeRepository( $container );
+	$repo = new \Model\Services\UnsubscribeRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
 $container->register( "user-repository", function() use ( $container ) {
-	$repo = new \Model\Services\UserRepository( $container );
+	$repo = new \Model\Services\UserRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 
@@ -481,12 +697,16 @@ $container->register( "user-registrar", function() use ( $container ) {
 	$registrar = new \Model\Services\UserRegistrar(
 		$container->getService( "user-repository" ),
 		$container->getService( "account-user-repository" ),
-		$container->getService( "user-mailer" ) );
+		$container->getService( "user-mailer" )
+	);
 	return $registrar;
 } );
 
 $container->register( "video-repository", function() use ( $container ) {
-	$repo = new \Model\Services\VideoRepository( $container );
+	$repo = new \Model\Services\VideoRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
 	return $repo;
 } );
 

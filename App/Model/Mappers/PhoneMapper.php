@@ -39,12 +39,12 @@ class PhoneMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $phones = [];
         $sql = $this->DB->prepare( "SELECT * FROM phone" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $phone = $entityFactory->build( "Phone" );
+            $phone = $this->entityFactory->build( "Phone" );
             $this->populatePhone( $phone, $resp );
             $phones[] = $phone;
         }

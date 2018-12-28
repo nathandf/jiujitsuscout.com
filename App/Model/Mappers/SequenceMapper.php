@@ -29,13 +29,13 @@ class SequenceMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $sequences = [];
         $sql = $this->DB->prepare( "SELECT * FROM sequence" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $sequence = $entityFactory->build( "Sequence" );
+            $sequence = $this->entityFactory->build( "Sequence" );
             $this->populate( $sequence, $resp );
             $sequences[] = $sequence;
         }
@@ -45,14 +45,14 @@ class SequenceMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $sequences = [];
         $sql = $this->DB->prepare( "SELECT * FROM sequence WHERE business_id = :business_id" );
         $sql->bindParam( "business_id", $business_id );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $sequence = $entityFactory->build( "Sequence" );
+            $sequence = $this->entityFactory->build( "Sequence" );
             $this->populate( $sequence, $resp );
             $sequences[] = $sequence;
         }
@@ -63,14 +63,14 @@ class SequenceMapper extends DataMapper
     public function mapAllFromCheckedOut()
     {
         $checked_out = 0;
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $sequences = [];
         $sql = $this->DB->prepare( "SELECT * FROM sequence WHERE checked_out = :checked_out" );
         $sql->bindParam( ":checked_out", $checked_out );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $sequence = $entityFactory->build( "Sequence" );
+            $sequence = $this->entityFactory->build( "Sequence" );
             $this->populate( $sequence, $resp );
             $sequences[] = $sequence;
         }

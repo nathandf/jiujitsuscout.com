@@ -56,12 +56,12 @@ class ProspectMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $prospects = [];
     $sql = $this->DB->prepare( "SELECT * FROM prospect" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $prospect = $entityFactory->build( "Prospect" );
+      $prospect = $this->entityFactory->build( "Prospect" );
       $this->populateProspect( $prospect, $resp );
       $prospects[] = $prospect;
     }
@@ -81,13 +81,13 @@ class ProspectMapper extends DataMapper
 
   public function mapAllFromBusinessID( $business_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $prospects = [];
     $sql = $this->DB->prepare( "SELECT * FROM prospect WHERE business_id = :business_id ORDER BY id DESC" );
     $sql->bindParam( ":business_id", $business_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $prospect = $entityFactory->build( "Prospect" );
+      $prospect = $this->entityFactory->build( "Prospect" );
       $this->populateProspect( $prospect, $resp );
       $prospects[] = $prospect;
     }
@@ -97,14 +97,14 @@ class ProspectMapper extends DataMapper
 
   public function mapAllFromTypeAndBusinessID( $type, $business_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $prospects = [];
     $sql = $this->DB->prepare( "SELECT * FROM prospect WHERE type = :type AND business_id = :business_id ORDER BY id DESC" );
     $sql->bindParam( ":type", $type );
     $sql->bindParam( ":business_id", $business_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $prospect = $entityFactory->build( "Prospect" );
+      $prospect = $this->entityFactory->build( "Prospect" );
       $this->populateProspect( $prospect, $resp );
       $prospects[] = $prospect;
     }
@@ -114,14 +114,14 @@ class ProspectMapper extends DataMapper
 
     public function mapAllFromType( $type )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $prospects = [];
         $sql = $this->DB->prepare( "SELECT * FROM prospect WHERE type = :type" );
         $sql->bindParam( ":type", $type );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $prospect = $entityFactory->build( "Prospect" );
+            $prospect = $this->entityFactory->build( "Prospect" );
             $this->populateProspect( $prospect, $resp );
             $prospects[] = $prospect;
         }
@@ -131,14 +131,14 @@ class ProspectMapper extends DataMapper
 
   public function mapAllFromStatusAndBusinessID( $status, $business_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $prospects = [];
     $sql = $this->DB->prepare( "SELECT * FROM prospect WHERE status = :status AND business_id = :business_id ORDER BY id DESC" );
     $sql->bindParam( ":status", $status );
     $sql->bindParam( ":business_id", $business_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $prospect = $entityFactory->build( "Prospect" );
+      $prospect = $this->entityFactory->build( "Prospect" );
       $this->populateProspect( $prospect, $resp );
       $prospects[] = $prospect;
     }

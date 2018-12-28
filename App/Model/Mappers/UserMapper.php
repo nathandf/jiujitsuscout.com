@@ -21,12 +21,12 @@ class UserMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $users = [];
     $sql = $this->DB->prepare( "SELECT * FROM user" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $user = $entityFactory->build( "User" );
+      $user = $this->entityFactory->build( "User" );
       $this->populateUser( $user, $resp );
       $users[] = $user;
     }
@@ -60,13 +60,13 @@ class UserMapper extends DataMapper
 
   public function mapAllFromAccountID( $account_id )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $users = [];
     $sql = $this->DB->prepare( 'SELECT * FROM user WHERE account_id = :account_id' );
     $sql->bindParam( ":account_id", $account_id );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $user = $entityFactory->build( "user" );
+      $user = $this->entityFactory->build( "user" );
       $this->populateUser( $user, $resp );
       $users[] =  $user;
     }

@@ -50,7 +50,7 @@ class ResultMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
 
         $results = [];
 
@@ -58,7 +58,7 @@ class ResultMapper extends DataMapper
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $result = $entityFactory->build( "Result" );
+            $result = $this->entityFactory->build( "Result" );
             $this->populateResult( $result, $resp );
 
             $results[] = $result;

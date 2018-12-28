@@ -7,14 +7,14 @@ class SMSMessageMapper extends DataMapper
 
   public function mapAllFromMDNPair( $mdn_pair_1, $mdn_pair_2 )
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $smsMessages = [];
     $sql = $this->DB->prepare( "SELECT * FROM sms_message WHERE mdn_pair = :mdn_pair_1 OR mdn_pair = :mdn_pair_2 ORDER BY utc_time_sent" );
     $sql->bindParam( ":mdn_pair_1", $mdn_pair_1 );
     $sql->bindParam( ":mdn_pair_2", $mdn_pair_2 );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $sms = $entityFactory->build( "SMSMessage" );
+      $sms = $this->entityFactory->build( "SMSMessage" );
       $sms->id = $resp[ "id" ];
       $sms->sender_country_code = $resp[ "sender_country_code" ];
       $sms->sender_phone_number = $resp[ "sender_phone_number" ];

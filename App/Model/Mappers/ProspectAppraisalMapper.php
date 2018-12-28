@@ -43,13 +43,13 @@ class ProspectAppraisalMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $prospectAppraisals = [];
         $sql = $this->DB->prepare( "SELECT * FROM prospect_appraisal" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $prospectAppraisal = $entityFactory->build( "ProspectAppraisal" );
+            $prospectAppraisal = $this->entityFactory->build( "ProspectAppraisal" );
             $this->populateProspectAppraisal( $prospectAppraisal, $resp );
             $prospectAppraisals[] = $prospectAppraisal;
         }

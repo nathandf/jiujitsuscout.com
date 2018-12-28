@@ -32,12 +32,12 @@ class EmbeddableFormElementTypeMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $embeddableFormElementTypes = [];
         $sql = $this->DB->prepare( "SELECT * FROM embeddable_form_element_type" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $embeddableFormElementType = $entityFactory->build( "EmbeddableFormElementType" );
+            $embeddableFormElementType = $this->entityFactory->build( "EmbeddableFormElementType" );
             $this->populate( $embeddableFormElementType, $resp );
             $embeddableFormElementTypes[] = $embeddableFormElementType;
         }

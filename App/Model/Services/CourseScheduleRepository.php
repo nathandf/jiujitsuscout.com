@@ -5,61 +5,61 @@ namespace Model\Services;
 use Model\CourseSchedule;
 use Model\Mappers\CourseScheduleMapper;
 
-class CourseScheduleRepository extends Service
+class CourseScheduleRepository extends Repository
 {
 
     public function create( $course_id, $schedule_id )
     {
-        $courseSchedule = new CourseSchedule;
-        $courseScheduleMapper = new CourseScheduleMapper( $this->container );
+        $mapper = $this->getMapper();
+        $courseSchedule = $mapper->build( $this->entityName );
         $courseSchedule->course_id = $course_id;
         $courseSchedule->schedule_id = $schedule_id;
-        $courseScheduleMapper->create( $courseSchedule );
+        $mapper->create( $courseSchedule );
 
         return $courseSchedule;
     }
 
     public function getByID( $id )
     {
-        $courseSchedule = new CourseSchedule();
-        $courseScheduleMapper = new CourseScheduleMapper( $this->container );
-        $courseScheduleMapper->mapFromID( $courseSchedule, $id );
+        $mapper = $this->getMapper();
+        $courseSchedule = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $courseSchedule, $id );
 
         return $course;
     }
 
     public function getAllByCourseID( $course_id )
     {
-        $courseScheduleMapper = new \Model\Mappers\CourseScheduleMapper( $this->container );
-        $courseSchedules = $courseScheduleMapper->mapAllFromCourseID( $course_id );
+        $mapper = $this->getMapper();
+        $courseSchedules = $mapper->mapAllFromCourseID( $course_id );
 
         return $courseSchedules;
     }
 
     public function getAllByScheduleID( $schedule_id )
     {
-        $courseScheduleMapper = new \Model\Mappers\CourseScheduleMapper( $this->container );
-        $courseSchedules = $courseScheduleMapper->mapAllFromScheduleID( $schedule_id );
+        $mapper = $this->getMapper();
+        $courseSchedules = $mapper->mapAllFromScheduleID( $schedule_id );
 
         return $courseSchedules;
     }
 
     public function removeByID( $id )
     {
-        $courseScheduleMapper = new \Model\Mappers\CourseScheduleMapper( $this->container );
-        $courseScheduleMapper->deleteByID( $id );
+        $mapper = $this->getMapper();
+        $mapper->deleteByID( $id );
     }
 
     public function removeByScheduleID( $schedule_id )
     {
-        $courseScheduleMapper = new \Model\Mappers\CourseScheduleMapper( $this->container );
-        $courseScheduleMapper->deleteByScheduleID( $schedule_id );
+        $mapper = $this->getMapper();
+        $mapper->deleteByScheduleID( $schedule_id );
     }
-    
+
     public function removeByCourseID( $id )
     {
-        $courseScheduleMapper = new \Model\Mappers\CourseScheduleMapper( $this->container );
-        $courseScheduleMapper->deleteByCourseID( $id );
+        $mapper = $this->getMapper();
+        $mapper->deleteByCourseID( $id );
     }
 
 }

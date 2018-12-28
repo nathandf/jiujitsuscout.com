@@ -29,13 +29,13 @@ class SequenceTemplateMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $sequenceTemplates = [];
         $sql = $this->DB->prepare( "SELECT * FROM sequence_template" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $sequenceTemplate = $entityFactory->build( "SequenceTemplate" );
+            $sequenceTemplate = $this->entityFactory->build( "SequenceTemplate" );
             $this->populate( $sequenceTemplate, $resp );
             $sequenceTemplates[] = $sequenceTemplate;
         }
@@ -45,14 +45,14 @@ class SequenceTemplateMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $sequenceTemplates = [];
         $sql = $this->DB->prepare( "SELECT * FROM sequence_template WHERE business_id = :business_id" );
         $sql->bindParam( "business_id", $business_id );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $sequenceTemplate = $entityFactory->build( "SequenceTemplate" );
+            $sequenceTemplate = $this->entityFactory->build( "SequenceTemplate" );
             $this->populate( $sequenceTemplate, $resp );
             $sequenceTemplates[] = $sequenceTemplate;
         }

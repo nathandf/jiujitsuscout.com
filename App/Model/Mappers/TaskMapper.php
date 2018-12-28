@@ -32,13 +32,13 @@ class TaskMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $tasks = [];
         $sql = $this->DB->prepare( "SELECT * FROM task WHERE business_id = :business_id ORDER BY due_date DESC" );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $task = $entityFactory->build( "Task" );
+            $task = $this->entityFactory->build( "Task" );
             $this->populateTask( $task, $resp );
 
             $tasks[] = $task;
@@ -49,13 +49,13 @@ class TaskMapper extends DataMapper
 
     public function mapAllFromStatus( $status )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $tasks = [];
         $sql = $this->DB->prepare( "SELECT * FROM task WHERE status = :status ORDER BY due_date DESC" );
         $sql->bindParam( ":status", $status );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $task = $entityFactory->build( "Task" );
+            $task = $this->entityFactory->build( "Task" );
             $this->populateTask( $task, $resp );
 
             $tasks[] = $task;

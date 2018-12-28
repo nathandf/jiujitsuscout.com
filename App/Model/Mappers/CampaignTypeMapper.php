@@ -7,12 +7,12 @@ class CampaignTypeMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $campaignTypes = [];
     $sql = $this->DB->prepare( "SELECT * FROM campaign_type" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $campaignType = $entityFactory->build( "CampaignType" );
+      $campaignType = $this->entityFactory->build( "CampaignType" );
       $this->populateCampaignType( $campaignType, $resp );
       $campaignTypes[] = $campaignType;
     }

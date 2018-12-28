@@ -20,12 +20,12 @@ class ClickMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $clicks = [];
         $sql = $this->DB->prepare( "SELECT * FROM click" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $click = $entityFactory->build( "Click" );
+            $click = $this->entityFactory->build( "Click" );
             $this->populateClick( $click, $resp );
             $clicks[] = $click;
         }
@@ -45,13 +45,13 @@ class ClickMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $clicks = [];
         $sql = $this->DB->prepare( "SELECT * FROM click WHERE business_id = :business_id" );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $click = $entityFactory->build( "Click" );
+            $click = $this->entityFactory->build( "Click" );
             $this->populateClick( $click, $resp );
             $clicks[] = $click;
         }
@@ -61,14 +61,14 @@ class ClickMapper extends DataMapper
 
     public function mapAllFromBusinessIDAndProperty( $business_id, $property )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $clicks = [];
         $sql = $this->DB->prepare( "SELECT * FROM click WHERE business_id = :business_id AND property = :property" );
         $sql->bindParam( ":business_id", $business_id );
         $sql->bindParam( ":property", $property );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $click = $entityFactory->build( "Click" );
+            $click = $this->entityFactory->build( "Click" );
             $this->populateClick( $click, $resp );
             $clicks[] = $click;
         }
@@ -78,7 +78,7 @@ class ClickMapper extends DataMapper
 
     public function mapAllFromBusinessIDAndPropertyAndSubType( $business_id, $property, $property_sub_type )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $clicks = [];
         $sql = $this->DB->prepare( "SELECT * FROM click WHERE business_id = :business_id AND property = :property AND property_sub_type = :property_sub_type" );
         $sql->bindParam( ":business_id", $business_id );
@@ -86,7 +86,7 @@ class ClickMapper extends DataMapper
         $sql->bindParam( ":property_sub_type", $property_sub_type );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $click = $entityFactory->build( "Click" );
+            $click = $this->entityFactory->build( "Click" );
             $this->populateClick( $click, $resp );
             $clicks[] = $click;
         }

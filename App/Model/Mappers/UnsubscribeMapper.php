@@ -43,13 +43,13 @@ class UnsubscribeMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $unsubscribes = [];
         $sql = $this->DB->prepare( "SELECT * FROM unsubscribe" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $unsubscribe = $entityFactory->build( "Unsubscribe" );
+            $unsubscribe = $this->entityFactory->build( "Unsubscribe" );
             $this->populateUnsubscribe( $unsubscribe, $resp );
             $unsubscribes[] = $unsubscribe;
         }

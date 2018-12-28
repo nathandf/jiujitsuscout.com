@@ -2,49 +2,48 @@
 
 namespace Model\Services;
 
-class SequenceTemplateRepository extends Service
+class SequenceTemplateRepository extends Repository
 {
     public function create( $business_id, $name, $description )
     {
-        $sequenceTemplate = new \Model\SequenceTemplate;
-        $sequenceTemplateMapper = new \Model\Mappers\SequenceTemplateMapper( $this->container );
+        $mapper = $this->getMapper();
+        $sequenceTemplate = $mapper->build( $this->entityName );
         $sequenceTemplate->business_id = $business_id;
         $sequenceTemplate->name = $name;
         $sequenceTemplate->description = $description;
-        $sequenceTemplate = $sequenceTemplateMapper->create( $sequenceTemplate );
+        $sequenceTemplate = $mapper->create( $sequenceTemplate );
 
         return $sequenceTemplate;
     }
 
     public function getByID( $id )
     {
-        $sequenceTemplate = new \Model\SequenceTemplate();
-        $sequenceTemplateMapper = new \Model\Mappers\SequenceTemplateMapper( $this->container );
-        $sequenceTemplateMapper->mapFromID( $sequenceTemplate, $id );
+        $mapper = $this->getMapper();
+        $sequenceTemplate = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $sequenceTemplate, $id );
 
         return $sequenceTemplate;
     }
 
     public function getAll()
     {
-        $sequenceTemplateMapper = new \Model\Mappers\SequenceTemplateMapper( $this->container );
-        $sequenceTemplates = $sequenceTemplateMapper->mapAll();
+        $mapper = $this->getMapper();
+        $sequenceTemplates = $mapper->mapAll();
 
         return $sequenceTemplates;
     }
 
     public function getAllByBusinessID( $business_id )
     {
-        $sequenceTemplateMapper = new \Model\Mappers\SequenceTemplateMapper( $this->container );
-        $sequenceTemplates = $sequenceTemplateMapper->mapAllFromBusinessID( $business_id );
+        $mapper = $this->getMapper();
+        $sequenceTemplates = $mapper->mapAllFromBusinessID( $business_id );
 
         return $sequenceTemplates;
     }
 
     public function updateByID( $id, $name, $description )
     {
-        $sequenceTemplateMapper = new \Model\Mappers\SequenceTemplateMapper( $this->container );
-        $sequenceTemplateMapper->updateByID( $id, $name, $description );
+        $mapper = $this->getMapper();
+        $mapper->updateByID( $id, $name, $description );
     }
-
 }

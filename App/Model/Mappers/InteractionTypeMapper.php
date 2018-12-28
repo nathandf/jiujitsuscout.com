@@ -7,12 +7,12 @@ class InteractionTypeMapper extends DataMapper
 
   public function mapAll()
   {
-    $entityFactory = $this->container->getService( "entity-factory" );
+    
     $interactionTypes = [];
     $sql = $this->DB->prepare( "SELECT * FROM interaction_type" );
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-      $interactionType = $entityFactory->build( "InteractionType" );
+      $interactionType = $this->entityFactory->build( "InteractionType" );
       $this->populateInteractionType( $interactionType, $resp );
       $interactionTypes[] = $interactionType;
     }

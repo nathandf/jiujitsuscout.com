@@ -15,23 +15,21 @@ use Contracts\SMSMessagerInterface;
 
 class EventTextMessageDispatcher
 {
+    public function __construct( EventTextMessageRepository $eventTextMessageRepo, TextMessageRepository $textMessageRepo, SMSMessagerInterface $smsMessager )
+    {
+        $this->eventTextMessageRepo = $eventTextMessageRepo;
+        $this->textMessageRepo = $textMessageRepo;
+        $this->smsMessager = $smsMessager;
+    }
 
-  public function __construct( EventTextMessageRepository $eventTextMessageRepo, TextMessageRepository $textMessageRepo, SMSMessagerInterface $smsMessager )
-  {
-    $this->eventTextMessageRepo = $eventTextMessageRepo;
-    $this->textMessageRepo = $textMessageRepo;
-    $this->smsMessager = $smsMessager;
-  }
+    /**
+    * @param array event_ids
+    */
 
-  /**
-   * @param array event_ids
-   */
-
-  public function dispatch( $event_id )
-  {
-    $eventTextMessage = $this->eventTextMessageRepo->getByEventID( $event_id );
-    $textMessage = $this->textMessageRepo->getByID( $eventTextMessage->text_message_id );
-    echo $textMessage->body;
-  }
-
+    public function dispatch( $event_id )
+    {
+        $eventTextMessage = $this->eventTextMessageRepo->getByEventID( $event_id );
+        $textMessage = $this->textMessageRepo->getByID( $eventTextMessage->text_message_id );
+        echo $textMessage->body;
+    }
 }

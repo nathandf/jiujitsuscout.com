@@ -32,13 +32,13 @@ class AccountMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $accounts = [];
         $sql = $this->DB->prepare( "SELECT * FROM account" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $account = $entityFactory->build( "Account" );
+            $account = $this->entityFactory->build( "Account" );
             $this->populateAccount( $account, $resp );
             $accounts[] = $account;
         }

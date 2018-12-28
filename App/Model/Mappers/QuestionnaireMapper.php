@@ -20,12 +20,12 @@ class QuestionnaireMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $questionnaires = [];
         $sql = $this->DB->prepare( "SELECT * FROM questionnaire" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $questionnaire = $entityFactory->build( "Questionnaire" );
+            $questionnaire = $this->entityFactory->build( "Questionnaire" );
             $this->populateQuestionnaire( $questionnaire, $resp );
             $questionnaires[] = $questionnaire;
         }
