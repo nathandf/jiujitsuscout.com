@@ -6,7 +6,6 @@ use Contracts\Emailable;
 
 class Email implements Emailable
 {
-    public $business_id;
     public $subject;
     public $body;
     public $sender_name;

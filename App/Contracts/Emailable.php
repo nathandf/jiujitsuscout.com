@@ -4,8 +4,10 @@ namespace Contracts;
 
 interface Emailable
 {
-	public function getSenderName();
-	public function getSenderEmail();
-	public function getRecipientName();
-	public function getRecipientEmail();
+	public $subject;
+	public $body;
+	public $sender_name;
+	public $sender_email_address;
+	public $recipient_name;
+	public $recipient_email_address;
 }
