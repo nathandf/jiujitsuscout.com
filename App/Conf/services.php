@@ -184,8 +184,32 @@ $container->register( "braintree-transaction-repository", function() use ( $cont
 	return $repo;
 } );
 
+$container->register( "business-email-repository", function() use ( $container ) {
+	$repo = new \Model\Services\BusinessEmailRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "business-sequence-repository", function() use ( $container ) {
+	$repo = new \Model\Services\BusinessSequenceRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+}
+
 $container->register( "business-repository", function() use ( $container ) {
 	$repo = new \Model\Services\BusinessRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+}
+
+$container->register( "business-text-message-repository", function() use ( $container ) {
+	$repo = new \Model\Services\BusinessTextMessageRepository(
 	    $container->getService( "dao" ),
 	    $container->getService( "entity-factory" )
 	);
@@ -385,6 +409,14 @@ $container->register( "group-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "group-sequence-template-repository", function() use ( $container ) {
+	$repo = new \Model\Services\GroupSequenceTemplateRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "image-repository", function() use ( $container ) {
 	$repo = new \Model\Services\ImageRepository(
 	    $container->getService( "dao" ),
@@ -395,6 +427,14 @@ $container->register( "image-repository", function() use ( $container ) {
 
 $container->register( "landing-page-repository", function() use ( $container ) {
 	$repo = new \Model\Services\LandingPageRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "landing-page-sequence-template-repository", function() use ( $container ) {
+	$repo = new \Model\Services\LandingPageSequenceTemplateRepository(
 	    $container->getService( "dao" ),
 	    $container->getService( "entity-factory" )
 	);
@@ -491,6 +531,14 @@ $container->register( "program-repository", function() use ( $container ) {
 
 $container->register( "prospect-repository", function() use ( $container ) {
 	$repo = new \Model\Services\ProspectRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "prospect-sequence-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ProspectSequenceRepository(
 	    $container->getService( "dao" ),
 	    $container->getService( "entity-factory" )
 	);
