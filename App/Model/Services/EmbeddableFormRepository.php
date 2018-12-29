@@ -4,7 +4,6 @@ namespace Model\Services;
 
 class EmbeddableFormRepository extends Repository
 {
-
     public function create( $business_id, $name, $offer = null )
     {
         $mapper = $this->getMapper();
@@ -49,5 +48,4 @@ class EmbeddableFormRepository extends Repository
         $mapper = $this->getMapper();
         $mapper->deleteByID( $id );
     }
-
 }

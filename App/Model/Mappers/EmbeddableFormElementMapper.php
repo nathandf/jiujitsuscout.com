@@ -6,7 +6,6 @@ use Model\EmbeddableFormElement;
 
 class EmbeddableFormElementMapper extends DataMapper
 {
-
     public function create( \Model\EmbeddableFormElement $embeddableFormElement )
     {
         $id = $this->insert(
@@ -44,7 +43,7 @@ class EmbeddableFormElementMapper extends DataMapper
 
     public function mapAllFromEmbeddableFormID( $embeddable_form_id )
     {
-        
+
         $embeddableFormElements = [];
         $sql = $this->DB->prepare( "SELECT * FROM embeddable_form_element WHERE embeddable_form_id = :embeddable_form_id" );
         $sql->bindParam( ":embeddable_form_id", $embeddable_form_id );

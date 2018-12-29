@@ -28,6 +28,10 @@ abstract class Repository
 
     protected function getMapper()
     {
+        if ( isset( $this->mapper ) == false ) {
+            throw new \Exception( "'Mapper' is not set" );
+        }
+
         return $this->mapper;
     }
 
@@ -63,5 +67,33 @@ abstract class Repository
     protected function setMapperNamespace( $namespace )
     {
         $this->mapperNamespace = $namespace;
+    }
+
+    // Basic CRUD
+    public function insert( array $columns, array $values )
+    {
+        $mapper = $this->getMapper();
+        $entity = $mapper->build( $this->entityName );
+
+        $mapper->_insert( $columns, $values );
+    }
+
+    public function get( array $columns, array $key_values = [] )
+    {
+        $mapper = $this->getMapper();
+        $result = $mapper->get( $columns, $key_values );
+
+        return $result;
+    }
+
+    // public function update()
+    // {
+    //
+    // }
+
+    public function delete( array $keys, array $values )
+    {
+        $mapper = $this->getMapper();
+        $mapper->delete( $keys, $values );
     }
 }
