@@ -198,7 +198,7 @@ $container->register( "business-sequence-repository", function() use ( $containe
 	    $container->getService( "entity-factory" )
 	);
 	return $repo;
-}
+} );
 
 $container->register( "business-repository", function() use ( $container ) {
 	$repo = new \Model\Services\BusinessRepository(
@@ -206,7 +206,7 @@ $container->register( "business-repository", function() use ( $container ) {
 	    $container->getService( "entity-factory" )
 	);
 	return $repo;
-}
+} );
 
 $container->register( "business-text-message-repository", function() use ( $container ) {
 	$repo = new \Model\Services\BusinessTextMessageRepository(
