@@ -13,7 +13,7 @@ class LandingPageTemplateMapper extends DataMapper
     $sql->execute();
     while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
       $landingPageTemplate = $this->entityFactory->build( "LandingPageTemplate" );
-      $this->populateLandingPageTemplate( $landingPageTemplate, $resp );
+      $this->populate( $landingPageTemplate, $resp );
       $landingPageTemplates[] = $landingPageTemplate;
     }
 
@@ -26,7 +26,7 @@ class LandingPageTemplateMapper extends DataMapper
     $sql->bindParam( ":id", $id );
     $sql->execute();
     $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-    $this->populateLandingPageTemplate( $landingPageTemplate, $resp );
+    $this->populate( $landingPageTemplate, $resp );
     return $landingPageTemplate;
   }
 

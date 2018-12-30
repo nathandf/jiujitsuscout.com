@@ -6,7 +6,6 @@ use Model\Unsubscribe;
 
 class UnsubscribeMapper extends DataMapper
 {
-
     public function create( \Model\Unsubscribe $unsubscribe )
     {
         $id = $this->insert(
@@ -25,7 +24,7 @@ class UnsubscribeMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateUnsubscribe( $unsubscribe, $resp );
+        $this->populate( $unsubscribe, $resp );
 
         return $unsubscribe;
     }
@@ -36,31 +35,23 @@ class UnsubscribeMapper extends DataMapper
         $sql->bindParam( ":email", $email );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateUnsubscribe( $unsubscribe, $resp );
+        $this->populate( $unsubscribe, $resp );
 
         return $unsubscribe;
     }
 
     public function mapAll()
     {
-        
         $unsubscribes = [];
         $sql = $this->DB->prepare( "SELECT * FROM unsubscribe" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $unsubscribe = $this->entityFactory->build( "Unsubscribe" );
-            $this->populateUnsubscribe( $unsubscribe, $resp );
+            $this->populate( $unsubscribe, $resp );
             $unsubscribes[] = $unsubscribe;
         }
 
         return $unsubscribes;
     }
-
-    private function populateUnsubscribe( \Model\Unsubscribe $unsubscribe, $data )
-    {
-        $unsubscribe->id = $data[ "id" ];
-        $unsubscribe->email = $data[ "email" ];
-    }
-
 }

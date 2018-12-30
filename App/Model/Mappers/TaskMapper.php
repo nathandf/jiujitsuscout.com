@@ -6,7 +6,6 @@ use Model\Task;
 
 class TaskMapper extends DataMapper
 {
-
     public function create( \Model\Task $task )
     {
         $id = $this->insert(
@@ -25,21 +24,21 @@ class TaskMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateTask( $task, $resp );
+        $this->populate( $task, $resp );
 
         return $task;
     }
 
     public function mapAllFromBusinessID( $business_id )
     {
-        
         $tasks = [];
         $sql = $this->DB->prepare( "SELECT * FROM task WHERE business_id = :business_id ORDER BY due_date DESC" );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $task = $this->entityFactory->build( "Task" );
-            $this->populateTask( $task, $resp );
+            $this->populate( $task, $resp );
 
             $tasks[] = $task;
         }
@@ -49,14 +48,14 @@ class TaskMapper extends DataMapper
 
     public function mapAllFromStatus( $status )
     {
-        
         $tasks = [];
         $sql = $this->DB->prepare( "SELECT * FROM task WHERE status = :status ORDER BY due_date DESC" );
         $sql->bindParam( ":status", $status );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $task = $this->entityFactory->build( "Task" );
-            $this->populateTask( $task, $resp );
+            $this->populate( $task, $resp );
 
             $tasks[] = $task;
         }
@@ -102,18 +101,4 @@ class TaskMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
     }
-
-    public function populateTask( $task, $data )
-    {
-        $task->id                          = $data[ "id" ];
-        $task->business_id                 = $data[ "business_id" ];
-        $task->assignee_user_id            = $data[ "assignee_user_id" ];
-        $task->created_by_user_id          = $data[ "created_by_user_id" ];
-        $task->due_date                    = $data[ "due_date" ];
-        $task->title                       = $data[ "title" ];
-        $task->message                     = $data[ "message" ];
-        $task->remind_status               = $data[ "remind_status" ];
-        $task->status                      = $data[ "status" ];
-    }
-
 }

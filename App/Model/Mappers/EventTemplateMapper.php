@@ -19,7 +19,6 @@ class EventTemplateMapper extends DataMapper
 
     public function mapAll()
     {
-        
         $eventTemplates = [];
         $sql = $this->DB->prepare( "SELECT * FROM event_template" );
         $sql->execute();
@@ -35,7 +34,6 @@ class EventTemplateMapper extends DataMapper
 
     public function mapAllFromSequenceTemplateID( $sequence_template_id )
     {
-        
         $eventTemplates = [];
         $sql = $this->DB->prepare( "SELECT * FROM event_template WHERE sequence_template_id = :sequence_template_id ORDER BY placement ASC" );
         $sql->bindParam( ":sequence_template_id", $sequence_template_id );
@@ -66,8 +64,6 @@ class EventTemplateMapper extends DataMapper
         if ( !in_array( $direction, [ "up", "down" ] ) ) {
             throw new \Exception( "\"$direction\" is not a valid direct. It must be either \"up\" or \"down\"." );
         }
-
-        
 
         // Get event template by id
         $eventTemplate = $this->entityFactory->build( "EventTemplate" );

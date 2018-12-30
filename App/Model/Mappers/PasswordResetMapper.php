@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class PasswordResetMapper extends DataMapper
 {
-
     public function create( \Model\PasswordReset $passwordReset )
     {
         $id = $this->insert(
@@ -20,14 +19,13 @@ class PasswordResetMapper extends DataMapper
 
     public function mapAll()
     {
-        
         $passwordResets = [];
         $sql = $this->DB->prepare( "SELECT * FROM password_reset" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $passwordReset = $this->entityFactory->build( "PasswordReset" );
-            $this->populatePasswordReset( $passwordReset, $resp );
+            $this->populate( $passwordReset, $resp );
             $passwordResets[] = $passwordReset;
         }
 
@@ -40,7 +38,7 @@ class PasswordResetMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populatePasswordReset( $passwordReset, $resp );
+        $this->populate( $passwordReset, $resp );
 
         return $passwordReset;
     }
@@ -51,16 +49,8 @@ class PasswordResetMapper extends DataMapper
         $sql->bindParam( ":nonce_token_id", $nonce_token_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populatePasswordReset( $passwordReset, $resp );
+        $this->populate( $passwordReset, $resp );
 
         return $passwordReset;
     }
-
-    private function populatePasswordReset( \Model\PasswordReset $passwordReset, $data )
-    {
-        $passwordReset->id             = $data[ "id" ];
-        $passwordReset->email          = $data[ "email" ];
-        $passwordReset->nonce_token_id = $data[ "nonce_token_id" ];
-    }
-
 }

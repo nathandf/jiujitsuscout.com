@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class CurrencyMapper extends DataMapper
 {
-
     public function mapAll()
     {
 

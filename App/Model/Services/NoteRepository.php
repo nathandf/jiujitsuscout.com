@@ -4,7 +4,6 @@ namespace Model\Services;
 
 class NoteRepository extends Repository
 {
-
     public function save( \Model\Note $note )
     {
         $mapper = $this->getMapper();
@@ -49,7 +48,7 @@ class NoteRepository extends Repository
     public function removeByID( $id )
     {
         $mapper = $this->getMapper();
-        $mapper->delete( $id );
+        $mapper->delete( [ "id" ], [ $id ] );
     }
 
     public function removeAllByAppointmentID( $id )
@@ -57,5 +56,4 @@ class NoteRepository extends Repository
         $mapper = $this->getMapper();
         $mapper->deleteAllByAppointmentID( $id );
     }
-
 }

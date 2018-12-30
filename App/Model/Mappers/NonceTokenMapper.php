@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class NonceTokenMapper extends DataMapper
 {
-
     public function create( \Model\NonceToken $nonceToken )
     {
         $id = $this->insert(
@@ -20,14 +19,14 @@ class NonceTokenMapper extends DataMapper
 
     public function mapAll()
     {
-        
+
         $nonceTokens = [];
         $sql = $this->DB->prepare( "SELECT * FROM nonce_token" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $nonceToken = $this->entityFactory->build( "NonceToken" );
-            $this->populateNonceToken( $nonceToken, $resp );
+            $this->populate( $nonceToken, $resp );
             $nonceTokens[] = $nonceToken;
         }
 
@@ -40,7 +39,7 @@ class NonceTokenMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateNonceToken( $nonceToken, $resp );
+        $this->populate( $nonceToken, $resp );
 
         return $nonceToken;
     }
@@ -51,7 +50,7 @@ class NonceTokenMapper extends DataMapper
         $sql->bindParam( ":value", $value );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateNonceToken( $nonceToken, $resp );
+        $this->populate( $nonceToken, $resp );
 
         return $nonceToken;
     }
@@ -62,12 +61,4 @@ class NonceTokenMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
     }
-
-    private function populateNonceToken( \Model\NonceToken $nonceToken, $data )
-    {
-        $nonceToken->id         = $data[ "id" ];
-        $nonceToken->value      = $data[ "value" ];
-        $nonceToken->expiration = $data[ "expiration" ];
-    }
-
 }

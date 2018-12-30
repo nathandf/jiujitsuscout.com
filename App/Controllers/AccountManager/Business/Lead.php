@@ -13,7 +13,6 @@ class Lead extends Controller
     private $userRepo;
     private $user;
     private $prospectRepo;
-    private $smsMessageRepo;
 
     public function before()
     {
@@ -26,7 +25,6 @@ class Lead extends Controller
         $userRepo = $this->load( "user-repository" );
         $phoneRepo = $this->load( "phone-repository" );
         $prospectRepo = $this->load( "prospect-repository" );
-        $this->smsMessageRepo = $this->load( "sms-message-repository" );
         $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
         $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
         $currencyRepo = $this->load( "currency-repository" );

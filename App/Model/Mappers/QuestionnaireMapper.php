@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class QuestionnaireMapper extends DataMapper
 {
-
     public function create( \Model\Questionnaire $questionnaire )
     {
         $id = $this->insert(
@@ -20,13 +19,13 @@ class QuestionnaireMapper extends DataMapper
 
     public function mapAll()
     {
-        
         $questionnaires = [];
         $sql = $this->DB->prepare( "SELECT * FROM questionnaire" );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $questionnaire = $this->entityFactory->build( "Questionnaire" );
-            $this->populateQuestionnaire( $questionnaire, $resp );
+            $this->populate( $questionnaire, $resp );
             $questionnaires[] = $questionnaire;
         }
 
@@ -39,16 +38,8 @@ class QuestionnaireMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateQuestionnaire( $questionnaire, $resp );
+        $this->populate( $questionnaire, $resp );
 
         return $questionnaire;
     }
-
-    private function populateQuestionnaire( \Model\Questionnaire $questionnaire, $data )
-    {
-        $questionnaire->id          = $data[ "id" ];
-        $questionnaire->name        = $data[ "name" ];
-        $questionnaire->description = $data[ "description" ];
-    }
-
 }

@@ -61,6 +61,6 @@ class OrderRepository extends Repository
     public function removeByID( $id )
     {
         $mapper = $this->getMapper();
-        $mapper->delete( $id );
+        $mapper->delete( [ "id" ], [ $id ] );
     }
 }

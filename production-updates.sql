@@ -1,0 +1,11 @@
+CREATE TABLE `email_template` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `name` VARCHAR(256) NOT NULL , `description` VARCHAR(1024) NOT NULL , `subject` VARCHAR(512) NOT NULL , `body` MEDIUMTEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `sequence_template` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `name` VARCHAR(256) NOT NULL , `description` MEDIUMTEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `event_template` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `sequence_template_id` BIGINT NOT NULL , `event_type_id` BIGINT NOT NULL , `email_template_id` BIGINT NULL DEFAULT NULL , `text_message_template_id` BIGINT NULL DEFAULT NULL , `wait_duration` BIGINT NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `text_message_template` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `name` VARCHAR(256) NOT NULL , `description` VARCHAR(1024) NOT NULL , `body` VARCHAR(1024) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `event_template` ADD `placement` BIGINT NOT NULL AFTER `wait_duration`;
+CREATE TABLE `business_email` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `email_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `business_sequence` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `sequence_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `business_text_message` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `text_message` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `group_sequence_template` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `group_id` BIGINT NOT NULL , `sequence_template_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `landing_page_sequence_template` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `landing_page_id` BIGINT NOT NULL , `sequence_template_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `prospect_sequence` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `prospect_id` BIGINT NOT NULL , `sequence_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

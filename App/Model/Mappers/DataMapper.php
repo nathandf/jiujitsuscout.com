@@ -67,7 +67,7 @@ abstract class DataMapper implements DataMapperInterface
         $columns_query = $this->formatQueryColumns( $cols_to_get );
         $where_query = $this->formatQueryWhere( $key_values );
 
-        $query = $query . $columns_query . " FROM " . $table . $where_query;
+        $query = $query . $columns_query . " FROM " . "`" . $table . "`" . $where_query;
 
         $sql = $this->DB->prepare( $query );
 
@@ -116,7 +116,7 @@ abstract class DataMapper implements DataMapperInterface
         }
 
         $table = $this->getTable();
-        $query = "DELETE FROM " . $table . $this->formatQueryWhereKeyValuePairs( $keys, $values );
+        $query = "DELETE FROM " . "`" . $table . "`" . $this->formatQueryWhereKeyValuePairs( $keys, $values );
 
         $sql = $this->DB->prepare( $query );
 

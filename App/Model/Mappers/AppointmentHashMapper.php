@@ -6,7 +6,6 @@ use Model\AppointmentHash;
 
 class AppointmentHashMapper extends DataMapper
 {
-
     public function create( AppointmentHash $appointmentHash )
     {
         $id = $this->insert(
@@ -25,7 +24,7 @@ class AppointmentHashMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateAppointmentHash( $appointmentHash, $resp );
+        $this->populate( $appointmentHash, $resp );
 
         return $appointmentHash;
     }
@@ -36,7 +35,7 @@ class AppointmentHashMapper extends DataMapper
         $sql->bindParam( ":hash", $hash );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateAppointmentHash( $appointmentHash, $resp );
+        $this->populate( $appointmentHash, $resp );
 
         return $appointmentHash;
     }
@@ -54,12 +53,4 @@ class AppointmentHashMapper extends DataMapper
         $sql->bindParam( ":hash", $hash );
         $sql->execute();
     }
-
-  public function populateAppointmentHash( $appointmentHash, $data )
-  {
-    $appointmentHash->id                          = $data[ "id" ];
-    $appointmentHash->appointment_id              = $data[ "appointment_id" ];
-    $appointmentHash->hash                        = $data[ "hash" ];
-  }
-
 }

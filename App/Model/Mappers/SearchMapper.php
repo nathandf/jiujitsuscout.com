@@ -4,19 +4,15 @@ namespace Model\Mappers;
 
 class SearchMapper extends DataMapper
 {
-
     public function create( \Model\Search $search )
     {
         $id = $this->insert(
-
             "search",
-
             [
                 "ip",
                 "query",
                 "time"
             ],
-
             [
                 $search->ip,
                 $search->query,
@@ -34,15 +30,13 @@ class SearchMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateSearch( $search, $resp );
+        $this->populate( $search, $resp );
 
         return $search;
     }
 
     public function mapAll()
     {
-        
-
         $searches = [];
 
         $sql = $this->DB->prepare( "SELECT * FROM `search`" );
@@ -50,20 +44,11 @@ class SearchMapper extends DataMapper
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $search = $this->entityFactory->build( "Search" );
-            $this->populateSearch( $search, $resp );
+            $this->populate( $search, $resp );
 
             $searches[] = $search;
         }
 
         return $searches;
     }
-
-    public function populateSearch( $search, $data )
-    {
-        $search->id                 = $data[ "id" ];
-        $search->ip                 = $data[ "ip" ];
-        $search->query              = $data[ "query" ];
-        $search->time               = $data[ "time" ];
-    }
-
 }

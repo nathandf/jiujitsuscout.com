@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class RespondentMapper extends DataMapper
 {
-
     public function create( \Model\Respondent $respondent )
     {
         $id = $this->insert(
@@ -20,13 +19,14 @@ class RespondentMapper extends DataMapper
 
     public function mapAll()
     {
-        
+
         $respondents = [];
         $sql = $this->DB->prepare( "SELECT * FROM respondent" );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $respondent = $this->entityFactory->build( "Respondent" );
-            $this->populateRespondent( $respondent, $resp );
+            $this->populate( $respondent, $resp );
             $respondents[] = $respondent;
         }
 
@@ -39,7 +39,7 @@ class RespondentMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateRespondent( $respondent, $resp );
+        $this->populate( $respondent, $resp );
 
         return $respondent;
     }
@@ -50,7 +50,7 @@ class RespondentMapper extends DataMapper
         $sql->bindParam( ":prospect_id", $prospect_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateRespondent( $respondent, $resp );
+        $this->populate( $respondent, $resp );
 
         return $respondent;
     }
@@ -61,7 +61,7 @@ class RespondentMapper extends DataMapper
         $sql->bindParam( ":questionnaire_id", $questionnaire_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateRespondent( $respondent, $resp );
+        $this->populate( $respondent, $resp );
 
         return $respondent;
     }
@@ -72,7 +72,7 @@ class RespondentMapper extends DataMapper
         $sql->bindParam( ":token", $token );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateRespondent( $respondent, $resp );
+        $this->populate( $respondent, $resp );
 
         return $respondent;
     }
@@ -91,15 +91,4 @@ class RespondentMapper extends DataMapper
     {
         $this->update( "respondent", "questionnaire_complete", $value, "id", $id );
     }
-
-    private function populateRespondent( \Model\Respondent $respondent, $data )
-    {
-        $respondent->id                      = $data[ "id" ];
-        $respondent->questionnaire_id        = $data[ "questionnaire_id" ];
-        $respondent->questionnaire_complete  = $data[ "questionnaire_complete" ];
-        $respondent->last_question_id        = $data[ "last_question_id" ];
-        $respondent->prospect_id             = $data[ "prospect_id" ];
-        $respondent->token                   = $data[ "token" ];
-    }
-
 }

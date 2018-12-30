@@ -4,16 +4,15 @@ namespace Model\Mappers;
 
 class AccountTypeMapper extends DataMapper
 {
-
     public function mapAll()
     {
-        
+
         $accountTypes = [];
         $sql = $this->DB->prepare( "SELECT * FROM account_type" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $accountType = $this->entityFactory->build( "AccountType" );
-            $this->populateAccountType( $accountType, $resp );
+            $this->populate( $accountType, $resp );
             $accountTypes[] = $accountType;
         }
 
@@ -27,17 +26,8 @@ class AccountTypeMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateAccountType( $accountType, $resp );
+        $this->populate( $accountType, $resp );
 
         return $accountType;
     }
-
-    public function populateAccountType( $accountType, $data )
-    {
-        $accountType->id               = $data[ "id" ];
-        $accountType->name             = $data[ "name" ];
-        $accountType->description      = $data[ "description" ];
-        $accountType->max_users        = $data[ "max_users" ];
-    }
-
 }

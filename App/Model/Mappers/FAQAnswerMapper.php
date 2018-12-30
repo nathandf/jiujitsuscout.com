@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class FAQAnswerMapper extends DataMapper
 {
-
     public function create( \Model\FAQAnswer $faqAnswer )
     {
         $id = $this->insert(
@@ -20,13 +19,13 @@ class FAQAnswerMapper extends DataMapper
 
     public function mapAll()
     {
-        
+
         $faqAnswers = [];
         $sql = $this->DB->prepare( "SELECT * FROM faq_answer" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $faqAnswer = $this->entityFactory->build( "FAQAnswer" );
-            $this->populateFAQAnswer( $faqAnswer, $resp );
+            $this->populate( $faqAnswer, $resp );
             $faqAnswers[] = $faqAnswer;
         }
 
@@ -35,14 +34,14 @@ class FAQAnswerMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        
         $faqAnswers = [];
         $sql = $this->DB->prepare( "SELECT * FROM faq_answer WHERE business_id = :business_id" );
         $sql->bindParam( "business_id", $business_id );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $faqAnswer = $this->entityFactory->build( "FAQAnswer" );
-            $this->populateFAQAnswer( $faqAnswer, $resp );
+            $this->populate( $faqAnswer, $resp );
             $faqAnswers[] = $faqAnswer;
         }
 
@@ -55,7 +54,8 @@ class FAQAnswerMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateFAQAnswer( $faqAnswer, $resp );
+        $this->populate( $faqAnswer, $resp );
+
         return $faqAnswer;
     }
 
@@ -66,7 +66,8 @@ class FAQAnswerMapper extends DataMapper
         $sql->bindParam( ":faq_id", $faq_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateFAQAnswer( $faqAnswer, $resp );
+        $this->populate( $faqAnswer, $resp );
+
         return $faqAnswer;
     }
 
@@ -78,13 +79,4 @@ class FAQAnswerMapper extends DataMapper
         $sql->bindParam( ":text", $text );
         $sql->execute();
     }
-
-    private function populateFAQAnswer( \Model\FAQAnswer $faqAnswer, $data )
-    {
-        $faqAnswer->id = $data[ "id" ];
-        $faqAnswer->business_id = $data[ "business_id" ];
-        $faqAnswer->faq_id = $data[ "faq_id" ];
-        $faqAnswer->text = $data[ "text" ];
-    }
-
 }

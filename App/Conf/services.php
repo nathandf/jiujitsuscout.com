@@ -678,14 +678,6 @@ $container->register( "sequence-template-repository", function() use ( $containe
 	return $repo;
 } );
 
-$container->register( "sms-message-repository", function() use ( $container ) {
-	$repo = new \Model\Services\SMSMessageRepository(
-	    $container->getService( "dao" ),
-	    $container->getService( "entity-factory" )
-	);
-	return $repo;
-} );
-
 $container->register( "task-repository", function() use ( $container ) {
 	$repo = new \Model\Services\TaskRepository(
 	    $container->getService( "dao" ),
