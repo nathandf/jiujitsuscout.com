@@ -329,10 +329,10 @@ class Business extends Controller
         $countryRepo = $this->load( "country-repository" );
 
         // Get all coutnry data
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         // Set current coutnry
-        $country = $countryRepo->getByISO( $this->account->country );
+        $country = $countryRepo->get( [ "*" ], [ "iso" => $this->account->country ], "single" );
 
         // Groups and group IDs
         $groups = $groupRepo->getAllByBusinessID( $this->business->id );

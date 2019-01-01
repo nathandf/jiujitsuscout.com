@@ -59,7 +59,7 @@ class Settings extends Controller
         $businessRepo = $this->load( "business-repository" );
         $geocoder = $this->load( "geocoder" );
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         if ( $input->exists() && $inputValidator->validate(
 
@@ -274,7 +274,7 @@ class Settings extends Controller
         $factory = $this->load( "entity-factory" );
         $businessRepo = $this->load( "business-repository" );
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         $phone = $phoneRepo->getByID( $this->business->phone_id );
 

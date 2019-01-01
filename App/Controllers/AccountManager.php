@@ -25,6 +25,7 @@ class AccountManager extends Controller
 		if ( !$userAuth->userValidate() ) {
 			$this->view->redirect( "account-manager/sign-in" );
 		}
+
 		// User is logged in. Get the user object from the UserAuthenticator service
 		$this->user = $userAuth->getUser();
 
@@ -188,12 +189,9 @@ class AccountManager extends Controller
 		$input = $this->load( "input" );
 		$inputValidator = $this->load( "input-validator" );
 		$userRepo = $this->load( "user-repository" );
+		$businessRepo = $this->load( "business-repository" );
 
-		$business_ids = [];
-
-		foreach ( $this->businesses as $business ) {
-			$business_ids[] = $business->id;
-		}
+		$business_ids = $businessRepo->get( [ "id" ], [], "raw" );
 
 		// If form is submitted, set save the current business id and redirect to dashboard
 		if ( $input->exists( "get" ) && $inputValidator->validate(
@@ -279,9 +277,9 @@ class AccountManager extends Controller
 			$this->view->render403();
 		}
 
-		$country = $countryRepo->getByISO( $this->account->country );
+		$country = $countryRepo->get( [ "*" ], [ "iso" => $this->account->country ], "single" );
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
 		$phone = $phoneRepo->getByID( $this->user->phone_id );
 

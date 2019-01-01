@@ -344,9 +344,9 @@ class Lead extends Controller
 
         $phone = $phoneRepo->getByID( $this->prospect->phone_id );
 
-        $country = $countryRepo->getByISO( $this->account->country );
+        $country = $countryRepo->get( [ "*" ], [ "iso" => $this->account->country ], "single" );
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         $prospectsAll = $prospectRepo->getAllByBusinessID( $this->business->id );
         $prospect_ids = [];

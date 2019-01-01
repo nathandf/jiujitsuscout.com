@@ -247,8 +247,8 @@ class Member extends Controller
         $phoneRepo = $this->load( "phone-repository" );
         $countryRepo = $this->load( "country-repository" );
 
-        $country = $countryRepo->getByISO( $this->account->country );
-        $countries = $countryRepo->getAll();
+        $country = $countryRepo->get( [ "*" ], [ "iso" => $this->account->country ], "single" );
+        $countries = $countryRepo->get( [ "*" ] );
 
         if ( $input->exists() && $input->issetField( "register_member" ) && $inputValidator->validate(
 
@@ -434,9 +434,9 @@ class Member extends Controller
 
         $phone = $phoneRepo->getByID( $this->member->phone_id );
 
-        $country = $countryRepo->getByISO( $this->account->country );
+        $country = $countryRepo->get( [ "*" ], [ "iso" => $this->account->country ], "single" );
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         if ( $input->exists() && $input->issetField( "update_member" ) && $inputValidator->validate( $input,
                 [

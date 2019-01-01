@@ -9,7 +9,8 @@ abstract class DataMapper implements DataMapperInterface
     protected $validReturnTypes = [
         "single",
         "array",
-        "json"
+        "json",
+        "raw"
     ];
     protected $DB;
     protected $table;
@@ -86,6 +87,25 @@ abstract class DataMapper implements DataMapperInterface
 
         $entities = [];
 
+        if ( $return_type == "raw" && $cols_to_get != "*" ) {
+            $data = [];
+            if ( count( $cols_to_get ) > 1 ) {
+                while ( $response = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+                    foreach ( $cols_to_get as $col ) {
+                        $data[] = $response;
+                    }
+                }
+
+                return $data;
+            }
+
+            while ( $response = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+                $data[] = $response[ $cols_to_get[ 0 ] ];
+            }
+
+            return $data;
+        }
+
         while ( $response = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $entity = $this->build( $this->formatEntityNameFromTable() );
             $this->populate( $entity, $response );
@@ -94,17 +114,12 @@ abstract class DataMapper implements DataMapperInterface
 
         switch ( $return_type ) {
             case "single":
-                $return = $entities[ 0 ];
-                break;
+                return $entities[ 0 ];
             case "array":
-                $return = $entities;
-                break;
+                return $entities;
             case "json":
-                $return = json_encode( $entities );
-                break;
+                return json_encode( $entities );
         }
-
-        return $return;
     }
 
     public function update( $table, $set_column, $set_column_value, $where_column, $where_column_value )
@@ -230,7 +245,7 @@ abstract class DataMapper implements DataMapperInterface
 
         $iteration = 1;
         foreach ( $key_values as $key => $value ) {
-            if ( is_null( $value ) || $value == "" ) {
+            if ( is_null( $value ) || $value === "" ) {
                 throw new \Exception( "Value cannot be empty: key => {$key}, value = ?" );
             }
 

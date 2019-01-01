@@ -61,7 +61,7 @@ class Settings extends Controller
         // Load user emails to veryify submitted email address is unique
         $user_emails = $userRepo->getAllEmails();
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         if ( $input->exists() && $inputValidator->validate(
 

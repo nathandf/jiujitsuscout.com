@@ -7,11 +7,6 @@ use Model\Mappers\DataMapper;
 
 abstract class Repository
 {
-    protected $validResponseReturnTypes = [
-        "object",
-        "array",
-        "json"
-    ];
     protected $entityName;
     protected $mapper;
     protected $mapperNamespace;
@@ -92,7 +87,7 @@ abstract class Repository
         if ( func_num_args() > 2 ) {
             $return_type = func_get_args()[ 2 ];
         }
-        
+
         $mapper = $this->getMapper();
         $result = $mapper->get( $columns, $key_values, $return_type );
 

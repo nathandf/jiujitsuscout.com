@@ -30,7 +30,7 @@ class Partner extends Controller
 		}
 
 		// Get country details according to iso code returned by ip info. Default to US
-		$this->country = $countryRepo->getByISO( $iso );
+		$this->country = $countryRepo->get( [ "*" ], [ "iso" => $iso ], "single" );
 
 		// Get currency details by name. Default USD
 		$this->currency = $currencyRepo->getByCountry( $this->country->name );
@@ -132,7 +132,7 @@ class Partner extends Controller
 		$emails = $userRepo->getAllEmails();
 
 		// Get all countries for phone code
-		$countries = $countryRepo->getAll();
+		$countries = $countryRepo->get( [ "*" ] );
 
 		// If gym name was submitted from previous page, insert that value into gym_name input
 		$gym_name = null;

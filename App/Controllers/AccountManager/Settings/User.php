@@ -76,7 +76,7 @@ class User extends Controller
             $this->view->render403();
         }
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         // Load in the user refenced by the id param
         $userToEdit = $userRepo->getByID( $this->params[ "id" ] );

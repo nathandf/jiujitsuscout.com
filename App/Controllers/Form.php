@@ -94,7 +94,7 @@ class Form extends Controller
                 switch ( $key ) {
 
                     case "phone_number":
-                        $country = $countryRepo->getByISO( $business->country );
+                        $country = $countryRepo->get( [ "*" ], [ "iso" => $business->country ], "single" );
                         $phone = $phoneRepo->create( $country->phonecode, $input->get( $key ) );
                         $prospectInfo[ "phone_id" ] = $phone->id;
                         $hasPhone = true;
