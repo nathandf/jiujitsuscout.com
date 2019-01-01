@@ -7,6 +7,11 @@ use Model\Mappers\DataMapper;
 
 abstract class Repository
 {
+    protected $validResponseReturnTypes = [
+        "object",
+        "array",
+        "json"
+    ];
     protected $entityName;
     protected $mapper;
     protected $mapperNamespace;
@@ -78,10 +83,18 @@ abstract class Repository
         $mapper->_insert( $columns, $values );
     }
 
-    public function get( array $columns, array $key_values = [] )
+    public function get( array $columns, $key_values = [], $return_type = "array" )
     {
+        if ( !is_array( $key_values ) ) {
+            throw new \Exception( "key_values argument must be an array" );
+        }
+
+        if ( func_num_args() > 2 ) {
+            $return_type = func_get_args()[ 2 ];
+        }
+        
         $mapper = $this->getMapper();
-        $result = $mapper->get( $columns, $key_values );
+        $result = $mapper->get( $columns, $key_values, $return_type );
 
         return $result;
     }

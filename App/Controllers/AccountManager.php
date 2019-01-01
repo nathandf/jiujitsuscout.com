@@ -27,19 +27,23 @@ class AccountManager extends Controller
 		}
 		// User is logged in. Get the user object from the UserAuthenticator service
 		$this->user = $userAuth->getUser();
+
 		// Get AccountUser reference
-		$accountUser = $accountUserRepo->getByUserID( $this->user->id );
+		$accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
+
 		// Grab account details
-		$this->account = $accountRepo->getByID( $accountUser->account_id );
+		$this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
 
 		// Load account type details
-		$this->accountType = $accountTypeRepo->getByID( $this->account->account_type_id );
+		$this->accountType = $accountTypeRepo->get( [ "*" ], [ "id" => $this->account->account_type_id ], "single" );
 
 		// Load current selected business data
-		$this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
+		$this->business = $businessRepo->get( [ "*" ], [ "id" => $this->user->getCurrentBusinessID() ], "single" );
+
 		// Load data from all businesses owned by this account and store in array
-		$this->businesses = $businessRepo->getAllByAccountID( $this->user->account_id );
+		$this->businesses = $businessRepo->get( [ "*" ], [ "account_id" => $this->user->account_id ] );
 		$total_businesses = count( $this->businesses );
+
 		// Load data from all users attatched to this account and store in array
 		$this->users = $userRepo->getAllByAccountID( $this->user->account_id );
 		$total_users = count( $this->users );
@@ -134,7 +138,7 @@ class AccountManager extends Controller
 			$this->view->redirect( "account-manager/sign-in" );
 		}
 		$this->user = $userAuth->getUser();
-		$accountUser = $accountUserRepo->getByUserID( $this->user->id );
+		$accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
 		// Load account user reference
 		$businesses = $businessRepo->getAllByAccountID( $accountUser->account_id );
 		$total_businesses = count( $businesses );

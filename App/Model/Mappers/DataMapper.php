@@ -6,6 +6,11 @@ use Contracts\DataMapperInterface;
 
 abstract class DataMapper implements DataMapperInterface
 {
+    protected $validReturnTypes = [
+        "single",
+        "array",
+        "json"
+    ];
     protected $DB;
     protected $table;
     public $entityFactory;
@@ -50,17 +55,16 @@ abstract class DataMapper implements DataMapperInterface
         $id = $this->insert( $this->table, $columns, $values );
 
         if ( $return_object ) {
-            return $this->get( [ "*" ], [ "id" => $id ] );
+            return $this->get( [ "*" ], [ "id" => $id ], "single" );
         }
 
         return $id;
     }
 
-    public function get( array $cols_to_get, array $key_values )
+    public function get( array $cols_to_get, array $key_values, $return_type )
     {
-        if ( empty( $cols_to_get ) ) {
-            throw new \Exception( "cols_to_get array connot be empty" );
-        }
+        $this->validateColsToGet( $cols_to_get );
+        $this->validateReturnType( $return_type );
 
         $table = $this->getTable();
         $query = "SELECT ";
@@ -81,20 +85,26 @@ abstract class DataMapper implements DataMapperInterface
         $sql->execute();
 
         $entities = [];
+
         while ( $response = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
             $entity = $this->build( $this->formatEntityNameFromTable() );
             $this->populate( $entity, $response );
             $entities[] = $entity;
         }
 
-        // If more query returns more than 1 row, return an array of objects. if
-        // only 1, return just the object itself
-        $entity_count = count( $entities );
-        if ( empty( $entities ) || $entity_count > 1 ) {
-            return $entities;
+        switch ( $return_type ) {
+            case "single":
+                $return = $entities[ 0 ];
+                break;
+            case "array":
+                $return = $entities;
+                break;
+            case "json":
+                $return = json_encode( $entities );
+                break;
         }
 
-        return $entities[ 0 ];
+        return $return;
     }
 
     public function update( $table, $set_column, $set_column_value, $where_column, $where_column_value )
@@ -256,5 +266,22 @@ abstract class DataMapper implements DataMapperInterface
         $key_values = array_combine( $keys, $values );
 
         return $this->formatQueryWhere( $key_values );
+    }
+
+    private function validateColsToGet( $cols_to_get )
+    {
+        if ( empty( $cols_to_get ) ) {
+            throw new \Exception( "cols_to_get array connot be empty" );
+        }
+
+        return;
+    }
+
+    private function validateReturnType( $return_type )
+    {
+        if ( !in_array( $return_type, $this->validReturnTypes ) ) {
+            throw new \Exception( "{$return_type} is not a valid return type" );
+
+        }
     }
 }
