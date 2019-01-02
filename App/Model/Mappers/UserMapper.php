@@ -46,16 +46,14 @@ class UserMapper extends DataMapper
 
     public function mapFromToken( User $user, $token )
     {
-        $resp = $this->getAllWhere( "user", "token", $token );
-        $this->populate( $user, $resp );
+        $user = $this->get( [ "*" ], [ "token" => $token ], "single" );
 
         return $user;
     }
 
     public function mapFromEmail( User $user, $email )
     {
-        $resp = $this->getAllWhere( "user", "email", $email );
-        $this->populate( $user, $resp );
+        $user = $this->get( [ "*" ], [ "email" => $email ], "single" );
 
         return $user;
     }

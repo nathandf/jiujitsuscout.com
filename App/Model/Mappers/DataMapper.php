@@ -51,15 +51,39 @@ abstract class DataMapper implements DataMapperInterface
         return $this->DB->lastInsertId();
     }
 
-    public function _insert( array $columns, array $values, $return_object = true )
+    public function _insert( array $columns_array, array $values_array, $return_object = true )
     {
-        $id = $this->insert( $this->table, $columns, $values );
+        $this->validate( $columns_array );
+
+        $columns_count = count( $columns_array );
+        $values_count = count( $values_array );
+
+        // check if the number of values in the values_array is == the number of columns in the columns array
+        if ( $columns_count != $values_count ) {
+            throw new \Exception( "Number of columns and values does not match.\nColumns ($columns_count) | Values ($values_count)" );
+        }
+
+        foreach ( $columns_array as $column ) {
+            $tokens_array[] = ":" . $column;
+        }
+
+        $tokens = implode( ",", $tokens_array );
+        // TODO Maybe column names should be encapsulated by tic marks
+        $columns = implode( ",", $columns_array );
+        $sql = $this->DB->prepare( "INSERT INTO `$table` ($columns) VALUES ($tokens)" );
+        $token_index = 0;
+
+        foreach ( $values_array as &$value ) {
+            $sql->bindParam( $tokens_array[ $token_index ], $value );
+            $token_index++;
+        }
+        $sql->execute();
 
         if ( $return_object ) {
             return $this->get( [ "*" ], [ "id" => $id ], "single" );
         }
 
-        return $id;
+        return $this->DB->lastInsertId();
     }
 
     public function get( array $cols_to_get, array $key_values, $return_type )
@@ -130,6 +154,30 @@ abstract class DataMapper implements DataMapperInterface
         $sql->execute();
     }
 
+    public function _update( array $columns_to_update, array $where_columns, $validate = true )
+    {
+        if ( $validate ) {
+            $this->validateColumnsFromKeys( $columns_to_update );
+            $this->validateColumnsFromKeys( $where_columns );
+        }
+
+        $query = "UPDATE " . "`" . $this->getTable() . "`" . " SET " . $this->formatQueryFromKeyValues( $columns_to_update, "0" ) . " WHERE " . $this->formatQueryFromKeyValues( $where_columns, "1" );
+
+        $sql = $this->DB->prepare( $query );
+
+        foreach ( $columns_to_update as $key => &$value ) {
+            $token = ":" . "0" . $key;
+            $sql->bindParam( $token, $value );
+        }
+
+        foreach ( $where_columns as $key => &$value ) {
+            $token = ":" . "1" . $key;
+            $sql->bindParam( $token, $value );
+        }
+
+        $sql->execute();
+    }
+
     public function delete( array $keys, array $values )
     {
         if ( empty( $keys ) || empty( $values ) ) {
@@ -154,16 +202,6 @@ abstract class DataMapper implements DataMapperInterface
         }
 
         $sql->execute();
-    }
-
-    public function getAllWhere( $table, $key, $value )
-    {
-        $sql = $this->DB->prepare( "SELECT * FROM $table WHERE $key = :value" );
-        $sql->bindParam( ":value", $value );
-        $sql->execute();
-        $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-
-        return $resp;
     }
 
     public function getAll( $table )
@@ -238,7 +276,7 @@ abstract class DataMapper implements DataMapperInterface
         return implode( ", ", $columns );
     }
 
-    protected function formatQueryWhere( array $key_values )
+    private function formatQueryWhere( array $key_values )
     {
         $where_query = "";
         $total = count( $key_values );
@@ -262,6 +300,29 @@ abstract class DataMapper implements DataMapperInterface
         }
 
         return $where_query;
+    }
+
+    public function formatQueryFromKeyValues( array $key_values, $token_prefix = "" )
+    {
+        $query = "";
+        $total = count( $key_values );
+
+        $i = 1;
+        foreach ( $key_values as $key => $value ) {
+            if ( is_null( $value ) || $value === "" ) {
+                throw new \Exception( "Value cannot be empty: key => {$key}, value = ?" );
+            }
+
+            $and = "";
+            if ( $i != $total ) {
+                $and = " AND ";
+            }
+
+            $query = $query . "{$key} = :{$token_prefix}{$key}" . $and;
+            $i++;
+        }
+
+        return $query;
     }
 
     public function formatQueryWhereKeyValuePairs( array $keys, array $values )
@@ -299,4 +360,47 @@ abstract class DataMapper implements DataMapperInterface
 
         }
     }
+
+    private function getColumns()
+    {
+        $table = $this->getTable();
+        // $sql = $this->DB->prepare( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = :table" );
+        $sql = $this->DB->prepare( "SHOW COLUMNS FROM {$table}" );
+        // $sql->bindParam( ":table", $table );
+        $sql->execute();
+
+        $columns = [];
+
+        while ( $response = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $columns[] = $response[ "Field" ];
+        }
+
+        return $columns;
+    }
+
+    // Ensure the columns actually exist in the database
+    private function validateColumns( array $columns_to_validate )
+    {
+        $columns = $this->getColumns();
+
+        foreach ( $columns_to_validate as $column ) {
+            if ( !in_array( $column, $columns, true ) ) {
+                throw new \Exception( "{$column} is not a valid column in table {$this->getTable()}" );
+            }
+        }
+
+        return;
+    }
+
+    private function validateColumnsFromKeys( array $columns_to_validate )
+    {
+        $column_keys = [];
+
+        foreach ( $columns_to_validate as $key => $value ) {
+            $column_keys[] = $key;
+        }
+
+        $this->validateColumns( $column_keys );
+    }
+
 }

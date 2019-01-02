@@ -40,6 +40,7 @@ class Home extends Controller
         $disciplineRepo = $this->load( "discipline-repository" );
         $Config = $this->load( "config" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
         $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         // Get all businesses geo info to populate links
