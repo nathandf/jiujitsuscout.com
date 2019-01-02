@@ -44,7 +44,7 @@ class Home extends Controller
         $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         // Get all businesses geo info to populate links
-        $businesses = $businessRepo->getAll();
+        $businesses = $businessRepo->get( [ "*" ] );
         $businesses_geo_info = [];
         $businesses_geo_raw = [];
 
@@ -68,8 +68,9 @@ class Home extends Controller
 
         ksort( $businesses_geo_info );
 
-        $disciplines = $disciplineRepo->getAll();
+        $disciplines = $disciplineRepo->get( [ "*" ] );
         $discipline_names = [];
+
         foreach ( $disciplines as $discipline ) {
             $discipline->url = preg_replace( "/[ ]+/", "-", $discipline->name );
             $discipline_names[] = $discipline->name;
@@ -91,7 +92,7 @@ class Home extends Controller
             ) )
         {
             if ( in_array( str_replace( "-", " ", $input->get( "discipline" ) ), $discipline_names ) ) {
-                $discipline = $disciplineRepo->getByName( str_replace( "-", " ", $input->get( "discipline" ) ) );
+                $discipline = $disciplineRepo->get( [ "*" ], [ "name" => str_replace( "-", " ", $input->get( "discipline" ) ) ] );
             }
         }
 
@@ -128,7 +129,7 @@ class Home extends Controller
         ]);
 
         // Set defaults
-        $disciplines = $disciplineRepo->getAll();
+        $disciplines = $disciplineRepo->get( [ "*" ] );
         $discipline_ids = [];
 
         // Create array of discipline ids
@@ -309,7 +310,7 @@ class Home extends Controller
                     ],
                     "business_id" => [
                         "requred" => true,
-                        "in_array" => $businessRepo->getAllBusinessIDs(),
+                        "in_array" => $businessRepo->get( [ "id" ], [], "raw" ),
                     ],
                     "name" => [
                         "required" => true,
@@ -336,9 +337,9 @@ class Home extends Controller
             ) )
         {
             // Get business by id
-            $business = $businessRepo->getByID( $input->get( "business_id" ) );
+            $business = $businessRepo->get( [ "*" ], [ "id", $input->get( "business_id" ) ] );
             // Get phone of business
-            $businessPhone = $phoneRepo->getByID( $business->phone_id );
+            $businessPhone = $phoneRepo->get( [ "*" ], [ "id", $business->phone_id ] );
             // Create a phone resource for prospect
             $phone = $phoneRepo->create( $businessPhone->country_code, $input->get( "number" ) );
             // Build prospect model then save
