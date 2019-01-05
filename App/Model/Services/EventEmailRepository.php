@@ -4,7 +4,6 @@ namespace Model\Services;
 
 class EventEmailRepository extends Repository
 {
-
     public function getAll()
     {
         $mapper = $this->getMapper();
@@ -30,5 +29,4 @@ class EventEmailRepository extends Repository
 
         return $eventEmail;
     }
-
 }

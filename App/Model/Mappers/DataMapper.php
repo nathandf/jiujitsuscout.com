@@ -51,36 +51,33 @@ abstract class DataMapper implements DataMapperInterface
         return $this->DB->lastInsertId();
     }
 
-    public function _insert( array $columns_array, array $values_array, $return_object = true )
+    public function _insert( array $key_values, $return_object )
     {
-        $this->validate( $columns_array );
-
-        $columns_count = count( $columns_array );
-        $values_count = count( $values_array );
-
-        // check if the number of values in the values_array is == the number of columns in the columns array
-        if ( $columns_count != $values_count ) {
-            throw new \Exception( "Number of columns and values does not match.\nColumns ($columns_count) | Values ($values_count)" );
-        }
-
-        foreach ( $columns_array as $column ) {
+        $columns = [];
+        $values = [];
+        foreach ( $key_values as $column => $value ) {
+            $columns[] = $column;
+            $values[] = $value;
             $tokens_array[] = ":" . $column;
         }
 
+        $this->validateColumns( $columns);
+
         $tokens = implode( ",", $tokens_array );
         // TODO Maybe column names should be encapsulated by tic marks
-        $columns = implode( ",", $columns_array );
-        $sql = $this->DB->prepare( "INSERT INTO `$table` ($columns) VALUES ($tokens)" );
+        $columns = implode( ",", $columns );
+        $sql = $this->DB->prepare( "INSERT INTO `{$this->getTable()}` ($columns) VALUES ($tokens)" );
         $token_index = 0;
 
-        foreach ( $values_array as &$value ) {
+        foreach ( $values as &$value ) {
             $sql->bindParam( $tokens_array[ $token_index ], $value );
             $token_index++;
         }
+        
         $sql->execute();
 
         if ( $return_object ) {
-            return $this->get( [ "*" ], [ "id" => $id ], "single" );
+            return $this->get( [ "*" ], [ "id" => $this->DB->lastInsertId() ], "single" );
         }
 
         return $this->DB->lastInsertId();
@@ -138,6 +135,9 @@ abstract class DataMapper implements DataMapperInterface
 
         switch ( $return_type ) {
             case "single":
+                if ( empty( $entities ) ) {
+                    return null;
+                }
                 return $entities[ 0 ];
             case "array":
                 return $entities;
@@ -243,15 +243,10 @@ abstract class DataMapper implements DataMapperInterface
         // Split the class name at the upper case letters
         $parts = preg_split( "/(?=[A-Z])/", lcfirst( $class_name ) );
 
-        // Make all strings lowercase
-        foreach ( $parts as $part ) {
-            $part = strtolower( $part );
-        }
-
         // Combine with underscores to make table name
         $table = implode( "_", $parts );
 
-        $this->table = $table;
+        $this->table = strtolower( $table );
     }
 
     public function getTable()

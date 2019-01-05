@@ -18,14 +18,14 @@ class UserAuthenticator extends Service
         if ( $this->isUserValidated() ) {
             switch ( $this->determineValidationType() ) {
                 case "session":
-                    $user = $this->repo->getByID( $_SESSION[ "jjs_user_id" ] );
+                    $user = $this->repo->get( [ "*" ], [ "id" => $_SESSION[ "jjs_user_id" ] ], "single" );
                     if ( !$this->validateUserType( $user->user_type, $required_user_types ) ) {
                         return false;
                     }
                     $this->setUser( $user );
                     break;
                 case "cookie":
-                    $user = $this->repo->getByToken( $_COOKIE[ "jiujitsuscout" ][ "user_login_token" ] );
+                    $user = $this->repo->get( [ "*" ], [ "token" => $_COOKIE[ "jiujitsuscout" ][ "user_login_token" ] ], "single" );
                     if ( !$this->validateUserType( $user->user_type, $required_user_types ) ) {
                         return false;
                     }
@@ -48,7 +48,7 @@ class UserAuthenticator extends Service
             return false;
         } elseif ( !isset( $_SESSION[ "jjs_user_id" ]  ) && isset( $_COOKIE[ "jiujitsuscout" ][ "user_login_token" ] ) ) {
             // Token but no session; get user_id from db by token and set session
-            $user = $this->repo->getByToken( $_COOKIE[ "jiujitsuscout" ][ "user_login_token" ] );
+            $user = $this->repo->get( [ "*" ], [ "token" => $_COOKIE[ "jiujitsuscout" ][ "user_login_token" ] ], "single" );
             // User is logged in. Check if a busienss has been chosen
             return $user;
         } else {
@@ -81,7 +81,8 @@ class UserAuthenticator extends Service
 
     public function logIn( $email, $password, $token_expiration = 604800 )
     {
-        $user = $this->repo->getByEmail( $email );
+        $user = $this->repo->get( [ "*" ], [ "email" => $email ], "single" );
+
         if ( password_verify( $password, $user->password ) ) {
             $this->setUserIDSession( $user->id );
             $token = $this->setUserLoginToken( $user->id, $token_expiration );

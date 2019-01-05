@@ -44,7 +44,7 @@ class SequenceDispatcher
 
         foreach ( $this->sequences as $sequence ) {
             $this->checkOutSequence( $sequence->id );
-            $this->eventDispatcher->dispatch( explode( ",", $sequence->event_ids ) );
+            $event_ids = $this->eventRepo->get( [ "id" ] , [ "sequence_id" => $sequence_id ], "raw" ] );
             $this->checkInSequence( $sequence->id );
         }
     }

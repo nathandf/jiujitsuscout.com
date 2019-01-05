@@ -41,6 +41,10 @@ class Lead extends Controller
         $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
+
+        // Get business phone object
+        $this->business->phone = $phoneRepo->get( [ "*" ], [ "id" => $this->business->phone_id ], "single" );
+
         // Get currency object for business
         $this->business->currency = $currencyRepo->getByCode( $this->business->currency );
         // Verify that this prospect is owned by this business
@@ -530,9 +534,7 @@ class Lead extends Controller
         $prospectRepo = $this->load( "prospect-repository" );
 
         if ( $input->exists() && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -722,4 +724,82 @@ class Lead extends Controller
         $this->view->render( "App/Views/AccountManager/Business/Lead.php" );
     }
 
+    public function addToSequenceAction()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $businessSequenceRepo = $this->load( "business-sequence-repository" );
+        $prospectSequenceRepo = $this->load( "prospect-sequence-repository" );
+
+        $this->prospect->prospect_sequence = $prospectSequenceRepo->get( [ "*" ], [ "prospect_id" => $this->params[ "id" ] ], "single" );
+
+        $sequenceTemplates = $sequenceTemplateRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+
+        if ( $input->exists() && $input->issetField( "add_to_sequence" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ],
+                    "sequence_template_id" => [
+                        "required" => true,
+                        "in_array" => $sequenceTemplateRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" )
+                    ]
+                ],
+                "add_to_sequence"
+            )
+        ) {
+            $sequenceBuilder = $this->load( "sequence-builder" );
+
+            $sequenceBuilder->setRecipientName( $this->prospect->getFullName() )
+                ->setSenderName( $this->business->business_name )
+                ->setRecipientEmail( $this->prospect->email )
+                ->setSenderEmail( $this->business->email )
+                ->setRecipientPhoneNumber( $this->phone->getPhoneNumber() )
+                ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() );
+
+            // If a sequence was build successfully, create a prospect and business
+            // sequence reference and redirect to the sequence screen
+            $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $input->get( "sequence_template_id" ) ], "single" );
+
+            if ( $sequenceBuilder->build( $sequenceTemplate->id ) ) {
+                $sequence = $sequenceBuilder->getSequence();
+
+                $businessSequenceRepo->insert([
+                    "business_id" => $this->business->id,
+                    "sequence_id" => $sequence->id
+                ]);
+
+                $prospectSequenceRepo->insert([
+                    "prospect_id" => $this->prospect->id,
+                    "sequence_id" => $sequence->id
+                ]);
+
+                // Inform user of successful sequence creation
+                $this->session->addFlashMessage( "{$this->prospect->getFullName()} has been added to sequenece '{$sequenceTemplate->name}'" );
+                $this->session->setFlashMessages();
+
+                // Redirect back to the "choose sequence" page
+                $this->view->redirect( "account-manager/business/lead/" . $this->params[ "id" ] . "/add-to-sequence" );
+            }
+
+            // If sequence build fails, get the error messages from the sequence
+            // builder and set them to the input validator
+            $errorMessages = $sequenceBuilder->getErrorMessages();
+            foreach ( $errorMessages as $message ) {
+                $inputValidator->addError( "add_to_sequence", $message );
+            }
+
+        }
+
+        $this->view->assign( "sequences", $sequenceTemplates );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "error_messages", $inputValidator->getErrors() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
+
+        $this->view->setTemplate( "account-manager/business/lead/choose-sequence.tpl" );
+        $this->view->render( "App/Views/AccountManager/Business.php" );
+    }
 }

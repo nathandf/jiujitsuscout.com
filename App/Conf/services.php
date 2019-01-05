@@ -901,6 +901,11 @@ $container->register( "time-manager", function() {
 	return $timeManager;
 } );
 
+$container->register( "time-zone-helper", function() {
+	$helper = new \Helpers\TimeZoneHelper;
+	return $helper;
+} );
+
 $container->register( "access-control", function() {
 	$accessControl = new \Helpers\AccessControl;
 	return $accessControl;
@@ -968,6 +973,22 @@ $container->register( "questionnaire-dispatcher", function() use ( $container ) 
 		$container->getService( "respondent-question-answer-repository" )
 	);
 	return $dispatcher;
+} );
+
+$container->register( "sequence-builder", function() use ( $container ) {
+	$builder = new \Model\Services\SequenceBuilder(
+		$container->getService( "sequence-repository" ),
+		$container->getService( "event-repository" ),
+		$container->getService( "sequence-template-repository" ),
+		$container->getService( "event-template-repository" ),
+		$container->getService( "text-message-template-repository" ),
+		$container->getService( "email-template-repository" ),
+		$container->getService( "event-email-repository" ),
+		$container->getService( "event-text-message-repository" ),
+		$container->getService( "text-message-repository" ),
+		$container->getService( "email-repository" )
+	);
+	return $builder;
 } );
 
 $container->register( "sequence-dispatcher", function() use ( $container ) {

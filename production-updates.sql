@@ -9,3 +9,9 @@ CREATE TABLE `business_text_message` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `bu
 CREATE TABLE `group_sequence_template` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `group_id` BIGINT NOT NULL , `sequence_template_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `landing_page_sequence_template` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `landing_page_id` BIGINT NOT NULL , `sequence_template_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `prospect_sequence` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `prospect_id` BIGINT NOT NULL , `sequence_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `embeddable_form_sequence_template` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `embeddable_form_id` BIGINT NOT NULL , `sequence_template_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `sequence` DROP `business_id`, DROP `name`, DROP `description`, DROP `event_ids`;
+ALTER TABLE `email` DROP `business_id`, DROP `name`, DROP `description`;
+ALTER TABLE `email` ADD `sender_name` VARCHAR(256) NOT NULL AFTER `id`, ADD `sender_email` VARCHAR(256) NOT NULL AFTER `sender_name`, ADD `recipient_name` VARCHAR(256) NOT NULL AFTER `sender_email`, ADD `recipient_email` VARCHAR(256) NOT NULL AFTER `recipient_name`;
+ALTER TABLE `text_message` ADD `sender_phone_number` VARCHAR(128) NOT NULL AFTER `id`, ADD `recipient_phone_number` VARCHAR(128) NOT NULL AFTER `sender_phone_number`;
+ALTER TABLE `event` DROP `business_id`;

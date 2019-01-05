@@ -10,6 +10,7 @@
 			<input type="hidden" name="prospect_id" value="{$lead->id}">
 			<button id="new-appointment" class="btn btn-inline message-btn texted action-button"><span class="action-btn-text">New Appointment</span><i class="fa fa-clock-o" aria-hidden="true"></i></button>
 		</form>
+		<a class="btn btn-inline text-med bg-algae push-r-sml" href="{$HOME}account-manager/business/lead/{$lead->id}/add-to-sequence"><span class="text-med-heavy push-r-sml">Add to Sequence</span> <i class="fa fa-plus" aria-hidden="true"></i></a>
 		{if $lead->type == "lead"}
 		<form class="inline-form" action="{$HOME}account-manager/business/trial/details">
 			<input type="hidden" name="prospect_id" value="{$lead->id}">

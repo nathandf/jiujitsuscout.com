@@ -52,5 +52,4 @@ class Sequences extends Controller
         $this->view->setTemplate( "account-manager/business/sequences/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
     }
-
 }

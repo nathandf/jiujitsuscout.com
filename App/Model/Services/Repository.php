@@ -70,12 +70,12 @@ abstract class Repository
     }
 
     // Basic CRUD
-    public function insert( array $columns, array $values )
+    public function insert( array $key_values, $return_object = true )
     {
         $mapper = $this->getMapper();
         $entity = $mapper->build( $this->entityName );
 
-        $mapper->_insert( $columns, $values );
+        return $mapper->_insert( $key_values, $return_object );
     }
 
     public function get( array $columns, $key_values = [], $return_type = "array" )
