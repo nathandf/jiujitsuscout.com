@@ -15,3 +15,4 @@ ALTER TABLE `email` DROP `business_id`, DROP `name`, DROP `description`;
 ALTER TABLE `email` ADD `sender_name` VARCHAR(256) NOT NULL AFTER `id`, ADD `sender_email` VARCHAR(256) NOT NULL AFTER `sender_name`, ADD `recipient_name` VARCHAR(256) NOT NULL AFTER `sender_email`, ADD `recipient_email` VARCHAR(256) NOT NULL AFTER `recipient_name`;
 ALTER TABLE `text_message` ADD `sender_phone_number` VARCHAR(128) NOT NULL AFTER `id`, ADD `recipient_phone_number` VARCHAR(128) NOT NULL AFTER `sender_phone_number`;
 ALTER TABLE `event` DROP `business_id`;
+CREATE TABLE `sequence_template_sequence` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `sequence_template_id` BIGINT NOT NULL , `sequence_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

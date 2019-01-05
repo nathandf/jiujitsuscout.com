@@ -752,6 +752,7 @@ class Lead extends Controller
             )
         ) {
             $sequenceBuilder = $this->load( "sequence-builder" );
+            $sequenceTemplateSequenceRepo = $this->load( "sequence-template-sequence-repository" );
 
             $sequenceBuilder->setRecipientName( $this->prospect->getFullName() )
                 ->setSenderName( $this->business->business_name )
@@ -774,6 +775,11 @@ class Lead extends Controller
 
                 $prospectSequenceRepo->insert([
                     "prospect_id" => $this->prospect->id,
+                    "sequence_id" => $sequence->id
+                ]);
+
+                $sequenceTemplateSequenceRepo->insert([
+                    "sequence_template_id" => $sequenceTemplate->id,
                     "sequence_id" => $sequence->id
                 ]);
 
