@@ -22,7 +22,7 @@
 			{/if}
 			{include file="includes/snippets/flash-messages.tpl"}
 			<div class="clear push-t-med"></div>
-			{foreach from=$sequences item=sequence}
+			{foreach from=$inactiveSequenceTemplates item=sequence}
 			<form method="post" action="">
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="add_to_sequence" value="{$csrf_token}">
@@ -37,8 +37,26 @@
 
 			<div class="clear push-t-med"></div>
 			{foreachelse}
-			-- No sequences have been create yet --
+			{if !empty( $activeSequenceTemplates )}
+				-- All sequences are currently in use --
+			{else}
+				-- No sequences available --
+				<div class="clear push-t-med"></div>
+				<a class="btn btn-inline bg-deep-blue text-med-heavy" href="{$HOME}account-manager/business/sequence/new">Create a Sequence Template +</a>
+			{/if}
 			{/foreach}
+			{if !empty( $activeSequenceTemplates )}
+				<div class="clear push-t-med"></div>
+				<h2>Active Sequences</h2>
+				<p class="text-sml">{$lead->getFullName()} is already on these sequences</p>
+				{foreach from=$activeSequenceTemplates item=sequence}
+				<div class="sequence-tag push-t-med" style="text-align: center;">
+					<p class="text-med-heavy">{$sequence->name}</p>
+					<p class="text-med">{$sequence->description}</p>
+				</div>
+				{/foreach}
+			<div class="clear push-t-med"></div>
+			{/if}
 		</div>
 	</div><!-- end content -->
 {/block}

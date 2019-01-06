@@ -155,11 +155,15 @@ class TextMessage extends Controller
                 $input->get( "body" )
             );
 
+            $this->session->addFlashMessage( "Text Message Created: {$input->get( "name" )}" );
+            $this->session->setFlashMessages();
+
             $this->view->redirect( "account-manager/business/text-message/" . $textMessageTemplate->id . "/" );
         }
 
         $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/text-message/new.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );

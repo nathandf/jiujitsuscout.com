@@ -38,8 +38,10 @@
 			{/foreach}
 			</div>
 			<div id="add-wait-event-container" style="display: none;">
-				<p class="text-med">Add a wait event after creating this event</p>
+				<p class="text-med">If no wait time is specified, the event after this one will execute immediately.</p>
+				<div class="clear push-t-sml"></div>
 				<input class="checkbox cursor-pt" type="checkbox" id="wait-checkbox" >
+				<label for="">Add a wait time</label>
 				<div id="wait-duration-container" style="display: none;">
 					<div class="hr-sml"></div>
 					<p class="text-med-heavy">Wait Duration</p>
@@ -57,6 +59,7 @@
 				<div class="clear"></div>
 			</div>
 			<div id="email-templates-container"  class="event-templates-container" style="display: none;">
+				{if !empty( $emailTemplates )}
 				<p class="push-t-med">Choose the email you would like to send</p>
 				{foreach from=$emailTemplates item=$emailTemplate}
 				<div class="event-type-tag">
@@ -75,8 +78,14 @@
 				</div>
 				<div class="clear"></div>
 				{/foreach}
+				{else}
+				<p class="push-t-med">-- No Text Messages have been created yet --</p>
+				<div class="clear push-t-med"></div>
+				<a class="btn btn-inline text-med-heavy bg-deep-blue" href="{$HOME}account-manager/business/text-message/new">Create a Text Message +</a>
+				{/if}
 			</div>
 			<div id="text-message-templates-container" class="event-templates-container" style="display: none;">
+				{if !empty($textMessageTemplates)}
 				<p class="push-t-med">Choose the text message you would like to send</p>
 				{foreach from=$textMessageTemplates item=$textMessageTemplate}
 				<div class="event-type-tag">
@@ -93,6 +102,11 @@
 				</div>
 				<div class="clear"></div>
 				{/foreach}
+				{else}
+				<p class="push-t-med">-- No Text Messages have been created yet --</p>
+				<div class="clear push-t-med"></div>
+				<a class="btn btn-inline text-med-heavy bg-deep-blue" href="{$HOME}account-manager/business/text-message/new">Create a Text Message +</a>
+				{/if}
 			</div>
 		</div>
 	</div><!-- end content -->

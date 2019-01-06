@@ -731,10 +731,31 @@ class Lead extends Controller
         $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
         $businessSequenceRepo = $this->load( "business-sequence-repository" );
         $prospectSequenceRepo = $this->load( "prospect-sequence-repository" );
+        $sequenceTemplateSequenceRepo = $this->load( "sequence-template-sequence-repository" );
 
-        $this->prospect->prospect_sequence = $prospectSequenceRepo->get( [ "*" ], [ "prospect_id" => $this->params[ "id" ] ], "single" );
-
+        // Get all sequences for this prospect
+        $prospectSequences = $prospectSequenceRepo->get( [ "*" ], [ "prospect_id" => $this->prospect->id ] );
         $sequenceTemplates = $sequenceTemplateRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+
+        $activeSequenceTemplates = [];
+        $active_sequence_template_ids = [];
+        $inactiveSequenceTemplates = [];
+
+        // Populate an array ($activeSequenceTemplates) will all sequence templates
+        // from which this prospect's sequences were created.
+        foreach ( $prospectSequences as $prospectSequence ) {
+            $sequence_template_id = $sequenceTemplateSequenceRepo->get( [ "sequence_template_id" ], [ "sequence_id" => $prospectSequence->sequence_id ], "single" )->sequence_template_id;
+            $activeSequenceTemplates[] = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
+            $active_sequence_template_ids[] = $sequence_template_id;
+        }
+
+        // Populate an array ($inactiveSequenceTemplates) will all sequence templates
+        // that have not been used to genertate sequences for this prospect
+        foreach ( $sequenceTemplates as $sequenceTemplate ) {
+            if ( !in_array( $sequenceTemplate->id, $active_sequence_template_ids ) ) {
+                $inactiveSequenceTemplates[] = $sequenceTemplate;
+            }
+        }
 
         if ( $input->exists() && $input->issetField( "add_to_sequence" ) && $inputValidator->validate(
                 $input,
@@ -752,7 +773,6 @@ class Lead extends Controller
             )
         ) {
             $sequenceBuilder = $this->load( "sequence-builder" );
-            $sequenceTemplateSequenceRepo = $this->load( "sequence-template-sequence-repository" );
 
             $sequenceBuilder->setRecipientName( $this->prospect->getFullName() )
                 ->setSenderName( $this->business->business_name )
@@ -800,7 +820,8 @@ class Lead extends Controller
 
         }
 
-        $this->view->assign( "sequences", $sequenceTemplates );
+        $this->view->assign( "activeSequenceTemplates", $activeSequenceTemplates );
+        $this->view->assign( "inactiveSequenceTemplates", $inactiveSequenceTemplates );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->assign( "error_messages", $inputValidator->getErrors() );
         $this->view->assign( "flash_messages", $this->session->getFlashMessages() );

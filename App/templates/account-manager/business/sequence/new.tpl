@@ -31,7 +31,7 @@
 						<p><b>Description:</b></p>
 						<textarea name="description" class="inp textarea" placeholder="">{$inputs.create_sequence.description|default:null}</textarea>
 						<div class="clear push-t-med"></div>
-						<input type="submit" class="btn btn-inline" value="Create Sequence">
+						<input type="submit" class="btn btn-inline" value="Add Events +">
 					</form>
 				</div>
 			</div><!-- end content -->

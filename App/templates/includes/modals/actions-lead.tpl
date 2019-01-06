@@ -10,13 +10,13 @@
 			<input type="hidden" name="prospect_id" value="{$lead->id}">
 			<button id="new-appointment" class="btn btn-inline message-btn texted action-button"><span class="action-btn-text">New Appointment</span><i class="fa fa-clock-o" aria-hidden="true"></i></button>
 		</form>
-		<a class="btn btn-inline text-med bg-algae push-r-sml" href="{$HOME}account-manager/business/lead/{$lead->id}/add-to-sequence"><span class="text-med-heavy push-r-sml">Add to Sequence</span> <i class="fa fa-plus" aria-hidden="true"></i></a>
 		{if $lead->type == "lead"}
 		<form class="inline-form" action="{$HOME}account-manager/business/trial/details">
 			<input type="hidden" name="prospect_id" value="{$lead->id}">
 			<button id="new-trial" class="btn btn-inline message-btn emailed action-button"><span class="action-btn-text">Start New Trial</span><i class="fa fa-calendar" aria-hidden="true"></i></button>
 		</form>
 		{/if}
+		<a class="btn btn-inline text-med bg-algae push-r-sml" href="{$HOME}account-manager/business/lead/{$lead->id}/add-to-sequence"><span class="text-med-heavy push-r-sml">Add to Sequence</span> <i class="fa fa-plus" aria-hidden="true"></i></a>
 		<div class="clear push-b-med"></div>
 		<p class="text-med">Communication</p>
 		<div class="hr-sml"></div>

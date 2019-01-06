@@ -15,7 +15,7 @@
 				<div class="con con-cnt-xlrg push-t-med inner-pad-med">
 					<a class="btn btn-inline bg-deep-blue text-med last" href="{$HOME}account-manager/business/text-messages/">< All Text Messages</a>
 					<div class="hr-sml"></div>
-					<p class="text-sml">Create text messages that you can use in automated marketing and follow up sequences</p>
+					<p class="text-sml">Create text messages that you can use in automated marketing and follow up sequences. <a class="link tc-deep-blue" href="{$HOME}account-manager/business/sequence/new">Create a sequence</a></p>
 					{if !empty($error_messages.update_text_message)}
 						{foreach from=$error_messages.update_text_message item=message}
 							<div class="con-message-failure mat-hov cursor-pt --c-hide">

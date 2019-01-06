@@ -200,7 +200,7 @@ class SequenceBuilder
     {
         if ( !filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
             if ( $email == "" ) {
-                $this->addErrorMessage( "No valid email has been provided" );
+                $this->addErrorMessage( "A valid email is requried to be added to this sequence." );
                 return;
             }
             $this->addErrorMessage( "'{$email}' is not a valid email address" );
