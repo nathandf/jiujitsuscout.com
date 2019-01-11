@@ -6,6 +6,7 @@ class FacebookPixelBuilder
 {
 	public $pixel;
 	public $pixelID;
+	public $pixel_ids = [];
 	public $events = [];
 
 	public function addEvent( $events )
@@ -32,6 +33,21 @@ class FacebookPixelBuilder
 	public function setPixelID( $pixelID )
 	{
 		$this->pixelID = $pixelID;
+	}
+
+	public function addPixels( $pixels )
+	{
+		if ( is_array( $pixels ) ) {
+			foreach ( $pixels as $pixel ) {
+				$this->pixel_ids[] = $pixels;
+			}
+
+			return $this;
+		}
+
+		$this->pixel_ids[] = $pixels;
+
+		return $this;
 	}
 
 	public function getPixelID()

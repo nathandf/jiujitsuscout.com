@@ -33,7 +33,11 @@
 			<div id="event-buttons-container" class="push-t-med">
 			{foreach from=$eventTypes item=eventType}
 				{if $eventType->id != 3}
-					<button id="event-type-{$eventType->id}" class="btn btn-inline" value="{$eventType->id}"><span class="push-r-sml">{$eventType->name|capitalize} Event</span><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+					{if $eventType->id == 1}
+					<button id="event-type-{$eventType->id}" class="btn btn-inline bg-mango" value="{$eventType->id}"><span class="push-r-sml">{$eventType->name|capitalize} Event</span><i class="fa fa-envelope" aria-hidden="true"></i></button>
+					{else}
+					<button id="event-type-{$eventType->id}" class="btn btn-inline bg-lavender" value="{$eventType->id}"><span class="push-r-sml">{$eventType->name|capitalize} Event</span><i class="fa fa-comments-o" aria-hidden="true"></i></button>
+					{/if}
 				{/if}
 			{/foreach}
 			</div>

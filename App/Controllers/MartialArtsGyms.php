@@ -568,6 +568,9 @@ class MartialArtsGyms extends Controller
         $userMailer = $this->load( "user-mailer" );
         $phoneRepo = $this->load( "phone-repository" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $landingPageGroupRepo = $this->load( "landing-page-group-repository" );
+        $prospectGroup = $this->load( "prospect-group-repository" );
+        $groupRepo = $this->load( "group-repository" );
 
         $this->view->assign( "business", $this->business );
         $this->requireParam( "slug" );
@@ -623,6 +626,16 @@ class MartialArtsGyms extends Controller
             $prospect->business_id = $this->business->id;
             $prospect->source = $landingPage->name;
             $prospectRegistrar->register( $prospect );
+
+            // Add Prospects to groups
+            $landingPageGroups = $landingPageGroupRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
+
+            foreach ( $landingPageGroups as $landingPageGroup ) {
+                $prospectGroup->insert([
+                    "prospect_id" => $prospect->id,
+                    "group_id" => $landingPageGroup->group_id
+                ]);
+            }
 
             // Get the users that require email lead notifications
             $users = [];

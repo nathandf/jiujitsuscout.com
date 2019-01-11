@@ -5,26 +5,26 @@
 		<p class="text-med">Manage</p>
 		<div class="hr-sml"></div>
 		<div class="clear push-t-sml"></div>
-		<a class="btn btn-inline text-med bg-deep-blue floatleft push-r-sml" href="{$HOME}account-manager/business/lead/{$lead->id}/edit"><span class="text-med-heavy push-r-sml">Edit</span> <i class="fa fa-pencil" aria-hidden="true"></i></a>
+		<a class="btn btn-inline text-med bg-deep-blue floatleft push-r-sml" href="{$HOME}account-manager/business/lead/{$lead->id}/edit"><i class="fa fa-pencil" aria-hidden="true"></i><span class="text-med-heavy push-l-sml">Edit</span></a>
 		<form class="inline-form" action="{$HOME}account-manager/business/appointment/schedule">
 			<input type="hidden" name="prospect_id" value="{$lead->id}">
-			<button id="new-appointment" class="btn btn-inline message-btn texted action-button"><span class="action-btn-text">New Appointment</span><i class="fa fa-clock-o" aria-hidden="true"></i></button>
+			<button id="new-appointment" class="btn btn-inline message-btn texted action-button"><i class="fa fa-clock-o" aria-hidden="true"></i><span class="action-btn-text push-l-sml">New Appointment</span></button>
 		</form>
 		{if $lead->type == "lead"}
 		<form class="inline-form" action="{$HOME}account-manager/business/trial/details">
 			<input type="hidden" name="prospect_id" value="{$lead->id}">
-			<button id="new-trial" class="btn btn-inline message-btn emailed action-button"><span class="action-btn-text">Start New Trial</span><i class="fa fa-calendar" aria-hidden="true"></i></button>
+			<button id="new-trial" class="btn btn-inline message-btn emailed action-button"><i class="fa fa-calendar" aria-hidden="true"></i><span class="action-btn-text push-l-sml">Start New Trial</span></button>
 		</form>
 		{/if}
-		<a class="btn btn-inline text-med bg-algae push-r-sml" href="{$HOME}account-manager/business/lead/{$lead->id}/add-to-sequence"><span class="text-med-heavy push-r-sml">Add to Sequence</span> <i class="fa fa-plus" aria-hidden="true"></i></a>
+		<a class="btn btn-inline text-med bg-algae push-r-sml" href="{$HOME}account-manager/business/lead/{$lead->id}/add-to-sequence"><i class="fa fa-plus" aria-hidden="true"></i><span class="text-med-heavy push-l-sml">Add to Sequence</span></a>
 		<div class="clear push-b-med"></div>
 		<p class="text-med">Communication</p>
 		<div class="hr-sml"></div>
 		<div class="clear push-t-sml"></div>
 		{if isset($sms_messages)}
-		<button id="send-sms" class="btn btn-inline message-btn action-button"><span class="action-btn-text">Send Text</span><i class="fa fa-comments-o" aria-hidden="true"></i></button>
+		<button id="send-sms" class="btn btn-inline message-btn action-button"><i class="fa fa-comments-o push-r-sml" aria-hidden="true"></i><span class="action-btn-text">Send Text</span></button>
 		{/if}
-		<button class="btn btn-inline message-btn action-button emailer-open"><span class="action-btn-text">Send Email</span><i class="fa fa-envelope-o" aria-hidden="true"></i></button>
+		<button class="btn btn-inline message-btn action-button emailer-open"><i class="fa fa-envelope-o push-r-sml" aria-hidden="true"></i><span class="action-btn-text">Send Email</span></button>
 		<div class="push-t-med"></div>
 		<p class="text-med">Record an interaction</p>
 		<div class="hr-sml"></div>
@@ -46,13 +46,13 @@
 		<form class="inline-form" action="{$HOME}account-manager/business/member/convert-prospect">
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="prospect_id" value="{$lead->id}">
-			<button id="became-member" class="btn btn-inline bg-forest message-btn --c-mp-confirm action-button"><span class="action-btn-text">Became Member</span><i class="fa fa-usd" aria-hidden="true"></i></button>
+			<button id="became-member" class="btn btn-inline bg-forest message-btn --c-mp-confirm action-button"><i class="fa fa-usd" aria-hidden="true"></i><span class="action-btn-text push-l-sml">Became Member</span></button>
 		</form>
 		<form class="inline-form" method="post" action="">
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="prospect_id" value="{$lead->id}">
 			<input type="hidden" name="update_status" value="lost">
-			<button id="lost" class="btn btn-inline notice-bg message-btn --c-status-confirm action-button"><span class="action-btn-text">Lost / Refused</span><i class="fa fa-usd" aria-hidden="true"></i></button>
+			<button id="lost" class="btn btn-inline notice-bg message-btn --c-status-confirm action-button"><i class="fa fa-usd" aria-hidden="true"></i><span class="action-btn-text push-l-sml">Lost / Refused</span></button>
 		</form>
 		{/if}
 		<div class="push-t-med"></div>
@@ -63,7 +63,7 @@
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="trash" value="{$csrf_token}">
 			<input type="hidden" name="prospect_id" value="{$lead->id}">
-			<button type="submit" class="btn btn-inline bg-red floatleft --c-trash">Trash <i class="fa fa-trash" aria-hidden="true"></i></button>
+			<button type="submit" class="btn btn-inline bg-red floatleft --c-trash"><i class="fa fa-trash push-r-sml" aria-hidden="true"></i>Trash</button>
 		</form>
 		<div class="clear"></div>
 	</div>

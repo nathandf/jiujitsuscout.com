@@ -60,26 +60,49 @@ class LandingPage extends Controller
         $inputValidator = $this->load( "input-validator" );
         $groupRepo = $this->load( "group-repository" );
         $landingPageRepo = $this->load( "landing-page-repository" );
+        $landingPageGroupRepo = $this->load( "landing-page-group-repository" );
 
-        $landingPage = $landingPageRepo->getByID( $this->params[ "id" ] );
+        $groupsAll = $groupRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $group_ids_all = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+
+        $landingPage = $landingPageRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+        $landingPageGroups = $landingPageGroupRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
+        $landing_page_group_group_ids = $landingPageGroupRepo->get( [ "group_id" ], [ "landing_page_id" => $landingPage->id ], "raw" );
 
         $facebook_pixel_active = false;
         if ( !is_null( $landingPage->facebook_pixel_id ) && $landingPage->facebook_pixel_id != "" ) {
             $facebook_pixel_active = true;
         }
 
-        $all_groups = $groupRepo->getAllByBusinessID( $this->business->id );
-
-        $landing_page_group_ids = explode( ",", $landingPage->group_ids );
-
         if ( $input->exists() ) {
-
             // Update groups
-            $group_ids = null;
+            $submitted_group_ids = [];
             if ( $input->issetField( "group_ids" ) ) {
-                $group_ids = implode( ",", $input->get( "group_ids" ) );
+                $submitted_group_ids = $input->get( "group_ids" );
             }
-            $landingPageRepo->updateGroupIDsByID( $group_ids, $this->params[ "id" ] );
+
+            // Create and new landing page group for any of the submitted
+            // group ids if it doesn't already exist
+            foreach ( $submitted_group_ids as $group_id ) {
+                if ( !in_array( $group_id, $landing_page_group_group_ids, true ) ) {
+                    $landingPageGroupRepo->insert([
+                        "landing_page_id" => $landingPage->id,
+                        "group_id" => $group_id
+                    ]);
+                }
+            }
+
+            // Delete the landing page groups with the group ids that were not
+            // submitted
+            foreach ( $group_ids_all as $_group_id ) {
+                if (
+                    !in_array( $_group_id, $submitted_group_ids ) &&
+                    in_array( $_group_id, $landing_page_group_group_ids, true )
+                ) {
+                    $landingPageGroupRepo->delete( [ "group_id" ], [ $_group_id ] );
+                }
+            }
+
             // Facebook Pixel
             if ( $input->issetField( "facebook_pixel_track" ) ) {
                 if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
@@ -125,19 +148,18 @@ class LandingPage extends Controller
             }
         }
 
-        foreach ( $all_groups as $group ) {
+        foreach ( $groupsAll as $group ) {
             $group->isset = false;
-            if ( in_array( $group->id, $landing_page_group_ids ) ) {
+            if ( in_array( $group->id, $landing_page_group_group_ids ) ) {
                 $group->isset = true;
             }
         }
 
-        $csrf_token = $this->session->generateCSRFToken();
-        $this->view->assign( "csrf_token", $csrf_token );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->assign( "facebook_pixel_active", $facebook_pixel_active );
-        $this->view->assign( "groups", $all_groups );
+        $this->view->assign( "groups", $groupsAll );
         $this->view->assign( "page", $landingPage );
 
         $this->view->setTemplate( "account-manager/business/landing-page/home.tpl" );

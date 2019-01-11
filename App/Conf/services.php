@@ -4,7 +4,6 @@
 */
 
 // Core
-
 $container->register( "config", function() {
 	$config = new Conf\Config;
 	return $config;
@@ -385,6 +384,14 @@ $container->register( "event-type-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "facebook-pixel-repository", function() use ( $container ) {
+	$repo = new \Model\Services\FacebookPixelRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "faq-repository", function() use ( $container ) {
 	$repo = new \Model\Services\FAQRepository(
 	    $container->getService( "dao" ),
@@ -433,6 +440,14 @@ $container->register( "landing-page-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "landing-page-group-repository", function() use ( $container ) {
+	$repo = new \Model\Services\LandingPageGroupRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "landing-page-sequence-template-repository", function() use ( $container ) {
 	$repo = new \Model\Services\LandingPageSequenceTemplateRepository(
 	    $container->getService( "dao" ),
@@ -443,6 +458,14 @@ $container->register( "landing-page-sequence-template-repository", function() us
 
 $container->register( "landing-page-template-repository", function() use ( $container ) {
 	$repo = new \Model\Services\LandingPageTemplateRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "member-group-repository", function() use ( $container ) {
+	$repo = new \Model\Services\MemberGroupRepository(
 	    $container->getService( "dao" ),
 	    $container->getService( "entity-factory" )
 	);
@@ -523,6 +546,14 @@ $container->register( "product-account-type-repository", function() use ( $conta
 
 $container->register( "program-repository", function() use ( $container ) {
 	$repo = new \Model\Services\ProgramRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "prospect-group-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ProspectGroupRepository(
 	    $container->getService( "dao" ),
 	    $container->getService( "entity-factory" )
 	);

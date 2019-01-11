@@ -981,6 +981,12 @@ td {
     display: block;
 }
 
+.button-action {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+
 .button-xlrg {
     width: var(--xlrg);
     height: 50px;
@@ -1200,6 +1206,10 @@ td {
 
 .tc-deep-blue {
     color: #0667D0;
+}
+
+.tc-real-gold {
+    color: #FFA500;
 }
 
 .tc-good-green {
@@ -1490,6 +1500,14 @@ td {
 
 .push-t-lrg {
     margin-top: 50px;
+}
+
+.push-t-lrg-plus {
+    margin-top: 60px;
+}
+
+.push-t-xlrg {
+    margin-top: 75px;
 }
 
 .push-b {

@@ -16,3 +16,5 @@ ALTER TABLE `email` ADD `sender_name` VARCHAR(256) NOT NULL AFTER `id`, ADD `sen
 ALTER TABLE `text_message` ADD `sender_phone_number` VARCHAR(128) NOT NULL AFTER `id`, ADD `recipient_phone_number` VARCHAR(128) NOT NULL AFTER `sender_phone_number`;
 ALTER TABLE `event` DROP `business_id`;
 CREATE TABLE `sequence_template_sequence` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `sequence_template_id` BIGINT NOT NULL , `sequence_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `landing_page_group` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `landing_page_id` BIGINT NOT NULL , `group_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `facebook_pixel` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `facebook_pixel_id` VARCHAR(128) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
