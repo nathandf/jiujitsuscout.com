@@ -18,3 +18,4 @@ ALTER TABLE `event` DROP `business_id`;
 CREATE TABLE `sequence_template_sequence` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `sequence_template_id` BIGINT NOT NULL , `sequence_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `landing_page_group` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `landing_page_id` BIGINT NOT NULL , `group_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `facebook_pixel` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `facebook_pixel_id` VARCHAR(128) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `landing_page_facebook_pixel` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `landing_page_id` BIGINT NOT NULL , `facebook_pixel_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

@@ -432,6 +432,14 @@ $container->register( "image-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "landing-page-facebook-pixel-repository", function() use ( $container ) {
+	$repo = new \Model\Services\LandingPageFacebookPixelRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "landing-page-repository", function() use ( $container ) {
 	$repo = new \Model\Services\LandingPageRepository(
 	    $container->getService( "dao" ),

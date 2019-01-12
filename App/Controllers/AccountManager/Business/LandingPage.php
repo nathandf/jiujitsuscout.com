@@ -61,6 +61,8 @@ class LandingPage extends Controller
         $groupRepo = $this->load( "group-repository" );
         $landingPageRepo = $this->load( "landing-page-repository" );
         $landingPageGroupRepo = $this->load( "landing-page-group-repository" );
+        $landingPageSequenceTemplateRepo = $this->load( "landing-page-sequence-template-repository" );
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
 
         $groupsAll = $groupRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $group_ids_all = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
@@ -74,7 +76,37 @@ class LandingPage extends Controller
             $facebook_pixel_active = true;
         }
 
-        if ( $input->exists() ) {
+        $sequenceTemplates = $sequenceTemplateRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $landingPageSequenceTemplates = $landingPageSequenceTemplateRepo->get( [ "*" ], [ "landing_page_id" => $this->params[ "id" ] ] );
+
+        if ( $input->exists() && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "update_landing_page" => [
+                    "required" => true
+                ],
+                "name" => [
+                    "name" => "Landing Page Name",
+                    "required" => true,
+                    "min" => 1,
+                    "max" => 200
+                ],
+                "slug" => [
+                    "name" => "Slug",
+                    "required" => true,
+                    "min" => 1,
+                    "max" => 100,
+                    "uri" => true
+                ]
+            ],
+
+            "update_landing_page" /* error index */
+            )
+        ) {
             // Update groups
             $submitted_group_ids = [];
             if ( $input->issetField( "group_ids" ) ) {
@@ -99,7 +131,7 @@ class LandingPage extends Controller
                     !in_array( $_group_id, $submitted_group_ids ) &&
                     in_array( $_group_id, $landing_page_group_group_ids, true )
                 ) {
-                    $landingPageGroupRepo->delete( [ "group_id" ], [ $_group_id ] );
+                    $landingPageGroupRepo->delete( [ "group_id", "landing_page_id" ], [ $_group_id, $landingPage->id ] );
                 }
             }
 
@@ -112,40 +144,9 @@ class LandingPage extends Controller
                 $landingPageRepo->updateFacebookPixelIDByID( null, $landingPage->id );
             }
 
-            if ( $inputValidator->validate(
-
-                    $input,
-
-                    [
-                        "token" => [
-                            "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                            "required" => true
-                        ],
-                        "update_landing_page" => [
-                            "required" => true
-                        ],
-                        "name" => [
-                            "name" => "Landing Page Name",
-                            "required" => true,
-                            "min" => 1,
-                            "max" => 200
-                        ],
-                        "slug" => [
-                            "name" => "Slug",
-                            "required" => true,
-                            "min" => 1,
-                            "max" => 100,
-                            "uri" => true
-                        ]
-                    ],
-
-                    "update_landing_page" /* error index */
-                ) )
-            {
-                $landingPageRepo->updateNameByID( $input->get( "name" ), $this->params[ "id" ] );
-                $landingPageRepo->modifySlug( $input->get( "slug" ), $this->params[ "id" ], $this->business->id );
-                $this->view->redirect( "account-manager/business/landing-page/" . $landingPage->id . "/" );
-            }
+            $landingPageRepo->updateNameByID( $input->get( "name" ), $this->params[ "id" ] );
+            $landingPageRepo->modifySlug( $input->get( "slug" ), $this->params[ "id" ], $this->business->id );
+            $this->view->redirect( "account-manager/business/landing-page/" . $landingPage->id . "/" );
         }
 
         foreach ( $groupsAll as $group ) {
@@ -161,6 +162,7 @@ class LandingPage extends Controller
         $this->view->assign( "facebook_pixel_active", $facebook_pixel_active );
         $this->view->assign( "groups", $groupsAll );
         $this->view->assign( "page", $landingPage );
+        $this->view->assign( "sequence_templates", $sequenceTemplates );
 
         $this->view->setTemplate( "account-manager/business/landing-page/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/LandingPage.php" );
