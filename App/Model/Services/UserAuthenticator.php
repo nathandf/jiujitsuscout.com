@@ -83,12 +83,14 @@ class UserAuthenticator extends Service
     {
         $user = $this->repo->get( [ "*" ], [ "email" => $email ], "single" );
 
-        if ( password_verify( $password, $user->password ) ) {
-            $this->setUserIDSession( $user->id );
-            $token = $this->setUserLoginToken( $user->id, $token_expiration );
-            $this->repo->updateTokenByID( $token, $user->id );
+        if ( !is_null( $user ) ) {
+            if ( password_verify( $password, $user->password ) ) {
+                $this->setUserIDSession( $user->id );
+                $token = $this->setUserLoginToken( $user->id, $token_expiration );
+                $this->repo->updateTokenByID( $token, $user->id );
 
-            return true;
+                return true;
+            }
         }
 
         return false;
