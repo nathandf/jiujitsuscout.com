@@ -215,6 +215,14 @@ $container->register( "business-text-message-repository", function() use ( $cont
 	return $repo;
 } );
 
+$container->register( "business-user-repository", function() use ( $container ) {
+	$repo = new \Model\Services\BusinessUserRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "campaign-repository", function() use ( $container ) {
 	$repo = new \Model\Services\CampaignRepository(
 	    $container->getService( "dao" ),

@@ -78,7 +78,7 @@
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input type="hidden" name="note_id" value="{$note->id}">
 					<input type="hidden" name="delete_note" value="{$csrf_token}">
-					<button type="submit" class="bg-white floatright"><p class="text-lrg-heavy link tc-salmon">x</p></button>
+					<button type="submit" class="bg-white floatright"><p class="text-lrg-heavy link tc-red"><i class="fa fa-trash" aria-hidden="true"></i></p></button>
 				</form>
 				<p class="text-sml-heavy">{$note->time|date_format:"%b %e %Y - %l:%M%p"}</p>
 				<div class="clear"></div>

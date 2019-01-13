@@ -21,3 +21,4 @@ CREATE TABLE `facebook_pixel` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_
 ALTER TABLE `facebook_pixel` ADD `name` VARCHAR(256) NOT NULL AFTER `facebook_pixel_id`;
 CREATE TABLE `landing_page_facebook_pixel` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `landing_page_id` BIGINT NOT NULL , `facebook_pixel_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `landing_page_notification_recipient` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `landing_page_id` BIGINT NOT NULL , `user_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `business_user` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `user_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

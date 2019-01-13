@@ -27,12 +27,24 @@
 				<b>Name:</b>
 				<div class="clear"></div>
 				<input type="text" name="name" class="inp" value="{$page->name}">
-				<div class="clear push-t-med"></div>
+				<div class="clear push-t-sml"></div>
 				<b>Slug:</b>
 				<div class="clear"></div>
 				<input type="text" name="slug" id="input-slug" class="inp" value="{$page->slug}">
 				<p class="text-med">https://www.jiujitsuscout.com/martial-arts-gyms/{$business->id}/promo/<b id="slug">{$page->slug}</b></p>
 				<div class="hr"></div>
+				{if !empty($user_recipients)}
+					<h3 class="push-t-med">Notification Recipients</h3>
+					<p class="text-med">Send alerts to these users when a lead is captured</p>
+					<div class="clear push-t-med push-b-med"></div>
+					{foreach from=$user_recipients item=user name=user_loop}
+					<input type="checkbox" id="users{$smarty.foreach.user_loop.index}" class="cursor-pt checkbox" name="user_ids[]" value="{$user->id}" {if $user->isset}checked="checked"{/if}>
+					<label for="users{$smarty.foreach.user_loop.index}"><b>{$user->getFullName()}</b></label>
+					<div class="clear"></div>
+					{foreachelse}
+				{/foreach}
+				<div class="hr"></div>
+				{/if}
 				{if !empty($facebook_pixels)}
 					<h3 class="push-t-med">Facebook Pixels</h3>
 					<p class="text-med">Track user action on this landing page with Facebook Pixels</p>

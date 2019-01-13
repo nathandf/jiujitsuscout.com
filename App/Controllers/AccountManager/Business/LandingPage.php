@@ -65,8 +65,25 @@ class LandingPage extends Controller
         $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
         $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
         $landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
+        $landingPageNotificationRecipientRepo = $this->load( "landing-page-notification-recipient-repository" );
+        $userRepo = $this->load( "user-repository" );
 
         $landingPage = $landingPageRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+
+        $users = $userRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
+        $user_ids = $userRepo->get( [ "id" ], [ "account_id" => $this->account->id ], "raw" );
+        $landing_page_notification_recipient_ids = $landingPageNotificationRecipientRepo->get(
+            [ "user_id" ],
+            [ "landing_page_id" => $landingPage->id ],
+            "raw"
+        );
+
+        foreach ( $users as $user ) {
+            $user->isset = false;
+            if ( in_array( $user->id, $landing_page_notification_recipient_ids ) ) {
+                $user->isset = true;
+            }
+        }
 
         $facebookPixels = $facebookPixelRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $facebook_pixel_ids_all = $facebookPixelRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
@@ -133,6 +150,34 @@ class LandingPage extends Controller
             "update_landing_page" /* error index */
             )
         ) {
+            // Update landingPageGroups
+            $submitted_user_ids = [];
+            if ( $input->issetField( "user_ids" ) ) {
+                $submitted_user_ids = $input->get( "user_ids" );
+            }
+
+            // Create and new landing page notification recipient for any of the submitted
+            // user ids if it doesn't already exist
+            foreach ( $submitted_user_ids as $user_id ) {
+                if ( !in_array( $user_id, $landing_page_notification_recipient_ids, true ) ) {
+                    $landingPageNotificationRecipientRepo->insert([
+                        "landing_page_id" => $landingPage->id,
+                        "user_id" => $user_id
+                    ]);
+                }
+            }
+
+            // Delete the landing page user recipients with the user ids that were not
+            // submitted if they exist
+            foreach ( $user_ids as $_user_id ) {
+                if (
+                    !in_array( $_user_id, $submitted_user_ids ) &&
+                    in_array( $_user_id, $landing_page_notification_recipient_ids, true )
+                ) {
+                    $landingPageNotificationRecipientRepo->delete( [ "user_id", "landing_page_id" ], [ $_user_id, $landingPage->id ] );
+                }
+            }
+
             // Update landingPageGroups
             $submitted_group_ids = [];
             if ( $input->issetField( "group_ids" ) ) {
@@ -234,6 +279,7 @@ class LandingPage extends Controller
         $this->view->assign( "page", $landingPage );
         $this->view->assign( "sequence_templates", $sequenceTemplates );
         $this->view->assign( "facebook_pixels", $facebookPixels );
+        $this->view->assign( "user_recipients", $users );
 
         $this->view->setTemplate( "account-manager/business/landing-page/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/LandingPage.php" );
