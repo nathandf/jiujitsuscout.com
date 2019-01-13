@@ -2,7 +2,7 @@
 
 namespace Model\Mappers;
 
-class LandingPageGroupMapper extends DataMapper
+class LandingPageFacebookPixelMapper extends DataMapper
 {
 
 }

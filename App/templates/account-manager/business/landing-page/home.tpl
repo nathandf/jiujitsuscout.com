@@ -33,11 +33,17 @@
 				<input type="text" name="slug" id="input-slug" class="inp" value="{$page->slug}">
 				<p class="text-med">https://www.jiujitsuscout.com/martial-arts-gyms/{$business->id}/promo/<b id="slug">{$page->slug}</b></p>
 				<div class="hr"></div>
-				{if $business->facebook_pixel_id != null}
-				<h3 class="push-t-med">Tracking</h3>
-				<div class="clear"></div>
-				<input type="checkbox" id="facebook-pixel-id" class="cursor-pt" name="facebook_pixel_track" value="{$business->facebook_pixel_id}" {if $facebook_pixel_active}checked="checked"{/if}>
-				<label class="push-t-med cursor-pt" for="facebook-pixel-id">Track with Facebook Pixel </label>
+				{if !empty($facebook_pixels)}
+					<h3 class="push-t-med">Facebook Pixels</h3>
+					<p class="text-med">Track user action on this landing page with Facebook Pixels</p>
+					<div class="clear push-t-med push-b-med"></div>
+					{foreach from=$facebook_pixels item=facebook_pixel name=pixel_loop}
+					<input type="checkbox" id="pixels{$smarty.foreach.pixel_loop.index}" class="cursor-pt checkbox" name="facebook_pixel_ids[]" value="{$facebook_pixel->id}" {if $facebook_pixel->isset}checked="checked"{/if}>
+					<label for="pixels{$smarty.foreach.pixel_loop.index}"><b>{$facebook_pixel->name}</b></label>
+					<div class="clear"></div>
+					{foreachelse}
+					<p class="text-med">No pixel have been added to this business. <a class="link tc-deep-blue" href="{$HOME}account-manager/business/assets/facebook-pixels">Add a Facebook Pixel</a></p>
+				{/foreach}
 				<div class="hr"></div>
 				{/if}
 				{if $groups}
@@ -45,7 +51,7 @@
 					<p class="text-med">Assign leads from this landing page to groups.</p>
 					<div class="clear push-t-med push-b-med"></div>
 					{foreach from=$groups item=group name="group_loop"}
-						<input type="checkbox" id="groups{$smarty.foreach.group_loop.index}" class="cursor-pt" name="group_ids[]" value="{$group->id}" {if $group->isset}checked="checked"{/if}>
+						<input type="checkbox" id="groups{$smarty.foreach.group_loop.index}" class="cursor-pt checkbox" name="group_ids[]" value="{$group->id}" {if $group->isset}checked="checked"{/if}>
 						<label for="groups"><b>{$group->name}</b></label>
 						<div class="clear"></div>
 					{/foreach}
@@ -56,7 +62,7 @@
 					<p class="text-med">Activate follow-up sequences when leads sign up on this landing page</p>
 					<div class="clear push-t-med push-b-med"></div>
 					{foreach from=$sequence_templates item=sequence_template name=sequence_loop}
-					<input type="checkbox" id="sequences{$smarty.foreach.sequence_loop.index}" class="cursor-pt" name="sequence_template_ids[]" value="{$sequence_template->id}" {if $sequence_template->isset}checked="checked"{/if}>
+					<input type="checkbox" id="sequences{$smarty.foreach.sequence_loop.index}" class="cursor-pt checkbox" name="sequence_template_ids[]" value="{$sequence_template->id}" {if $sequence_template->isset}checked="checked"{/if}>
 					<label for="sequences{$smarty.foreach.sequence_loop.index}"><b>{$sequence_template->name}</b></label>
 					<div class="clear"></div>
 					{foreachelse}

@@ -63,13 +63,27 @@ class LandingPage extends Controller
         $landingPageGroupRepo = $this->load( "landing-page-group-repository" );
         $landingPageSequenceTemplateRepo = $this->load( "landing-page-sequence-template-repository" );
         $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
+        $landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
+
+        $landingPage = $landingPageRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+
+        $facebookPixels = $facebookPixelRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $facebook_pixel_ids_all = $facebookPixelRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+        $landing_page_facebook_pixel_ids = $landingPageFacebookPixelRepo->get( [ "facebook_pixel_id" ], [ "landing_page_id" => $this->params[ "id" ] ], "raw" );
+
+        foreach ( $facebookPixels as $pixel ) {
+            $pixel->isset = false;
+            if ( in_array( $pixel->id, $landing_page_facebook_pixel_ids ) ) {
+                $pixel->isset = true;
+            }
+        }
+
+        $landingPageGroups = $landingPageGroupRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
+        $landing_page_group_group_ids = $landingPageGroupRepo->get( [ "group_id" ], [ "landing_page_id" => $landingPage->id ], "raw" );
 
         $groupsAll = $groupRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $group_ids_all = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
-
-        $landingPage = $landingPageRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
-        $landingPageGroups = $landingPageGroupRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
-        $landing_page_group_group_ids = $landingPageGroupRepo->get( [ "group_id" ], [ "landing_page_id" => $landingPage->id ], "raw" );
 
         // Add an isset property to each group object. This value will be evaluated
         // to determine whether the checkbox should be checked or not
@@ -78,11 +92,6 @@ class LandingPage extends Controller
             if ( in_array( $group->id, $landing_page_group_group_ids ) ) {
                 $group->isset = true;
             }
-        }
-
-        $facebook_pixel_active = false;
-        if ( !is_null( $landingPage->facebook_pixel_id ) && $landingPage->facebook_pixel_id != "" ) {
-            $facebook_pixel_active = true;
         }
 
         $sequenceTemplates = $sequenceTemplateRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
@@ -169,7 +178,7 @@ class LandingPage extends Controller
                 }
             }
 
-            // Delete the landing page sequence templates with the group ids that were not
+            // Delete the landing page sequence templates with the sequence template ids that were not
             // submitted
             foreach ( $sequence_template_ids_all as $_sequence_template_id ) {
                 if (
@@ -180,13 +189,32 @@ class LandingPage extends Controller
                 }
             }
 
-            // Facebook Pixel
-            if ( $input->issetField( "facebook_pixel_track" ) ) {
-                if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
-                    $landingPageRepo->updateFacebookPixelIDByID( $this->business->facebook_pixel_id, $landingPage->id );
+            // Update LandingPageFacebookPixel
+            $submitted_facebook_pixel_ids = [];
+            if ( $input->issetField( "facebook_pixel_ids" ) ) {
+                $submitted_facebook_pixel_ids = $input->get( "facebook_pixel_ids" );
+            }
+
+            // Create and new landing page facebook pixel for any of the submitted
+            // facebook pixel ids if it doesn't already exist
+            foreach ( $submitted_facebook_pixel_ids as $submitted_facebook_pixel_id ) {
+                if ( !in_array( $submitted_facebook_pixel_id, $landing_page_facebook_pixel_ids, true ) ) {
+                    $landingPageFacebookPixelRepo->insert([
+                        "landing_page_id" => $landingPage->id,
+                        "facebook_pixel_id" => $submitted_facebook_pixel_id
+                    ]);
                 }
-            } else {
-                $landingPageRepo->updateFacebookPixelIDByID( null, $landingPage->id );
+            }
+
+            // Delete the landing page facebook pixels with the facebook pixel ids that were not
+            // submitted
+            foreach ( $facebook_pixel_ids_all as $_facebook_pixel_id ) {
+                if (
+                    !in_array( $_facebook_pixel_id, $submitted_facebook_pixel_ids ) &&
+                    in_array( $_facebook_pixel_id, $landing_page_facebook_pixel_ids, true )
+                ) {
+                    $landingPageFacebookPixelRepo->delete( [ "facebook_pixel_id", "landing_page_id" ], [ $_facebook_pixel_id, $this->params[ "id" ] ] );
+                }
             }
 
             $this->session->addFlashMessage( "Landing Page Updated" );
@@ -194,6 +222,7 @@ class LandingPage extends Controller
 
             $landingPageRepo->updateNameByID( $input->get( "name" ), $this->params[ "id" ] );
             $landingPageRepo->modifySlug( $input->get( "slug" ), $this->params[ "id" ], $this->business->id );
+
             $this->view->redirect( "account-manager/business/landing-page/" . $landingPage->id . "/" );
         }
 
@@ -201,10 +230,10 @@ class LandingPage extends Controller
         $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
-        $this->view->assign( "facebook_pixel_active", $facebook_pixel_active );
         $this->view->assign( "groups", $groupsAll );
         $this->view->assign( "page", $landingPage );
         $this->view->assign( "sequence_templates", $sequenceTemplates );
+        $this->view->assign( "facebook_pixels", $facebookPixels );
 
         $this->view->setTemplate( "account-manager/business/landing-page/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/LandingPage.php" );
