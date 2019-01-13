@@ -568,29 +568,62 @@ class MartialArtsGyms extends Controller
         $userMailer = $this->load( "user-mailer" );
         $phoneRepo = $this->load( "phone-repository" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
         $landingPageGroupRepo = $this->load( "landing-page-group-repository" );
+        $landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
+        $landingPageSequenceTemplateRepo = $this->load( "landing-page-sequence-template-repository" );
+        $landingPageNotificationRecipientRepo = $this->load( "landing-page-notification-recipient-repository" );
         $prospectGroup = $this->load( "prospect-group-repository" );
         $groupRepo = $this->load( "group-repository" );
+        $landingPageRepo = $this->load( "landing-page-repository" );
 
         $this->view->assign( "business", $this->business );
         $this->requireParam( "slug" );
 
-        $landingPageRepo = $this->load( "landing-page-repository" );
-        $landingPage = $landingPageRepo->getBySlugAndBusinessID( $this->params[ "slug" ], $this->business->id );
+        $landingPage = $landingPageRepo->get(
+            [ "*" ],
+            [
+                "slug" => $this->params[ "slug" ],
+                "business_id" => $this->business->id
+            ],
+            "single"
+        );
 
         // Render 404 page if there is no landing page with this slug and business_id
-        if ( is_null( $landingPage->id ) || $landingPage->id == "" ) {
+        if ( is_null( $landingPage ) ) {
             $this->view->render404();
         }
-        // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
-        // Replace the facebook pixel if user specifies a pixel id of their own
-        if ( !is_null( $landingPage->facebook_pixel_id ) && $landingPage->facebook_pixel_id != "" ) {
-            $facebookPixelBuilder->setPixelID( $landingPage->facebook_pixel_id);
+        // Get all the references to the facebook pixels used for this landing page
+        $landingPageFacebookPixels = $landingPageFacebookPixelRepo->get(
+            [ "*" ],
+            [ "landing_page_id" => $landingPage->id ]
+        );
+
+        $facebook_pixel_ids = [];
+        foreach ( $landingPageFacebookPixels as $landingPageFacebookPixel ) {
+            // Get the facebook pixel based on landingPageFacebookPixel reference
+            $facebook_pixel_id = $facebookPixelRepo->get(
+                [ "facebook_pixel_id" ],
+                [ "id" => $landingPageFacebookPixel->facebook_pixel_id ],
+                "raw"
+            );
+            // Validate that something was returned
+            if ( !empty( $facebook_pixel_id ) ) {
+                // Don't allow duplicate pixels to be loaded in
+                if ( !in_array( $facebook_pixel_id, $facebook_pixel_ids ) ) {
+                    $facebook_pixel_ids[] = $facebook_pixel_id[ 0 ];
+                }
+            }
         }
 
-        if ( $input->exists() && $input->issetField( "landing_page" ) && $inputValidator->validate( $input,
+        // Add all the facebook pixel ids to the facebook pixel builder
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] )
+            ->addPixelID( $facebook_pixel_ids );
+
+        if ( $input->exists() && $input->issetField( "landing_page" ) && $inputValidator->validate(
+            $input,
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -615,17 +648,16 @@ class MartialArtsGyms extends Controller
                 ],
 
                 "landing_page" // error index
-            ) )
-        {
-            $prospect = $prospectRegistrar->build();
-            $prospect->first_name = $input->get( "name" );
-            $prospect->last_name = "";
-            $prospect->email = strtolower( $input->get( "email" ) );
+            )
+        ) {
             $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
-            $prospect->phone_id = $phone->id;
-            $prospect->business_id = $this->business->id;
-            $prospect->source = $landingPage->name;
-            $prospectRegistrar->register( $prospect );
+            $prosect = $prospectRepo->insert([
+                "business_id" => $this->business->id,
+                "first_name" => $input->get( "name" ),
+                "email" => strtolower( trim( $input->get( "email" ) ) ),
+                "phone_id" => $phone->id,
+                "source" => $landingPage->name
+            ]);
 
             // Add Prospects to groups
             $landingPageGroups = $landingPageGroupRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
@@ -666,6 +698,7 @@ class MartialArtsGyms extends Controller
         }
 
         $this->view->assign( "page", $landingPage );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
 
         // Set variables to populate inputs after form submission failure and assign to view
         $inputs = [];
@@ -786,9 +819,7 @@ class MartialArtsGyms extends Controller
 
         $this->view->assign( "inputs", $inputs );
 
-        $csrf_token = $this->session->generateCSRFToken();
-        $this->view->assign( "csrf_token", $csrf_token );
-
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         // Assign data the view

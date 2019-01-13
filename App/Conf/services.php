@@ -440,6 +440,14 @@ $container->register( "landing-page-facebook-pixel-repository", function() use (
 	return $repo;
 } );
 
+$container->register( "landing-page-notification-recipient-repository", function() use ( $container ) {
+	$repo = new \Model\Services\LandingPageNotificationRecipientRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "landing-page-repository", function() use ( $container ) {
 	$repo = new \Model\Services\LandingPageRepository(
 	    $container->getService( "dao" ),

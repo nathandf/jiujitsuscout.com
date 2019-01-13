@@ -14,7 +14,7 @@
 			<div class="hr-sml"></div>
 			<div class="clear"></div>
 			<a href="{$HOME}account-manager/business/form/new" class="btn btn-inline mat-hov push-t-med"><span class="text-med">Create a Form <i class="fa fa-plus" aria-hidden="true"></i></span></a>
-			<p class="text-sml">Create embeddable forms that you can use on your website</p>
+			<p class="text-sml">Create embeddable forms to capture leads with external lead generation sources</p>
 			<div class="hr-sml"></div>
 			<div class="clear push-b-med"></div>
 			{foreach from=$forms item=form}
