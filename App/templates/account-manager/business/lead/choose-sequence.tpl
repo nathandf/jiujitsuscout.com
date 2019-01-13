@@ -10,7 +10,7 @@
 		<div class="clear"></div>
 		<div class="con con-cnt-xxlrg push-t-med inner-pad-med">
 			<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/leads">Leads</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/lead/{$lead->id}/">{$lead->getFullName()}</a> > Add to Sequence</p>
-			<h2 class="push-t-med">Choose A Sequence</h2>
+			<h2 class="push-t-med">Choose a sequence</h2>
 			<p class="text-sml">Add {$lead->getFullName()} to a follow up sequence.</p>
 			<div class="hr-sml"></div>
 			{if !empty($error_messages.add_to_sequence)}

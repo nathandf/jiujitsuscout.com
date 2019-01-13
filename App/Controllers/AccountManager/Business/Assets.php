@@ -41,7 +41,7 @@ class Assets extends Controller
 
     public function indexAction()
     {
-        $this->view->redirect( "account-manager/business/assets/facebook-pixel" );
+        $this->view->redirect( "account-manager/business/assets/facebook-pixels" );
     }
 
     public function websiteAction()
@@ -79,16 +79,18 @@ class Assets extends Controller
         $this->view->render( "App/Views/AccountManager/Assets.php" );
     }
 
-    public function facebookPixelAction()
+    public function facebookPixelsAction()
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $businessRepo = $this->load( "business-repository" );
+        $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
 
-        if ( $input->exists() && $inputValidator->validate(
+        $facebookPixels = $facebookPixelRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $facebook_pixel_ids = $facebookPixelRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
 
+        if ( $input->exists() && $input->issetField( "add_pixel" ) && $inputValidator->validate(
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -96,18 +98,59 @@ class Assets extends Controller
                     ],
                     "facebook_pixel_id" => [
                         "name" => "Facebook Pixel ID",
+                        "required" => true,
                         "max" => 50
+                    ],
+                    "name" => [
+                        "name" => "Pixel Name",
+                        "required" => true,
+                        "max" => 255
                     ]
                 ],
 
                 "facebook_pixel" /* error index */
             ) )
         {
-            $businessRepo->updateFacebookPixelIDByID( trim( $input->get( "facebook_pixel_id" ) ), $this->business->id );
-            $this->view->redirect( "account-manager/business/assets/facebook-pixel" );
+            $facebookPixelRepo->insert([
+                "business_id" => $this->business->id,
+                "facebook_pixel_id" => $input->get( "facebook_pixel_id" ),
+                "name" => $input->get( "name" )
+            ]);
+
+            $this->session->addFlashMessage( "Pixel Added: " . $input->get( "name" ) . " - " . $input->get( "facebook_pixel_id" ) );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/assets/facebook-pixels" );
         }
 
+        if ( $input->exists() && $input->issetField( "delete_pixel" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "facebook_pixel_id" => [
+                        "name" => "Facebook Pixel ID",
+                        "required" => true,
+                        "in_array" => $facebook_pixel_ids,
+                    ],
+                ],
+
+                "facebook_pixel" /* error index */
+            ) )
+        {
+            $facebookPixelRepo->delete( [ "id" ], [ $input->get( "facebook_pixel_id" ) ] );
+
+            $this->session->addFlashMessage( "Pixel Deleted" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/assets/facebook-pixels" );
+        }
+
+        $this->view->assign( "facebookPixels", $facebookPixels );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setTemplate( "account-manager/business/assets/facebook-pixel.tpl" );

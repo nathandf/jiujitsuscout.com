@@ -16,17 +16,45 @@
 					</div>
 				{/foreach}
 			{/if}
+			{if !empty($error_messages.delete.facebook_pixel)}
+				{foreach from=$error_messages.delete.facebook_pixel item=message}
+					<div class="con-message-failure mat-hov cursor-pt --c-hide">
+						<p class="user-message-body">{$message}</p>
+					</div>
+				{/foreach}
+			{/if}
+			{include file="includes/snippets/flash-messages.tpl"}
 			<div class="clear"></div>
-			<h2 class="">Facebook Pixel</h2>
-			<p class="text-sml">Use your business's Facebook pixel to track the actions your leads take on landing pages.</p>
+			<h2 class="">Facebook Pixels</h2>
+			<p class="text-sml">Track user action on your landing pages with Facebook Pixels</p>
+			{foreach from=$facebookPixels item=facebookPixel name=pixel_loop}
+			{if $smarty.foreach.pixel_loop.iteration == 1}
+			<div class="clear hr-sml"></div>
+			{/if}
+			<div class="push-t-sml inner-pad-sml" style="box-sizing: border-box; border-radius: 3px; border: 2px solid #CCCCCC;">
+				<form method="post" action="">
+					<input type="hidden" name="delete_pixel" value="{$csrf_token}">
+					<input type="hidden" name="token" value="{$csrf_token}">
+					<input type="hidden" name="facebook_pixel_id" value="{$facebookPixel->id}">
+					<button class="btn btn-inline bg-red tc-white cursor-pt mat-hov floatright --c-trash"><i class="fa fa-trash" aria-hidden="true"></i></button>
+				</form>
+				<p class="text-med">{$facebookPixel->name}</p>
+				<p class="text-sml-heavy">{$facebookPixel->facebook_pixel_id}</p>
+			</div>
+			{/foreach}
+			<div class="clear hr-sml"></div>
+			<h3 class="push-t-med">Add a Facebook Pixel</h3>
 			<form action="" method="post">
 				<input type="hidden" name="token" value="{$csrf_token}">
-				<input type="text" name="facebook_pixel_id" class="inp field-med first" value="{$business->facebook_pixel_id}" placeholder="Facebook Pixel ID">
+				<input type="hidden" name="add_pixel" value="{$csrf_token}">
+				<p class="text-sml push-t-med">Pixel Name:</p>
+				<input type="text" name="name" class="inp" placeholder="Pixel Name">
+				<p class="text-sml push-t-sml">Pixel ID:</p>
+				<input type="text" name="facebook_pixel_id" class="inp" placeholder="Facebook Pixel ID">
 				<div class="clear"></div>
-				<input class="btn btn-inline push-t-med" type="submit" value="Update Facebook Pixel ID" name="update-pixel" />
+				<button type="submit" class="btn btn-inline push-t-med" name="update-pixel"><i class="fa fa-plus" aria-hidden="true"></i> Add Pixel</button>
 				<div class="clear"></div>
 			</form>
-			<div class="clear"></div>
 		</div>
 		<div class="clear"></div>
 	</div>

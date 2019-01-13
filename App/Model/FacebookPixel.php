@@ -9,4 +9,5 @@ class FacebookPixel implements EntityInterface
 	public $id;
 	public $business_id;
 	public $facebook_pixel_id;
+	public $name;
 }
