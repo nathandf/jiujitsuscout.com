@@ -781,7 +781,7 @@ class Lead extends Controller
                 ->setRecipientPhoneNumber( $this->phone->getPhoneNumber() )
                 ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() );
 
-            // If a sequence was build successfully, create a prospect and business
+            // If a sequence was built successfully, create a prospect and business
             // sequence reference and redirect to the sequence screen
             $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $input->get( "sequence_template_id" ) ], "single" );
 

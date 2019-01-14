@@ -553,21 +553,10 @@ class MartialArtsGyms extends Controller
         $reviewRepo = $this->load( "review-repository" );
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
-        $prospectRegistrar = $this->load( "prospect-registrar" );
-        $userRepo = $this->load( "user-repository" );
-        $userMailer = $this->load( "user-mailer" );
-        $phoneRepo = $this->load( "phone-repository" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
         $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
-        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
-        $landingPageGroupRepo = $this->load( "landing-page-group-repository" );
         $landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
-        $landingPageSequenceTemplateRepo = $this->load( "landing-page-sequence-template-repository" );
-        $landingPageNotificationRecipientRepo = $this->load( "landing-page-notification-recipient-repository" );
-        $prospectGroup = $this->load( "prospect-group-repository" );
-        $groupRepo = $this->load( "group-repository" );
         $landingPageRepo = $this->load( "landing-page-repository" );
-        $prospectRepo = $this->load( "prospect-repository" );
 
         $this->view->assign( "business", $this->business );
         $this->requireParam( "slug" );
@@ -641,7 +630,12 @@ class MartialArtsGyms extends Controller
                 "landing_page" // error index
             )
         ) {
+            // Create phone object for prospect
+            $phoneRepo = $this->load( "phone-repository" );
             $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "number" ) ) );
+
+            // Create prospect
+            $prospectRepo = $this->load( "prospect-repository" );
             $prospect = $prospectRepo->insert([
                 "business_id" => $this->business->id,
                 "first_name" => $input->get( "name" ),
@@ -650,23 +644,19 @@ class MartialArtsGyms extends Controller
                 "source" => $landingPage->name
             ]);
 
-            // Add Prospects to groups
-            $landingPageGroups = $landingPageGroupRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
+            $userRepo = $this->load( "user-repository" );
+            $userMailer = $this->load( "user-mailer" );
+            $landingPageNotificationRecipientRepo = $this->load( "landing-page-notification-recipient-repository" );
 
-            foreach ( $landingPageGroups as $landingPageGroup ) {
-                $prospectGroup->insert([
-                    "prospect_id" => $prospect->id,
-                    "group_id" => $landingPageGroup->group_id
-                ]);
-            }
+            // Send lead capture notifications to users
+            $landingPageNotificationRecipients = $landingPageNotificationRecipientRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
 
-            // Get the users that require email lead notifications
             $users = [];
-            $user_ids = explode( ",", $this->business->user_notification_recipient_ids );
-
-            // Populate users array with users data
-            foreach ( $user_ids as $user_id ) {
-                $users[] = $userRepo->getByID( $user_id );
+            foreach ( $landingPageNotificationRecipients as $recipient ) {
+                $user = $userRepo->get( [ "*" ], [ "id" => $recipient->user_id ], "single" );
+                if ( !is_null( $user ) ) {
+                    $users[] = $user;
+                }
             }
 
             // Send the email to each user
@@ -683,6 +673,61 @@ class MartialArtsGyms extends Controller
                         "additional_info" => "N/a"
                     ]
                 );
+            }
+
+            // Add Prospects to groups
+            $landingPageGroupRepo = $this->load( "landing-page-group-repository" );
+            $landingPageGroups = $landingPageGroupRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
+
+            $prospectGroup = $this->load( "prospect-group-repository" );
+            foreach ( $landingPageGroups as $landingPageGroup ) {
+                $prospectGroup->insert([
+                    "prospect_id" => $prospect->id,
+                    "group_id" => $landingPageGroup->group_id
+                ]);
+            }
+
+            // Build sequence based on landing page sequence templates
+            $landingPageSequenceTemplateRepo = $this->load( "landing-page-sequence-template-repository" );
+            $sequenceBuilder = $this->load( "sequence-builder" );
+            $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+            $businessSequenceRepo = $this->load( "business-sequence-repository" );
+            $prospectSequenceRepo = $this->load( "prospect-sequence-repository" );
+            $sequenceTemplateSequenceRepo = $this->load( "sequence-template-sequence-repository" );
+
+            // Load sequence template reference for this landing page
+            $landingPageSequenceTemplates = $landingPageSequenceTemplateRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
+
+            foreach ( $landingPageSequenceTemplates as $landingPageSequenceTemplate ) {
+                $sequenceBuilder->setRecipientName( $prospect->getFullName() )
+                    ->setSenderName( $this->business->business_name )
+                    ->setRecipientEmail( $prospect->email )
+                    ->setSenderEmail( $this->business->email )
+                    ->setRecipientPhoneNumber( $phone->getPhoneNumber() )
+                    ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() );
+
+                // If a sequence was built successfully, create a prospect and business
+                // sequence reference and redirect to the sequence screen
+                $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $landingPageSequenceTemplate->sequence_template_id ], "single" );
+
+                if ( $sequenceBuilder->build( $sequenceTemplate->id ) ) {
+                    $sequence = $sequenceBuilder->getSequence();
+
+                    $businessSequenceRepo->insert([
+                        "business_id" => $this->business->id,
+                        "sequence_id" => $sequence->id
+                    ]);
+
+                    $prospectSequenceRepo->insert([
+                        "prospect_id" => $prospect->id,
+                        "sequence_id" => $sequence->id
+                    ]);
+
+                    $sequenceTemplateSequenceRepo->insert([
+                        "sequence_template_id" => $sequenceTemplate->id,
+                        "sequence_id" => $sequence->id
+                    ]);
+                }
             }
 
             $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/thank-you" );
@@ -703,7 +748,6 @@ class MartialArtsGyms extends Controller
 
         // Input values submitted from form
         $this->view->assign( "inputs", $inputs );
-
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
