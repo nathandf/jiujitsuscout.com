@@ -724,7 +724,7 @@ class Lead extends Controller
         $this->view->render( "App/Views/AccountManager/Business/Lead.php" );
     }
 
-    public function addToSequenceAction()
+    public function sequencesAction()
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
@@ -808,7 +808,7 @@ class Lead extends Controller
                 $this->session->setFlashMessages();
 
                 // Redirect back to the "choose sequence" page
-                $this->view->redirect( "account-manager/business/lead/" . $this->params[ "id" ] . "/add-to-sequence" );
+                $this->view->redirect( "account-manager/business/lead/" . $this->params[ "id" ] . "/sequences" );
             }
 
             // If sequence build fails, get the error messages from the sequence

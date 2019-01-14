@@ -4,9 +4,9 @@ namespace Controllers\MartialArtsGyms;
 
 use \Core\Controller;
 
-class CaptureFollowUp extends Controller
+class LandingPageCapture extends Controller
 {
-    public function thankYouAction()
+    public function before()
     {
         $this->requireParam( "id" );
         $this->requireParam( "slug" );
@@ -17,7 +17,7 @@ class CaptureFollowUp extends Controller
         $landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
         $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
         $config = $this->load( "config" );
-        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $this->facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
         $business = $businessRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
 
@@ -43,16 +43,33 @@ class CaptureFollowUp extends Controller
         }
 
         // Add facebook pixel ids to the facebook pixel code builder
-        $facebookPixelBuilder->addPixelID( $facebook_pixel_ids );
+        $this->facebookPixelBuilder->addPixelID( $facebook_pixel_ids );
 
-        $facebookPixelBuilder->addEvent([
+        $this->view->assign( "business", $business );
+    }
+
+    public function after()
+    {
+        $this->view->render( "App/Views/MartialArtsGyms.php" );
+    }
+
+    public function thankYouAction()
+    {
+        $this->facebookPixelBuilder->addEvent([
             "Lead"
         ]);
 
-        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
-        $this->view->assign( "business", $business );
-
+        $this->view->assign( "facebook_pixel", $this->facebookPixelBuilder->buildPixel() );
         $this->view->setTemplate( "martial-arts-gyms/landing-page/thank-you.tpl" );
-        $this->view->render( "App/Views/MartialArtsGyms.php" );
+    }
+
+    public function scheduleVisitAction()
+    {
+        $this->facebookPixelBuilder->addCustomEvent([
+            "SelfSchedule"
+        ]);
+
+        $this->view->assign( "facebook_pixel", $this->facebookPixelBuilder->buildPixel() );
+        $this->view->setTemplate( "martial-arts-gyms/landing-page/schedule.tpl" );
     }
 }

@@ -8,6 +8,7 @@ class FacebookPixelBuilder
 	public $pixelID;
 	public $pixel_ids = [];
 	public $events = [ "PageView" ];
+	public $custom_events = [];
 
 	public function addEvent( $events )
 	{
@@ -21,6 +22,22 @@ class FacebookPixelBuilder
 
 		// If not an array, add the single event to the events array
 		$this->events[] = $events;
+
+		return;
+	}
+
+	public function addCustomEvent( $custom_events )
+	{
+		if ( is_array( $custom_events ) ) {
+			foreach ( $custom_events as $custom_event ) {
+				$this->custom_events[] = $custom_event;
+			}
+
+			return;
+		}
+
+		// If not an array, add the single custom_event to the custom_events array
+		$this->custom_events[] = $custom_events;
 
 		return;
 	}
@@ -90,7 +107,13 @@ class FacebookPixelBuilder
 			$pixelCodeEvents = $pixelCodeEvents . "fbq('track', '{$event}'); \n";
 		}
 
-		$pixel = $pixelCodeTop . "\n" . $pixelCodeInits . "\n" . $pixelCodeEvents . $pixelCodeBottom;
+		$pixelCodeCustomEvents = "";
+
+		foreach ( $this->custom_events as $custom_event ) {
+			$pixelCodeCustomEvents = $pixelCodeCustomEvents . "fbq('trackCustom', '{$custom_event}'); \n";
+		}
+
+		$pixel = $pixelCodeTop . "\n" . $pixelCodeInits . "\n" . $pixelCodeEvents . $pixelCodeCustomEvents . "\n" . $pixelCodeBottom;
 
 		return $pixel;
     }

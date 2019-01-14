@@ -16,7 +16,7 @@
 			<button id="new-trial" class="btn btn-inline message-btn emailed action-button"><i class="fa fa-calendar" aria-hidden="true"></i><span class="action-btn-text push-l-sml">Start New Trial</span></button>
 		</form>
 		{/if}
-		<a class="btn btn-inline text-med bg-algae push-r-sml" href="{$HOME}account-manager/business/lead/{$lead->id}/add-to-sequence"><i class="fa fa-plus" aria-hidden="true"></i><span class="text-med-heavy push-l-sml">Add to Sequence</span></a>
+		<a class="btn btn-inline text-med bg-algae push-r-sml" href="{$HOME}account-manager/business/lead/{$lead->id}/sequences"><i class="fa fa-plus" aria-hidden="true"></i><span class="text-med-heavy push-l-sml">Sequences</span></a>
 		<div class="clear push-b-med"></div>
 		<p class="text-med">Communication</p>
 		<div class="hr-sml"></div>

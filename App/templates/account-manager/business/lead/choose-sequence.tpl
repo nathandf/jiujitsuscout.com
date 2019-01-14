@@ -27,12 +27,11 @@
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="add_to_sequence" value="{$csrf_token}">
 				<input type="hidden" name="sequence_template_id" value="{$sequence->id}">
-				<button type="submit" style="width: 100%; text-decoration: none; color: #000;">
-					<div class="sequence-tag mat-hov cursor-pt">
-						<p class="text-med-heavy">{$sequence->name}</p>
-						<p class="text-med">{$sequence->description}</p>
-					</div>
-				</button>
+				<div class="bg-white col-100 inner-pad-sml" style="box-sizing: border-box; border: 2px solid #CCCCCC; border-radius: 5px;">
+					<button type="submit" class="floatright btn btn-inline bg-deep-blue"> <i class="fa fa-plus" aria-hidden="true"></i></button>
+					<p class="text-med-heavy">{$sequence->name}</p>
+					<p class="text-med">{$sequence->description}</p>
+				</div>
 			</form>
 
 			<div class="clear push-t-med"></div>
@@ -46,14 +45,20 @@
 			{/if}
 			{/foreach}
 			{if !empty( $activeSequenceTemplates )}
-				<div class="clear push-t-med"></div>
+				<div class="clear push-t-med hr-sml"></div>
 				<h2>Active Sequences</h2>
 				<p class="text-sml">{$lead->getFullName()} is already on these sequences</p>
 				{foreach from=$activeSequenceTemplates item=sequence}
-				<div class="sequence-tag push-t-med" style="text-align: center;">
-					<p class="text-med-heavy">{$sequence->name}</p>
-					<p class="text-med">{$sequence->description}</p>
-				</div>
+				<form method="post" action="">
+					<input type="hidden" name="token" value="{$csrf_token}">
+					<input type="hidden" name="delete_sequence" value="{$csrf_token}">
+					<input type="hidden" name="sequence_template_id" value="{$sequence->id}">
+					<div class="bg-white col-100 inner-pad-sml push-t-med" style="box-sizing: border-box; border: 2px solid #CCCCCC; border-radius: 5px;">
+						<button type="submit" class="floatright btn btn-inline bg-red"> <i class="fa fa-trash" aria-hidden="true"></i></button>
+						<p class="text-med-heavy">{$sequence->name}</p>
+						<p class="text-med">{$sequence->description}</p>
+					</div>
+				</form>
 				{/foreach}
 			<div class="clear push-t-med"></div>
 			{/if}
