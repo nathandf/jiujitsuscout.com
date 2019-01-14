@@ -33,6 +33,7 @@ $Router->add( "{controller:martial-arts-gyms}/{region:[a-zA-Z-]+[0-9]*}/{localit
 $Router->add( "{controller:martial-arts-gyms}/{region:[a-zA-Z-]+[0-9]*}/{locality:[a-zA-Z-]+[0-9]*}/{siteslug:[a-zA-Z0-9-]*}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{controller:martial-arts-gyms}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{controller:martial-arts-gyms}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}/{slug:[a-zA-Z0-9-]+}" );
+$Router->add( "{path:martial-arts-gyms}/{id:[0-9]+}/promo/{slug:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]+}", [ "controller" => "capture-follow-up" ] );
 $Router->add( "{controller:martial-arts-gyms}/{siteslug:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{controller:martial-arts-gyms}/{siteslug:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]*}/{slug:[a-zA-Z0-9-]+}" );
 

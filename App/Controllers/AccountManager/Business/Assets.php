@@ -85,6 +85,7 @@ class Assets extends Controller
         $inputValidator = $this->load( "input-validator" );
         $businessRepo = $this->load( "business-repository" );
         $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
+        $landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
 
         $facebookPixels = $facebookPixelRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $facebook_pixel_ids = $facebookPixelRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
@@ -141,6 +142,7 @@ class Assets extends Controller
             ) )
         {
             $facebookPixelRepo->delete( [ "id" ], [ $input->get( "facebook_pixel_id" ) ] );
+            $landingPageFacebookPixelRepo->delete( [ "facebook_pixel_id" ], [ $input->get( "facebook_pixel_id" ) ] );
 
             $this->session->addFlashMessage( "Pixel Deleted" );
             $this->session->setFlashMessages();
