@@ -91,6 +91,7 @@ class Lead extends Controller
         $noteRegistrar = $this->load( "note-registrar" );
         $prospectRepo = $this->load( "prospect-repository" );
         $groupRepo = $this->load( "group-repository" );
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
         $mailer = $this->load( "mailer" );
         $emailTemplateRepo = $this->load( "email-template-repository" );
         $emailerHelper = $this->load( "emailer-helper" );
@@ -120,13 +121,12 @@ class Lead extends Controller
             }
         }
 
-        // Load all groups
-        $groupsAll = $groupRepo->getAllByBusinessID( $this->business->id );
+        $prospectGroups = $prospectGroupRepo->get( [ "*" ], [ "prospect_id" => $this->prospect->id ] );
         $groups = [];
-        $group_ids = explode( ",", $this->prospect->group_ids );
 
-        foreach ( $groupsAll as $group ) {
-            if ( in_array( $group->id, $group_ids ) ) {
+        foreach ( $prospectGroups as $prospectGroup ) {
+            $group = $groupRepo->get( [ "*" ], [ "id" => $prospectGroup->group_id ], "single" );
+            if ( !is_null( $group ) ) {
                 $groups[] = $group;
             }
         }
@@ -583,31 +583,69 @@ class Lead extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
         $groupRepo = $this->load( "group-repository" );
         $prospectRepo = $this->load( "prospect-repository" );
 
-        $all_groups = $groupRepo->getAllByBusinessID( $this->business->id );
+        $groups = $groupRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $group_ids_all = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+        $prospect_group_group_ids = $prospectGroupRepo->get( [ "group_id" ], [ "prospect_id" => $this->prospect->id ], "raw" );
 
-        $prospect_group_ids = explode( ",", $this->prospect->group_ids );
-
-        if ( $input->exists() ) {
-            $group_ids = null;
-            if ( $input->issetField( "group_ids" ) ) {
-                $group_ids = implode( ",", $input->get( "group_ids" ) );
-            }
-            $prospectRepo->updateGroupIDsByID( $group_ids, $this->params[ "id" ] );
-
-            $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/groups" );
-        }
-
-        foreach ( $all_groups as $group ) {
+        foreach ( $groups as $group ) {
             $group->isset = false;
-            if ( in_array( $group->id, $prospect_group_ids ) ) {
+            if ( in_array( $group->id, $prospect_group_group_ids ) ) {
                 $group->isset = true;
             }
         }
 
-        $this->view->assign( "groups", $all_groups );
+        if ( $input->exists() && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ]
+                ],
+                "groups"
+            )
+        ) {
+            // Update group ids
+            $submitted_group_ids = [];
+            if ( $input->issetField( "group_ids" ) ) {
+                $submitted_group_ids = $input->get( "group_ids" );
+            }
+
+            // Create and new prospect group for any of the submitted
+            // group ids if it doesn't already exist
+            foreach ( $submitted_group_ids as $submitted_group_id ) {
+                if ( !in_array( $submitted_group_id, $prospect_group_group_ids, true ) ) {
+                    $prospectGroupRepo->insert([
+                        "prospect_id" => $this->prospect->id,
+                        "group_id" => $submitted_group_id
+                    ]);
+                }
+            }
+
+            // Delete the prospect groups with the group ids that were not
+            // submitted
+            foreach ( $group_ids_all as $_group_id ) {
+                if (
+                    !in_array( $_group_id, $submitted_group_ids ) &&
+                    in_array( $_group_id, $prospect_group_group_ids, true )
+                ) {
+                    $prospectGroupRepo->delete( [ "group_id", "prospect_id" ], [ $_group_id, $this->params[ "id" ] ] );
+                }
+            }
+
+            $this->session->addFlashMessage( "Groups Updated" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/groups" );
+        }
+
+        $this->view->assign( "groups", $groups );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "flash_message", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/lead/groups.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Lead.php" );
