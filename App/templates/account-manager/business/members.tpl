@@ -12,6 +12,7 @@
 		<div class="clear"></div>
 		<!-- <input type="search" class="inp field-med first last" placeholder="Search">
 		<div class="clear"></div> -->
+		{include file="includes/snippets/flash-messages.tpl"}
 		<div id="lead-tag-container">
 			<p class='results_count_message'>Showing ({$members|@count}) Results</p>
 			{foreach from=$members item=member}

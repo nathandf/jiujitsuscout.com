@@ -10,15 +10,16 @@
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
 	<div class="con-cnt-xxlrg push-t-med inner-pad-med">
 		<a class="btn btn-inline text-med push-b-med bg-dark-creamsicle" href="{$HOME}account-manager/business/schedule/{$schedule->id}/">< Schedule</a>
+		<h2>Choose classes</h2>
 		<p class="text-sml">Choose a class to add to the schedule or create a new one</p>
 		<div class="hr-sml"></div>
-		<a class="btn btn-inline push-t-med" href="{$HOME}account-manager/business/schedule/{$schedule->id}/create-class">New class +</a>
 		<div class="clear"></div>
 		{if $courses|@count < 1}
 		<p class="text-sml push-t-med">No classes available to add to this schedule</p>
 		{else}
-			<h2>All Classes</h2>
+
 			<div class="calendar push-t-med">
+				<a class="btn btn-inline push-t-med push-l-med floatleft" href="{$HOME}account-manager/business/schedule/{$schedule->id}/create-class">New class +</a>
 				<form method="post" action="">
 					<button type="submit" id="add-classes-button" class="btn btn-inline-disabled push-t-med push-l-med push-b-med" disabled>Add Classes +</button>
 					<input type="hidden" name="token" value="{$csrf_token}">

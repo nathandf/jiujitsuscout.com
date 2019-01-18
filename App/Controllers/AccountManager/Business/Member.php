@@ -12,7 +12,6 @@ class Member extends Controller
     private $business;
     private $userRepo;
     private $user;
-    private $prospectRepo;
 
     public function before()
     {
@@ -30,30 +29,32 @@ class Member extends Controller
         }
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
+
         // Get AccountUser reference
         $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
+
         // Grab account details
         $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
+
         // Grab business details
-        $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
-        // Load member
+        $this->business = $businessRepo->get( [ "*" ], [ "id" => $this->user->getCurrentBusinessID() ], "single");
+
+        $this->business->phone = $phoneRepo->get( [ "*" ], [ "id" => $this->business->phone_id ], "single" );
+
         if ( $this->issetParam( "id" ) ) {
             // Verify that this business owns this member
-            $members = $memberRepo->getAllByBusinessID( $this->business->id );
-            $member_ids = [];
-            foreach ( $members as $member ) {
-                $member_ids[] = $member->id;
-            }
+            $member_ids = $memberRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
             if ( !in_array( $this->params[ "id" ], $member_ids ) ) {
                 $this->view->redirect( "account-manager/business/members" );
             }
             $this->member = $memberRepo->getByID( $this->params[ "id" ] );
-            $phone = $phoneRepo->getByID( $this->member->phone_id );
-            $this->member->setPhoneNumber( $phone->country_code, $phone->national_number );
+
+            $this->member->phone = $phoneRepo->get( [ "*" ], [ "id" => $this->member->phone_id ], "single" );
+            $this->member->setPhoneNumber( $this->member->phone->country_code, $this->member->phone->national_number );
+
             $this->view->assign( "member", $this->member );
         }
 
-        // Set data for the view
         $this->view->assign( "account", $this->account );
         $this->view->assign( "user", $this->user );
         $this->view->assign( "business", $this->business );
@@ -212,6 +213,7 @@ class Member extends Controller
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/member/member.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Member.php" );
@@ -386,6 +388,7 @@ class Member extends Controller
             $this->view->redirect( "account-manager/business/member/" . $member->id . "/" );
         }
 
+
         $this->view->redirect( "account-manager/business/member/choose-prospect" );
     }
 
@@ -437,6 +440,8 @@ class Member extends Controller
         $country = $countryRepo->get( [ "*" ], [ "iso" => $this->account->country ], "single" );
 
         $countries = $countryRepo->get( [ "*" ] );
+
+        $member_ids = $memberRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
 
         if ( $input->exists() && $input->issetField( "update_member" ) && $inputValidator->validate( $input,
                 [
@@ -501,6 +506,31 @@ class Member extends Controller
             $this->view->redirect( "account-manager/business/member/" . $this->member->id . "/edit" );
         }
 
+        if ( $input->exists() && $input->issetField( "trash" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "trash" => [
+                        "required" => true
+                    ],
+                    "member_id" => [
+                        "required" => true,
+                        "in_array" => $member_ids
+                    ]
+                ],
+                "trash_member" /* error */
+            ) )
+        {
+            $memberRepo->delete( [ "id" ], [ $this->member->id ] );
+            $this->session->addFlashMessage( $this->member->getFullName() . " deleted successfully" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/members" );
+        }
+
         $this->view->assign( "phone", $phone );
         $this->view->assign( "countries", $countries );
         $this->view->assign( "member", $this->member );
@@ -513,4 +543,137 @@ class Member extends Controller
         $this->view->render( "App/Views/AccountManager/Business/Member.php" );
     }
 
+    public function sequencesAction()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $businessSequenceRepo = $this->load( "business-sequence-repository" );
+        $memberSequenceRepo = $this->load( "member-sequence-repository" );
+        $sequenceTemplateSequenceRepo = $this->load( "sequence-template-sequence-repository" );
+        $sequenceRepo = $this->load( "sequence-repository" );
+
+        // Get all sequences for this member
+        $memberSequences = $memberSequenceRepo->get( [ "*" ], [ "member_id" => $this->member->id ] );
+        $sequenceTemplates = $sequenceTemplateRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+
+        $activeSequenceTemplates = [];
+        $active_sequence_template_ids = [];
+        $inactiveSequenceTemplates = [];
+
+        // Populate an array ($activeSequenceTemplates) with all sequence templates
+        // from which this member's sequences were created.
+        foreach ( $memberSequences as $memberSequence ) {
+            $sequence_template_id = $sequenceTemplateSequenceRepo->get( [ "sequence_template_id" ], [ "sequence_id" => $memberSequence->sequence_id ], "single" )->sequence_template_id;
+            $activeSequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
+            $activeSequenceTemplate->sequence = $sequenceRepo->get( [ "*" ], [ "id" => $memberSequence->sequence_id ], "single" );
+            $activeSequenceTemplates[] = $activeSequenceTemplate;
+            $active_sequence_template_ids[] = $sequence_template_id;
+        }
+
+        // Populate an array ($inactiveSequenceTemplates) will all sequence templates
+        // that have not been used to genertate sequences for this member
+        foreach ( $sequenceTemplates as $sequenceTemplate ) {
+            if ( !in_array( $sequenceTemplate->id, $active_sequence_template_ids ) ) {
+                $inactiveSequenceTemplates[] = $sequenceTemplate;
+            }
+        }
+
+        if ( $input->exists() && $input->issetField( "add_to_sequence" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ],
+                    "sequence_template_id" => [
+                        "required" => true,
+                        "in_array" => $sequenceTemplateRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" )
+                    ]
+                ],
+                "add_to_sequence"
+            )
+        ) {
+            $sequenceBuilder = $this->load( "sequence-builder" );
+
+            $sequenceBuilder->setRecipientName( $this->member->getFullName() )
+                ->setSenderName( $this->business->business_name )
+                ->setRecipientEmail( $this->member->email )
+                ->setSenderEmail( $this->business->email )
+                ->setRecipientPhoneNumber( $this->member->phone->getPhoneNumber() )
+                ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() );
+
+            // If a sequence was built successfully, create a member and business
+            // sequence reference and redirect to the sequence screen
+            $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $input->get( "sequence_template_id" ) ], "single" );
+
+            if ( $sequenceBuilder->buildFromSequenceTemplate( $sequenceTemplate->id ) ) {
+                $sequence = $sequenceBuilder->getSequence();
+
+                $businessSequenceRepo->insert([
+                    "business_id" => $this->business->id,
+                    "sequence_id" => $sequence->id
+                ]);
+
+                $memberSequenceRepo->insert([
+                    "member_id" => $this->member->id,
+                    "sequence_id" => $sequence->id
+                ]);
+
+                $sequenceTemplateSequenceRepo->insert([
+                    "sequence_template_id" => $sequenceTemplate->id,
+                    "sequence_id" => $sequence->id
+                ]);
+
+                // Inform user of successful sequence creation
+                $this->session->addFlashMessage( "{$this->member->getFullName()} has been added to sequenece '{$sequenceTemplate->name}'" );
+                $this->session->setFlashMessages();
+
+                // Redirect back to the "choose sequence" page
+                $this->view->redirect( "account-manager/business/member/" . $this->params[ "id" ] . "/sequences" );
+            }
+
+            // If sequence build fails, get the error messages from the sequence
+            // builder and set them to the input validator
+            $errorMessages = $sequenceBuilder->getErrorMessages();
+            foreach ( $errorMessages as $message ) {
+                $inputValidator->addError( "add_to_sequence", $message );
+            }
+
+        }
+
+        if ( $input->exists() && $input->issetField( "sequence_id" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ],
+                    "sequence_id" => [
+                        "required" => true
+                    ]
+                ],
+                "delete_sequence"
+            )
+        ) {
+            $sequenceRepo->delete( [ "id" ], [ $input->get( "sequence_id" ) ] );
+            $sequenceTemplateSequenceRepo->delete( [ "sequence_id" ], [ $input->get( "sequence_id" ) ] );
+            $memberSequenceRepo->delete( [ "sequence_id" ], [ $input->get( "sequence_id" ) ] );
+            $businessSequenceRepo->delete( [ "sequence_id" ], [ $input->get( "sequence_id" ) ] );
+
+            $this->session->addFlashMessage( "{$this->member->getFullName()} successfully removed from sequence." );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/member/" . $this->params[ "id" ] . "/sequences" );
+        }
+
+        $this->view->assign( "activeSequenceTemplates", $activeSequenceTemplates );
+        $this->view->assign( "inactiveSequenceTemplates", $inactiveSequenceTemplates );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "error_messages", $inputValidator->getErrors() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
+
+        $this->view->setTemplate( "account-manager/business/member/sequences.tpl" );
+        $this->view->render( "App/Views/AccountManager/Business.php" );
+    }
 }

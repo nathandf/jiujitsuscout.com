@@ -49,7 +49,7 @@
 					<p class="text-med"><a href="{$HOME}account-manager/business/email/new" class="tc-deep-blue link text-med-heavy">Create an email template</a> that you can send in just 3 clicks!</p>
 					{/if}
 					<div class="clear"></div>
-					<button type="submit" class="btn btn-inline push-t-sml"><span class="push-r-sml">Send Email</span><i class="fa fa-envelope-o" aria-hidden="true"></i><button>
+					<button type="submit" class="btn btn-inline push-t-sml bg-mango"><span class="push-r-sml">Send Email</span><i class="fa fa-envelope-o" aria-hidden="true"></i><button>
 					<div class="clear"></div>
 				</form>
 			{else}

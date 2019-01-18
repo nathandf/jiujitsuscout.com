@@ -24,3 +24,5 @@ CREATE TABLE `landing_page_notification_recipient` ( `id` BIGINT NOT NULL AUTO_I
 CREATE TABLE `business_user` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `user_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `prospect_group` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `prospect_id` BIGINT NOT NULL , `group_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `member_group` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `member_id` BIGINT NOT NULL , `group_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `sequence` ADD `complete` TINYINT NOT NULL DEFAULT '0' AFTER `checked_out`;
+CREATE TABLE `member_sequence` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `member_id` BIGINT NOT NULL , `sequence_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

@@ -449,6 +449,7 @@ class Business extends Controller
         }
 
         $this->view->assign( "members", $members );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/members.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );

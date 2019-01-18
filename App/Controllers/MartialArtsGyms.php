@@ -710,7 +710,7 @@ class MartialArtsGyms extends Controller
                 // sequence reference and redirect to the sequence screen
                 $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $landingPageSequenceTemplate->sequence_template_id ], "single" );
 
-                if ( $sequenceBuilder->build( $sequenceTemplate->id ) ) {
+                if ( $sequenceBuilder->buildFromSequenceTemplate( $sequenceTemplate->id ) ) {
                     $sequence = $sequenceBuilder->getSequence();
 
                     $businessSequenceRepo->insert([

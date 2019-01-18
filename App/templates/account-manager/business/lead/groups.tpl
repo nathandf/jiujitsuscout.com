@@ -7,10 +7,9 @@
 {block name="bm-body"}
 {include file="includes/navigation/business-manager-sub-menu.tpl"}
 	<div class="con-cnt-xxlrg push-t-med inner-pad-med">
-		<div class="clear"></div>
-		<h2>Groups</h2>
-
 		<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/leads">Leads</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/lead/{$lead->id}/">{$lead->getFullName()}</a> > Groups</p>
+		<div class="clear push-t-med"></div>
+		<h2>Groups</h2>
 		<div class="push-b-med"></div>
 		{include file="includes/snippets/flash-messages.tpl"}
 		{if $groups}

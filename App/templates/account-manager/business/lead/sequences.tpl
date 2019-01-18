@@ -48,15 +48,15 @@
 				<div class="clear push-t-med hr-sml"></div>
 				<h2>Active Sequences</h2>
 				<p class="text-sml">{$lead->getFullName()} is already on these sequences</p>
-				{foreach from=$activeSequenceTemplates item=sequence}
+				{foreach from=$activeSequenceTemplates item=activeSequenceTemplate}
 				<form method="post" action="">
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input type="hidden" name="delete_sequence" value="{$csrf_token}">
-					<input type="hidden" name="sequence_template_id" value="{$sequence->id}">
+					<input type="hidden" name="sequence_id" value="{$activeSequenceTemplate->sequence->id}">
 					<div class="bg-white col-100 inner-pad-sml push-t-med" style="box-sizing: border-box; border: 2px solid #CCCCCC; border-radius: 5px;">
-						<button type="submit" class="floatright btn btn-inline bg-red"> <i class="fa fa-trash" aria-hidden="true"></i></button>
-						<p class="text-med-heavy">{$sequence->name}</p>
-						<p class="text-med">{$sequence->description}</p>
+						<button type="submit" class="floatright btn btn-inline bg-red --c-trash"> <i class="fa fa-trash" aria-hidden="true"></i></button>
+						<p class="text-med-heavy">{$activeSequenceTemplate->name}</p>
+						<p class="text-med">{$activeSequenceTemplate->description}</p>
 					</div>
 				</form>
 				{/foreach}

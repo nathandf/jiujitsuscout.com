@@ -645,7 +645,7 @@ class Lead extends Controller
 
         $this->view->assign( "groups", $groups );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
-        $this->view->assign( "flash_message", $this->session->getFlashMessages() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/lead/groups.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Lead.php" );
@@ -770,6 +770,7 @@ class Lead extends Controller
         $businessSequenceRepo = $this->load( "business-sequence-repository" );
         $prospectSequenceRepo = $this->load( "prospect-sequence-repository" );
         $sequenceTemplateSequenceRepo = $this->load( "sequence-template-sequence-repository" );
+        $sequenceRepo = $this->load( "sequence-repository" );
 
         // Get all sequences for this prospect
         $prospectSequences = $prospectSequenceRepo->get( [ "*" ], [ "prospect_id" => $this->prospect->id ] );
@@ -779,11 +780,13 @@ class Lead extends Controller
         $active_sequence_template_ids = [];
         $inactiveSequenceTemplates = [];
 
-        // Populate an array ($activeSequenceTemplates) will all sequence templates
+        // Populate an array ($activeSequenceTemplates) with all sequence templates
         // from which this prospect's sequences were created.
         foreach ( $prospectSequences as $prospectSequence ) {
             $sequence_template_id = $sequenceTemplateSequenceRepo->get( [ "sequence_template_id" ], [ "sequence_id" => $prospectSequence->sequence_id ], "single" )->sequence_template_id;
-            $activeSequenceTemplates[] = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
+            $activeSequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
+            $activeSequenceTemplate->sequence = $sequenceRepo->get( [ "*" ], [ "id" => $prospectSequence->sequence_id ], "single" );
+            $activeSequenceTemplates[] = $activeSequenceTemplate;
             $active_sequence_template_ids[] = $sequence_template_id;
         }
 
@@ -823,7 +826,7 @@ class Lead extends Controller
             // sequence reference and redirect to the sequence screen
             $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $input->get( "sequence_template_id" ) ], "single" );
 
-            if ( $sequenceBuilder->build( $sequenceTemplate->id ) ) {
+            if ( $sequenceBuilder->buildFromSequenceTemplate( $sequenceTemplate->id ) ) {
                 $sequence = $sequenceBuilder->getSequence();
 
                 $businessSequenceRepo->insert([
@@ -858,13 +861,38 @@ class Lead extends Controller
 
         }
 
+        if ( $input->exists() && $input->issetField( "sequence_id" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ],
+                    "sequence_id" => [
+                        "required" => true
+                    ]
+                ],
+                "delete_sequence"
+            )
+        ) {
+            $sequenceRepo->delete( [ "id" ], [ $input->get( "sequence_id" ) ] );
+            $sequenceTemplateSequenceRepo->delete( [ "sequence_id" ], [ $input->get( "sequence_id" ) ] );
+            $prospectSequenceRepo->delete( [ "sequence_id" ], [ $input->get( "sequence_id" ) ] );
+            $businessSequenceRepo->delete( [ "sequence_id" ], [ $input->get( "sequence_id" ) ] );
+
+            $this->session->addFlashMessage( "{$this->prospect->getFullName()} successfully removed from sequence." );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/lead/" . $this->params[ "id" ] . "/sequences" );
+        }
+
         $this->view->assign( "activeSequenceTemplates", $activeSequenceTemplates );
         $this->view->assign( "inactiveSequenceTemplates", $inactiveSequenceTemplates );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->assign( "error_messages", $inputValidator->getErrors() );
         $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
-        $this->view->setTemplate( "account-manager/business/lead/choose-sequence.tpl" );
+        $this->view->setTemplate( "account-manager/business/lead/sequences.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );
     }
 }

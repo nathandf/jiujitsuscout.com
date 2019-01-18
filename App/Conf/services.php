@@ -504,6 +504,14 @@ $container->register( "member-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "member-sequence-repository", function() use ( $container ) {
+	$repo = new \Model\Services\MemberSequenceRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "nonce-token-repository", function() use ( $container ) {
 	$repo = new \Model\Services\NonceTokenRepository(
 	    $container->getService( "dao" ),

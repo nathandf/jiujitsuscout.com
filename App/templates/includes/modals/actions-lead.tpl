@@ -24,7 +24,7 @@
 		{if isset($sms_messages)}
 		<button id="send-sms" class="btn btn-inline message-btn action-button"><i class="fa fa-comments-o push-r-sml" aria-hidden="true"></i><span class="action-btn-text">Send Text</span></button>
 		{/if}
-		<button class="btn btn-inline message-btn action-button emailer-open"><i class="fa fa-envelope-o push-r-sml" aria-hidden="true"></i><span class="action-btn-text">Send Email</span></button>
+		<button class="btn btn-inline message-btn action-button emailer-open bg-mango"><i class="fa fa-envelope-o push-r-sml" aria-hidden="true"></i><span class="action-btn-text">Send Email</span></button>
 		<div class="push-t-med"></div>
 		<p class="text-med">Record an interaction</p>
 		<div class="hr-sml"></div>

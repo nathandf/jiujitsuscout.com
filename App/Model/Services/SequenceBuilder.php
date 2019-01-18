@@ -209,7 +209,7 @@ class SequenceBuilder
         return;
     }
 
-    public function build( $sequence_template_id )
+    public function buildFromSequenceTemplate( $sequence_template_id )
     {
         $sequenceTemplate = $this->sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
         $eventTemplates = $this->eventTemplateRepo->get( [ "*" ], [ "sequence_template_id" => $sequenceTemplate->id ] );

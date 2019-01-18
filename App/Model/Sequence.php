@@ -8,4 +8,5 @@ class Sequence implements EntityInterface
 {
     public $id;
     public $checked_out;
+    public $complete;
 }
