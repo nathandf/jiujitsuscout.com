@@ -15,8 +15,8 @@
 		<p class="text-sml">{$group->description}</p>
 		<div class="hr-sml push-b-med"></div>
 		{include file="includes/snippets/flash-messages.tpl"}
-		<a href="{$HOME}account-manager/business/group/{$group->id}/choose-prospect" class="btn btn-inline bg-salmon text-med">Add Lead +</a>
-		<a href="{$HOME}account-manager/business/group/{$group->id}/choose-member" class="btn btn-inline bg-dark-mint text-med">Add Member +</a>
+		<a href="{$HOME}account-manager/business/group/{$group->id}/choose-prospect" class="btn btn-inline bg-salmon text-med"><i aria-hidden="true" class="fa fa-plus push-r-sml"></i> Lead</a>
+		<a href="{$HOME}account-manager/business/group/{$group->id}/choose-member" class="btn btn-inline bg-dark-mint text-med"><i aria-hidden="true" class="fa fa-plus push-r-sml"></i> Member</a>
 		<div class="clear"></div>
 		{if $leads|@count > 0}
 			<a href="{$HOME}account-manager/business/leads" class="text-med link tc-deep-blue">View all Leads</a>

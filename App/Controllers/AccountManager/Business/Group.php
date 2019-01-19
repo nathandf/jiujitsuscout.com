@@ -337,30 +337,27 @@ class Group extends Controller
         $inputValidator = $this->load( "input-validator" );
         $groupRepo = $this->load( "group-repository" );
         $prospectRepo = $this->load( "prospect-repository" );
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
         $phoneRepo = $this->load( "phone-repository" );
 
+        $group = $groupRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+
         // Get all prospects
-        $prospectsAll = $prospectRepo->getAllByBusinessID( $this->business->id );
+        $prospect_ids_all = $prospectRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+        $prospect_ids = $prospectGroupRepo->get( [ "prospect_id" ], [ "group_id" => $this->params[ "id" ] ], "raw" );
+        $prospectsAll = $prospectRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $prospects = [];
-        $prospect_ids = [];
 
-        $group = $groupRepo->getByID( $this->params[ "id" ] );
-
-        // Load all phone resources for prospects and set prospect id array
-        foreach ( $prospectsAll as $prospect ) {
-            // Filter prospects that have current group id
-            if ( !in_array( $this->params[ "id" ], explode( ",", $prospect->group_ids ) ) && $prospect->type != "member" && $prospect->type != "trash" ) {
-                $prospects[] = $prospect;
-                $phone =  $phoneRepo->getByID( $prospect->phone_id );
-                $prospect->phone_number = "+" . $phone->country_code . " " . $phone->national_number;
-                $prospect_ids[] = $prospect->id;
+        foreach ( $prospectsAll as $_prospect ) {
+            if ( in_array( $_prospect->id, $prospect_ids ) || $_prospect->type != "lead" ) {
+                continue;
             }
+
+            $prospects[] = $_prospect;
         }
 
         if ( $input->exists() && $input->issetField( "prospect_id" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -368,19 +365,20 @@ class Group extends Controller
                     ],
                     "prospect_id" => [
                         "required" => true,
-                        "in_array" => $prospect_ids
+                        "in_array" => $prospect_ids_all
                     ]
                 ],
-
                 "choose_prospect" /* error index */
-            ) )
-        {
-            $prospect = $prospectRepo->getByID( $input->get( "prospect_id" ) );
-            $group_ids = explode( ",", $prospect->group_ids );
-            $group_ids[] = $this->params[ "id" ];
-            $group_ids = implode( ",", $group_ids );
-            $prospectRepo->updateGroupIDsByID( $group_ids, $prospect->id );
-            $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/#lead{$prospect->id}" );
+            )
+        ) {
+            $prospectGroupRepo->insert([
+                "prospect_id" => $input->get( "prospect_id" ),
+                "group_id" => $this->params[ "id" ]
+            ]);
+            $this->session->addFlashMessage( "Prospect added to group" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/#lead{$input->get( "prospect_id" )}" );
         }
 
         $this->view->assign( "leads", $prospects );
@@ -403,30 +401,27 @@ class Group extends Controller
         $inputValidator = $this->load( "input-validator" );
         $groupRepo = $this->load( "group-repository" );
         $memberRepo = $this->load( "member-repository" );
+        $memberGroupRepo = $this->load( "member-group-repository" );
         $phoneRepo = $this->load( "phone-repository" );
 
+        $group = $groupRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+
         // Get all members
-        $membersAll = $memberRepo->getAllByBusinessID( $this->business->id );
+        $member_ids_all = $memberRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+        $member_ids = $memberGroupRepo->get( [ "member_id" ], [ "group_id" => $this->params[ "id" ] ], "raw" );
+        $membersAll = $memberRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $members = [];
-        $member_ids = [];
 
-        $group = $groupRepo->getByID( $this->params[ "id" ] );
-
-        // Load all phone resources for members and set member id array
-        foreach ( $membersAll as $member ) {
-            // Filter members that have current group id
-            if ( !in_array( $this->params[ "id" ], explode( ",", $member->group_ids ) ) ) {
-                $members[] = $member;
-                $phone =  $phoneRepo->getByID( $member->phone_id );
-                $member->phone_number = "+" . $phone->country_code . " " . $phone->national_number;
-                $member_ids[] = $member->id;
+        foreach ( $membersAll as $_member ) {
+            if ( in_array( $_member->id, $member_ids ) ) {
+                continue;
             }
+
+            $members[] = $_member;
         }
 
         if ( $input->exists() && $input->issetField( "member_id" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -434,19 +429,20 @@ class Group extends Controller
                     ],
                     "member_id" => [
                         "required" => true,
-                        "in_array" => $member_ids
+                        "in_array" => $member_ids_all
                     ]
                 ],
-
                 "choose_member" /* error index */
-            ) )
-        {
-            $member = $memberRepo->getByID( $input->get( "member_id" ) );
-            $group_ids = explode( ",", $member->group_ids );
-            $group_ids[] = $this->params[ "id" ];
-            $group_ids = implode( ",", $group_ids );
-            $memberRepo->updateGroupIDsByID( $group_ids, $member->id );
-            $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/#member{$member->id}" );
+            )
+        ) {
+            $memberGroupRepo->insert([
+                "member_id" => $input->get( "member_id" ),
+                "group_id" => $this->params[ "id" ]
+            ]);
+            $this->session->addFlashMessage( "Member added to group" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/#member{$input->get( "member_id" )}" );
         }
 
         $this->view->assign( "members", $members );
