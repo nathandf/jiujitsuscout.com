@@ -8,20 +8,21 @@
 {block name="bm-body"}
 	{include file="includes/navigation/marketing-sub-menu.tpl"}
 	<div class="clear"></div>
-	<div class="con con-cnt-xlrg first inner-pad-med">
-		<a class="btn btn-inline bg-deep-blue text-med last" href="{$HOME}account-manager/business/groups/">< All Groups</a>
-		<div class="clear first"></div>
+	<div class="con con-cnt-xlrg push-t-med inner-pad-med">
+		<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/groups/">< All Groups</a>
+		<div class="clear push-t-med"></div>
 		<a href="{$HOME}account-manager/business/group/{$group->id}/edit" class="text-xlrg-heavy tc-deep-blue link">{$group->name}</a>
-		<p class="text-med first">{$group->description}</p>
-		<div class="hr-sml last"></div>
+		<p class="text-sml">{$group->description}</p>
+		<div class="hr-sml push-b-med"></div>
+		{include file="includes/snippets/flash-messages.tpl"}
 		<a href="{$HOME}account-manager/business/group/{$group->id}/choose-prospect" class="btn btn-inline bg-salmon text-med">Add Lead +</a>
 		<a href="{$HOME}account-manager/business/group/{$group->id}/choose-member" class="btn btn-inline bg-dark-mint text-med">Add Member +</a>
-		<div class="clear first"></div>
+		<div class="clear"></div>
 		{if $leads|@count > 0}
 			<a href="{$HOME}account-manager/business/leads" class="text-med link tc-deep-blue">View all Leads</a>
 			<div class="clear"></div>
 			{foreach from=$leads item=lead}
-			<a href="{$HOME}account-manager/business/lead/{$lead->id}/" id="lead{$lead->id}" class="lead-tag first mat-hov">
+			<a href="{$HOME}account-manager/business/lead/{$lead->id}/" id="lead{$lead->id}" class="lead-tag push-t-med mat-hov">
 				{if $lead->type == "trial"}
 					<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>
 				{elseif $lead->type == "lead"}
@@ -50,12 +51,12 @@
 			<div class="hr"></div>
 		{/if}
 		{if $members|@count > 0}
-		<div class="clear first"></div>
+		<div class="clear push-t-med"></div>
 
-		<a href="{$HOME}account-manager/business/members" class="text-med link tc-deep-blue first">View all Members</a>
+		<a href="{$HOME}account-manager/business/members" class="text-med link tc-deep-blue push-t-med">View all Members</a>
 			<div class="clear"></div>
 			{foreach from=$members item=member}
-			<a href="{$HOME}account-manager/business/member/{$member->id}/" id="member{$member->id}" class="lead-tag first mat-hov">
+			<a href="{$HOME}account-manager/business/member/{$member->id}/" id="member{$member->id}" class="lead-tag push-t-med mat-hov">
 				<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$member->first_name|substr:0:1|upper}</span>
 				<div class="lead-data">
 					<p class="lead-name">{$member->first_name|capitalize|truncate:20:"..."} {$member->last_name|capitalize|truncate:20:"..."}</p>

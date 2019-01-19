@@ -33,14 +33,12 @@ class Group extends Controller
         // Grab account details
         $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
         // Grab business details
-        $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
+        $this->business = $businessRepo->get( [ "*" ], [ "id" => $this->user->getCurrentBusinessID() ], "single" );
 
         // Verify that this business owns this landing page
-        $groups = $groupRepo->getAllByBusinessID( $this->business->id );
-        $group_ids = [];
-        foreach ( $groups as $group ) {
-            $group_ids[] = $group->id;
-        }
+        $groups = $groupRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $group_ids = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+
         if ( isset( $this->params[ "id" ] ) && !in_array( $this->params[ "id" ], $group_ids ) ) {
             $this->view->redirect( "account-manager/business/groups/" );
         }
@@ -60,117 +58,75 @@ class Group extends Controller
         $inputValidator = $this->load( "input-validator" );
         $groupRepo = $this->load( "group-repository" );
         $prospectRepo = $this->load( "prospect-repository" );
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
+        $memberGroupRepo = $this->load( "member-group-repository" );
         $memberRepo = $this->load( "member-repository" );
         $phoneRepo = $this->load( "phone-repository" );
 
+        $group = $groupRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+
         // Get all prospects
-        $prospectsAll = $prospectRepo->getAllByBusinessID( $this->business->id );
+        $prospect_ids = $prospectGroupRepo->get( [ "prospect_id" ], [ "group_id" => $this->params[ "id" ] ], "raw" );
         $prospects = [];
-        $prospect_ids = [];
-
-        // Get all members
-        $membersAll = $memberRepo->getAllByBusinessID( $this->business->id );
-        $members = [];
-        $member_ids = [];
-
-        $group = $groupRepo->getByID( $this->params[ "id" ] );
-
-        // Filter all prospects that belong to this group
-        foreach ( $prospectsAll as $prospect ) {
-            $groups = explode( ",", $prospect->group_ids );
-            if ( in_array( $group->id, $groups ) && $prospect->type != "member" ) {
+        foreach ( $prospect_ids as $prospect_id ) {
+            $prospect = $prospectRepo->get( [ "*" ], [ "id" => $prospect_id ], "single" );
+            if ( $prospect->type != "member" ) {
+                $phone =  $phoneRepo->get( [ "*" ], [ "id" => $prospect->phone_id ], "single" );
+                $prospect->phone_number = "+" . $phone->country_code . " " . $phone->national_number;
                 $prospects[] = $prospect;
             }
         }
 
-        // Load all phone resources for prospects
-        foreach ( $prospects as $prospect ) {
-            $phone =  $phoneRepo->getByID( $prospect->phone_id );
-            $prospect->phone_number = "+" . $phone->country_code . " " . $phone->national_number;
-            $prospect_ids[] = $prospect->id;
-        }
-
-        // Filter all members that belong to this group
-        foreach ( $membersAll as $member ) {
-            $groups = explode( ",", $member->group_ids );
-            if ( in_array( $group->id, $groups ) ) {
-                $members[] = $member;
-            }
-        }
-
-        // Load all phone resources for members
-        foreach ( $members as $member ) {
-            $phone =  $phoneRepo->getByID( $member->phone_id );
+        // Get all members
+        $member_ids = $memberGroupRepo->get( [ "member_id" ], [ "group_id" => $this->params[ "id" ] ], "raw" );
+        $members = [];
+        foreach ( $member_ids as $member_id ) {
+            $member = $memberRepo->get( [ "*" ], [ "id" => $member_id ], "single" );
+            $phone =  $phoneRepo->get( [ "*" ], [ "id" => $member->phone_id ], "single" );
             $member->phone_number = "+" . $phone->country_code . " " . $phone->national_number;
-            $member_ids[] = $member->id;
+            $members[] = $member;
         }
 
         if ( $input->exists() && $input->issetField( "remove_prospect" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals_hidden" => $this->session->getSession( "csrf-token" ),
                         "required" => true
                     ],
-
                     "prospect_id" => [
                         "required" => true,
                         "in_array" => $prospect_ids
                     ]
                 ],
-
                 "remove_prospect"
-            ) )
-        {
-            $prospect = $prospectRepo->getByID( $input->get( "prospect_id" ) );
-            $group_ids = explode( ",", $prospect->group_ids );
-
-            // Remove group from prospect's group_ids
-            foreach ( $group_ids as $key => $group_id ) {
-                if ( $group_id == $this->params[ "id" ] ) {
-                    unset( $group_ids[ $key ] );
-                }
-            }
-
-            $group_ids = implode( ",", $group_ids );
-            $prospectRepo->updateGroupIDsByID( $group_ids, $prospect->id );
+            )
+        ) {
+            $prospectGroupRepo->delete( [ "prospect_id", "group_id" ], [ $input->get( "prospect_id" ), $this->params[ "id" ] ] );
+            $this->session->addFlashMessage( "Lead removed from Group" );
+            $this->session->setFlashMessages();
 
             $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/" );
         }
 
         if ( $input->exists() && $input->issetField( "remove_member" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals_hidden" => $this->session->getSession( "csrf-token" ),
                         "required" => true
                     ],
-
                     "member_id" => [
                         "required" => true,
                         "in_array" => $member_ids
                     ]
                 ],
-
                 "remove_member"
-            ) )
-        {
-            $member = $memberRepo->getByID( $input->get( "member_id" ) );
-            $group_ids = explode( ",", $member->group_ids );
-
-            // Remove group from member's group_ids
-            foreach ( $group_ids as $key => $group_id ) {
-                if ( $group_id == $this->params[ "id" ] ) {
-                    unset( $group_ids[ $key ] );
-                }
-            }
-
-            $group_ids = implode( ",", $group_ids );
-            $memberRepo->updateGroupIDsByID( $group_ids, $member->id );
+            )
+        ) {
+            $memberGroupRepo->delete( [ "member_id", "group_id" ], [ $input->get( "member_id" ), $this->params[ "id" ] ] );
+            $this->session->addFlashMessage( "Member removed from Group" );
+            $this->session->setFlashMessages();
 
             $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/" );
         }
@@ -181,6 +137,7 @@ class Group extends Controller
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/group/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Group.php" );
@@ -197,9 +154,7 @@ class Group extends Controller
         $groupRepo = $this->load( "group-repository" );
 
         if ( $input->exists() && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -223,8 +178,8 @@ class Group extends Controller
                 ],
 
                 "create_group" /* error index */
-            ) )
-        {
+            )
+        ) {
             $group = $groupRepo->create( $this->business->id, $input->get( "name" ), $input->get( "description" ) );
             $this->view->redirect( "account-manager/business/group/" . $group->id . "/" );
         }

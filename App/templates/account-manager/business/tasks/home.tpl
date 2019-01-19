@@ -57,7 +57,7 @@
 				{/foreach}
 			</div>
 			{else}
-			<p>You havent created any tasks yet</p>
+			<p>You haven't created any tasks yet</p>
 			{/if}
 			<div class="clear"></div>
 		</div>
