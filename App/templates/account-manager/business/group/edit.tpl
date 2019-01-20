@@ -5,7 +5,7 @@
 {/block}
 
 {block name="bm-body"}
-	{include file="includes/navigation/marketing-sub-menu.tpl"}
+	{include file="includes/navigation/communication-sub-menu.tpl"}
 	<div class="con-cnt-xlrg first inner-pad-med">
 		<a class="btn btn-inline bg-deep-blue text-med first" href="{$HOME}account-manager/business/group/{$group->id}/">< Group Manager</a>
 		{if !empty($error_messages.edit_group)}

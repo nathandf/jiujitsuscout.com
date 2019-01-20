@@ -6,7 +6,7 @@
 {/block}
 
 {block name="bm-body"}
-	{include file="includes/navigation/marketing-sub-menu.tpl"}
+	{include file="includes/navigation/communication-sub-menu.tpl"}
 	<div class="clear"></div>
 	<div class="con con-cnt-xlrg push-t-med inner-pad-med">
 		<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/groups/">< All Groups</a>

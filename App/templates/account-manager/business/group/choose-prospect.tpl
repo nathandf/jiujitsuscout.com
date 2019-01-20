@@ -5,7 +5,7 @@
 {/block}
 
 {block name="bm-body"}
-	{include file="includes/navigation/marketing-sub-menu.tpl"}
+	{include file="includes/navigation/communication-sub-menu.tpl"}
 	<div class="con-cnt-xxlrg first inner-pad-med">
 		<h3>Choose a Lead</h3>
 		<span>or <a class="link" href="{$HOME}account-manager/business/add-lead">create a new one</a></span>

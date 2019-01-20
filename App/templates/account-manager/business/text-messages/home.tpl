@@ -6,7 +6,7 @@
 {/block}
 
 {block name="bm-body"}
-	{include file="includes/navigation/marketing-sub-menu.tpl"}
+	{include file="includes/navigation/communication-sub-menu.tpl"}
 	<div>
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
