@@ -52,7 +52,7 @@
 					<div class="clear push-t-med"></div>
 					<p class="password_label">Create a strong password</p>
 					<input type="password" class="inp field-med" id="password" name="password" placeholder="New Password" />
-					<input type="password" class="inp field-med" id="confirm_password" name="confirm_password" placeholder="Confirm new password" />
+					<input type="password" class="inp field-med push-t-med" id="confirm_password" name="confirm_password" placeholder="Confirm new password" />
 					<div class="clear push-t-med"></div>
 					<input type="checkbox" class="checkbox" name="terms" value="{$csrf_token}"><label class="text-sml">I have read and agree to the<br><a target="_blank" href="{$HOME}terms-and-conditions">Terms and Conditions</a> and <a target="_blank" href="{$HOME}privacy-policy">Privacy Policy</a></label>
 					<div class="clear last"></div>

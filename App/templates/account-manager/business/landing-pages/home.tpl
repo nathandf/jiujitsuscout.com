@@ -10,7 +10,7 @@
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
 			<h2 class="">Landing Pages</h2>
-			<p class="text-sml push-t-med">Capture leads with landing pages you create! The JiuJitsuScout Landing Page builder makes it super easy to build effective landing pages that drive action and capture leads.</p>
+			<p class="text-sml push-t-med">Capture leads with landing pages! The JiuJitsuScout Landing Page builder makes it super easy to build effective landing pages that drive action and capture leads.</p>
 			<div class="hr-sml"></div>
 			<a href="{$HOME}account-manager/business/landing-page/choose-template" class="btn btn-inline push-t-med mat-hov"><span class="text-med">Create Landing Page <i class="fa fa-plus" aria-hidden="true"></i></span></a>
 			{foreach from=$pages item=page}

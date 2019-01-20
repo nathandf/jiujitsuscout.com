@@ -32,18 +32,14 @@
 					<textarea class="inp textarea" name="description"></textarea>
 					<div class="clear"></div>
 				</div>
-				<input style="display: none;" class="btn file-upload-button" type="submit" value="Upload Photo" name="video" size="25" />
+				<input style="display: none;" class="btn file-upload-button" type="submit" value="Upload Video" name="video" size="25" />
 				<div class="clear"></div>
 			</form>
 			<div class="clear"></div>
 			{if !is_null($video->id)}
-			<h2 class="push-t-med">Current Video</h2>
-			<div class="clear push-t-med"></div>
-			<label class="text-med-heavy" for="">Video Title:</label>
-			<p class="text-med">{$video->name|default:"<i>None</i>"}</p>
-			<div class="clear push-t-med"></div>
-			<label class="text-med-heavy" for="">Description:</label>
-			<p style="max-width: 80ch;" class="text-med push-b-med">{$video->description|default:"<i>None</i>"}</p>
+			<div class="clear hr-sml push-t-med"></div>
+			<h3>{$video->name|default:"<i>Unnamed</i>"}</h3>
+			<p style="max-width: 80ch;" class="text-sml push-b-med">{$video->description|default:"<i>None</i>"}</p>
 			{include file="includes/snippets/video.tpl"}
 			{else}
 			<p>No videos have been uploaded</p>
