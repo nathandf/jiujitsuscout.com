@@ -49,7 +49,7 @@
 					<select class="inp cursor-pt field-med" name="country" form="location">
 						<option name="country" value='{$business->country}' selected="selected"><span class="inner_option">{$business->country}</span></option>
 						{foreach from=$countries item=country}
-							<option name="country" value="{$country->iso}">{$country->nice_name}</option>
+							<option name="country" value="{$country->iso}">{$country->nicename}</option>
 						{/foreach}
 					</select>
 					<div class="clear push-t-med"></div>
