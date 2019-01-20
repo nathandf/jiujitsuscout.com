@@ -39,7 +39,7 @@ abstract class DataMapper implements DataMapperInterface
 
         $tokens = implode( ",", $tokens_array );
         $columns = implode( ",", $columns_array );
-        $sql = $this->DB->prepare( "INSERT INTO $table ($columns) VALUES ($tokens)" );
+        $sql = $this->DB->prepare( "INSERT INTO `$table` ($columns) VALUES ($tokens)" );
         $token_index = 0;
 
         foreach ( $values_array as &$value ) {
@@ -73,7 +73,7 @@ abstract class DataMapper implements DataMapperInterface
             $sql->bindParam( $tokens_array[ $token_index ], $value );
             $token_index++;
         }
-        
+
         $sql->execute();
 
         if ( $return_object ) {
@@ -148,7 +148,7 @@ abstract class DataMapper implements DataMapperInterface
 
     public function update( $table, $set_column, $set_column_value, $where_column, $where_column_value )
     {
-        $sql = $this->DB->prepare( "UPDATE $table SET $set_column = :set_column_value WHERE $where_column = :where_column_value" );
+        $sql = $this->DB->prepare( "UPDATE `$table` SET $set_column = :set_column_value WHERE $where_column = :where_column_value" );
         $sql->bindParam( ":set_column_value", $set_column_value );
         $sql->bindParam( ":where_column_value", $where_column_value );
         $sql->execute();
@@ -161,8 +161,20 @@ abstract class DataMapper implements DataMapperInterface
             $this->validateColumnsFromKeys( $where_columns );
         }
 
-        $query = "UPDATE " . "`" . $this->getTable() . "`" . " SET " . $this->formatQueryFromKeyValues( $columns_to_update, "0" ) . " WHERE " . $this->formatQueryFromKeyValues( $where_columns, "1" );
+        // NOTE We construct the value for the 'token' argument of PDO::bindParam()
+        // by the name of the column being referenced prefixed by a colon. Ex: ":first_name"
+        // Different token prefixes are used in this case to avoid overwriting the parameter
+        // value when using the bindParam method when refenceing and updating the same
+        // column. Consider the query below:
+        //
+        // 'UPDATE `user` SET first_name = :first_name WHERE first_name = :first_name'
+        //
+        // There are two ":first_name" tokens in the query. Without adding a prefix to the token name,
+        // the values of each token will be equal the the last instance in which PDO::bindParam
+        // was called.
 
+        $query = "UPDATE " . "`" . $this->getTable() . "`" . " SET " . $this->formatQueryFromKeyValuesUpdate( $columns_to_update, "0" ) . " WHERE " . $this->formatQueryFromKeyValues( $where_columns, "1" );
+        
         $sql = $this->DB->prepare( $query );
 
         foreach ( $columns_to_update as $key => &$value ) {
@@ -207,7 +219,7 @@ abstract class DataMapper implements DataMapperInterface
     public function getAll( $table )
     {
         $data = [];
-        $sql = $this->DB->prepare( "SELECT * FROM $table" );
+        $sql = $this->DB->prepare( "SELECT * FROM `$table`" );
         $sql->execute();
 
         while ( $row = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
@@ -320,6 +332,29 @@ abstract class DataMapper implements DataMapperInterface
         return $query;
     }
 
+    public function formatQueryFromKeyValuesUpdate( array $key_values, $token_prefix = "" )
+    {
+        $query = "";
+        $total = count( $key_values );
+
+        $i = 1;
+        foreach ( $key_values as $key => $value ) {
+            if ( is_null( $value ) || $value === "" ) {
+                throw new \Exception( "Value cannot be empty: key => {$key}, value = ?" );
+            }
+
+            $and = "";
+            if ( $i != $total ) {
+                $and = ", ";
+            }
+
+            $query = $query . "{$key} = :{$token_prefix}{$key}" . $and;
+            $i++;
+        }
+
+        return $query;
+    }
+
     public function formatQueryWhereKeyValuePairs( array $keys, array $values )
     {
         // Make sure no keys or values are empty
@@ -359,9 +394,7 @@ abstract class DataMapper implements DataMapperInterface
     private function getColumns()
     {
         $table = $this->getTable();
-        // $sql = $this->DB->prepare( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = :table" );
-        $sql = $this->DB->prepare( "SHOW COLUMNS FROM {$table}" );
-        // $sql->bindParam( ":table", $table );
+        $sql = $this->DB->prepare( "SHOW COLUMNS FROM `{$table}`" );
         $sql->execute();
 
         $columns = [];

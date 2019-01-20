@@ -10,7 +10,8 @@
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
 			<h2 class="">Groups</h2>
-			<p class="text-sml push-t-med">Use groups to categorize your leads and members. Get the right message to the right people.</p>
+			<p class="text-sml">Use groups to categorize your leads and members. Get the right message to the right people.</p>
+			{include file="includes/snippets/flash-messages.tpl"}
 			<div class="hr-sml"></div>
 			<div class="clear"></div>
 			<a href="{$HOME}account-manager/business/group/new" class="btn btn-inline mat-hov push-t-med"><span class="text-med">New Group <i class="fa fa-plus" aria-hidden="true"></i></span></a>

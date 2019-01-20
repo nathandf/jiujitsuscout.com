@@ -180,7 +180,15 @@ class Group extends Controller
                 "create_group" /* error index */
             )
         ) {
-            $group = $groupRepo->create( $this->business->id, $input->get( "name" ), $input->get( "description" ) );
+            $group = $groupRepo->insert([
+                "business_id" => $this->business->id,
+                "name" => $input->get( "name" ),
+                "description" => $input->get( "description" )
+            ]);
+
+            $this->session->addFlashMessage( "Group Created" );
+            $this->session->setFlashMessages();
+
             $this->view->redirect( "account-manager/business/group/" . $group->id . "/" );
         }
 
@@ -197,6 +205,7 @@ class Group extends Controller
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/group/new.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Group.php" );
@@ -211,24 +220,17 @@ class Group extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $groupRepo = $this->load( "group-repository" );
-        $prospectRepo = $this->load( "prospect-repository" );
-        $memberRepo = $this->load( "member-repository" );
-        $landingPageRepo = $this->load( "landing-page-repository" );
-
-        $groupsAll = $groupRepo->getAllByBusinessID( $this->business->id );
-        $group_ids = [];
-
-        foreach ( $groupsAll as $group ) {
-            $group_ids[] = $group->id;
-        }
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
+        $memberGroupRepo = $this->load( "member-group-repository" );
+        $landingPageGroupRepo = $this->load( "landing-page-group-repository" );
 
         // Set group from query string param
-        $group = $groupRepo->getByID( $this->params[ "id" ] );
+        $group = $groupRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+
+        $group_ids = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
 
         if ( $input->exists() && $input->issetField( "update_group" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -245,18 +247,21 @@ class Group extends Controller
                         "name" => "Description",
                     ],
                 ],
-
                 "edit_group" /* error index */
-            ) )
-        {
-            $groupRepo->updateGroupByID( $this->params[ "id" ], $input->get( "name" ), $input->get( "description" ) );
+            )
+        ) {
+            $groupRepo->update(
+                [
+                    "name" => $input->get( "name" ),
+                    "description" => $input->get( "description" )
+                ],
+                [ "id" => $this->params[ "id" ] ]
+            );
             $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/edit" );
         }
 
         if ( $input->exists() && $input->issetField( "trash" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -270,51 +275,17 @@ class Group extends Controller
                         "in_array" => $group_ids
                     ]
                 ],
-
                 "delete_group" /* error index */
-            ) )
-        {
-            $prospects = $prospectRepo->getAllByBusinessID( $this->business->id );
-            $members = $memberRepo->getAllByBusinessID( $this->business->id );
-            $landingPages = $landingPageRepo->getAllByBusinessID( $this->business->id );
+            )
+        ) {
+            $memberGroupRepo->delete( [ "group_id" ], [ $this->params[ "id" ] ] );
+            $prospectGroupRepo->delete( [ "group_id" ], [ $this->params[ "id" ] ] );
+            $landingPageGroupRepo->delete( [ "group_id" ], [ $this->params[ "id" ] ] );
+            $groupRepo->delete( [ "id" ], [ "id" => $input->get( "group_id" ) ] );
 
-            // Remove this group from group_ids of all prospects
-            foreach ( $prospects as $prospect ) {
-                $group_ids = explode( ",", $prospect->group_ids );
-                foreach ( $group_ids as $key => $id ) {
-                    if ( $id == $input->get( "group_id" ) ) {
-                        unset( $group_ids[ $key ] );
-                    }
-                }
-                $group_ids = implode( ",", $group_ids );
-                $prospectRepo->updateGroupIDsByID( $group_ids, $prospect->id );
-            }
+            $this->session->addFlashMessage( "Group '{$group->name}' Deleted" );
+            $this->session->setFlashMessages();
 
-            // Remove this group from group_ids of all members
-            foreach ( $members as $member ) {
-                $group_ids = explode( ",", $member->group_ids );
-                foreach ( $group_ids as $key => $id ) {
-                    if ( $id == $input->get( "group_id" ) ) {
-                        unset( $group_ids[ $key ] );
-                    }
-                }
-                $group_ids = implode( ",", $group_ids );
-                $memberRepo->updateGroupIDsByID( $group_ids, $member->id );
-            }
-
-            // Remove this group from group_ids of all landing pages
-            foreach ( $landingPages as $landingPage ) {
-                $group_ids = explode( ",", $landingPage->group_ids );
-                foreach ( $group_ids as $key => $id ) {
-                    if ( $id == $input->get( "group_id" ) ) {
-                        unset( $group_ids[ $key ] );
-                    }
-                }
-                $group_ids = implode( ",", $group_ids );
-                $landingPageRepo->updateGroupIDsByID( $group_ids, $landingPage->id );
-            }
-
-            $groupRepo->removeByID( $input->get( "group_id" ) );
             $this->view->redirect( "account-manager/business/groups/" );
         }
 
@@ -375,10 +346,10 @@ class Group extends Controller
                 "prospect_id" => $input->get( "prospect_id" ),
                 "group_id" => $this->params[ "id" ]
             ]);
-            $this->session->addFlashMessage( "Prospect added to group" );
+            $this->session->addFlashMessage( "Lead Added" );
             $this->session->setFlashMessages();
 
-            $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/#lead{$input->get( "prospect_id" )}" );
+            $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/" );
         }
 
         $this->view->assign( "leads", $prospects );
@@ -439,10 +410,10 @@ class Group extends Controller
                 "member_id" => $input->get( "member_id" ),
                 "group_id" => $this->params[ "id" ]
             ]);
-            $this->session->addFlashMessage( "Member added to group" );
+            $this->session->addFlashMessage( "Member Added" );
             $this->session->setFlashMessages();
 
-            $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/#member{$input->get( "member_id" )}" );
+            $this->view->redirect( "account-manager/business/group/" . $this->params[ "id" ] . "/" );
         }
 
         $this->view->assign( "members", $members );

@@ -13,13 +13,13 @@
 		<div class="clear push-t-med"></div>
 		<a href="{$HOME}account-manager/business/group/{$group->id}/edit" class="text-xlrg-heavy tc-deep-blue link">{$group->name}</a>
 		<p class="text-sml">{$group->description}</p>
-		<div class="hr-sml push-b-med"></div>
 		{include file="includes/snippets/flash-messages.tpl"}
+		<div class="hr-sml push-b-med"></div>
 		<a href="{$HOME}account-manager/business/group/{$group->id}/choose-prospect" class="btn btn-inline bg-salmon text-med"><i aria-hidden="true" class="fa fa-plus push-r-sml"></i> Lead</a>
 		<a href="{$HOME}account-manager/business/group/{$group->id}/choose-member" class="btn btn-inline bg-dark-mint text-med"><i aria-hidden="true" class="fa fa-plus push-r-sml"></i> Member</a>
 		<div class="clear"></div>
 		{if $leads|@count > 0}
-			<a href="{$HOME}account-manager/business/leads" class="text-med link tc-deep-blue">View all Leads</a>
+			<h3>Leads</h3>
 			<div class="clear"></div>
 			{foreach from=$leads item=lead}
 			<a href="{$HOME}account-manager/business/lead/{$lead->id}/" id="lead{$lead->id}" class="lead-tag push-t-med mat-hov">
@@ -44,7 +44,7 @@
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="prospect_id" value="{$lead->id}">
 				<input type="hidden" name="remove_prospect" value="{$csrf_token}">
-				<button type="submit" style="background: none;" class="push-t push-l cursor-pt"><span class="text-xlrg-heavy tc-salmon">x</span></button>
+				<button type="submit" style="background: none;" class="push-t push-l cursor-pt"><span class="text-sml tc-salmon">remove</span></button>
 			</form>
 			<div class="clear"></div>
 			{/foreach}
@@ -53,7 +53,7 @@
 		{if $members|@count > 0}
 		<div class="clear push-t-med"></div>
 
-		<a href="{$HOME}account-manager/business/members" class="text-med link tc-deep-blue push-t-med">View all Members</a>
+		<h3>Members</h3>
 			<div class="clear"></div>
 			{foreach from=$members item=member}
 			<a href="{$HOME}account-manager/business/member/{$member->id}/" id="member{$member->id}" class="lead-tag push-t-med mat-hov">
@@ -68,7 +68,7 @@
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="member_id" value="{$member->id}">
 				<input type="hidden" name="remove_member" value="{$csrf_token}">
-				<button type="submit" style="background: none;" class="push-t push-l cursor-pt"><span class="text-xlrg-heavy tc-salmon">x</span></button>
+				<button type="submit" style="background: none;" class="push-t push-l cursor-pt"><span class="text-sml tc-salmon">remove</span></button>
 			</form>
 			<div class="clear"></div>
 			{/foreach}

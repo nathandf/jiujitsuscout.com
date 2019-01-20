@@ -16,6 +16,7 @@
 			{/foreach}
 		{/if}
 		<div class="clear push-t-med"></div>
+		{include file="includes/snippets/flash-messages.tpl"}
 		<form method="post" action="">
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="update_group" value="{$csrf_token}">

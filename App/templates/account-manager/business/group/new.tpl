@@ -23,11 +23,11 @@
 				<input type="hidden" name="create_group" value="{$csrf_token}">
 				<div class="clear first"></div>
 				<p><b>Group Name:</b></p>
-				<input type="text" name="name" value="{$inputs.create_group.name|default:null}" class="inp field-sml" placeholder="Group name">
+				<input type="text" name="name" value="{$inputs.create_group.name|default:null}" class="inp" placeholder="Group name">
 				<div class="clear first"></div>
 				<b>Description: </b>
 				<div class="clear"></div>
-				<textarea style="text-indent: 0px; padding: 8px;" name="description" class="inp field-med" id="" cols="30" rows="10" placeholder="Describe what makes this group unique">{$inputs.create_group.description|default:null}</textarea>
+				<textarea class="inp textarea" name="description" id="" cols="30" rows="10" placeholder="Describe what makes this group unique">{$inputs.create_group.description|default:null}</textarea>
 				<div class="clear"></div>
 				<input type="submit" class="btn btn-inline" value="Create group">
 			</form>
