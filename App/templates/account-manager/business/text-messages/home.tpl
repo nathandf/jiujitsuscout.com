@@ -16,10 +16,13 @@
 			<a href="{$HOME}account-manager/business/text-message/new" class="btn btn-inline mat-hov push-t-med"><span class="text-med">Create a Text Message <i class="fa fa-plus" aria-hidden="true"></i></span></a>
 			<div class="clear push-b-med"></div>
 			{foreach from=$textMessages item=textMessage}
-			<div class="push-b-med">
-				<a class="link tc-deep-blue" href="{$HOME}account-manager/business/text-message/{$textMessage->id}/">{$textMessage->name}</a>
-				<p class="text-med">{$textMessage->description}</p>
-			</div>
+			<a class="tag-link" href="{$HOME}account-manager/business/text-message/{$textMessage->id}/">
+				<div class="tag mat-hov cursor-pt">
+					<p class="text-med-heavy" href="{$HOME}account-manager/business/text-message/{$textMessage->id}/">{$textMessage->name}</p>
+					<p class="text-med">{$textMessage->description}</p>
+				</div>
+			</a>
+			<div class="clear push-b-med"></div>
 			{foreachelse}
 			-- No text messages have been create yet --
 			{/foreach}

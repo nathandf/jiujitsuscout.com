@@ -142,9 +142,7 @@ class Lead extends Controller
 
         // If validation rules are passed, send an email
         if ( $input->exists() &&  $input->issetField( "send_email" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -163,10 +161,9 @@ class Lead extends Controller
                         "max" => 1000
                     ]
                 ],
-
                 "send_email" /* error index */
-            ) )
-        {
+            )
+        ) {
             // Prospect must have an email address to which to send the email
             if ( is_null( $this->prospect->email ) || $this->prospect->email == "" ) {
                 $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/?error=invalid_email" );

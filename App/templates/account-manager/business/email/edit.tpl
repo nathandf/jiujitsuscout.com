@@ -15,7 +15,7 @@
 				<div class="con con-cnt-xlrg push-t-med inner-pad-med">
 					<a class="btn btn-inline bg-deep-blue text-med last" href="{$HOME}account-manager/business/emails/">< All Emails</a>
 					<div class="hr-sml"></div>
-					<p class="text-sml">Create emails that you can use in automated email marketing and follow up sequences</p>
+					<p class="text-sml">Create emails that you can use in automated marketing and follow up sequences. <a class="link tc-deep-blue" href="{$HOME}account-manager/business/sequence/new">Create a sequence</a></p>
 					{if !empty($error_messages.update_email)}
 						{foreach from=$error_messages.update_email item=message}
 							<div class="con-message-failure mat-hov cursor-pt --c-hide">

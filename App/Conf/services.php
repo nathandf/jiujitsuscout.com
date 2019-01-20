@@ -789,6 +789,14 @@ $container->register( "unsubscribe-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "user-email-signature-repository", function() use ( $container ) {
+	$repo = new \Model\Services\UserEmailSignatureRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "user-repository", function() use ( $container ) {
 	$repo = new \Model\Services\UserRepository(
 	    $container->getService( "dao" ),

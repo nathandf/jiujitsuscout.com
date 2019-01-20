@@ -3,6 +3,10 @@
 {block name="bm-head"}
 	<link rel="stylesheet" href="{$HOME}public/css/campaigns.css">
 	<link rel="stylesheet" href="{$HOME}public/css/leads.css">
+	<link rel="stylesheet" href="{$HOME}public/css/article-builder.css">
+	<script src="{$HOME}{$JS_SCRIPTS}rangyinputs-jquery-src.js"></script>
+	<script src="{$HOME}{$JS_SCRIPTS}rangyinputs-jquery.js"></script>
+	<script src="{$HOME}{$JS_SCRIPTS}html-builder.js"></script>
 {/block}
 
 {block name="bm-body"}
@@ -30,8 +34,13 @@
 						<p><b>Subject:</b></p>
 						<input style="padding: 3px;" type="text" name="subject" value="{$inputs.create_email.name|default:null}" class="inp" placeholder="">
 						<div class="clear push-t-med"></div>
-						<p><b>Body:</b></p>
-						<textarea name="body" class="inp textarea" placeholder="">{$inputs.create_email.body|default:null}</textarea>
+						<b>Body:</b>
+						<div class="clear push-t-sml"></div>
+						<button id="choose-insert-image" type="button" class="style-button cursor-pt"><i class="fa fa-picture-o" aria-hidden="true"></i></button>
+						<button id="choose-insert-video" type="button" class="style-button cursor-pt"><i class="fa fa-video-camera" aria-hidden="true"></i></button>
+						<div class="clear push-t-sml"></div>
+						{include file="includes/widgets/anchor-widget.tpl"}
+						<textarea id="article-body" name="body" class="inp textarea-tall" placeholder="">{$inputs.create_email.body|default:null}</textarea>
 						<div class="clear"></div>
 						<div class="hr-sml"></div>
 						<p class="text-sml">Add a name and description to help you identify the purpose of this email</p>

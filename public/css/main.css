@@ -479,7 +479,6 @@ td {
     padding: 5px;
 }
 
-
 .inner-pad-sml {
     box-sizing: border-box;
     padding: 10px;
@@ -654,6 +653,20 @@ td {
     --num-of-cols: 5;
     --num-of-gutters: calc(var(--num-of-cols) - 1);
     width: calc(20% - (var(--num-of-gutters) * var(--col-gutter) / var(--num-of-cols)));
+}
+
+.tag {
+    box-sizing: border-box;
+    width:  100%;
+    border: 2px solid #CCCCCC;
+    padding: 8px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #000000;
+}
+
+.tag-link {
+    text-decoration: none;
 }
 
 /* Horizontal Line */
@@ -845,6 +858,14 @@ td {
     text-indent: 0px;
     padding: 8px;
     height: 80px;
+}
+
+.textarea-tall {
+    box-sizing: border-box;
+    text-indent: 0px;
+    padding: 8px;
+    height: 220px;
+    overflow-y: scroll;
 }
 
 .field-med-plus-plus {

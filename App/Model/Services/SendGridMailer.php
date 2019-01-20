@@ -65,7 +65,15 @@ class SendGridMailer implements MailerAPIInterface
 
     public function setEmailBody( $body )
     {
+        if ( $this->content_type == "text/html" ) {
+            $this->email_body = "<div style=\"white-space: pre-wrap;\">" . $body . "</div>";
+
+            return $this;
+        }
+
         $this->email_body = $body;
+
+        return $this;
     }
 
     public function setApiKey( $key )

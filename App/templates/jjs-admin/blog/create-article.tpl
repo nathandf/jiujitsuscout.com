@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Language" content="en">
 	<script src="{$HOME}{$JS_SCRIPTS}rangyinputs-jquery-src.js"></script>
 	<script src="{$HOME}{$JS_SCRIPTS}rangyinputs-jquery.js"></script>
-	<script src="{$HOME}{$JS_SCRIPTS}article-builder.js"></script>
+	<script src="{$HOME}{$JS_SCRIPTS}html-builder.js"></script>
 {/block}
 
 {block name="body"}
