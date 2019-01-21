@@ -9,7 +9,7 @@
 	<div class="con-cnt-xlrg push-t-med bg-white encapsulate">
 		{include file="includes/navigation/business-manager-assets-inner-menu.tpl"}
 		<div class="inner-pad-med">
-			<h2>Video</h2>
+			<h2>Videos</h2>
 			<div class="clear push-t-med push-b-med"></div>
 			{if !empty($error_messages.upload_video)}
 				{foreach from=$error_messages.upload_video item=message}
@@ -24,31 +24,29 @@
 				<input class="btn-std" type="file" name="video" size="25"/>
 				<div class="clear"></div>
 				<div style="display: none;" class="file-upload-field-container">
-					<label for="">Video Title:</label>
+					<label class="text-sml" for="">Video Title:</label>
 					<div class="clear"></div>
 					<input type="text" class="inp text-input" name="name">
 					<div class="clear push-t-med"></div>
-					<label for="">Description:</label>
+					<label class="text-sml" for="">Description:</label>
 					<div class="clear"></div>
 					<textarea class="inp textarea" name="description"></textarea>
 					<div class="clear"></div>
+					<input id="primary-video-checkbox" type="checkbox" class="checkbox" name="primary">
+					<label class="text-med" for="primary-video-checkbox">Make this the profile video for <b>{$business->business_name}<b>?</label>
 				</div>
-				<input style="display: none;" class="btn file-upload-button" type="submit" value="Upload Photo" name="video" size="25" />
+				<button style="display: none;" class="btn file-upload-button push-t-med" type="submit" name="video" value="1"><i aria-hidden="true" class="fa fa-upload push-r-sml"></i>Upload Video</button>
 				<div class="clear"></div>
 			</form>
 			<div class="clear"></div>
-			{if !is_null($video->id)}
-			<h2 class="push-t-med">Current Video</h2>
-			<div class="clear push-t-med"></div>
-			<label class="text-med-heavy" for="">Video Title:</label>
-			<p class="text-med">{$video->name|default:"<i>None</i>"}</p>
-			<div class="clear push-t-med"></div>
-			<label class="text-med-heavy" for="">Description:</label>
-			<p style="max-width: 80ch;" class="text-med push-b-med">{$video->description|default:"<i>None</i>"}</p>
+			{foreach from=$videos item=video}
+			<div class="hr-sml"></div>
+			<p class="text-med-heavy">{$video->name|default:"Unnamed"}</p>
+			<p style="max-width: 80ch;" class="text-sml">{$video->description|default:"No Description"}</p>
 			{include file="includes/snippets/video.tpl"}
-			{else}
+			{foreachelse}
 			<p>No videos have been uploaded</p>
-			{/if}
+			{/foreach}
 		</div>
 		<div class="clear"></div>
 	</div>

@@ -76,7 +76,7 @@
 					<p class="text-sml-heavy">Subject:</p>
 					<p class="text-med">{$emailTemplate->subject}</p>
 					<p class="text-sml-heavy push-t-med">Body:</p>
-					<p class="text-med">{$emailTemplate->description}</p>
+					<p class="text-med">{$emailTemplate->body}</p>
 					<button data-template_id="{$emailTemplate->id}" class="template-button btn btn-inline floatright push-t-med push-r-sml bg-algae tc-white">Choose Email</button>
 					<div class="clear"></div>
 				</div>
