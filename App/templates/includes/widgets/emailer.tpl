@@ -34,7 +34,7 @@
 					<div class="clear push-t-sml"></div>
 					<label class="text-med-heavy" for="">Body:</label>
 					<div class="clear"></div>
-					<textarea id="emailer-body-input" class="inp textarea" name="body" required="required"></textarea>
+					<textarea id="emailer-body-input" class="inp textarea-tall" name="body" required="required"></textarea>
 					<div class="clear push-t-sml"></div>
 					<label class="text-med-heavy" for="">Email Templates:</label>
 					<div class="clear"></div>

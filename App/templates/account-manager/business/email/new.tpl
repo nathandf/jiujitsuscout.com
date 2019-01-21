@@ -1,16 +1,16 @@
 {extends file="layouts/business-manager-core.tpl"}
 
 {block name="bm-head"}
-	<link rel="stylesheet" href="{$HOME}public/css/campaigns.css">
-	<link rel="stylesheet" href="{$HOME}public/css/leads.css">
-	<link rel="stylesheet" href="{$HOME}public/css/article-builder.css">
+	<link rel="stylesheet" href="{$HOME}public/css/html-builder.css">
 	<script src="{$HOME}{$JS_SCRIPTS}rangyinputs-jquery-src.js"></script>
 	<script src="{$HOME}{$JS_SCRIPTS}rangyinputs-jquery.js"></script>
-	<script src="{$HOME}{$JS_SCRIPTS}html-builder.js"></script>
+	<script src="{$HOME}{$JS_SCRIPTS}email-builder.js"></script>
 {/block}
 
 {block name="bm-body"}
 	{include file="includes/navigation/communication-sub-menu.tpl"}
+	{include file="includes/widgets/insert-image-picker-email.tpl"}
+	{include file="includes/widgets/insert-video-picker-email.tpl"}
 	<div>
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
@@ -39,8 +39,7 @@
 						<button id="choose-insert-image" type="button" class="style-button cursor-pt"><i class="fa fa-picture-o" aria-hidden="true"></i></button>
 						<button id="choose-insert-video" type="button" class="style-button cursor-pt"><i class="fa fa-video-camera" aria-hidden="true"></i></button>
 						<div class="clear push-t-sml"></div>
-						{include file="includes/widgets/anchor-widget.tpl"}
-						<textarea id="article-body" name="body" class="inp textarea-tall" placeholder="">{$inputs.create_email.body|default:null}</textarea>
+						<textarea id="email-body" name="body" class="inp textarea-tall" placeholder="">{$inputs.create_email.body|default:null}</textarea>
 						<div class="clear"></div>
 						<div class="hr-sml"></div>
 						<p class="text-sml">Add a name and description to help you identify the purpose of this email</p>

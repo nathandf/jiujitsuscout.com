@@ -905,6 +905,14 @@ $container->register( "access-control", function() {
 	return $helper;
 } );
 
+$container->register( "email-builder-helper", function() use ( $container ) {
+	$helper = new \Helpers\EmailBuilderHelper(
+		$container->getService( "image-repository" ),
+		$container->getService( "video-repository" )
+	);
+	return $helper;
+} );
+
 $container->register( "emailer-helper", function() {
 	$helper = new \Helpers\EmailerHelper;
 	return $helper;

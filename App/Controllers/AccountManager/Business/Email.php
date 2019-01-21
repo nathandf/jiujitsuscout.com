@@ -70,6 +70,8 @@ class Email extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $emailTemplateRepo = $this->load( "email-template-repository" );
+        $imageRepo = $this->load( "image-repository" );
+        $videoRepo = $this->load( "video-repository" );
 
         $emailTemplate = $emailTemplateRepo->getByID( $this->params[ "id" ] );
 
@@ -97,12 +99,34 @@ class Email extends Controller
             "create_email"
             )
         ) {
+            $emailBuilderHelper = $this->load( "email-builder-helper" );
+            $emailBuilderHelper->prepareEmailBody( $input->get( "body" ) );
+
+            $image_ids = $imageRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+            $video_ids = $videoRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+
+            // Validate that the images and videos belong to this business
+            $image_ids_to_validate = $emailBuilderHelper->getImageIDs();
+            $video_ids_to_validate = $emailBuilderHelper->getVideoIDs();
+
+            foreach ( $image_ids_to_validate as $image_id ) {
+                if ( !in_array( $image_id, $image_ids ) ) {
+                    $emailBuilderHelper->removeImageTagByImageID( $image_id );
+                }
+            }
+
+            foreach ( $video_ids_to_validate as $video_id ) {
+                if ( !in_array( $video_id, $video_ids ) ) {
+                    $emailBuilderHelper->removeVideoTagByVideoID( $video_id );
+                }
+            }
+
             $emailTemplateRepo->updateByID(
                 $this->params[ "id" ],
                 $input->get( "name" ),
                 $input->get( "description" ),
                 $input->get( "subject" ),
-                $input->get( "body" )
+                $emailBuilderHelper->getEmailBody()
             );
 
             $this->session->addFlashMessage( "Email Updated" );
@@ -111,6 +135,8 @@ class Email extends Controller
         }
 
         $this->view->assign( "email", $emailTemplate );
+        $this->view->assign( "images", $imageRepo->get( [ "*" ], [ "business_id" => $this->business->id ] ) );
+        $this->view->assign( "videos", $videoRepo->get( [ "*" ], [ "business_id" => $this->business->id ] ) );
 
         $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
@@ -129,6 +155,8 @@ class Email extends Controller
 
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $imageRepo = $this->load( "image-repository" );
+        $videoRepo = $this->load( "video-repository" );
 
         if ( $input->exists() && $input->issetField( "create_email" ) && $inputValidator->validate(
             $input,
@@ -153,13 +181,35 @@ class Email extends Controller
             "create_email"
             )
         ) {
+            $emailBuilderHelper = $this->load( "email-builder-helper" );
+            $emailBuilderHelper->prepareEmailBody( $input->get( "body" ) );
+
+            $image_ids = $imageRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+            $video_ids = $videoRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+
+            // Validate that the images and videos belong to this business
+            $image_ids_to_validate = $emailBuilderHelper->getImageIDs();
+            $video_ids_to_validate = $emailBuilderHelper->getVideoIDs();
+
+            foreach ( $image_ids_to_validate as $image_id ) {
+                if ( !in_array( $image_id, $image_ids ) ) {
+                    $emailBuilderHelper->removeImageTagByImageID( $image_id );
+                }
+            }
+
+            foreach ( $video_ids_to_validate as $video_id ) {
+                if ( !in_array( $video_id, $video_ids ) ) {
+                    $emailBuilderHelper->removeVideoTagByVideoID( $video_id );
+                }
+            }
+
             $emailTemplateRepo = $this->load( "email-template-repository" );
             $emailTemplate = $emailTemplateRepo->create(
                 $this->business->id,
                 $input->get( "name" ),
                 $input->get( "description" ),
                 $input->get( "subject" ),
-                $input->get( "body" )
+                $emailBuilderHelper->getEmailBody()
             );
 
             $this->view->redirect( "account-manager/business/email/" . $emailTemplate->id . "/" );
@@ -167,6 +217,8 @@ class Email extends Controller
 
         $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "images", $imageRepo->get( [ "*" ], [ "business_id" => $this->business->id ] ) );
+        $this->view->assign( "videos", $videoRepo->get( [ "*" ], [ "business_id" => $this->business->id ] ) );
 
         $this->view->setTemplate( "account-manager/business/email/new.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );

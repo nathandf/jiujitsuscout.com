@@ -170,6 +170,22 @@ $( function() {
 		$( "#insert-image-picker-modal" ).hide();
 	} );
 
+	// Insert video Picker Widget
+	$( ".insert-video-picker-video" ).on( "click", function () {
+		$( "#article-body" ).replaceSelectedText(
+			"<video style=\"display: block; margin: 0 auto; border: 2px solid #CCCCCC; max-width: 500px; width: 50%; min-width: 260px;\" controls><source src=\"" + this.dataset.src + "\" type=\"" + this.dataset.type + "\">Your browser does not support the video tag.</video>"
+		);
+		$( "#insert-video-picker-modal" ).hide();
+	} );
+
+	$( "#choose-insert-video" ).on( "click", function () {
+		$( "#insert-video-picker-modal" ).show();
+	} );
+
+	$( "#insert-video-picker-close" ).on( "click", function () {
+		$( "#insert-video-picker-modal" ).hide();
+	} );
+
 	$( "#anchor" ).on( "click", function () {
 		$( "#anchor-widget" ).show();
 		$( "#anchor-text" ).val( selection );

@@ -1,12 +1,16 @@
 {extends file="layouts/business-manager-core.tpl"}
 
 {block name="bm-head"}
-	<link rel="stylesheet" type="text/css" href="{$HOME}public/css/landing-pages.css">
-	<script src="{$HOME}{$JS_SCRIPTS}site-slug-updater.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="{$HOME}public/css/html-builder.css">
+	<script src="{$HOME}{$JS_SCRIPTS}rangyinputs-jquery-src.js"></script>
+	<script src="{$HOME}{$JS_SCRIPTS}rangyinputs-jquery.js"></script>
+	<script src="{$HOME}{$JS_SCRIPTS}email-builder.js"></script>
 {/block}
 
 {block name="bm-body"}
 	{include file="includes/navigation/communication-sub-menu.tpl"}
+	{include file="includes/widgets/insert-image-picker-email.tpl"}
+	{include file="includes/widgets/insert-video-picker-email.tpl"}
 	<div>
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
@@ -31,8 +35,13 @@
 						<p><b>Subject:</b></p>
 						<input style="padding: 3px;" type="text" name="subject" value="{$email->subject}" class="inp" placeholder="">
 						<div class="clear push-t-med"></div>
-						<p><b>Body:</b></p>
-						<textarea name="body" class="inp textarea" placeholder="">{$email->body}</textarea>
+						<b>Body:</b>
+						<p class="text-sml">Insert images and videos into your email. A placeholder tag will be used for all videos and images; They will be fully rendered when they are sent. Do not manipulate or adjust the tags in any way.</p>
+						<div class="clear push-t-sml"></div>
+						<button id="choose-insert-image" type="button" class="style-button cursor-pt"><i class="fa fa-picture-o" aria-hidden="true"></i></button>
+						<button id="choose-insert-video" type="button" class="style-button cursor-pt"><i class="fa fa-video-camera" aria-hidden="true"></i></button>
+						<div class="clear push-t-sml"></div>
+						<textarea name="body" id="email-body" class="inp textarea-tall" placeholder="">{$email->body}</textarea>
 						<div class="clear"></div>
 						<div class="hr-sml"></div>
 						<p class="text-sml">Add a name and description to help you identify the purpose of this email</p>

@@ -13,13 +13,19 @@
 			<h2 class="">Emails</h2>
 			<div class="hr-sml"></div>
 			<div class="clear"></div>
-			<a href="{$HOME}account-manager/business/email/new" class="btn btn-inline mat-hov push-t-med"><span class="text-med">Create an Email <i class="fa fa-plus" aria-hidden="true"></i></span></a>
+			<a href="{$HOME}account-manager/business/email/new" class="btn btn-inline mat-hov push-t-med"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">Create an Email</span></a>
 			<div class="clear push-b-med"></div>
 			{foreach from=$emails item=email}
 			<a href="{$HOME}account-manager/business/email/{$email->id}/" class="tag-link">
 				<div class="tag mat-hov cursor-pt">
-					<p class="text-med-heavy">{$email->name}</p>
-					<p class="text-med">{$email->description}</p>
+					<div class="bg-mango tc-white floatleft push-r-sml" style="border-radius: 3px; box-sizing: border-box; padding: 8px;">
+						<i aria-hidden="true" class="fa fa-envelope"></i>
+					</div>
+					<div class="floatleft">
+						<p class="text-med-heavy">{$email->name}</p>
+						<p class="text-med" style="max-width: 80ch;">{$email->description}</p>
+					</div>
+					<div class="clear"></div>
 				</div>
 			</a>
 			<div class="clear push-b-med"></div>

@@ -14,23 +14,25 @@
 			{include file="includes/snippets/flash-messages.tpl"}
 			<div class="hr-sml"></div>
 			<div class="clear"></div>
-			<a href="{$HOME}account-manager/business/group/new" class="btn btn-inline mat-hov push-t-med"><span class="text-med">New Group <i class="fa fa-plus" aria-hidden="true"></i></span></a>
-			<div class="clear"></div>
-			{if $groups}
-				{foreach from=$groups item=group name=group_loop}
-				<a style="padding-left: 10px; height: 140px; white-space: wrap; overflow: hidden; max-width: 180px" href="{$HOME}account-manager/business/group/{$group->id}/" id="group{$group->id}" class="lead-tag push-t-med mat-hov floatleft push-r">
-					<div class="lead-data">
-						<p class="lead-name">{$group->name|capitalize|truncate:50:"..."}</p>
-						<p>{if $group->description}{$group->description|truncate:75:"..."}{else}Description: None{/if}</p>
+			<a href="{$HOME}account-manager/business/group/new" class="btn btn-inline mat-hov push-t-med"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Group</span></a>
+			<div class="clear push-b-med"></div>
+			{foreach from=$groups item=group name=group_loop}
+			<a href="{$HOME}account-manager/business/group/{$group->id}/" class="tag-link">
+				<div class="tag mat-hov cursor-pt">
+					<div class="bg-deep-blue tc-white floatleft push-r-sml" style="border-radius: 3px; box-sizing: border-box; padding: 8px;">
+						<i aria-hidden="true" class="fa fa-group"></i>
 					</div>
-				</a>
-				{if $smarty.foreach.group_loop.iteration % 4 == 0}
-				<div class="clear push-t-med"></div>
-				{/if}
-				{/foreach}
-			{else}
+					<div class="floatleft">
+						<p class="text-med-heavy">{$group->name}</p>
+						<p class="text-med" style="max-width: 80ch;">{$group->description}</p>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</a>
+			<div class="clear push-b-med"></div>
+			{foreachelse}
 			<p>You havent created any groups yet</p>
-			{/if}
+			{/foreach}
 			<div class="clear"></div>
 		</div>
 	</div><!-- end content -->
