@@ -342,9 +342,13 @@ class AccountManager extends Controller
 				"national_number" => $input->get( "phone" )
 			]);
 
+			$address_2 = null;
+			if ( $input->get( "address_2" ) != "" ) {
+				$address_2 = $input->get( "address_2" );
+			}
 			$address = $addressRepo->insert([
 				"address_1" => $input->get( "address_1" ),
-                "address_2" => $input->get( "address_2" ),
+                "address_2" => $address_2,
                 "city" => $input->get( "city" ),
                 "region" => $input->get( "region" ),
                 "postal_code" => $input->get( "postal_code" ),
@@ -387,7 +391,7 @@ class AccountManager extends Controller
 				[ "current_business_id" => $business->id ],
 				[ "id" => $this->user->id ]
 			);
-			
+
 			// Notify JJS Agent by email of new sign up
 			$salesAgentMailer->sendAddBusinessAlert( $this->user->first_name, $business->business_name, $business->email, $phone->getNicePhoneNumber() );
 
