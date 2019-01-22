@@ -8,7 +8,7 @@
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
 	<div id="leads" class="con-cnt-xxlrg first inner-pad-med">
 		<h2>Leads</h2>
-		<a href="{$HOME}account-manager/business/add-lead" class="btn btn-inline leads first mat-hov"><span class="text-med">Add Lead <i class="fa fa-plus" aria-hidden="true"></i></span></a>
+		<a href="{$HOME}account-manager/business/add-lead" class="btn btn-inline leads first mat-hov"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">Add Lead</span></a>
 		<div class="clear"></div>
 		<p class='results_count_message first'>Showing ({$prospects|@count}) Results</p>
 		<div class="lead-box">

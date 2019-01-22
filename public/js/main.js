@@ -70,6 +70,7 @@ $( function() {
         function() {
             if ( $( this ).val() ) {
                 $( ".file-upload-button" ).show();
+                $( ".file-upload-container" ).show();
                 $( ".file-upload-field-container" ).show();
             }
         }

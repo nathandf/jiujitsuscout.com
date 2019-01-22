@@ -42,7 +42,7 @@ class Profile extends Controller
     public function indexAction()
     {
         $clickRepo = $this->load( "click-repository" );
-
+        
         if ( !$this->business->profile_complete ) {
             $imageRepo = $this->load( "image-repository" );
             $faqRepo = $this->load( "faq-repository" );

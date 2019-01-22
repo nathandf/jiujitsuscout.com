@@ -90,7 +90,7 @@
 						</tr>
 						<tr>
 							<td>
-								{if !is_null($business->video->id)}
+								{if !is_null($business->video_id)}
 								<i class="fa fa-check tc-good-green push-r-sml" aria-hidden="true"></i>
 								{else}
 								<i class="fa fa-close tc-red push-r-sml" aria-hidden="true"></i>

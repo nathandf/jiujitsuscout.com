@@ -26,11 +26,7 @@
 				<div class="clear"></div>
 				<lable>Country Code</lable><br>
 				<select class="inp field-med cursor-pt" id="country_code" name="country_code"/>
-					{if $phone->country_code != null}
-					<option selected="selected" value="{$phone->country_code}">+{$phone->country_code}</option>
-					{else}
 					<option selected="selected" hidden="hidden" value="">-- Choose Code --</option>
-					{/if}
 					<option value="">-- Common Country Codes --</option>
 					<option value="1">USA +1</option>
 					<option value="1">CAN +1</option>
@@ -57,20 +53,10 @@
 				<label>Post Code </label>
 				<input class="inp field-med" type="text" name='postal_code' placeholder="Postal code" value='{$inputs.add_business.postal_code|default:null}'>
 				<label>Country </label>
-				<select class="inp cursor-pt field-med" name="country" form="add-business">
-					{if isset($inputs.add_business.country)}
-					<option name="country" selected="selected" value="{$inputs.add_business.country|default:null}">{$inputs.add_business.country|default:null}</option>
-					{else}
-					<option name="country" selected="selected" value="{$account->country}">{$account->country}</option>
-					{/if}
-					<option value="">-- Common Countries --</option>
-					<option name="country" value="US">United States</option>
-					<option name="country" value="CA">Canada</option>
-					<option name="country" value="UK">United Kingdom</option>
-					<option name="country" value="AU">Australia</option>
-					<option name="country" value="">-- All Countries --</option>
+				<select class="inp cursor-pt field-med" name="country_id" form="add-business">
+					<option selected="selected" hidden="hidden" value="">-- Choose Country --</option>
 					{foreach from=$countries item=country}
-						<option name="country" value="{$country->iso}">{$country->nice_name}</option>
+						<option name="country_id" value="{$country->id}">{$country->nicename}</option>
 					{/foreach}
 				</select>
 				<input type="submit" class="btn btn-cnt first" name="add" value="Create Business +">

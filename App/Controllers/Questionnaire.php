@@ -6,7 +6,6 @@ use \Core\Controller;
 
 class Questionnaire extends Controller
 {
-
     public function questionnaireDispatcher()
     {
         $respondentRepo = $this->load( "respondent-repository" );
@@ -71,8 +70,8 @@ class Questionnaire extends Controller
                 ]
             ],
             "questionnaire" /* error index */
-            ) )
-        {
+            )
+        ) {
             $question_choice_ids = $input->get( "question_choice_ids" );
 
             foreach ( $question_choice_ids as $question_choice_id ) {

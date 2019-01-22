@@ -112,6 +112,14 @@ $container->register( "account-user-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "address-repository", function() use ( $container ) {
+	$repo = new \Model\Services\AddressRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "appointment-repository", function() use ( $container ) {
 	$repo = new \Model\Services\AppointmentRepository(
 	    $container->getService( "dao" ),

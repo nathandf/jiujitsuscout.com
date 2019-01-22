@@ -8,7 +8,7 @@
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
 	<div class="con-cnt-xxlrg first last inner-pad-med">
 		<h2>Members</h2>
-		<a href="{$HOME}account-manager/business/member/new" class="btn btn-inline members mat-hov first"><span class="text-med">Add Member <i class="fa fa-plus" aria-hidden="true"></i></span></a>
+		<a href="{$HOME}account-manager/business/member/new" class="btn btn-inline members mat-hov first"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">Add Member</span></a>
 		<div class="clear"></div>
 		<!-- <input type="search" class="inp field-med first last" placeholder="Search">
 		<div class="clear"></div> -->

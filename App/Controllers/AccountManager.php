@@ -46,7 +46,7 @@ class AccountManager extends Controller
 		$total_businesses = count( $this->businesses );
 
 		// Load data from all users attatched to this account and store in array
-		$this->users = $userRepo->getAllByAccountID( $this->user->account_id );
+		$this->users = $userRepo->get( [ "*" ], [ "account_id" => $this->user->account_id ] );
 		$total_users = count( $this->users );
 
 		// Set data for the view
@@ -191,13 +191,11 @@ class AccountManager extends Controller
 		$userRepo = $this->load( "user-repository" );
 		$businessRepo = $this->load( "business-repository" );
 
-		$business_ids = $businessRepo->get( [ "id" ], [], "raw" );
+		$business_ids = $businessRepo->get( [ "id" ], [ "account_id" => $this->account->id ], "raw" );
 
 		// If form is submitted, set save the current business id and redirect to dashboard
 		if ( $input->exists( "get" ) && $inputValidator->validate(
-
 				$input,
-
 				[
 					"token" => [
 						"equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -209,7 +207,6 @@ class AccountManager extends Controller
 						"in_array" => $business_ids
 					],
 				],
-
 				"choose_business" /* error index */
 			) )
 		{
@@ -250,8 +247,7 @@ class AccountManager extends Controller
 			$this->view->redirect( "account-manager/business/" );
 		}
 
-		$csrf_token = $this->session->generateCSRFToken();
-	    $this->view->assign( "csrf_token", $csrf_token );
+	    $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 	    $this->view->setErrorMessages( $inputValidator->getErrors() );
 
 		$this->view->setTemplate( "account-manager/choose-business.tpl" );
@@ -271,16 +267,14 @@ class AccountManager extends Controller
 		$phoneRepo = $this->load( "phone-repository" );
 		$geocoder = $this->load( "geocoder" );
 		$accessControl = $this->load( "access-control" );
+		$addressRepo = $this->load( "address-repository" );
 
 		// Restrict access to admins
 		if ( !$accessControl->hasAccess( [ "administrator" ], $this->user->role ) ) {
 			$this->view->render403();
 		}
 
-		$country = $countryRepo->get( [ "*" ], [ "iso" => $this->account->country ], "single" );
-
         $countries = $countryRepo->get( [ "*" ] );
-
 		$phone = $phoneRepo->getByID( $this->user->phone_id );
 
 		if ( $input->exists() && $inputValidator->validate( $input,
@@ -334,58 +328,68 @@ class AccountManager extends Controller
 						"required" => true,
                         "max" => 50
                     ],
-                    "country" => [
-                        "name" => "Country",
-						"required" => true,
-                        "max" => 250
-                    ]
+					"country_id" => [
+						"name" => "Country",
+						"required" => true
+					]
 				],
 
 				"add_business" /* error index */
-			) )
-		{
-			$gym_name = $input->get( "gym_name" );
-			$first_name = $this->user->first_name;
-			$email = $input->get( "email" );
-			$country_code = $input->get( "country_code" );
-			$phone_number = $input->get( "phone" );
-			$full_phone_number = $country_code . $phone_number;
+			)
+		) {
+			$phone = $phoneRepo->insert([
+				"country_code" => $input->get( "country_code" ),
+				"national_number" => $input->get( "phone" )
+			]);
 
-			// Create business resource
-			$businessRegistrar->register( $this->account->id, $gym_name, $first_name, $country_code, $phone_number, $email, $this->account->country, $this->account->timezone );
-			$business = $businessRegistrar->getBusiness();
-
-			// Update business location
-			$location_details = [
-                "address_1" => $input->get( "address_1" ),
+			$address = $addressRepo->insert([
+				"address_1" => $input->get( "address_1" ),
                 "address_2" => $input->get( "address_2" ),
                 "city" => $input->get( "city" ),
                 "region" => $input->get( "region" ),
                 "postal_code" => $input->get( "postal_code" ),
-                "country" => $input->get( "country" )
-            ];
+                "country_id" => $input->get( "country_id" )
+			]);
 
-			// Get latitude and longitude of new address
-            $address = $input->get( "address_1" );
-            if ( !empty( $input->get( "address_2" ) ) ) {
-                $address = $input->get( "address_1" ) . " " . $input->get( "address_2" );
-            }
+			$country = $countryRepo->get( [ "*" ], [ "id" => $input->get( "country_id" ) ], "single");
 
-            $full_address = $address . " " . $input->get( "city" ) . ", " . $input->get( "region" ) . " " . $input->get( "postal_code" ) . ", " . $input->get( "country" );
+			$business = $businessRepo->insert([
+				"account_id" => $this->account->id,
+				"business_name" => $input->get( "gym_name" ),
+				"email" => $input->get( "email" ),
+				"contact_name" => $this->user->first_name,
+				"phone_id" => $phone->id,
+				"address_id" => $address->id,
+				"timezone" => $this->account->timezone,
+				"address_1" => $input->get( "address_1" ),
+                "address_2" => $input->get( "address_2" ),
+                "city" => $input->get( "city" ),
+                "region" => $input->get( "region" ),
+                "postal_code" => $input->get( "postal_code" ),
+                "country" => $country->iso
+			]);
 
+			// Get latlon of new address
+            $full_address = $address->address_1 . " " . $address->address_2 . ", " . $address->region . " " . $address->postal_code . ", " . $country->iso;
             $geoInfo = $geocoder->getGeoInfoByAddress( $full_address );
 
             // Save new latitude and longitude
-            $businessRepo->updateLatitudeLongitudeByID( $this->business->id, $geoInfo->results[ 0 ]->geometry->location->lat, $geoInfo->results[ 0 ]->geometry->location->lng );
+            $businessRepo->update(
+				[
+					"latitude" => $geoInfo->results[ 0 ]->geometry->location->lat,
+					"longitude" => $geoInfo->results[ 0 ]->geometry->location->lng
+				],
+				[ "id" => $this->business->id ]
+			);
 
-            // Save new location details
-            $businessRepo->updateLocationByID( $this->business->id, $location_details );
-
-			// Set current business id to to the new businesses id
-			$this->user->setCurrentBusinessID( $business->id );
-			$userRepo->updateCurrentBusinessID( $this->user );
+			// Update current business id to new business
+			$userRepo->update(
+				[ "current_business_id" => $business->id ],
+				[ "id" => $this->user->id ]
+			);
+			
 			// Notify JJS Agent by email of new sign up
-			$salesAgentMailer->sendAddBusinessAlert( $first_name, $gym_name, $email, $full_phone_number );
+			$salesAgentMailer->sendAddBusinessAlert( $this->user->first_name, $business->business_name, $business->email, $phone->getNicePhoneNumber() );
 
 			$this->view->redirect( "account-manager/business/" );
 		}
@@ -403,14 +407,13 @@ class AccountManager extends Controller
 		   $inputs[ "add_business" ][ "address_2" ] = $input->get( "address_2" );
 		   $inputs[ "add_business" ][ "city" ] = $input->get( "city" );
 		   $inputs[ "add_business" ][ "region" ] = $input->get( "region" );
-		   $inputs[ "add_business" ][ "country" ] = $input->get( "country" );
+		   $inputs[ "add_business" ][ "country_id" ] = $input->get( "country_id" );
 		   $inputs[ "add_business" ][ "postal_code" ] = $input->get( "postal_code" );
 		}
 
 		// Input values submitted from form
 		$this->view->assign( "inputs", $inputs );
 
-		$this->view->assign( "country", $country );
 		$this->view->assign( "countries", $countries );
 		$this->view->assign( "phone", $phone );
 

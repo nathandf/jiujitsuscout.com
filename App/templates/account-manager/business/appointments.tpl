@@ -20,7 +20,7 @@
 	<div class="con-cnt-xxlrg inner-pad-med">
 		<div class="con-cnt-xxlrg">
 		<h2>Appointments</h2>
-		<a href="{$HOME}account-manager/business/appointment/new" class="btn btn-inline appointments mat-hov first"><span class="text-med">New Appointment <i class="fa fa-plus" aria-hidden="true"></i></span></a>
+		<a href="{$HOME}account-manager/business/appointment/new" class="btn btn-inline appointments mat-hov first"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Appointment</span></a>
 		<div class="clear"></div>
 		<!-- <input type="search" class="inp field-med first last" placeholder="Search">
 		<div class="clear"></div> -->

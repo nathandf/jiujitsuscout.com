@@ -13,7 +13,7 @@
 			<p class="text-sml first">Create schedules for your programs.</p>
 			<div class="hr-sml"></div>
 			<div class="clear"></div>
-			<a href="{$HOME}account-manager/business/schedule/new" class="btn btn-inline mat-hov push-t-med bg-dark-creamsicle"><span class="text-med">New Schedule <i class="fa fa-plus" aria-hidden="true"></i></span></a>
+			<a href="{$HOME}account-manager/business/schedule/new" class="btn btn-inline mat-hov push-t-med bg-dark-creamsicle"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Schedule</span></a>
 			<div class="clear"></div>
 			{if $schedules}
 				{foreach from=$schedules item=schedule name=schedule_loop}

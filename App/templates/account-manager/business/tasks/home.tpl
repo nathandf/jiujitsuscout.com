@@ -15,7 +15,7 @@
 			<p class="text-sml first">Remind yourself or staff members by email when something needs to completed</p>
 			<div class="hr-sml"></div>
 			<div class="clear"></div>
-			<a href="{$HOME}account-manager/business/task/new" class="btn btn-inline mat-hov bg-deep-purple push-t-med"><span class="text-med">New Task <i class="fa fa-plus" aria-hidden="true"></i></span></a>
+			<a href="{$HOME}account-manager/business/task/new" class="btn btn-inline mat-hov bg-deep-purple push-t-med"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Task</span></a>
 			<div class="clear"></div>
 			{if !empty($flash_messages)}
 				{foreach from=$flash_messages item=message}

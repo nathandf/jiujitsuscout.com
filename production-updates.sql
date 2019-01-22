@@ -28,3 +28,5 @@ ALTER TABLE `sequence` ADD `complete` TINYINT NOT NULL DEFAULT '0' AFTER `checke
 CREATE TABLE `member_sequence` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `member_id` BIGINT NOT NULL , `sequence_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `lead_capture` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `prospect_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `user_email_signature` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `user_id` BIGINT NOT NULL , `varchar` VARCHAR(2056) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+DROP TABLE address;
+CREATE TABLE `address` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `address_1` BIGINT NOT NULL , `address_2` BIGINT NULL DEFAULT NULL , `city` VARCHAR(256) NOT NULL , `region` VARCHAR(256) NOT NULL , `postal_code` VARCHAR(64) NOT NULL , `country_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
