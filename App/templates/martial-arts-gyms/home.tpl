@@ -14,7 +14,7 @@
 			"@type": "LocalBusiness",
 			"name": "{/literal}{$business->business_name}{literal}",
 			"description": "{/literal}{$business->message}{literal}",
-			"image": "https://www.jiujitsuscout.com/public/img/uploads/{/literal}{$business->logo_filename}{literal}",
+			"image": "https://www.jiujitsuscout.com/public/img/uploads/{/literal}{if !is_null( $business->logo_image_id )}{$business->logo->filename}{/if}{literal}",
 			"address": {
 				"@type": "PostalAddress",
 				"addressLocality": "{/literal}{$business->city}{literal}",
@@ -71,7 +71,7 @@
 				{/foreach}
 			{/if}
 			<div class="business-logo-container floatleft push-r-med">
-				<img alt="{$business->business_name}'s logo - Martial Arts classes in {$business->city}, {$business->region}" src="{$HOME}public/img/uploads/{$business->logo_filename}" class="business-logo"/>
+				<img alt="{$business->business_name}'s logo - Martial Arts classes in {$business->city}, {$business->region}" src="{$HOME}public/img/uploads/{if !is_null( $business->logo_image_id )}{$business->logo->filename}{/if}" class="business-logo"/>
 			</div>
 			<div class="floatleft">
 				<div class="testimonials-gym-rating">

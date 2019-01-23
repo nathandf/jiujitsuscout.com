@@ -40,6 +40,12 @@ class MartialArtsGyms extends Controller
         $phone = $phoneRepo->getByID( $this->business->phone_id );
         $this->business->phone = $phone;
 
+        // Get business logo image
+        $this->business->logo = null;
+        if ( !is_null( $this->business->logo_image_id ) ) {
+            $this->business->logo = $imageRepo->get( [ "*" ], [ "id" => $this->business->logo_image_id ], "single" );
+        }
+
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
         $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
@@ -230,6 +236,12 @@ class MartialArtsGyms extends Controller
 
             // Load businesses primary video
             $this->business->video = $videoRepo->getByID( $this->business->video_id );
+
+            // Get business logo image
+            $this->business->logo = null;
+            if ( !is_null( $this->business->logo_image_id ) ) {
+                $this->business->logo = $imageRepo->get( [ "*" ], [ "id" => $this->business->logo_image_id ], "single" );
+            }
 
             // Get images for this business
             $images = $imageRepo->getAllByBusinessID( $this->business->id );
@@ -867,5 +879,4 @@ class MartialArtsGyms extends Controller
         $this->view->setTemplate( "martial-arts-gyms/leave-review.tpl" );
         $this->view->render( "App/Views/MartialArtsGyms.php" );
     }
-
 }
