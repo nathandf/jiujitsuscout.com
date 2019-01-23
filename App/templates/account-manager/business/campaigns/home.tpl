@@ -11,7 +11,7 @@
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
 			<h2 class="">Campaigns</h2>
-			<p class="text-sml push-t-med">Start a lead generation campaign with the martial arts marketing professionals of JiuJitsuScout!</p>
+			<p class="text-sml">Start a lead generation campaign with the martial arts marketing professionals of JiuJitsuScout!</p>
 			<div class="hr-sml"></div>
 			<div class="clear"></div>
 			<a href="{$HOME}account-manager/business/campaign/choose-campaign-type" class="btn btn-inline mat-hov push-t-med"><span class="text-med">Order a Campaign <i class="fa fa-plus" aria-hidden="true"></i></span></a>

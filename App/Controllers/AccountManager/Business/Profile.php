@@ -13,7 +13,7 @@ class Profile extends Controller
         $userAuth = $this->load( "user-authenticator" );
         $accountRepo = $this->load( "account-repository" );
         $accountUserRepo = $this->load( "account-user-repository" );
-        $this->businessRepo = $this->load( "business-repository" );
+        $businessRepo = $this->load( "business-repository" );
         $userRepo = $this->load( "user-repository" );
 
         // If user not validated with session or cookie, send them to sign in
@@ -23,7 +23,7 @@ class Profile extends Controller
 
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
-
+        
         // Get AccountUser reference
         $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
 
@@ -31,7 +31,7 @@ class Profile extends Controller
         $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
 
         // Grab business details
-        $this->business = $this->businessRepo->getByID( $this->user->getCurrentBusinessID() );
+        $this->business = $businessRepo->get( [ "*" ], [ "id" => $this->user->getCurrentBusinessID() ], "single" );
 
         // Set data for the view
         $this->view->assign( "account", $this->account );
@@ -42,7 +42,7 @@ class Profile extends Controller
     public function indexAction()
     {
         $clickRepo = $this->load( "click-repository" );
-        
+
         if ( !$this->business->profile_complete ) {
             $imageRepo = $this->load( "image-repository" );
             $faqRepo = $this->load( "faq-repository" );

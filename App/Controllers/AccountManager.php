@@ -346,6 +346,7 @@ class AccountManager extends Controller
 			if ( $input->get( "address_2" ) != "" ) {
 				$address_2 = $input->get( "address_2" );
 			}
+			
 			$address = $addressRepo->insert([
 				"address_1" => $input->get( "address_1" ),
                 "address_2" => $address_2,
