@@ -20,7 +20,7 @@
 					<table style="table-layout: auto;">
 						<tr>
 							<td>
-								{if !is_null($business->logo_filename)}
+								{if !is_null($business->logo_image_id)}
 								<i class="fa fa-check tc-good-green push-r-sml" aria-hidden="true"></i>
 								{else}
 								<i class="fa fa-close tc-red push-r-sml" aria-hidden="true"></i>
@@ -42,7 +42,7 @@
 							</td>
 							<td>
 								<p class="text-lrg">
-									<a class="link tc-deep-blue" href="{$HOME}account-manager/business/settings/location">Update your business's location</a>
+									<a class="link tc-deep-blue" href="{$HOME}account-manager/business/settings/location">Add your business's address</a>
 								</p>
 							</td>
 						</tr>

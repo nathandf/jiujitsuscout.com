@@ -2,14 +2,17 @@
 
 {block name="bm-head"}
 	<link rel="stylesheet" type="text/css" href="{$HOME}public/css/partner-settings.css"/>
+	<script src="{$HOME}{$JS_SCRIPTS}choose-logo.js"></script>
 {/block}
 
 {block name="bm-body"}
 	{include file="includes/navigation/profile-sub-menu.tpl"}
+	{include file="includes/widgets/insert-image-picker.tpl"}
 	<div class="con-cnt-xxlrg inner-pad-med push-t-med">
 		<div class="">
 			<h2 class="h2">Logo</h2>
-			<img src="{$HOME}public/img/{if $business->logo_filename}uploads/{$business->logo_filename}{else}jjslogoiconblack.jpg{/if}" class="img-sml encapsulate bg-white first"/>
+			{include file="includes/snippets/flash-messages.tpl"}
+			<img id="image-display" src="{if !is_null($business->logo_image_id)}{$HOME}public/img/uploads/{$business->logo->filename}{else}http://placehold.it/300x300&text=Upload{/if}" class="img-sml encapsulate bg-white first"/>
 			<div class="clear"></div>
 			{if !empty($error_messages.upload_image)}
 				{foreach from=$error_messages.upload_image item=message}
@@ -18,11 +21,11 @@
 					</div>
 				{/foreach}
 			{/if}
-			<form action="" method="post" enctype="multipart/form-data">
+			<button id="choose-image-button" class="btn btn-inline bg-deep-blue push-t-med">Choose Image</button>
+			<form id="image-picker-form" action="" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="token" value="{$csrf_token}">
-				<input class="btn-std" type="file" name="image" size="25"/>
-				<input style="display: none;" class="btn file-upload-button" type="submit" value="Upload Photo" name="upload_image" size="25" />
-				<div class="clear"></div>
+				<input type="hidden" name="image" value="{$csrf_token}">
+				<input id="input-image-id" type="hidden" name="image_id" value="">
 			</form>
 			<div class="clear"></div>
 		</div>

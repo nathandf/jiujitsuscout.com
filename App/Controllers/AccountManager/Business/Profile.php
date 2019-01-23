@@ -23,7 +23,7 @@ class Profile extends Controller
 
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
-        
+
         // Get AccountUser reference
         $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
 
@@ -90,13 +90,13 @@ class Profile extends Controller
             }
 
             // Load images
-            $images = $imageRepo->getAllByBusinessID( $this->business->id );
+            $images = $imageRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
 
             if ( count( $images ) > 0 ) {
                 $profile_completion_percentage += 17;
             }
 
-            if ( !is_null( $this->business->logo_filename ) ) {
+            if ( !is_null( $this->business->logo_image_id ) ) {
                 $profile_completion_percentage += 17;
             }
 
@@ -110,7 +110,7 @@ class Profile extends Controller
 
             if ( $profile_completion_percentage == 100 ) {
                 $businessRepo = $this->load( "business-repository" );
-                $businessRepo->updateProfileCompleteByID( $this->business->id );
+                $businessRepo->update( [ "profile_complete" => 1 ], [ "id" => $this->business->id ] );
                 $this->view->redirect( "account-manager/business/profile/" );
             }
 
@@ -134,38 +134,45 @@ class Profile extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $imageManager = $this->load( "image-manager" );
+        $imageRepo = $this->load( "image-repository" );
+        $businessRepo = $this->load( "business-repository" );
         $config = $this->load( "config" );
 
-        if ( $input->exists() && $input->issetField( "upload_image" ) && $inputValidator->validate(
+        $images = $imageRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $image_ids = $imageRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
 
+        $this->business->logo = null;
+        if ( !is_null( $this->business->logo_image_id ) ) {
+            $this->business->logo = $imageRepo->get( [ "*" ], [ "id" => $this->business->logo_image_id ], "single" );
+        }
+
+        if ( $input->exists() && $inputValidator->validate(
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
                         "required" => true
                     ],
-                    "upload_image" => [
-                        "required" => true
+                    "image_id" => [
+                        "required" => true,
+                        "in_array" => $image_ids
                     ]
-
                 ],
-
                 "upload_image" /* error index */
-            ) )
-        {
-            if ( $this->business->logo_filename == $config::$configs[ "default_logo" ] ) {
-                $imageManager->saveImageTo( "image" );
-            } else {
-                $imageManager->overwriteImage( "image", "public/img/uploads/", "public/img/uploads/" . $this->business->logo_filename );
-            }
+            )
+        ) {
+            $businessRepo->update( [ "logo_image_id" => $input->get( "image_id" ) ], [ "id" => $this->business->id ] );
 
-            $this->businessRepo->updateLogoByID( $this->business->id, $imageManager->getNewImageFileName() );
+            $this->session->addFlashMessage( "Logo Updated" );
+            $this->session->setFlashMessages();
+
             $this->view->redirect( "account-manager/business/profile/logo" );
         }
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
+        $this->view->assign( "images", $images );
 
         $this->view->setTemplate( "account-manager/business/profile/logo.tpl" );
         $this->view->render( "App/Views/AccountManager/Assets.php" );

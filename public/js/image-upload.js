@@ -13,7 +13,7 @@ $( function() {
 			} else {
 				//If an image is not selected then show an other image.
 				$( "#image_display" ).attr
-				( "src", "http://placehold.it/550x270&text=No+PreView!" );
+				( "src", "http://placehold.it/300x300&text=No+Preview" );
 			}
 		}
 	} );
