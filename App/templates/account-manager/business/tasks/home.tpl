@@ -12,7 +12,7 @@
 		<div class="clear"></div>
 		<div class="con con-cnt-xxlrg first inner-pad-med">
 			<h2 class="first">Tasks</h2>
-			<p class="text-sml first">Remind yourself or staff members by email when something needs to completed</p>
+			<p class="text-sml">Remind yourself or staff members by email when something needs to completed</p>
 			<div class="hr-sml"></div>
 			<div class="clear"></div>
 			<a href="{$HOME}account-manager/business/task/new" class="btn btn-inline mat-hov bg-deep-purple push-t-med"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Task</span></a>

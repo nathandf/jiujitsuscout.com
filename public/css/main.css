@@ -185,7 +185,7 @@ td {
 }
 
 .nav-link:hover {
-    border-bottom: var(--alt-border-bottom);
+    border-bottom: 2px solid #FFFFFF;
 }
 
 .nav-link-main {
