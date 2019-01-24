@@ -155,6 +155,7 @@ class Business extends Controller
         $groupRepo = $this->load( "group-repository" );
         $factory = $this->load( "entity-factory" );
         $appointmentRepo = $this->load( "appointment-repository" );
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
 
         // Get all leads and trials
         $prospectsAll = $prospectRepo->getAllByStatusAndBusinessID( "pending", $this->business->id );
@@ -284,13 +285,15 @@ class Business extends Controller
                                 case ( preg_match( "/group-[ 0-9 ]+/", $input->get( "action" ) ) ? true : false ):
                                     // Using regex to see if action == group, a hyphen, and any combination of numbers
                                     $group_id = intval( str_replace( "group-", "", $input->get( "action" ) ) );
-                                    $current_groups = explode( ",", $prospect->group_ids );
-                                    if ( !in_array( $group_id, $current_groups ) ) {
-                                        $current_groups[] = $group_id;
-                                        $prospectRepo->updateGroupIDsByID( implode( ",", $current_groups ), $prospect->id );
+                                    $group_ids = $prospectGroupRepo->get( [ "id" ], [ "prospect_id" => $prospect_id ], "raw" );
+                                    if ( !in_array( $group_id, $group_ids ) ) {
+                                        $prospectGroupRepo->insert([
+                                            "prospect_id" => $prospect_id,
+                                            "group_id" => $group_id
+                                        ]);
                                     }
                                     // Get group
-                                    $group = $groupRepo->getByID( $group_id );
+                                    $group = $groupRepo->get( [ "*" ], [ "id" => $group_id ], "single" );
                                     // Set flash message
                                     if ( $iteration == $prospect_count ) {
                                         $this->session->addFlashMessage( "Leads added to '{$group->name}' group ($prospect_count)" );
@@ -327,6 +330,7 @@ class Business extends Controller
         $groupRepo = $this->load( "group-repository" );
         $entityFactory = $this->load( "entity-factory" );
         $countryRepo = $this->load( "country-repository" );
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
 
         // Get all coutnry data
         $countries = $countryRepo->get( [ "*" ] );
@@ -335,12 +339,8 @@ class Business extends Controller
         $country = $countryRepo->get( [ "*" ], [ "iso" => $this->account->country ], "single" );
 
         // Groups and group IDs
-        $groups = $groupRepo->getAllByBusinessID( $this->business->id );
-        $group_ids = [];
-
-        foreach ( $groups as $group ) {
-            $group_ids[] = $group->id;
-        }
+        $groups = $groupRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $group_ids = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
 
         // Add lead
         if ( $input->exists() && $inputValidator->validate( $input,
@@ -392,14 +392,12 @@ class Business extends Controller
 
             if ( $input->issetField( "group_ids" ) && !empty( $input->get( "group_ids" ) ) ) {
                 $submitted_group_ids = $input->get( "group_ids" );
-                foreach ( $submitted_group_ids as $key => $submitted_group_id ) {
-                    // Verify that the all submitted group ids are owned by this business. If not, unset.
-                    if ( !in_array( $submitted_group_id, $group_ids ) ) {
-                        unset( $submitted_group_ids[ $key ] );
-                    }
+                foreach ( $submitted_group_ids as $group_id ) {
+                    $prospectGroupRepo->insert([
+                        "prospect_id" => $prospect_id,
+                        "group_id" => $group_id
+                    ]);
                 }
-
-                $prospectRepo->updateGroupIDsByID( implode( ",", $submitted_group_ids ), $prospect_id );
             }
 
             if ( $input->issetField( "schedule_appointment" ) && $input->get( "schedule_appointment" ) == "true" ) {
