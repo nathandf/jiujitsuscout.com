@@ -4,6 +4,7 @@ namespace Model\Services;
 
 use Model\Services\SequenceRepository;
 use Model\Services\EventDispatcher;
+use Model\Services\EventRepository;
 
 /**
 * Class SequenceManager
@@ -13,19 +14,21 @@ use Model\Services\EventDispatcher;
 * @property array \Model\Sequence
 * @property \Model\Services\SequenceRepository
 * @property \Model\Services\EventDispatcher
+* @property \Model\Services\EventRepository
 */
 
 class SequenceDispatcher
 {
-    public function __construct( SequenceRepository $sequenceRepo, EventDispatcher $eventDispatcher )
+    public function __construct( SequenceRepository $sequenceRepo, EventDispatcher $eventDispatcher, EventRepository $eventRepo )
     {
         $this->sequenceRepo = $sequenceRepo;
         $this->eventDispatcher = $eventDispatcher;
+        $this->eventRepo = $eventRepo;
     }
 
     private function getSequences()
     {
-        $this->sequences = $this->sequenceRepo->getAllAvailableForCheckout();
+        return $this->sequenceRepo->getAllAvailableForCheckout();
     }
 
     private function checkOutSequence( $sequence_id )
@@ -40,11 +43,12 @@ class SequenceDispatcher
 
     public function dispatch()
     {
-        $this->getSequences();
+        $sequences = $this->getSequences();
 
-        foreach ( $this->sequences as $sequence ) {
-            $this->checkOutSequence( $sequence->id );
-            $event_ids = $this->eventRepo->get( [ "id" ] , [ "sequence_id" => $sequence_id ], "raw" ] );
+        foreach ( $sequences as $sequence ) {
+            // $this->checkOutSequence( $sequence->id );
+            $event_ids = $this->eventRepo->get( [ "id" ] , [ "sequence_id" => $sequence->id ], "raw" );
+            $this->eventDispatcher->dispatch( $event_ids );
             $this->checkInSequence( $sequence->id );
         }
     }

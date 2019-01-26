@@ -241,7 +241,7 @@ td {
     position: fixed;
     top: 0;
     left: 0;
-    background: linear-gradient( 45deg, #0667D0, #0646c6 );
+    background: #F6F7F9;
     z-index: 99999;
     overflow-y: scroll;
 }

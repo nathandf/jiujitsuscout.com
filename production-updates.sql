@@ -31,3 +31,5 @@ CREATE TABLE `user_email_signature` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `use
 DROP TABLE address;
 CREATE TABLE `address` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `address_1` BIGINT NOT NULL , `address_2` BIGINT NULL DEFAULT NULL , `city` VARCHAR(256) NOT NULL , `region` VARCHAR(256) NOT NULL , `postal_code` VARCHAR(64) NOT NULL , `country_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 ALTER TABLE `business` ADD `logo_image_id` BIGINT NULL DEFAULT NULL AFTER `video_id`;
+ALTER TABLE `event` DROP `status`;
+ALTER TABLE `event` ADD `complete` TINYINT NOT NULL DEFAULT '0' AFTER `time`;

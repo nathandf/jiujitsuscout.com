@@ -424,8 +424,7 @@ class Business extends Controller
         $this->view->assign( "countries", $countries );
         $this->view->assign( "country_code", $country->phonecode );
 
-        $csrf_token = $this->session->generateCSRFToken();
-        $this->view->assign( "csrf_token", $csrf_token );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setFlashMessages( $this->session->getFlashMessages( "flash_messages" ) );

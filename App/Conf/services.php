@@ -1089,7 +1089,8 @@ $container->register( "sequence-builder", function() use ( $container ) {
 $container->register( "sequence-dispatcher", function() use ( $container ) {
 	$manager = new \Model\Services\SequenceDispatcher(
 		$container->getService( "sequence-repository" ),
-		$container->getService( "event-dispatcher" )
+		$container->getService( "event-dispatcher" ),
+		$container->getService( "event-repository" )
 	);
 	return $manager;
 } );
@@ -1098,6 +1099,7 @@ $container->register( "event-email-dispatcher", function() use ( $container ) {
 	$manager = new \Model\Services\EventEmailDispatcher(
 		$container->getService( "event-email-repository" ),
 		$container->getService( "email-repository" ),
+		$container->getService( "email-builder-helper" ),
 		$container->getService( "mailer" )
 	);
 	return $manager;

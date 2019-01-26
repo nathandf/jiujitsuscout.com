@@ -24,7 +24,8 @@ class EmailBuilderHelper
 	{
 		$this->setVideoIDs( $this->parseVideoIDs( $email_body ) )
 			->setImageIDs( $this->parseImageIDs( $email_body ) )
-			->setEmailBody( $email_body );
+			->setEmailBody( $email_body )
+			->buildEmailBody();
 	}
 
 	public function buildEmailBody() {
@@ -121,12 +122,33 @@ class EmailBuilderHelper
 		return $this;
 	}
 
-	public function replaceTags( $email_body )
+	public function build()
 	{
-		foreach ( $videos as $video ) {
-			$pattern = "/\[\*img" . $video->id . "\*\]/";
-			preg_replace( $pattern );
+		foreach ( $this->videos as $video ) {
+			$pattern = "/\[\*video" . $video->id . "\*\]/";
+			$filename = $this->removeFileExtension( $video->filename );
+			$this->email_body = preg_replace(
+				$pattern,
+				"<video style=\"border: 2px solid #CCCCCC; max-width: 500px; width: 50%; min-width: 260px;\" controls>
+				  <source src=\"" . HOME . "public/videos/{$filename}.mp4\" type=\"video/mp4\">
+				  <source src=\"" . HOME . "public/videos/{$filename}.webm\" type=\"video/webm\">
+				  <source src=\"" . HOME . "public/videos/{$filename}.ogg\" type=\"video/ogg\">
+				  Your browser does not support the video tag.
+				</video>",
+				$this->email_body
+			);
 		}
+
+		foreach ( $this->images as $image ) {
+			$pattern = "/\[\*img" . $image->id . "\*\]/";
+			$this->email_body = preg_replace(
+				$pattern,
+				"<img src=\"" . HOME . "public/img/uploads/{$image->filename}\" style=\"display: block; margin: 0 auto; margin-top: 15px; margin-bottom: 15px; min-width: 260px; width: 50%; border: 2px solid #CCCCCC; border-radius: 3px;\"/>",
+				$this->email_body
+			);
+		}
+
+		return $this->email_body;
 	}
 
 	public function removeImageTagByImageID( $image_id )
@@ -140,4 +162,11 @@ class EmailBuilderHelper
 		$pattern = "/\[\*video" . $video_id . "\*\]/";
 		$this->setEmailBody( preg_replace( $pattern, "", $this->email_body ) );
 	}
+
+	private function removeFileExtension( $filename ) {
+        $extension = pathinfo( $filename, PATHINFO_EXTENSION );
+		$filename = str_replace( "." . $extension, "", $filename );
+		
+        return $filename;
+    }
 }
