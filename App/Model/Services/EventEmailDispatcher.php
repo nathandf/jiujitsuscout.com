@@ -52,6 +52,8 @@ class EventEmailDispatcher
             $this->mailer->setEmailBody( $this->emailBuilderHelper->build() );
 
             $this->mailer->mail();
+
+            $this->eventEmailRepo->delete( [ "event_id" => $event_id ] );
         }
     }
 }

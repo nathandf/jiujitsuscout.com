@@ -3,25 +3,32 @@
 namespace Model\Services;
 
 use Model\Services\SequenceRepository;
+use Model\Services\SequenceDestroyer;
 use Model\Services\EventDispatcher;
 use Model\Services\EventRepository;
 
 /**
-* Class SequenceManager
+* Class SequenceDispatcher
 *
 * @package Model\Services
 *
 * @property array \Model\Sequence
 * @property \Model\Services\SequenceRepository
+* @property \Model\Services\SequenceDestroyer
 * @property \Model\Services\EventDispatcher
 * @property \Model\Services\EventRepository
 */
 
 class SequenceDispatcher
 {
-    public function __construct( SequenceRepository $sequenceRepo, EventDispatcher $eventDispatcher, EventRepository $eventRepo )
-    {
+    public function __construct(
+        SequenceRepository $sequenceRepo,
+        SequenceDestroyer $sequenceDestroyer,
+        EventDispatcher $eventDispatcher,
+        EventRepository $eventRepo
+    ) {
         $this->sequenceRepo = $sequenceRepo;
+        $this->sequenceDestroyer = $sequenceDestroyer;
         $this->eventDispatcher = $eventDispatcher;
         $this->eventRepo = $eventRepo;
     }
@@ -46,8 +53,16 @@ class SequenceDispatcher
         $sequences = $this->getSequences();
 
         foreach ( $sequences as $sequence ) {
-            // $this->checkOutSequence( $sequence->id );
-            $event_ids = $this->eventRepo->get( [ "id" ] , [ "sequence_id" => $sequence->id ], "raw" );
+            $this->checkOutSequence( $sequence->id );
+            $event_ids = $this->eventRepo->get( [ "id" ], [ "sequence_id" => $sequence->id ], "raw" );
+
+            // If no events exist, delete this sequence and all its references
+            if ( empty( $event_ids ) ) {
+                $this->sequenceDestroyer->destroy( $sequence->id );
+                continue;
+            }
+
+            // If events exist, dispatch the sequence
             $this->eventDispatcher->dispatch( $event_ids );
             $this->checkInSequence( $sequence->id );
         }

@@ -1086,9 +1086,21 @@ $container->register( "sequence-builder", function() use ( $container ) {
 	return $builder;
 } );
 
+$container->register( "sequence-destroyer", function() use ( $container ) {
+	$manager = new \Model\Services\SequenceDestroyer(
+		$container->getService( "sequence-repository" ),
+		$container->getService( "sequence-template-sequence-repository" ),
+		$container->getService( "prospect-sequence-repository" ),
+		$container->getService( "member-sequence-repository" ),
+		$container->getService( "business-sequence-repository" )
+	);
+	return $manager;
+} );
+
 $container->register( "sequence-dispatcher", function() use ( $container ) {
 	$manager = new \Model\Services\SequenceDispatcher(
 		$container->getService( "sequence-repository" ),
+		$container->getService( "sequence-destroyer" ),
 		$container->getService( "event-dispatcher" ),
 		$container->getService( "event-repository" )
 	);

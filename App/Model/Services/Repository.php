@@ -4,8 +4,9 @@ namespace Model\Services;
 
 use Core\DI_Container;
 use Model\Mappers\DataMapper;
+use Contracts\RepositoryInterface;
 
-abstract class Repository
+abstract class Repository implements RepositoryInterface
 {
     protected $entityName;
     protected $mapper;

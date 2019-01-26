@@ -33,5 +33,6 @@ class EventTextMessageDispatcher
         $eventTextMessage = $this->eventTextMessageRepo->get( [ "*" ], [ "event_id" => $event_id ], "single" );
         $textMessage = $this->textMessageRepo->get( [ "*" ], [ "id" => $eventTextMessage->text_message_id ], "single" );
         // TODO Send Text Message
+        $this->eventTextMessageRepo->delete( [ "event_id" => $event_id ] );
     }
 }

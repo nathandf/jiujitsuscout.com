@@ -37,17 +37,15 @@ class EventDispatcher
                 switch ( $event->event_type_id ) {
                     case 1:
                         $this->eventEmailDispatcher->dispatch( $event->id );
-                        $this->eventEmailRepo->delete([ "event_id" => $event->id ]);
                         break;
                     case 2:
                         $this->eventTextMessageDispatcher->dispatch( $event->id );
-                        $this->eventTextMessageRepo->delete([ "event_id" => $event->id ]);
                         break;
                     default:
                         break;
                 }
 
-                $this->eventRepo->update( [ "complete" => 1 ], [ "id" => $event->id ] );
+                $this->eventRepo->delete( [ "id" => $event->id ] );
             }
         }
     }
