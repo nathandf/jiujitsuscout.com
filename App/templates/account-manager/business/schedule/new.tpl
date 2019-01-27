@@ -24,7 +24,7 @@
 				<input type="hidden" name="create_schedule" value="{$csrf_token}">
 				<div class="clear first"></div>
 				<p><b>Schedule Name:</b></p>
-				<input type="text" name="name" value="{$inputs.create_schedule.name|default:null}" class="inp" placeholder="Schedule name">
+				<input type="text" name="name" value="{$inputs.create_schedule.name|default:null}" class="inp inp-med-plus-plus" placeholder="Schedule name">
 				<div class="clear first"></div>
 				<b>Description: </b>
 				<div class="clear"></div>

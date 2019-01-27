@@ -30,7 +30,7 @@
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<label class="text-med-heavy" for="">Subject:</label>
 					<div class="clear"></div>
-					<input id="emailer-subject-input" class="inp" name="subject" required="required">
+					<input id="emailer-subject-input" class="inp inp-med-plus-plus" name="subject" required="required">
 					<div class="clear push-t-sml"></div>
 					<label class="text-med-heavy" for="">Body:</label>
 					<div class="clear"></div>

@@ -10,13 +10,13 @@
 {include file="includes/navigation/business-manager-sub-menu.tpl"}
 	<div>
 		<div class="clear"></div>
-		<div class="con con-cnt-xxlrg first inner-pad-med">
-			<h2 class="first">Tasks</h2>
+		<div class="con con-cnt-xlrg inner-pad-med">
+			<h2 class="push-t-med">Tasks</h2>
 			<p class="text-sml">Remind yourself or staff members by email when something needs to completed</p>
 			<div class="hr-sml"></div>
 			<div class="clear"></div>
 			<a href="{$HOME}account-manager/business/task/new" class="btn btn-inline mat-hov bg-deep-purple push-t-med"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Task</span></a>
-			<div class="clear"></div>
+			<div class="clear push-t-med"></div>
 			{if !empty($flash_messages)}
 				{foreach from=$flash_messages item=message}
 					<div class="con-message-success mat-hov cursor-pt --c-hide">
@@ -25,7 +25,7 @@
 				{/foreach}
 			{/if}
 			{if $tasks}
-			<div class="task-group push-t-med">
+			<div class="task-group mat-box-shadow">
 				{foreach from=$tasks item=task name=task_loop}
 				{if $smarty.foreach.task_loop.iteration <= 1}
 				<div class="task-heading">
@@ -51,13 +51,13 @@
 						<input type="hidden" name="token" value="{$csrf_token}">
 						<input type="hidden" name="task_id" value="{$task->id}">
 						<input type="hidden" name="send_reminder" value="{$csrf_token}">
-						<button type="submit" style="margin-bottom: 0px" class="btn btn-inline push-t-med --c-send-confirm">Send Reminder <i class="fa fa-envelope" aria-hidden="true"></i></button>
+						<button type="submit" style="margin-bottom: 0px" class="btn btn-inline push-t-med --c-send-confirm"><i class="fa fa-envelope push-r-sml" aria-hidden="true"></i>Send Reminder</button>
 					</form>
 				</div>
 				{/foreach}
 			</div>
 			{else}
-			<p>You haven't created any tasks yet</p>
+			<p>No tasks to show</p>
 			{/if}
 			<div class="clear"></div>
 		</div>

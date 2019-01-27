@@ -48,9 +48,9 @@
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="add_pixel" value="{$csrf_token}">
 				<p class="text-sml push-t-med">Pixel Name:</p>
-				<input type="text" name="name" class="inp" placeholder="Pixel Name">
+				<input type="text" name="name" class="inp inp-med-plus-plus" placeholder="Pixel Name">
 				<p class="text-sml push-t-sml">Pixel ID:</p>
-				<input type="text" name="facebook_pixel_id" class="inp" placeholder="Facebook Pixel ID">
+				<input type="text" name="facebook_pixel_id" class="inp inp-med-plus-plus" placeholder="Facebook Pixel ID">
 				<div class="clear"></div>
 				<button type="submit" class="btn btn-inline push-t-med" name="update-pixel"><i class="fa fa-plus" aria-hidden="true"></i> Add Pixel</button>
 				<div class="clear"></div>

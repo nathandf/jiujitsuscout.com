@@ -25,20 +25,23 @@
 			{/if}
 			<div class="clear"></div>
 			{foreach from=$users item=_user}
-			<div class="user-tag push-t-med">
-				<div class="user-tag-icon floatleft push-r">
-					<i class="fa fa-user-o" aria-hidden="true"></i>
+			<a href="{$HOME}account-manager/settings/user/{$user->id}/" class="tag-link">
+				<div class="tag mat-hov cursor-pt">
+					<div class="bg-salmon tc-white floatleft push-r-sml" style="border-radius: 3px; box-sizing: border-box; padding: 8px;">
+						<i aria-hidden="true" class="fa fa-user-o"></i>
+					</div>
+					<div class="floatleft push-r-sml">
+						<table>
+							<tr>
+								<td><p class="text-med-heavy push-r-med">{$_user->getFullName()|truncate:30:"..."}</p></td>
+								<td><p class="text-med-heavy push-r-med">{$_user->role|ucfirst}</p></td>
+							</tr>
+						</table>
+					</div>
+					<div class="clear"></div>
 				</div>
-				<div class="user-details floatleft">
-					<p class="text-med"><b>{$_user->getFullName()}</b> {$_user->role|ucfirst}</p>
-				</div>
-				{* If current user is account owner or administrator, allow access to user edit functionality *}
-				{if $user->role|in_array:[ "owner", "administrator" ]}
-					<a class="tc-forest floatleft push-l text-med" href="{$HOME}account-manager/settings/user/{$_user->id}/edit"><b>Edit</b></a>
-				{/if}
-				<div class="clear"></div>
-			</div>
-			<div class="clear"></div>
+			</a>
+			<div class="clear push-b-med"></div>
 			{/foreach}
 			<div class="clear"></div>
 		</div>

@@ -6,7 +6,7 @@
 
 {block name="bm-body"}
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
-	<div class="con-cnt-xxlrg encapsulate bg-white first">
+	<div class="con-cnt-xlrg encapsulate bg-white first">
 		<div class="bg-lavender">
 			<div class="col col-2"><p class="col-title tc-white">Total Appts.</p></div>
 			<div class="col col-2-last"><p class="col-title tc-white">Appts. Passed</p></div>
@@ -17,7 +17,7 @@
 		<div class="col col-2-last"><p class="col-title">--</p></div>
 		<div class="clear"></div>
 	</div>
-	<div class="con-cnt-xxlrg inner-pad-med">
+	<div class="con-cnt-xlrg inner-pad-med">
 		<div class="con-cnt-xxlrg">
 		<h2>Appointments</h2>
 		<a href="{$HOME}account-manager/business/appointment/new" class="btn btn-inline appointments mat-hov first"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Appointment</span></a>

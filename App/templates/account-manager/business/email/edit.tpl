@@ -33,7 +33,7 @@
 						<input type="hidden" name="update_email" value="{$csrf_token}">
 						<div class="clear push-t-med"></div>
 						<p><b>Subject:</b></p>
-						<input style="padding: 3px;" type="text" name="subject" value="{$email->subject}" class="inp" placeholder="">
+						<input style="padding: 3px;" type="text" name="subject" value="{$email->subject}" class="inp inp-med-plus-plus" placeholder="">
 						<div class="clear push-t-med"></div>
 						<b>Body:</b>
 						<p class="text-sml">Insert images and videos into your email. A placeholder tag will be used for all videos and images; They will be fully rendered when they are sent. Do not manipulate or adjust the tags in any way.</p>
@@ -46,7 +46,7 @@
 						<div class="hr-sml"></div>
 						<p class="text-sml">Add a name and description to help you identify the purpose of this email</p>
 						<p class="push-t-med"><b>Name:</b></p>
-						<input style="padding: 3px;" type="text" name="name" value="{$email->name}" class="inp" placeholder="">
+						<input style="padding: 3px;" type="text" name="name" value="{$email->name}" class="inp inp-med-plus-plus" placeholder="">
 						<div class="clear push-t-med"></div>
 						<p><b>Description:</b></p>
 						<textarea name="description" class="inp textarea" placeholder="">{$email->description}</textarea>

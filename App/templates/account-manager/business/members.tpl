@@ -6,7 +6,7 @@
 
 {block name="bm-body"}
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
-	<div class="con-cnt-xxlrg first last inner-pad-med">
+	<div class="con-cnt-xlrg push-t-med last inner-pad-med">
 		<h2>Members</h2>
 		<a href="{$HOME}account-manager/business/member/new" class="btn btn-inline members mat-hov first"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">Add Member</span></a>
 		<div class="clear"></div>

@@ -8,7 +8,7 @@
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
 	<div>
 		<div class="clear"></div>
-		<div class="con con-cnt-xxlrg first inner-pad-med">
+		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
 			<a class="btn btn-inline bg-deep-purple text-med last" href="{$HOME}account-manager/business/tasks/">< All Tasks</a>
 			<h2 class="h2 ta-left push-t-med push-b-lrg">Create a Task</h2>
 			{if !empty($error_messages.create_task)}
@@ -22,12 +22,11 @@
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="create_task" value="{$csrf_token}">
 				<div class="clear first"></div>
-				<p><b>Task Name:</b></p>
-				<input type="text" name="title" value="{$inputs.create_task.title|default:null}" class="inp field-sml" placeholder="Task name">
-				<div class="clear first"></div>
-				<b>Description: </b>
-				<div class="clear"></div>
-				<textarea style="text-indent: 0px; padding: 8px;" name="message" class="inp field-med" id="" cols="30" rows="10" placeholder="Task description">{$inputs.create_task.message|default:null}</textarea>
+				<p class="text-sml">Task Name</p>
+				<input type="text" name="title" value="{$inputs.create_task.title|default:null}" class="inp inp-med-plus-plus" placeholder="Task name">
+				<div class="clear push-t-med"></div>
+				<p class="text-sml">Task Name</p>
+				<textarea name="message" class="inp textarea" id="" cols="30" rows="10" placeholder="Task description">{$inputs.create_task.message|default:null}</textarea>
 				<div class="clear"></div>
 				<p class="text-lrg-heavy push-t-med">Assign to task:</p>
 				<select class="first inp field-sml floatleft cursor-pt" name="user_id" id="action" required="required">
@@ -37,11 +36,11 @@
 				</select>
 				<div class="clear"></div>
 				<p class="text-lrg-heavy push-t-med">Schedule Task:</p>
-				<p class="text-lrg push-t">Date</p>
-				{html_select_date class="inp field-sml cursor-pt first" start_year='-1' end_year='+3'}
+				<p class="text-sml push-t-sml">Date</p>
+				{html_select_date class="inp field-sml cursor-pt" start_year='-1' end_year='+3'}
 				<div class="clear"></div>
-				<p class="text-lrg push-t">Time</p>
-				{html_select_time class="inp field-sml cursor-pt first" minute_interval=15 display_seconds=false use_24_hours=false}
+				<p class="text-sml push-t-sml">Time</p>
+				{html_select_time class="inp field-sml cursor-pt" minute_interval=15 display_seconds=false use_24_hours=false}
 				<div class="clear"></div>
 				<input type="submit" class="btn btn-inline push-t-med" value="Create task">
 			</form>

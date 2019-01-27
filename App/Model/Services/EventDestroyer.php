@@ -35,10 +35,11 @@ class EventDestroyer
         $this->eventTextMessageRepo->delete( [ "event_id" ], [ $event_id ] );
     }
 
-    public function destroyBySequenceID( $sequence_id, $complete = 0 )
+    public function destroyBySequenceID( $sequence_id )
     {
-        // Only delete events that have not been completed yet.
-        $events = $this->eventRepo->get( [ "*" ], [ "sequence_id" => $sequence_id, "complete" => $complete ] );
+        // Only delete incomplete events
+        $events = $this->eventRepo->get( [ "*" ], [ "sequence_id" => $sequence_id, "comlete" => 0 ] );
+
         foreach ( $events as $event ) {
             $this->destroy( $event->id );
         }

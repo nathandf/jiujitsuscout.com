@@ -6,7 +6,7 @@
 
 {block name="bm-body"}
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
-	<div class="con-cnt-xxlrg first inner-pad-med">
+	<div class="con-cnt-xlrg push-t-med inner-pad-med">
 		<h2>Trials</h2>
 		<a href="{$HOME}account-manager/business/trial/new" class="btn btn-inline trials first mat-hov"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Trial</span></a>
 		<div class="clear"></div>

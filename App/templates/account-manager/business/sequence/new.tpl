@@ -26,7 +26,7 @@
 						<input type="hidden" name="create_sequence" value="{$csrf_token}">
 						<div class="clear push-t-med"></div>
 						<p><b>Sequence Name:</b></p>
-						<input style="padding: 3px;" type="text" name="name" value="{$inputs.create_sequence.name|default:null}" class="inp" placeholder="">
+						<input style="padding: 3px;" type="text" name="name" value="{$inputs.create_sequence.name|default:null}" class="inp inp-med-plus-plus" placeholder="">
 						<div class="clear push-t-med"></div>
 						<p><b>Description:</b></p>
 						<textarea name="description" class="inp textarea" placeholder="">{$inputs.create_sequence.description|default:null}</textarea>

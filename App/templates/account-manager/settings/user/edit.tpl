@@ -23,19 +23,19 @@
 				<input type="hidden" name="edit_user" value="{$csrf_token}">
 				<div class="clear push-t-med"></div>
 				<label class="text-sml">First name</label><br>
-				<input type="text" class="inp" name="first_name" value="{$user_to_edit->first_name}">
+				<input type="text" class="inp inp-med-plus-plus" name="first_name" value="{$user_to_edit->first_name}">
 				<div class="clear"></div>
 				<div class="clear push-t-med"></div>
 				<label class="text-sml">Last name</label><br>
-				<input type="text" class="inp" name="last_name" value="{$user_to_edit->last_name}">
+				<input type="text" class="inp inp-med-plus-plus" name="last_name" value="{$user_to_edit->last_name}">
 				<div class="clear"></div>
 				<div class="clear push-t-med"></div>
 				<label class="text-sml">Email</label><br>
-				<input type="text" class="inp" name="email" value="{$user_to_edit->email}">
+				<input type="text" class="inp inp-med-plus-plus" name="email" value="{$user_to_edit->email}">
 				<div class="clear"></div>
 				<div class="clear push-t-med"></div>
 				<label class="text-sml">Country Code</label><br>
-				<select class="inp cursor-pt" id="country_code" name="country_code"/>
+				<select class="inp inp-sml cursor-pt" id="country_code" name="country_code"/>
 					{if $phone->country_code != null}
 					<option selected="selected" value="{$phone->country_code}">+{$phone->country_code}</option>
 					{else}
@@ -58,11 +58,11 @@
 				<div class="clear push-t-med"></div>
 				<label class="text-sml">Phone number</label>
 				<div class="clear"></div>
-				<input type="text" class="inp" name="phone_number" value="{$phone->national_number|default:null}">
+				<input type="text" class="inp inp-med-plus-plus" name="phone_number" value="{$phone->national_number|default:null}">
 				<div class="clear push-t-med"></div>
 				<label class="text-sml">Role</label>
 				<div class="clear"></div>
-				<select class="inp cursor-pt" id="role" name="role"/>
+				<select class="inp inp-sml cursor-pt" id="role" name="role"/>
 					<option value="{$user_to_edit->role}" selected="selected" hidden="hidden">{$user_to_edit->role|capitalize}</option>
 					{foreach from=$roles item=role}
 					<option value="{$role}">{$role|capitalize}</option>

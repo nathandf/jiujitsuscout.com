@@ -34,7 +34,7 @@
 						<div class="hr-sml"></div>
 						<p class="text-sml">Add a name and description to help you identify the purpose of this text message</p>
 						<p class="push-t-med"><b>Name:</b></p>
-						<input style="padding: 3px;" type="text" name="name" value="{$textMessage->name}" class="inp" placeholder="">
+						<input style="padding: 3px;" type="text" name="name" value="{$textMessage->name}" class="inp inp-med-plus-plus" placeholder="">
 						<div class="clear push-t-med"></div>
 						<p><b>Description:</b></p>
 						<textarea name="description" class="inp textarea" placeholder="">{$textMessage->description}</textarea>

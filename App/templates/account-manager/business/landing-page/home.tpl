@@ -26,11 +26,11 @@
 				<input type="hidden" name="update_landing_page" value="{$csrf_token}">
 				<b>Name:</b>
 				<div class="clear"></div>
-				<input type="text" name="name" class="inp" value="{$page->name}">
+				<input type="text" name="name" class="inp inp-med-plus-plus" value="{$page->name}">
 				<div class="clear push-t-sml"></div>
 				<b>Slug:</b>
 				<div class="clear"></div>
-				<input type="text" name="slug" id="input-slug" class="inp" value="{$page->slug}">
+				<input type="text" name="slug" id="input-slug" class="inp inp-med-plus-plus" value="{$page->slug}">
 				<p class="text-med">https://www.jiujitsuscout.com/martial-arts-gyms/{$business->id}/promo/<b id="slug">{$page->slug}</b></p>
 				<div class="hr"></div>
 				{if !empty($user_recipients)}

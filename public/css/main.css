@@ -848,6 +848,26 @@ td {
     font-family: var(--std-font-family);
 }
 
+.inp-sml {
+    width: var(--sml);
+}
+
+.inp-med {
+    width: var(--med);
+}
+
+.inp-med-plus {
+    width: var(--med-plus);
+}
+
+.inp-med-plus-plus {
+    width: var(--med-plus-plus);
+}
+
+.inp-lrg {
+    width: var(--lrg);
+}
+
 .text-input {
     text-indent: 0px;
     box-sizing: border-box;

@@ -26,7 +26,7 @@
 				<input type="hidden" name="update_sequence" value="{$csrf_token}">
 				<div class="clear push-t-med"></div>
 				<p class="push-t-med"><b>Name:</b></p>
-				<input style="padding: 3px;" type="text" name="name" value="{$sequence->name}" class="inp" placeholder="">
+				<input style="padding: 3px;" type="text" name="name" value="{$sequence->name}" class="inp inp-med-plus-plus" placeholder="">
 				<div class="clear push-t-med"></div>
 				<p><b>Description:</b></p>
 				<textarea name="description" class="inp textarea" placeholder="">{$sequence->description}</textarea>

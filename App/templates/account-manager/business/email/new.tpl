@@ -32,7 +32,7 @@
 						<input type="hidden" name="create_email" value="{$csrf_token}">
 						<div class="clear push-t-med"></div>
 						<p><b>Subject:</b></p>
-						<input style="padding: 3px;" type="text" name="subject" value="{$inputs.create_email.name|default:null}" class="inp" placeholder="">
+						<input style="padding: 3px;" type="text" name="subject" value="{$inputs.create_email.name|default:null}" class="inp inp-med-plus-plus" placeholder="">
 						<div class="clear push-t-med"></div>
 						<b>Body:</b>
 						<div class="clear push-t-sml"></div>
@@ -44,7 +44,7 @@
 						<div class="hr-sml"></div>
 						<p class="text-sml">Add a name and description to help you identify the purpose of this email</p>
 						<p class="push-t-med"><b>Name:</b></p>
-						<input style="padding: 3px;" type="text" name="name" value="{$inputs.create_email.description|default:null}" class="inp" placeholder="">
+						<input style="padding: 3px;" type="text" name="name" value="{$inputs.create_email.description|default:null}" class="inp inp-med-plus-plus" placeholder="">
 						<div class="clear push-t-med"></div>
 						<p ><b>Description:</b></p>
 						<textarea name="description" class="inp textarea" placeholder="">{$inputs.create_email.description|default:null}</textarea>

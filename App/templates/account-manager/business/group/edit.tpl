@@ -21,7 +21,7 @@
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="update_group" value="{$csrf_token}">
 			<label class="text-sml push-t-med">Group name</label><br>
-			<input type="text" class="inp" name="name" value="{$group->name}">
+			<input type="text" class="inp inp-med-plus-plus" name="name" value="{$group->name}">
 			<div class="clear push-t-med"></div>
 			<label class="text-sml">Description</label><br>
 			<textarea type="text" class="inp textarea" name="description" placeholder="Description">{$group->description}</textarea>
