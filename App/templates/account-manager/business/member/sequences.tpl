@@ -47,7 +47,7 @@
 			{if !empty( $activeSequenceTemplates )}
 				<div class="clear push-t-med hr-sml"></div>
 				<h2>Active Sequences</h2>
-				<p class="text-sml">{$member->getFullName()} is already on these sequences</p>
+				<p class="text-sml">{$member->getFullName()} is currently on these sequences</p>
 				{foreach from=$activeSequenceTemplates item=activeSequenceTemplate}
 				<form method="post" action="">
 					<input type="hidden" name="token" value="{$csrf_token}">
@@ -59,6 +59,19 @@
 						<p class="text-med">{$activeSequenceTemplate->description}</p>
 					</div>
 				</form>
+				{/foreach}
+			<div class="clear push-t-med"></div>
+			{/if}
+			{if !empty( $completedSequenceTemplates )}
+				<div class="clear push-t-med hr-sml"></div>
+				<h2>Completed Sequences</h2>
+				<p class="text-sml">{$member->getFullName()} has completed these sequences</p>
+				{foreach from=$completedSequenceTemplates item=completedSequenceTemplate}
+				<div class="bg-white col-100 inner-pad-sml push-t-med" style="box-sizing: border-box; border: 2px solid #CCCCCC; border-radius: 5px;">
+					<p class="floatright bg-good-green tc-white" style="padding: 5px; border-radius: 3px;"><i class="fa fa-check" aria-hidden="true"></i></p>
+					<p class="text-med-heavy">{$completedSequenceTemplate->name}</p>
+					<p class="text-med">{$completedSequenceTemplate->description}</p>
+				</div>
 				{/foreach}
 			<div class="clear push-t-med"></div>
 			{/if}

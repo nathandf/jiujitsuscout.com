@@ -776,21 +776,33 @@ class Lead extends Controller
         $activeSequenceTemplates = [];
         $active_sequence_template_ids = [];
         $inactiveSequenceTemplates = [];
+        $completedSequenceTemplates = [];
 
         // Populate an array ($activeSequenceTemplates) with all sequence templates
         // from which this prospect's sequences were created.
         foreach ( $prospectSequences as $prospectSequence ) {
             $sequence_template_id = $sequenceTemplateSequenceRepo->get( [ "sequence_template_id" ], [ "sequence_id" => $prospectSequence->sequence_id ], "single" )->sequence_template_id;
-            $activeSequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
-            $activeSequenceTemplate->sequence = $sequenceRepo->get( [ "*" ], [ "id" => $prospectSequence->sequence_id ], "single" );
-            $activeSequenceTemplates[] = $activeSequenceTemplate;
+            $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
+            $sequenceTemplate->sequence = $sequenceRepo->get( [ "*" ], [ "id" => $prospectSequence->sequence_id ], "single" );
+
+            if ( $sequenceTemplate->sequence->complete ) {
+                $completedSequenceTemplates[] = $sequenceTemplate;
+                $completed_sequence_template_ids[] = $sequence_template_id;
+
+                continue;
+            }
+
+            $activeSequenceTemplates[] = $sequenceTemplate;
             $active_sequence_template_ids[] = $sequence_template_id;
         }
 
         // Populate an array ($inactiveSequenceTemplates) will all sequence templates
-        // that have not been used to genertate sequences for this prospect
+        // that have not been used to generate sequences for this prospect
         foreach ( $sequenceTemplates as $sequenceTemplate ) {
-            if ( !in_array( $sequenceTemplate->id, $active_sequence_template_ids ) ) {
+            if (
+                !in_array( $sequenceTemplate->id, $active_sequence_template_ids ) &&
+                !in_array( $sequenceTemplate->id, $completed_sequence_template_ids )
+            ) {
                 $inactiveSequenceTemplates[] = $sequenceTemplate;
             }
         }
@@ -886,6 +898,7 @@ class Lead extends Controller
 
         $this->view->assign( "activeSequenceTemplates", $activeSequenceTemplates );
         $this->view->assign( "inactiveSequenceTemplates", $inactiveSequenceTemplates );
+        $this->view->assign( "completedSequenceTemplates", $completedSequenceTemplates );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->assign( "error_messages", $inputValidator->getErrors() );
         $this->view->assign( "flash_messages", $this->session->getFlashMessages() );

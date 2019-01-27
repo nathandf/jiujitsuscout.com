@@ -560,14 +560,24 @@ class Member extends Controller
         $activeSequenceTemplates = [];
         $active_sequence_template_ids = [];
         $inactiveSequenceTemplates = [];
+        $completedSequenceTemplates = [];
+        $completed_sequence_template_ids = [];
 
         // Populate an array ($activeSequenceTemplates) with all sequence templates
         // from which this member's sequences were created.
         foreach ( $memberSequences as $memberSequence ) {
             $sequence_template_id = $sequenceTemplateSequenceRepo->get( [ "sequence_template_id" ], [ "sequence_id" => $memberSequence->sequence_id ], "single" )->sequence_template_id;
-            $activeSequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
-            $activeSequenceTemplate->sequence = $sequenceRepo->get( [ "*" ], [ "id" => $memberSequence->sequence_id ], "single" );
-            $activeSequenceTemplates[] = $activeSequenceTemplate;
+            $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
+            $sequenceTemplate->sequence = $sequenceRepo->get( [ "*" ], [ "id" => $memberSequence->sequence_id ], "single" );
+
+            if ( $sequenceTemplate->sequence->complete ) {
+                $completedSequenceTemplates[] = $sequenceTemplate;
+                $completed_sequence_template_ids[] = $sequence_template_id;
+
+                continue;
+            }
+
+            $activeSequenceTemplates[] = $sequenceTemplate;
             $active_sequence_template_ids[] = $sequence_template_id;
         }
 
@@ -670,6 +680,7 @@ class Member extends Controller
 
         $this->view->assign( "activeSequenceTemplates", $activeSequenceTemplates );
         $this->view->assign( "inactiveSequenceTemplates", $inactiveSequenceTemplates );
+        $this->view->assign( "completedSequenceTemplates", $completedSequenceTemplates );
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->assign( "error_messages", $inputValidator->getErrors() );
         $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
