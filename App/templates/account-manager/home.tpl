@@ -36,7 +36,7 @@
 	{foreach from=$businesses item=business name=businesses}
 		<tr style="border: 1px solid #CCC;">
 			<td class="bg-white">
-				<img style="height: 55px; display: block; margin: 0 auto;" src="{$HOME}public/img/{if $business->logo_filename}uploads/{$business->logo_filename}{else}jjslogoiconblack.jpg{/if}" alt="">
+				<img style="height: 55px; display: block; margin: 0 auto;" src="{if !is_null($business->logo_image_id)}{$HOME}public/img/uploads/{$business->logo->filename}{else}http://placehold.it/300x300&text=x{/if}" alt="">
 			</td>
 			<td class="bg-white">
 				<p class="text-xlrg-heavy tc-black">{$business->business_name}</p>

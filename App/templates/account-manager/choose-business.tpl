@@ -25,7 +25,7 @@
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input type="hidden" name="business_id" value="{$business->id}">
 					<p class="text-med push-b first tc-forest"><b>{$business->business_name}</b></p>
-					<input type="image" class="mat-hov bg-white last" style="width: 100px; box-sizing: border-box; border: 1px solid #CCC;" src="{$HOME}public/img/{if $business->logo_filename}uploads/{$business->logo_filename}{else}jjslogoiconblack.jpg{/if}" form="business{$smarty.foreach.businesses.index}">
+					<input type="image" class="mat-hov bg-white last" style="width: 100px; box-sizing: border-box; border: 1px solid #CCC;" src="{if !is_null($business->logo_image_id)}{$HOME}public/img/uploads/{$business->logo->filename}{else}http://placehold.it/300x300&text=x{/if}" form="business{$smarty.foreach.businesses.index}">
 					<div class="clear last"></div>
 				</form>
 				{/foreach}

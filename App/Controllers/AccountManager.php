@@ -21,6 +21,7 @@ class AccountManager extends Controller
 		$accountUserRepo = $this->load( "account-user-repository" );
 		$businessRepo = $this->load( "business-repository" );
 		$userRepo = $this->load( "user-repository" );
+		$imageRepo = $this->load( "image-repository" );
 		// If user not validated with session or cookie, send them to sign in
 		if ( !$userAuth->userValidate() ) {
 			$this->view->redirect( "account-manager/sign-in" );
@@ -43,6 +44,14 @@ class AccountManager extends Controller
 
 		// Load data from all businesses owned by this account and store in array
 		$this->businesses = $businessRepo->get( [ "*" ], [ "account_id" => $this->user->account_id ] );
+
+		// Load the logo image for each business
+		foreach ( $this->businesses as $_business ) {
+			if ( !is_null( $_business->logo_image_id ) ) {
+				$_business->logo = $imageRepo->get( [ "*" ], [ "id" => $_business->logo_image_id ], "single" );
+			}
+		}
+
 		$total_businesses = count( $this->businesses );
 
 		// Load data from all users attatched to this account and store in array
@@ -346,7 +355,7 @@ class AccountManager extends Controller
 			if ( $input->get( "address_2" ) != "" ) {
 				$address_2 = $input->get( "address_2" );
 			}
-			
+
 			$address = $addressRepo->insert([
 				"address_1" => $input->get( "address_1" ),
                 "address_2" => $address_2,
