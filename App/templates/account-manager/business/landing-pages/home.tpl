@@ -13,6 +13,7 @@
 			<p class="text-sml">Capture leads with landing pages! The JiuJitsuScout Landing Page builder makes it super easy to build effective landing pages that drive action and capture leads.</p>
 			<div class="hr-sml"></div>
 			<a href="{$HOME}account-manager/business/landing-page/choose-template" class="btn btn-inline push-t-med mat-hov"><span class="text-med">Create Landing Page <i class="fa fa-plus" aria-hidden="true"></i></span></a>
+			<div class="clear push-t-med"></div>
 			{foreach from=$pages item=page}
 			<a href="{$HOME}account-manager/business/landing-page/{$page->id}/" class="tag-link">
 				<div class="tag mat-hov cursor-pt">
