@@ -22,21 +22,21 @@
 				<input type="hidden" name="create_class" value="{$csrf_token}">
 				<div class="clear"></div>
 				<p class="text-sml push-t-med">Name: </p>
-				<input type="text" name="name" value="{$inputs.create_class.name|default:null}" class="inp field-sml" placeholder="Class name">
+				<input type="text" name="name" value="{$inputs.create_class.name|default:null}" class="inp inp-med-plus-plus" placeholder="Class name">
 				<div class="clear"></div>
 				<p class="text-sml push-t-med">Description: </p>
 				<div class="clear"></div>
-				<textarea style="text-indent: 0px; padding: 8px;" name="description" class="inp field-med" id="" cols="30" rows="10" placeholder="Description of class">{$inputs.create_class.description|default:null}</textarea>
+				<textarea name="description" class="inp textarea" id="" cols="30" rows="10" placeholder="Description of class">{$inputs.create_class.description|default:null}</textarea>
 				<div class="clear"></div>
 				<p class="text-sml push-t-med">Discipline</p>
-				<select name="discipline_id" id="" class="inp field-sml cursor-pt">
+				<select name="discipline_id" id="" class="inp inp-sml cursor-pt">
 				{foreach from=$disciplines item=discipline}
 				<option value="{$discipline->id}">{$discipline->name|capitalize}</option>
 				{/foreach}
 				</select>
 				<div class="clear"></div>
 				<p class="text-sml push-t-med">Week Day</p>
-				<select name="day" id="" class="inp field-sml cursor-pt">
+				<select name="day" id="" class="inp inp-sml cursor-pt">
 				{foreach from=$weekdays item=weekday}
 				<option value="{$weekday}">{$weekday|capitalize}</option>
 				{/foreach}

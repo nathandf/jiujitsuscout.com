@@ -777,6 +777,7 @@ class Lead extends Controller
         $active_sequence_template_ids = [];
         $inactiveSequenceTemplates = [];
         $completedSequenceTemplates = [];
+        $completed_sequence_template_ids = [];
 
         // Populate an array ($activeSequenceTemplates) with all sequence templates
         // from which this prospect's sequences were created.

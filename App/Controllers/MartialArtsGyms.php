@@ -19,6 +19,7 @@ class MartialArtsGyms extends Controller
         $businessRepo = $this->load( "business-repository" );
         $phoneRepo = $this->load( "phone-repository" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $imageRepo = $this->load( "image-repository" );
         $Config = $this->load( "config" );
 
         if ( isset( $this->params[ "id" ] ) ) {

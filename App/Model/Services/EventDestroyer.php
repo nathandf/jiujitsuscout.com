@@ -38,7 +38,7 @@ class EventDestroyer
     public function destroyBySequenceID( $sequence_id )
     {
         // Only delete incomplete events
-        $events = $this->eventRepo->get( [ "*" ], [ "sequence_id" => $sequence_id, "comlete" => 0 ] );
+        $events = $this->eventRepo->get( [ "*" ], [ "sequence_id" => $sequence_id, "complete" => 0 ] );
 
         foreach ( $events as $event ) {
             $this->destroy( $event->id );

@@ -107,7 +107,7 @@
 			</div>
 		{/if}
 		<div>
-			<h2 class="h2">My Profile</h2>
+			<h2 class="h2">Lead Generation Profile</h2>
 			<table cellspacing="0" class="col-100 push-t-med push-b-med" style="border: 1px solid #CCC;">
 				<tr class="bg-green">
 					<th class="tc-white">Listing Clicks</td>
