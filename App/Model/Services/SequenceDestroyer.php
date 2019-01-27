@@ -36,10 +36,10 @@ class SequenceDestroyer
 
     public function destroy( $sequence_id )
     {
-        $this->sequenceRepo->delete( [ "id" => $sequence_id ] );
-        $this->sequenceTemplateSequenceRepo->delete( [ "sequence_id" => $sequence_id ] );
-        $this->prospectSequenceRepo->delete( [ "sequence_id" => $sequence_id ] );
-        $this->memberSequenceRepo->delete( [ "sequence_id" => $sequence_id ] );
-        $this->businessSequenceRepo->delete( [ "sequence_id" => $sequence_id ] );
+        $this->sequenceRepo->delete( [ "id" ], [ $sequence_id ] );
+        $this->sequenceTemplateSequenceRepo->delete( [ "sequence_id" ], [ $sequence_id ] );
+        $this->prospectSequenceRepo->delete( [ "sequence_id" ], [ $sequence_id ] );
+        $this->memberSequenceRepo->delete( [ "sequence_id" ], [ $sequence_id ] );
+        $this->businessSequenceRepo->delete( [ "sequence_id" ], [ $sequence_id ] );
     }
 }

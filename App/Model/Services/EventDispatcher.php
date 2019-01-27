@@ -16,6 +16,8 @@ use Model\Services\EventTextMessageDispatcher;
 
 class EventDispatcher
 {
+    public $all_events_dispatched = false;
+
     public function __construct(
         EventRepository $eventRepo,
         EventEmailDispatcher $eventEmailDispatcher,
@@ -31,7 +33,10 @@ class EventDispatcher
     */
     public function dispatch( array $event_ids )
     {
+        $event_count = count( $event_ids );
+        $e = 0;
         foreach ( $event_ids as $id ) {
+            $e++;
             $event = $this->eventRepo->get( [ "*" ], [ "id" => $id ], "single" );
             if ( $event->time <= time() ) {
                 switch ( $event->event_type_id ) {
@@ -45,7 +50,12 @@ class EventDispatcher
                         break;
                 }
 
-                $this->eventRepo->delete( [ "id" => $event->id ] );
+                $this->eventRepo->update( [ "complete" => 1 ], [ "id" => $event->id ] );
+
+                // If the last event is dispatched, update all_events_dispatched to true
+                if ( $event_count == $e ) {
+                    $this->all_events_dispatched = true;
+                }
             }
         }
     }

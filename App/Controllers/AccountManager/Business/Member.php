@@ -656,10 +656,11 @@ class Member extends Controller
                 "delete_sequence"
             )
         ) {
-            $sequenceRepo->delete( [ "id" ], [ $input->get( "sequence_id" ) ] );
-            $sequenceTemplateSequenceRepo->delete( [ "sequence_id" ], [ $input->get( "sequence_id" ) ] );
-            $memberSequenceRepo->delete( [ "sequence_id" ], [ $input->get( "sequence_id" ) ] );
-            $businessSequenceRepo->delete( [ "sequence_id" ], [ $input->get( "sequence_id" ) ] );
+            $sequenceDestroyer = $this->load( "sequence-destroyer" );
+            $eventDestroyer = $this->load( "event-destroyer" );
+
+            $sequenceDestroyer->destroy( $input->get( "sequence_id" ) );
+            $eventDestroyer->destroyBySequenceID( $input->get( "sequence_id" ) );
 
             $this->session->addFlashMessage( "{$this->member->getFullName()} successfully removed from sequence." );
             $this->session->setFlashMessages();

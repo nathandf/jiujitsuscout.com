@@ -174,7 +174,7 @@ abstract class DataMapper implements DataMapperInterface
         // was called.
 
         $query = "UPDATE " . "`" . $this->getTable() . "`" . " SET " . $this->formatQueryFromKeyValuesUpdate( $columns_to_update, "0" ) . " WHERE " . $this->formatQueryFromKeyValues( $where_columns, "1" );
-        
+
         $sql = $this->DB->prepare( $query );
 
         foreach ( $columns_to_update as $key => &$value ) {
@@ -199,7 +199,6 @@ abstract class DataMapper implements DataMapperInterface
         if ( count( $keys ) != count( $values ) ) {
             throw new \Exception( "The number of keys and values does not match" );
         }
-
         $table = $this->getTable();
         $query = "DELETE FROM " . "`" . $table . "`" . $this->formatQueryWhereKeyValuePairs( $keys, $values );
 
@@ -290,7 +289,7 @@ abstract class DataMapper implements DataMapperInterface
 
         $iteration = 1;
         foreach ( $key_values as $key => $value ) {
-            if ( is_null( $value ) || $value === "" ) {
+            if ( $value === null || $value === "" ) {
                 throw new \Exception( "Value cannot be empty: key => {$key}, value = ?" );
             }
 
@@ -316,7 +315,7 @@ abstract class DataMapper implements DataMapperInterface
 
         $i = 1;
         foreach ( $key_values as $key => $value ) {
-            if ( is_null( $value ) || $value === "" ) {
+            if ( $value === null || $value === "" ) {
                 throw new \Exception( "Value cannot be empty: key => {$key}, value = ?" );
             }
 
@@ -339,7 +338,7 @@ abstract class DataMapper implements DataMapperInterface
 
         $i = 1;
         foreach ( $key_values as $key => $value ) {
-            if ( is_null( $value ) || $value === "" ) {
+            if ( $value === null || $value === "" ) {
                 throw new \Exception( "Value cannot be empty: key => {$key}, value = ?" );
             }
 

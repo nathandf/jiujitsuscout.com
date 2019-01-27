@@ -1100,7 +1100,6 @@ $container->register( "sequence-destroyer", function() use ( $container ) {
 $container->register( "sequence-dispatcher", function() use ( $container ) {
 	$manager = new \Model\Services\SequenceDispatcher(
 		$container->getService( "sequence-repository" ),
-		$container->getService( "sequence-destroyer" ),
 		$container->getService( "event-dispatcher" ),
 		$container->getService( "event-repository" )
 	);
@@ -1122,6 +1121,15 @@ $container->register( "event-text-message-dispatcher", function() use ( $contain
 		$container->getService( "event-text-message-repository" ),
 		$container->getService( "text-message-repository" ),
 		$container->getService( "sms-messager" )
+	);
+	return $manager;
+} );
+
+$container->register( "event-destroyer", function() use ( $container ) {
+	$manager = new \Model\Services\EventDestroyer(
+		$container->getService( "event-repository" ),
+		$container->getService( "event-email-repository" ),
+		$container->getService( "event-text-message-repository" )
 	);
 	return $manager;
 } );
