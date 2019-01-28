@@ -1,6 +1,6 @@
 <div class="listing">
 		<div class="left-container business-logo-container push-r-med floatleft">
-			<img class="business-logo" src="{$HOME}public/img/uploads/{$business->logo_filename}" />
+			<img class="business-logo" src="{if !is_null($business->logo_image_id)}{$HOME}public/img/uploads/{$business->logo->filename}{else}http://placehold.it/300x300&text=No+Image{/if}" />
 		</div>
 		<div class="middle-container">
 			<a class="name --clickable" href="{$HOME}martial-arts-gyms/{$business->id}/" data-property="listing" data-property_sub_type="business-name" data-b_id="{$business->id}" data-ip="{$ip}">{$business->business_name|truncate:25:"..."}</a>

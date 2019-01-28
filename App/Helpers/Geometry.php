@@ -26,5 +26,4 @@ class Geometry
 
         return $distance;
     }
-
 }

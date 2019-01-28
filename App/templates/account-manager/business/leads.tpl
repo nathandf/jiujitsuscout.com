@@ -61,10 +61,12 @@
 									<td>
 									</td>
 									<td>
-										<a  href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag floatleft unpurchased mat-hov">
-											<span class="lead-icon bg-good-green tc-black" style="color: #fff;"><i class="fa fa-user" aria-hidden="true"></i></span>
-											<div class="lead-data">
-												<p class="lead-name" style="display: inline-block; margin-top: 8px;">New Lead</p>
+										<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag floatleft unpurchased mat-hov">
+											<div class="lead-icon-container floatleft">
+												<span class="lead-icon bg-good-green tc-black" style="color: #fff;"><i class="fa fa-user" aria-hidden="true"></i></span>
+											</div>
+											<div class="lead-data floatleft">
+												<p class="lead-name">New Lead</p>
 												<p class="text-lrg">{$business->currency->symbol}{$prospect->appraisal->value|string_format:"%.2f"}</p>
 											</div>
 											<div class="clear"></div>
@@ -79,40 +81,52 @@
 									<td>
 										{if $prospect->type == "trial"}
 											<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag trial first mat-hov floatleft">
-												<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-												<div class="lead-data">
+												<div class="lead-icon-container floatleft">
+													<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+												</div>
+												<div class="lead-data floatleft">
 													<p class="lead-name">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
 													<p>{$prospect->phone_number|default:"Number: N/a"}</p>
-													<p>{if $prospect->email}{$prospect->email|lower|truncate:20:"..."}{else}email: N/a{/if}</p>
+													<p>{$prospect->email|truncate:20:"..."|default:"No email"}</p>
+													<p>Times Contacted:<span class="push-l-lrg text-lrg-heavy{if $prospect->times_contacted < 1} tc-red{else} tc-black{/if}">{$prospect->times_contacted}</span></p>
 												</div>
 											</a>
 										{elseif $prospect->type == "lead"}
 											{if $prospect->times_contacted < 1}
 												<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag uncontacted first mat-hov floatleft">
-													<span class="lead-icon icon-c-2"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-													<div class="lead-data">
+													<div class="lead-icon-container floatleft">
+														<span class="lead-icon icon-c-2"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
+													</div>
+													<div class="lead-data floatleft">
 														<p class="lead-name">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
 														<p>{$prospect->phone_number|default:"Number: N/a"}</p>
-														<p>{if $prospect->email}{$prospect->email|lower|truncate:23:"..."}{else}email: N/a{/if}</p>
+														<p>{$prospect->email|truncate:20:"..."|default:"No email"}</p>
+														<p>Times Contacted:<span class="push-l-lrg text-lrg-heavy{if $prospect->times_contacted < 1} tc-red{else} tc-black{/if}">{$prospect->times_contacted}</span></p>
 													</div>
 												</a>
 											{else}
 												{if $prospect->appointments|@count > 0}
 												<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag first mat-hov floatleft" style="border: 2px solid #7A6FF0;">
-													<span class="lead-icon bg-lavender"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-													<div class="lead-data">
+													<div class="lead-icon-container floatleft">
+														<span class="lead-icon bg-lavender"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+													</div>
+													<div class="lead-data floatleft">
 														<p class="lead-name">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
 														<p>{$prospect->phone_number|default:"Number: N/a"}</p>
-														<p>{if $prospect->email}{$prospect->email|lower|truncate:23:"..."}{else}email: N/a{/if}</p>
+														<p>{$prospect->email|truncate:20:"..."|default:"No email"}</p>
+														<p>Times Contacted:<span class="push-l-lrg text-lrg-heavy{if $prospect->times_contacted < 1} tc-red{else} tc-black{/if}">{$prospect->times_contacted}</span></p>
 													</div>
 												</a>
 												{else}
 												<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="lead-tag first mat-hov floatleft">
-													<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$prospect->first_name|substr:0:1|upper}</span>
-													<div class="lead-data">
+													<div class="lead-icon-container floatleft">
+														<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$prospect->first_name|substr:0:1|upper}</span>
+													</div>
+													<div class="lead-data floatleft">
 														<p class="lead-name">{$prospect->first_name|capitalize|truncate:20:"..."} {$prospect->last_name|capitalize|truncate:20:"..."}</p>
 														<p>{$prospect->phone_number|default:"Number: N/a"}</p>
-														<p>{if $prospect->email}{$prospect->email|lower|truncate:23:"..."}{else}email: N/a{/if}</p>
+														<p>{$prospect->email|truncate:20:"..."|default:"No email"}</p>
+														<p>Times Contacted:<span class="push-l-lrg text-lrg-heavy{if $prospect->times_contacted < 1} tc-red{else} tc-black{/if}">{$prospect->times_contacted}</span></p>
 													</div>
 												</a>
 												{/if}

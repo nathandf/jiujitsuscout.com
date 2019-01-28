@@ -289,9 +289,6 @@ abstract class DataMapper implements DataMapperInterface
 
         $iteration = 1;
         foreach ( $key_values as $key => $value ) {
-            if ( $value === null || $value === "" ) {
-                throw new \Exception( "Value cannot be empty: key => {$key}, value = ?" );
-            }
 
             if ( $iteration == 1 && !empty( $key_values ) ) {
                 $where_query = " WHERE ";
@@ -299,6 +296,21 @@ abstract class DataMapper implements DataMapperInterface
             $and = "";
             if ( $iteration != $total ) {
                 $and = " AND ";
+            }
+
+            if ( $value === null || $value === "" ) {
+                switch ( $value ) {
+                    case null:
+                        $where_query = $where_query . "{$key} IS NULL" . $and;
+                        break;
+                    case "":
+                        $where_query = $where_query . "{$key} = ''" . $and;
+                        break;
+                }
+
+                $iteration++;
+
+                continue;
             }
 
             $where_query = $where_query . "{$key} = :{$key}" . $and;

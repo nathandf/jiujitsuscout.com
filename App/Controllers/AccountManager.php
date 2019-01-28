@@ -142,6 +142,7 @@ class AccountManager extends Controller
 		$userRepo = $this->load( "user-repository" );
 		$businessRepo = $this->load( "business-repository" );
 		$accountUserRepo = $this->load( "account-user-repository" );
+		$imageRepo = $this->load( "image-repository" );
 		// Require user login. If not logged in, send back to sign in
 		$userAuth = $this->load( "user-authenticator" );
 		if ( !$userAuth->userValidate() ) {
@@ -152,6 +153,11 @@ class AccountManager extends Controller
 		// Load account user reference
 		$businesses = $businessRepo->getAllByAccountID( $accountUser->account_id );
 		$total_businesses = count( $businesses );
+
+		foreach ( $businesses as $_business ) {
+			$_business->logo = $imageRepo->get( [ "*" ], [ "id" => $_business->logo_image_id ], "single" );
+		}
+
 		// If only one business, set the current bussiness id and redirect to dashboard
 		if ( $total_businesses == 1 ) {
 			$this->user->setCurrentBusinessID( $businesses[ 0 ]->id );

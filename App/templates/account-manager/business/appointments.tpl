@@ -31,12 +31,15 @@
 					<h3 class="first">Passed</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon icon-c-2"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon icon-c-2"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$appointment->prospect->first_name} {$appointment->prospect->last_name}</p>
 						<p>{$appointment->appointment_time|date_format:"%a, %b %e %Y"}</p>
 						<p>{$appointment->appointment_time|date_format:"%l:%M%p"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}
@@ -45,12 +48,15 @@
 					<h3 class="first">Today</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon icon-c-4"><i class="fa fa-clock-o"></i></span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon icon-c-4"><i class="fa fa-clock-o"></i></span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$appointment->prospect->first_name} {$appointment->prospect->last_name}</p>
 						<p>{$appointment->appointment_time|date_format:"%a, %b %e %Y"}</p>
 						<p>{$appointment->appointment_time|date_format:"%l:%M%p"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}
@@ -59,12 +65,15 @@
 					<h3 class="first">Tomorrow</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon icon-c-3"><i class="fa fa-clock-o"></i></span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon icon-c-3"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$appointment->prospect->first_name} {$appointment->prospect->last_name}</p>
 						<p>{$appointment->appointment_time|date_format:"%a, %b %e %Y"}</p>
 						<p>{$appointment->appointment_time|date_format:"%l:%M%p"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}
@@ -73,12 +82,15 @@
 					<h3 class="first">This Week</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon icon-c-1"><i class="fa fa-clock-o"></i></span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon icon-c-1"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$appointment->prospect->first_name} {$appointment->prospect->last_name}</p>
 						<p>{$appointment->appointment_time|date_format:"%a, %b %e %Y"}</p>
 						<p>{$appointment->appointment_time|date_format:"%l:%M%p"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}
@@ -87,12 +99,15 @@
 					<h3 class="first">Next Week</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon icon-c-1"><i class="fa fa-clock-o"></i></span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon icon-c-1"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$appointment->prospect->first_name} {$appointment->prospect->last_name}</p>
 						<p>{$appointment->appointment_time|date_format:"%a, %b %e %Y"}</p>
 						<p>{$appointment->appointment_time|date_format:"%l:%M%p"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}
@@ -101,12 +116,15 @@
 					<h3 class="first">Upcoming</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon icon-c-1"><i class="fa fa-clock-o"></i></span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon icon-c-1"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$appointment->prospect->first_name} {$appointment->prospect->last_name}</p>
 						<p>{$appointment->appointment_time|date_format:"%a, %b %e %Y"}</p>
 						<p>{$appointment->appointment_time|date_format:"%l:%M%p"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}

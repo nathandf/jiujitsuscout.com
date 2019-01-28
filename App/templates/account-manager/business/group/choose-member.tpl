@@ -20,12 +20,15 @@
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="member_id" value="{$member->id}">
 				<button class="lead-tag first mat-hov cursor-pt">
-					<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$member->first_name|substr:0:1|upper}</span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$member->first_name|substr:0:1|upper}</span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$member->first_name|capitalize|truncate:20:"..."} {$member->last_name|capitalize|truncate:20:"..."}</p>
 						<p>{$member->phone_number}</p>
 						<p>{$member->email|lower|truncate:20:"..."}</p>
 					</div>
+					<div class="clear"></div>
 				</button>
 			</form>
 			<div class="clear"></div>

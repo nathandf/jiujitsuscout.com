@@ -267,7 +267,6 @@ header {
 	text-decoration: none;
 	font-family: 'Source Sans Pro', sans-serif;
 	width: 250px;
-	height: 84px;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	box-sizing: border-box;
@@ -326,12 +325,17 @@ header {
 	margin-right: 15px;
 	margin-top: 20px;
 }
+.lead-icon-container {
+	height: 100%;
+	box-sizing: border-box;
+	display: table;
+}
 
 .lead-icon {
 	box-sizing: border-box;
 	padding-left: 1px;
 	float: left;
-	margin-top: 13px;
+	margin-top: 0px;
 	margin-right: 10px;
 	margin-left: 10px;
 	color: #fff;
