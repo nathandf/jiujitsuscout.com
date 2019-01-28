@@ -299,15 +299,7 @@ abstract class DataMapper implements DataMapperInterface
             }
 
             if ( $value === null || $value === "" ) {
-                switch ( $value ) {
-                    case null:
-                        $where_query = $where_query . "{$key} IS NULL" . $and;
-                        break;
-                    case "":
-                        $where_query = $where_query . "{$key} = ''" . $and;
-                        break;
-                }
-
+                $where_query = $where_query . "{$key} = ''" . $and;
                 $iteration++;
 
                 continue;
@@ -327,13 +319,17 @@ abstract class DataMapper implements DataMapperInterface
 
         $i = 1;
         foreach ( $key_values as $key => $value ) {
-            if ( $value === null || $value === "" ) {
-                throw new \Exception( "Value cannot be empty: key => {$key}, value = ?" );
-            }
 
             $and = "";
             if ( $i != $total ) {
                 $and = " AND ";
+            }
+
+            if ( $value === null || $value === "" ) {
+                $query = $query . "{$key} = ''" . $and;
+                $iteration++;
+
+                continue;
             }
 
             $query = $query . "{$key} = :{$token_prefix}{$key}" . $and;
@@ -350,13 +346,17 @@ abstract class DataMapper implements DataMapperInterface
 
         $i = 1;
         foreach ( $key_values as $key => $value ) {
-            if ( $value === null || $value === "" ) {
-                throw new \Exception( "Value cannot be empty: key => {$key}, value = ?" );
-            }
 
             $and = "";
             if ( $i != $total ) {
                 $and = ", ";
+            }
+
+            if ( $value === null || $value === "" ) {
+                $query = $query . "{$key} = ''" . $and;
+                $iteration++;
+
+                continue;
             }
 
             $query = $query . "{$key} = :{$token_prefix}{$key}" . $and;
