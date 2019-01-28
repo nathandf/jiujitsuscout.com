@@ -13,15 +13,26 @@
 		<div class="clear push-t-med"></div>
 		<p class="text-xlrg-heavy">{$form->name}</p>
 		<div class="clear"></div>
-		<a class="btn btn-inline bg-mango text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/edit">Edit Form</a>
+		<a class="btn btn-inline bg-mango text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/edit">Edit</a>
+		<a class="btn btn-inline bg-salmon text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/view">View</a>
 		<div class="clear"></div>
-		<div contenteditable id="form-html" tabindex="-1" class="inp textarea" style="font-size: 10px; text-align: left; height: 300px; width: 100%; overflow-y: scroll; white-space: pre-wrap;">
-			{if $form->elements|@count < 1}
-			This form doesn't have any elements yet.
-			{else}
-			{$formHTML}
+		<div class="hr-sml"></div>
+		<form action="{$HOME}account-manager/business/form/{$form->id}/" method="post">
+			<input type="hidden" name="token" value="{$csrf_token}">
+			<input type="hidden" name="update_embeddable_form" value="{$csrf_token}">
+			{if !empty($sequence_templates)}
+				<h3 class="push-t-med">Sequences</h3>
+				<p class="text-med">Activate follow-up sequences when leads sign up on this form</p>
+				<div class="clear push-t-med push-b-med"></div>
+				{foreach from=$sequence_templates item=sequence_template name=sequence_loop}
+				<input type="checkbox" id="sequences{$smarty.foreach.sequence_loop.index}" class="cursor-pt checkbox" name="sequence_template_ids[]" value="{$sequence_template->id}" {if $sequence_template->isset}checked="checked"{/if}>
+				<label for="sequences{$smarty.foreach.sequence_loop.index}"><b>{$sequence_template->name}</b></label>
+				<div class="clear"></div>
+				{foreachelse}
+				<p class="text-med">No Sequences have been created yet. <a class="link tc-deep-blue" href="{$HOME}account-manager/business/sequence/new">Create your first sequence</a></p>
+				{/foreach}
 			{/if}
-		</div>
-		<div class="clear"></div>
+			<input type="submit" class="btn btn-inline push-t-med" value="Update">
+		</form>
 	</div>
 {/block}

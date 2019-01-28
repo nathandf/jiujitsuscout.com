@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Contracts\EntityInterface;
+
 class EmbeddableFormSequenceTemplate implements EntityInterface
 {
     public $id;

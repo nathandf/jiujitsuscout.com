@@ -79,7 +79,7 @@
 					<div class="clear"></div>
 					{foreachelse}
 					<p class="text-med">No Sequences have been created yet. <a class="link tc-deep-blue" href="{$HOME}account-manager/business/sequence/new">Create your first sequence</a></p>
-				{/foreach}
+					{/foreach}
 				{/if}
 				<input type="submit" class="btn btn-inline push-t-med" name="update_landing_page" value="Update">
 			</form>

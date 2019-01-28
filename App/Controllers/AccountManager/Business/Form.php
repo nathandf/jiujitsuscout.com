@@ -63,6 +63,88 @@ class Form extends Controller
             $this->view->redirect( "account-manager/business/forms/" );
         }
 
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $embeddableFormRepo = $this->load( "embeddable-form-repository" );
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $embeddableFormSequenceTemplateRepo = $this->load( "embeddable-form-sequence-template-repository" );
+
+        $embeddableForm = $embeddableFormRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+
+        $sequenceTemplates = $sequenceTemplateRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $sequence_template_ids_all = $sequenceTemplateRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+        $sequence_template_ids = $embeddableFormSequenceTemplateRepo->get( [ "sequence_template_id" ], [ "embeddable_form_id" => $this->params[ "id" ] ], "raw" );
+
+        foreach ( $sequenceTemplates as $sequenceTemplate ) {
+            $sequenceTemplate->isset = false;
+            if ( in_array( $sequenceTemplate->id, $sequence_template_ids ) ) {
+                $sequenceTemplate->isset = true;
+            }
+        }
+
+        if ( $input->exists() && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "update_embeddable_form" => [
+                    "required" => true
+                ]
+            ],
+
+            "update_sequence_templates" /* error index */
+            )
+        ) {
+            // Update LandingPageSequenceTemplate
+            $submitted_sequence_template_ids = [];
+            if ( $input->issetField( "sequence_template_ids" ) ) {
+                $submitted_sequence_template_ids = $input->get( "sequence_template_ids" );
+            }
+
+            // Create and new embeddable form sequence template for any of the submitted
+            // sequence tepmlate ids if it doesn't already exist
+            foreach ( $submitted_sequence_template_ids as $submitted_sequence_template_id ) {
+                if ( !in_array( $submitted_sequence_template_id, $sequence_template_ids, true ) ) {
+                    $embeddableFormSequenceTemplateRepo->insert([
+                        "embeddable_form_id" => $embeddableForm->id,
+                        "sequence_template_id" => $submitted_sequence_template_id
+                    ]);
+                }
+            }
+
+            // Delete the embeddable form sequence templates with the sequence template ids that were not
+            // submitted
+            foreach ( $sequence_template_ids_all as $_sequence_template_id ) {
+                if (
+                    !in_array( $_sequence_template_id, $submitted_sequence_template_ids ) &&
+                    in_array( $_sequence_template_id, $sequence_template_ids, true )
+                ) {
+                    $embeddableFormSequenceTemplateRepo->delete( [ "sequence_template_id", "embeddable_form_id" ], [ $_sequence_template_id, $this->params[ "id" ] ] );
+                }
+            }
+
+            $this->session->addFlashMessage( "Form Updated" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/form/" . $embeddableForm->id . "/" );
+        }
+
+        $this->view->assign( "form", $embeddableForm );
+        $this->view->assign( "sequence_templates", $sequenceTemplates );
+        $this->view->assign( "csrf_token", $this->session->getSession( "csrf-token" ) );
+
+        $this->view->setTemplate( "account-manager/business/form/home.tpl" );
+        $this->view->render( "App/Views/AccountManager/Business/Form.php" );
+    }
+
+    public function viewAction()
+    {
+        if ( !$this->issetParam( "id" ) ) {
+            $this->view->redirect( "account-manager/business/forms/" );
+        }
+
         $embeddableFormElementTypeRepo = $this->load( "embeddable-form-element-type-repository" );
         $embeddableFormElementRepo = $this->load( "embeddable-form-element-repository" );
         $embeddableFormRepo = $this->load( "embeddable-form-repository" );
@@ -93,7 +175,7 @@ class Form extends Controller
         $this->view->assign( "form", $embeddableForm );
         $this->view->assign( "formHTML", $HTMLFormBuilder->getFormHTML() );
 
-        $this->view->setTemplate( "account-manager/business/form/home.tpl" );
+        $this->view->setTemplate( "account-manager/business/form/view-form.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Form.php" );
     }
 

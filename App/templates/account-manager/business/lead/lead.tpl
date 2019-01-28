@@ -12,7 +12,7 @@
 	{include file="includes/modals/actions-lead.tpl"}
 	<div class="clear"></div>
 	<div class="con con-cnt-xxlrg inner-pad-med push-t-med">
-		<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/leads">Leads</a> > {$lead->getFullName()}</p>
+		<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/leads#lead{$lead->id}">Leads</a> > {$lead->getFullName()}</p>
 		<div class="clear"></div>
 		<button id="lead-actions-button" class="btn btn-inline bg-deep-blue tc-white push-t-med">+ Actions</button>
 		{include file="includes/snippets/flash-messages.tpl"}

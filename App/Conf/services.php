@@ -359,6 +359,14 @@ $container->register( "embeddable-form-repository", function() use ( $container 
 	return $repo;
 } );
 
+$container->register( "embeddable-form-sequence-template-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormSequenceTemplateRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "event-email-repository", function() use ( $container ) {
 	$repo = new \Model\Services\EventEmailRepository(
 	    $container->getService( "dao" ),
