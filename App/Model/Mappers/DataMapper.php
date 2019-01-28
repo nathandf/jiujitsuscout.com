@@ -100,8 +100,10 @@ abstract class DataMapper implements DataMapperInterface
         // Bind parameters in where query. The token will the name of the key
         // preceded by a colon.
         foreach ( $key_values as $key => &$value ) {
-            $token = ":" . $key;
-            $sql->bindParam( $token, $value );
+            if ( $value !== null && $value !== "" ) {
+                $token = ":" . $key;
+                $sql->bindParam( $token, $value );
+            }
         }
 
         $sql->execute();
@@ -173,18 +175,22 @@ abstract class DataMapper implements DataMapperInterface
         // the values of each token will be equal the the last instance in which PDO::bindParam
         // was called.
 
-        $query = "UPDATE " . "`" . $this->getTable() . "`" . " SET " . $this->formatQueryFromKeyValuesUpdate( $columns_to_update, "0" ) . " WHERE " . $this->formatQueryFromKeyValues( $where_columns, "1" );
-
+        $query = "UPDATE " . "`" . $this->getTable() . "`" . " SET " . $this->formatQuerySet( $columns_to_update, "0" ) . $this->formatQueryWhere( $where_columns, "1" );
+        
         $sql = $this->DB->prepare( $query );
 
         foreach ( $columns_to_update as $key => &$value ) {
-            $token = ":" . "0" . $key;
-            $sql->bindParam( $token, $value );
+            if ( $value !== null && $value !== "" ) {
+                $token = ":" . "0" . $key;
+                $sql->bindParam( $token, $value );
+            }
         }
 
         foreach ( $where_columns as $key => &$value ) {
-            $token = ":" . "1" . $key;
-            $sql->bindParam( $token, $value );
+            if ( $value !== null && $value !== "" ) {
+                $token = ":" . "1" . $key;
+                $sql->bindParam( $token, $value );
+            }
         }
 
         $sql->execute();
@@ -208,8 +214,10 @@ abstract class DataMapper implements DataMapperInterface
         // preceded by a colon.
         $key_values = array_combine( $keys, $values );
         foreach ( $key_values as $key => &$value ) {
-            $token = ":" . $key;
-            $sql->bindParam( $token, $value );
+            if ( $value !== null && $value !== "" ) {
+                $token = ":" . $key;
+                $sql->bindParam( $token, $value );
+            }
         }
 
         $sql->execute();
@@ -282,7 +290,7 @@ abstract class DataMapper implements DataMapperInterface
         return implode( ", ", $columns );
     }
 
-    private function formatQueryWhere( array $key_values )
+    private function formatQueryWhere( array $key_values, $token_prefix = "" )
     {
         $where_query = "";
         $total = count( $key_values );
@@ -299,47 +307,20 @@ abstract class DataMapper implements DataMapperInterface
             }
 
             if ( $value === null || $value === "" ) {
-                $where_query = $where_query . "{$key} = ''" . $and;
+                $where_query = $where_query . "{$key} IS NULL" . $and;
                 $iteration++;
 
                 continue;
             }
 
-            $where_query = $where_query . "{$key} = :{$key}" . $and;
+            $where_query = $where_query . "{$key} = :{$token_prefix}{$key}" . $and;
             $iteration++;
         }
 
         return $where_query;
     }
 
-    public function formatQueryFromKeyValues( array $key_values, $token_prefix = "" )
-    {
-        $query = "";
-        $total = count( $key_values );
-
-        $i = 1;
-        foreach ( $key_values as $key => $value ) {
-
-            $and = "";
-            if ( $i != $total ) {
-                $and = " AND ";
-            }
-
-            if ( $value === null || $value === "" ) {
-                $query = $query . "{$key} = ''" . $and;
-                $iteration++;
-
-                continue;
-            }
-
-            $query = $query . "{$key} = :{$token_prefix}{$key}" . $and;
-            $i++;
-        }
-
-        return $query;
-    }
-
-    public function formatQueryFromKeyValuesUpdate( array $key_values, $token_prefix = "" )
+    public function formatQuerySet( array $key_values, $token_prefix = "" )
     {
         $query = "";
         $total = count( $key_values );
@@ -353,8 +334,8 @@ abstract class DataMapper implements DataMapperInterface
             }
 
             if ( $value === null || $value === "" ) {
-                $query = $query . "{$key} = ''" . $and;
-                $iteration++;
+                $query = $query . "{$key} IS NULL" . $and;
+                $i++;
 
                 continue;
             }
@@ -368,18 +349,6 @@ abstract class DataMapper implements DataMapperInterface
 
     public function formatQueryWhereKeyValuePairs( array $keys, array $values )
     {
-        // Make sure no keys or values are empty
-        foreach ( $keys as $key ) {
-            if ( empty( $key ) || $key = "" || is_array( $key ) ) {
-                throw new \Exception( "Key must be a non-empty string" );
-            }
-        }
-        foreach ( $values as $value ) {
-            if ( empty( $value ) || $value = "" || is_array( $value ) ) {
-                throw new \Exception( "Value must be a non-empty string" );
-            }
-        }
-
         $key_values = array_combine( $keys, $values );
 
         return $this->formatQueryWhere( $key_values );
