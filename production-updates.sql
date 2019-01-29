@@ -33,3 +33,4 @@ CREATE TABLE `address` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `address_1` BIGIN
 ALTER TABLE `business` ADD `logo_image_id` BIGINT NULL DEFAULT NULL AFTER `video_id`;
 ALTER TABLE `event` DROP `status`;
 ALTER TABLE `event` ADD `complete` TINYINT NOT NULL DEFAULT '0' AFTER `time`;
+CREATE TABLE `yurigloc_jjs_development`.`embeddable_form_group` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `embeddable_form_id` BIGINT NOT NULL , `group_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

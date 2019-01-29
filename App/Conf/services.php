@@ -351,6 +351,14 @@ $container->register( "embeddable-form-element-repository", function() use ( $co
 	return $repo;
 } );
 
+$container->register( "embeddable-form-group-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormGroupRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "embeddable-form-repository", function() use ( $container ) {
 	$repo = new \Model\Services\EmbeddableFormRepository(
 	    $container->getService( "dao" ),

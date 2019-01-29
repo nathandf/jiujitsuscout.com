@@ -10,6 +10,7 @@
 	<div class="clear"></div>
 	<div class="con-cnt-xlrg push-t-med inner-pad-med">
 		<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/forms/">< Back</a>
+		{include file="includes/snippets/flash-messages.tpl"}
 		<div class="clear push-t-med"></div>
 		<p class="text-xlrg-heavy">{$form->name}</p>
 		<div class="clear"></div>
@@ -20,7 +21,20 @@
 		<form action="{$HOME}account-manager/business/form/{$form->id}/" method="post">
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="update_embeddable_form" value="{$csrf_token}">
+			{if !empty($groups)}
+				<h3 class="push-t-med">Groups</h3>
+				<p class="text-med">Add leads to these groups when they sign up</p>
+				<div class="clear push-t-med push-b-med"></div>
+				{foreach from=$groups item=group name=group_loop}
+				<input type="checkbox" id="groups{$smarty.foreach.group_loop.index}" class="cursor-pt checkbox" name="group_ids[]" value="{$group->id}" {if $group->isset}checked="checked"{/if}>
+				<label for="groups{$smarty.foreach.group_loop.index}"><b>{$group->name}</b></label>
+				<div class="clear"></div>
+				{foreachelse}
+				<p class="text-med">No Groups have been created yet. <a class="link tc-deep-blue" href="{$HOME}account-manager/business/group/new">Create your first group</a></p>
+				{/foreach}
+			{/if}
 			{if !empty($sequence_templates)}
+				<div class="push-t-med push-b-med hr-sml"></div>
 				<h3 class="push-t-med">Sequences</h3>
 				<p class="text-med">Activate follow-up sequences when leads sign up on this form</p>
 				<div class="clear push-t-med push-b-med"></div>

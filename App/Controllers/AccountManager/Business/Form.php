@@ -67,7 +67,9 @@ class Form extends Controller
         $inputValidator = $this->load( "input-validator" );
         $embeddableFormRepo = $this->load( "embeddable-form-repository" );
         $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $groupRepo = $this->load( "group-repository" );
         $embeddableFormSequenceTemplateRepo = $this->load( "embeddable-form-sequence-template-repository" );
+        $embeddableFormGroupRepo = $this->load( "embeddable-form-group-repository" );
 
         $embeddableForm = $embeddableFormRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
 
@@ -79,6 +81,17 @@ class Form extends Controller
             $sequenceTemplate->isset = false;
             if ( in_array( $sequenceTemplate->id, $sequence_template_ids ) ) {
                 $sequenceTemplate->isset = true;
+            }
+        }
+
+        $groups = $groupRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $group_ids_all = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+        $group_ids = $embeddableFormGroupRepo->get( [ "group_id" ], [ "embeddable_form_id" => $this->params[ "id" ] ], "raw" );
+
+        foreach ( $groups as $group ) {
+            $group->isset = false;
+            if ( in_array( $group->id, $group_ids ) ) {
+                $group->isset = true;
             }
         }
 
@@ -97,7 +110,7 @@ class Form extends Controller
             "update_sequence_templates" /* error index */
             )
         ) {
-            // Update LandingPageSequenceTemplate
+            // Update embeddable form sequence template
             $submitted_sequence_template_ids = [];
             if ( $input->issetField( "sequence_template_ids" ) ) {
                 $submitted_sequence_template_ids = $input->get( "sequence_template_ids" );
@@ -125,6 +138,34 @@ class Form extends Controller
                 }
             }
 
+            // Update embeddable form groups
+            $submitted_group_ids = [];
+            if ( $input->issetField( "group_ids" ) ) {
+                $submitted_group_ids = $input->get( "group_ids" );
+            }
+
+            // Create and new embeddable form group for any of the submitted
+            // group ids if it doesn't already exist
+            foreach ( $submitted_group_ids as $submitted_group_id ) {
+                if ( !in_array( $submitted_group_id, $group_ids, true ) ) {
+                    $embeddableFormGroupRepo->insert([
+                        "embeddable_form_id" => $embeddableForm->id,
+                        "group_id" => $submitted_group_id
+                    ]);
+                }
+            }
+
+            // Delete the embeddable form groups with the group ids that were not
+            // submitted
+            foreach ( $group_ids_all as $_group_id ) {
+                if (
+                    !in_array( $_group_id, $submitted_group_ids ) &&
+                    in_array( $_group_id, $group_ids, true )
+                ) {
+                    $embeddableFormGroupRepo->delete( [ "group_id", "embeddable_form_id" ], [ $_group_id, $this->params[ "id" ] ] );
+                }
+            }
+
             $this->session->addFlashMessage( "Form Updated" );
             $this->session->setFlashMessages();
 
@@ -133,7 +174,9 @@ class Form extends Controller
 
         $this->view->assign( "form", $embeddableForm );
         $this->view->assign( "sequence_templates", $sequenceTemplates );
+        $this->view->assign( "groups", $groups );
         $this->view->assign( "csrf_token", $this->session->getSession( "csrf-token" ) );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/form/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Form.php" );
