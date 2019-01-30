@@ -187,7 +187,7 @@ class Form extends Controller
             $sequenceBuilder = $this->load( "sequence-builder" );
             $embeddableFormSequenceTemplateRepo = $this->load( "embeddable-form-sequence-template-repository" );
             $embeddableFormSequenceTemplates = $embeddableFormSequenceTemplateRepo->get(
-                [ "*" ]
+                [ "*" ],
                 [ "embeddable_form_id" => $embeddableForm->id ]
             );
 
@@ -202,7 +202,7 @@ class Form extends Controller
 
             foreach ( $embeddableFormSequenceTemplates as $embeddableFormSequenceTemplate ) {
                 $sequenceBuilder->buildFromSequenceTemplate(
-                    $embeddableFormSequenceTemplate->sequence_template_id;
+                    $embeddableFormSequenceTemplate->sequence_template_id
                 );
             }
 
