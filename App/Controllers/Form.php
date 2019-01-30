@@ -40,6 +40,9 @@ class Form extends Controller
         // Get the business that owns this form
         $business = $businessRepo->getByID( $embeddableForm->business_id );
 
+        // Get phone for business
+        $business->phone = $phoneRepo->get( [ "*" ], [ "id" => $business->phone_id ], "single" );
+
         // Get all elements of this embeddable form and assign respective embeddable form
         // element type object.
         $embeddableFormElements = $embeddableFormElementRepo->getAllByEmbeddableFormID( $embeddableForm->id );
@@ -177,6 +180,29 @@ class Form extends Controller
                     $prospect_id = $prospect->id,
                     $member_id = null,
                     $appointemnt_id = null
+                );
+            }
+
+            // Embeddable Form sequences
+            $sequenceBuilder = $this->load( "sequence-builder" );
+            $embeddableFormSequenceTemplateRepo = $this->load( "embeddable-form-sequence-template-repository" );
+            $embeddableFormSequenceTemplates = $embeddableFormSequenceTemplateRepo->get(
+                [ "*" ]
+                [ "embeddable_form_id" => $embeddableForm->id ]
+            );
+
+            $sequenceBuilder->setRecipientName( $prospect->getFullName() )
+                ->setSenderName( $business->business_name )
+                ->setRecipientEmail( $prospect->email )
+                ->setSenderEmail( $business->email )
+                ->setRecipientPhoneNumber( $prospect->phone->getPhoneNumber() )
+                ->setSenderPhoneNumber( $business->phone->getPhoneNumber() )
+                ->setBusinessID( $business->id )
+                ->setProspectID( $prospect->id );
+
+            foreach ( $embeddableFormSequenceTemplates as $embeddableFormSequenceTemplate ) {
+                $sequenceBuilder->buildFromSequenceTemplate(
+                    $embeddableFormSequenceTemplate->sequence_template_id;
                 );
             }
 
