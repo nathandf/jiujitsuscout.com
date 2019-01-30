@@ -40,6 +40,11 @@ class SequenceBuilder
     private $recipient_phone_number;
     public $sequence;
     public $error_messages = [];
+    private $business_id = null;
+    private $prospect_id = null;
+    private $member_id = null;
+    private $sequence_template_sequence = null;
+
 
     public function __construct(
         SequenceRepository $sequenceRepo,
@@ -51,7 +56,11 @@ class SequenceBuilder
         EventEmailRepository $eventEmailRepo,
         EventTextMessageRepository $eventTextMessageRepo,
         TextMessageRepository $textMessageRepo,
-        EmailRepository $emailRepo
+        EmailRepository $emailRepo,
+        BusinessSequenceRepository $businessSequenceRepo,
+        ProspectSequenceRepository $prospectSequenceRepo,
+        MemberSequenceRepository $memberSequenceRepo,
+        SequenceTemplateSequenceRepository $sequenceTemplateSequenceRepo
     ) {
         $this->sequenceRepo = $sequenceRepo;
         $this->eventRepo = $eventRepo;
@@ -63,6 +72,11 @@ class SequenceBuilder
         $this->eventTextMessageRepo = $eventTextMessageRepo;
         $this->textMessageRepo = $textMessageRepo;
         $this->emailRepo = $emailRepo;
+        $this->businessSequenceRepo = $businessSequenceRepo;
+        $this->prospectSequenceRepo = $prospectSequenceRepo;
+        $this->memberSequenceRepo = $memberSequenceRepo;
+        $this->sequenceTemplateSequenceRepo = $sequenceTemplateSequenceRepo;
+
     }
 
     private function addErrorMessage( $message )
@@ -170,6 +184,24 @@ class SequenceBuilder
     private function setSequence( $sequence )
     {
         $this->sequence = $sequence;
+        return $this;
+    }
+
+    public function setBusinessID( $business_id )
+    {
+        $this->business_id = $business_id;
+        return $this;
+    }
+
+    public function setProspectID( $prospect_id )
+    {
+        $this->prospect_id = $prospect_id;
+        return $this;
+    }
+
+    public function setMemberID( $member_id )
+    {
+        $this->member_id = $member_id;
         return $this;
     }
 
@@ -303,6 +335,35 @@ class SequenceBuilder
                     break;
             }
         }
+
+        if ( !is_null( $this->business_id ) && !is_null( $sequence->id ) ) {
+            $this->businessSequenceRepo->insert([
+                "business_id" => $this->business_id,
+                "sequence_id" => $sequence->id
+            ]);
+        }
+
+        if ( !is_null( $this->prospect_id ) && !is_null( $sequence->id ) ) {
+            $this->prospectSequenceRepo->insert([
+                "prospect_id" => $this->prospect_id,
+                "sequence_id" => $sequence->id
+            ]);
+        }
+
+        if ( !is_null( $this->member_id ) && !is_null( $sequence->id ) ) {
+            $this->memberSequenceRepo->insert([
+                "member_id" => $this->member_id,
+                "sequence_id" => $sequence->id
+            ]);
+        }
+
+        if ( !is_null( $sequence_template_id ) && !is_null( $sequence->id ) ) {
+            $this->sequenceTemplateSequenceRepo->insert([
+                "sequence_template_id" => $sequence_template_id,
+                "sequence_id" => $sequence->id
+            ]);
+        }
+
 
         return true;
     }

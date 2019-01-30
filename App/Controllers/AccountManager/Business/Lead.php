@@ -830,7 +830,9 @@ class Lead extends Controller
                 ->setRecipientEmail( $this->prospect->email )
                 ->setSenderEmail( $this->business->email )
                 ->setRecipientPhoneNumber( $this->phone->getPhoneNumber() )
-                ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() );
+                ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() )
+                ->setBusinessID( $this->business->id )
+                ->setProspectID( $this->params[ "id" ] );
 
             // If a sequence was built successfully, create a prospect and business
             // sequence reference and redirect to the sequence screen
@@ -838,21 +840,6 @@ class Lead extends Controller
 
             if ( $sequenceBuilder->buildFromSequenceTemplate( $sequenceTemplate->id ) ) {
                 $sequence = $sequenceBuilder->getSequence();
-
-                $businessSequenceRepo->insert([
-                    "business_id" => $this->business->id,
-                    "sequence_id" => $sequence->id
-                ]);
-
-                $prospectSequenceRepo->insert([
-                    "prospect_id" => $this->prospect->id,
-                    "sequence_id" => $sequence->id
-                ]);
-
-                $sequenceTemplateSequenceRepo->insert([
-                    "sequence_template_id" => $sequenceTemplate->id,
-                    "sequence_id" => $sequence->id
-                ]);
 
                 // Inform user of successful sequence creation
                 $this->session->addFlashMessage( "{$this->prospect->getFullName()} has been added to sequenece '{$sequenceTemplate->name}'" );

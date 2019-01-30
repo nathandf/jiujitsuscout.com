@@ -90,9 +90,7 @@ class Form extends Controller
 
             // Handle submitted fields to create propectProperties
             foreach ( $prospectInfo as $key => $element ) {
-
                 switch ( $key ) {
-
                     case "phone_number":
                         $country = $countryRepo->get( [ "*" ], [ "iso" => $business->country ], "single" );
                         $phone = $phoneRepo->create( $country->phonecode, $input->get( $key ) );

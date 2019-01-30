@@ -613,27 +613,15 @@ class Member extends Controller
                 ->setRecipientPhoneNumber( $this->member->phone->getPhoneNumber() )
                 ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() );
 
+            $sequenceBuilder->setBusinessID( $this->business->id )
+                ->setMemberID( $this->params[ "id" ] );
+
             // If a sequence was built successfully, create a member and business
             // sequence reference and redirect to the sequence screen
             $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $input->get( "sequence_template_id" ) ], "single" );
 
             if ( $sequenceBuilder->buildFromSequenceTemplate( $sequenceTemplate->id ) ) {
                 $sequence = $sequenceBuilder->getSequence();
-
-                $businessSequenceRepo->insert([
-                    "business_id" => $this->business->id,
-                    "sequence_id" => $sequence->id
-                ]);
-
-                $memberSequenceRepo->insert([
-                    "member_id" => $this->member->id,
-                    "sequence_id" => $sequence->id
-                ]);
-
-                $sequenceTemplateSequenceRepo->insert([
-                    "sequence_template_id" => $sequenceTemplate->id,
-                    "sequence_id" => $sequence->id
-                ]);
 
                 // Inform user of successful sequence creation
                 $this->session->addFlashMessage( "{$this->member->getFullName()} has been added to sequenece '{$sequenceTemplate->name}'" );

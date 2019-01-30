@@ -14,10 +14,10 @@
 		<div class="clear push-t-med"></div>
 		<p class="text-xlrg-heavy">{$form->name}</p>
 		<div class="clear"></div>
-		<a class="btn btn-inline bg-mango text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/edit">Edit</a>
-		<a class="btn btn-inline bg-salmon text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/view">View</a>
+		<a class="btn btn-inline bg-mango text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/edit">Edit Form</a>
+		<a class="btn btn-inline bg-salmon text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/view">View Form Code</a>
 		<div class="clear"></div>
-		<div class="hr-sml"></div>
+		<div class="hr"></div>
 		<form action="{$HOME}account-manager/business/form/{$form->id}/" method="post">
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="update_embeddable_form" value="{$csrf_token}">
@@ -34,7 +34,7 @@
 				{/foreach}
 			{/if}
 			{if !empty($sequence_templates)}
-				<div class="push-t-med push-b-med hr-sml"></div>
+				<div class="hr"></div>
 				<h3 class="push-t-med">Sequences</h3>
 				<p class="text-med">Activate follow-up sequences when leads sign up on this form</p>
 				<div class="clear push-t-med push-b-med"></div>

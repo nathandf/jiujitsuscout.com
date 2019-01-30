@@ -278,9 +278,11 @@ class Group extends Controller
                 "delete_group" /* error index */
             )
         ) {
+            $embeddableFormGroupRepo = $this->load( "embeddable-form-group-repository" );
             $memberGroupRepo->delete( [ "group_id" ], [ $this->params[ "id" ] ] );
             $prospectGroupRepo->delete( [ "group_id" ], [ $this->params[ "id" ] ] );
             $landingPageGroupRepo->delete( [ "group_id" ], [ $this->params[ "id" ] ] );
+            $embeddableFormGroupRepo->delete( [ "group_id" ], [ $this->params[ "id" ] ] );
             $groupRepo->delete( [ "id" ], [ "id" => $input->get( "group_id" ) ] );
 
             $this->session->addFlashMessage( "Group '{$group->name}' Deleted" );

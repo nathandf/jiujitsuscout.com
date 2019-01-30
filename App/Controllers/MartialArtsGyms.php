@@ -717,7 +717,9 @@ class MartialArtsGyms extends Controller
                     ->setRecipientEmail( $prospect->email )
                     ->setSenderEmail( $this->business->email )
                     ->setRecipientPhoneNumber( $phone->getPhoneNumber() )
-                    ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() );
+                    ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() )
+                    ->setBusinessID( $this->business->id )
+                    ->setProspectID( $prospect->id );
 
                 // If a sequence was built successfully, create a prospect and business
                 // sequence reference and redirect to the sequence screen
@@ -725,25 +727,10 @@ class MartialArtsGyms extends Controller
 
                 if ( $sequenceBuilder->buildFromSequenceTemplate( $sequenceTemplate->id ) ) {
                     $sequence = $sequenceBuilder->getSequence();
-
-                    $businessSequenceRepo->insert([
-                        "business_id" => $this->business->id,
-                        "sequence_id" => $sequence->id
-                    ]);
-
-                    $prospectSequenceRepo->insert([
-                        "prospect_id" => $prospect->id,
-                        "sequence_id" => $sequence->id
-                    ]);
-
-                    $sequenceTemplateSequenceRepo->insert([
-                        "sequence_template_id" => $sequenceTemplate->id,
-                        "sequence_id" => $sequence->id
-                    ]);
                 }
             }
 
-            $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/thank-you" );
+            $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/promo/" . $landingPage->slug . "/thank-you" );
         }
 
         $this->view->assign( "page", $landingPage );

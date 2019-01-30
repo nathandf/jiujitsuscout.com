@@ -1098,7 +1098,11 @@ $container->register( "sequence-builder", function() use ( $container ) {
 		$container->getService( "event-email-repository" ),
 		$container->getService( "event-text-message-repository" ),
 		$container->getService( "text-message-repository" ),
-		$container->getService( "email-repository" )
+		$container->getService( "email-repository" ),
+		$container->getService( "business-sequence-repository" ),
+		$container->getService( "prospect-sequence-repository" ),
+		$container->getService( "member-sequence-repository" ),
+		$container->getService( "sequence-template-sequence-repository" )
 	);
 	return $builder;
 } );

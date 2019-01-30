@@ -24,6 +24,7 @@
 					</div>
 					<div class="floatleft">
 						<p class="text-med-heavy">{$form->name}</p>
+						<p class="text-med">{$form->offer}</p>
 					</div>
 					<div class="clear"></div>
 				</div>
