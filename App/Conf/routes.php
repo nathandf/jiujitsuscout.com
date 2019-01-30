@@ -45,6 +45,7 @@ $Router->add( "{path:[a-zA-Z0-9-/]+}/{controller:[a-zA-Z0-9-]*}/{id:[0-9]+}/{act
 
 // Form submission route
 $Router->add( "{controller:form*}/{token:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]*}" );
+$Router->add( "{controller:forms*}/{id:[0-9]+}/{token:[a-zA-Z0-9-]+}", [ "action" => "index" ] );
 
 $Router->add( "{controller}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{path:[a-zA-Z0-9-/]+}/{controller}/{action:[a-zA-Z0-9-]*}" );
