@@ -72,6 +72,8 @@ class Form extends Controller
         $embeddableFormGroupRepo = $this->load( "embeddable-form-group-repository" );
 
         $embeddableForm = $embeddableFormRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+        $embeddableForm = $embeddableFormRepo->getByID( $this->params[ "id" ] );
+        $formCode = "<iframe src=\"" . HOME . "forms/{$this->business->id}/{$embeddableForm->token}\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\" style=\"width: 100%; max-width: 600px; height: 400px;\">Loading...</iframe>";
 
         $sequenceTemplates = $sequenceTemplateRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $sequence_template_ids_all = $sequenceTemplateRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
@@ -173,6 +175,7 @@ class Form extends Controller
         }
 
         $this->view->assign( "form", $embeddableForm );
+        $this->view->assign( "form_code", htmlentities( $formCode ) );
         $this->view->assign( "sequence_templates", $sequenceTemplates );
         $this->view->assign( "groups", $groups );
         $this->view->assign( "csrf_token", $this->session->getSession( "csrf-token" ) );
@@ -194,29 +197,15 @@ class Form extends Controller
         $HTMLFormBuilder = $this->load( "html-form-builder" );
 
         $embeddableForm = $embeddableFormRepo->getByID( $this->params[ "id" ] );
-        $embeddableForm->elements = $embeddableFormElementRepo->getAllByEmbeddableFormID( $this->params[ "id" ] );
 
-        $HTMLFormBuilder->setAction( "https://www.jiujitsuscout.com/form/" . $embeddableForm->token . "/new-prospect" );
-        $HTMLFormBuilder->setToken( $embeddableForm->token );
-        $HTMLFormBuilder->setApplicationPrefix( "EmbeddableFormWidgetByJiuJitsuScout__" );
-        $HTMLFormBuilder->setJavascriptResourceURL( "https://www.jiujitsuscout.com/public/static/js/embeddable-form.js" );
-        $HTMLFormBuilder->setFormOffer( $embeddableForm->offer );
-
-        if ( !empty( $embeddableForm->elements ) ) {
-            foreach ( $embeddableForm->elements as $element ) {
-                $element->type = $embeddableFormElementTypeRepo->getByID( $element->embeddable_form_element_type_id );
-                $HTMLFormBuilder->addField(
-                    $element->type->name,
-                    $element->type->name,
-                    $required = $element->required ? true : false,
-                    $text = $element->text,
-                    $value = null
-                );
-            }
-        }
+        $HTMLFormBuilder->setAction( "https://www.jiujitsuscout.com/form/{$embeddableForm->token}/" );
+        $HTMLFormBuilder->setToken( $embeddableForm->token )
+			->setApplicationPrefix( "EmbeddableFormWidgetByJiuJitsuScout__" )
+			->setJavascriptResourceURL( "https://www.jiujitsuscout.com/public/static/js/embeddable-form.js" )
+			->setFormOffer( $embeddableForm->offer );
 
         $this->view->assign( "form", $embeddableForm );
-        $this->view->assign( "formHTML", $HTMLFormBuilder->getFormHTML() );
+        $this->view->assign( "form_code", htmlspecialchars_decode( $HTMLFormBuilder->getFormHTML() ) );
 
         $this->view->setTemplate( "account-manager/business/form/view-form.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Form.php" );
@@ -234,9 +223,7 @@ class Form extends Controller
         $embeddableFormRepo = $this->load( "embeddable-form-repository" );
 
         if ( $input->exists() && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -257,10 +244,9 @@ class Form extends Controller
                         "max" => 256
                     ]
                 ],
-
                 "create_form" /* error index */
-            ) )
-        {
+            )
+        ) {
             $embeddableForm = $embeddableFormRepo->create( $this->business->id, trim( $input->get( "name" ) ), $input->get( "offer" ) );
             $this->view->redirect( "account-manager/business/form/" . $embeddableForm->id . "/edit" );
         }

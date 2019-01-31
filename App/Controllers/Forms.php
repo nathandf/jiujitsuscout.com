@@ -28,14 +28,14 @@ class Forms extends Controller
         $embeddableForm->elements = $embeddableFormElementRepo->getAllByEmbeddableFormID( $embeddableForm->id );
 
         $HTMLFormBuilder->setAction( "https://www.jiujitsuscout.com/form/" . $embeddableForm->token . "/new-prospect" );
-        $HTMLFormBuilder->setToken( $embeddableForm->token );
-        $HTMLFormBuilder->setApplicationPrefix( "EmbeddableFormWidgetByJiuJitsuScout__" );
-        $HTMLFormBuilder->setJavascriptResourceURL( "https://www.jiujitsuscout.com/public/static/js/embeddable-form.js" );
-        $HTMLFormBuilder->setFormOffer( $embeddableForm->offer );
+        $HTMLFormBuilder->setToken( $embeddableForm->token )
+			->setApplicationPrefix( "EmbeddableFormWidgetByJiuJitsuScout__" )
+			->setJavascriptResourceURL( "https://www.jiujitsuscout.com/public/static/js/embeddable-form.js" )
+			->setFormOffer( $embeddableForm->offer );
 
         if ( !empty( $embeddableForm->elements ) ) {
             foreach ( $embeddableForm->elements as $element ) {
-                $element->type = $embeddableFormElementTypeRepo->getByID( $element->embeddable_form_element_type_id );
+                $element->type = $embeddableFormElementTypeRepo->get( [ "*" ], [ "id" => $element->embeddable_form_element_type_id ], "single" );
                 $HTMLFormBuilder->addField(
                     $element->type->name,
                     $element->type->name,
@@ -46,14 +46,14 @@ class Forms extends Controller
             }
         }
 
-        $this->view->assign( "formHTML", htmlspecialchars_decode($HTMLFormBuilder->getFormHTML()) );
+        $this->view->assign( "formHTML", htmlspecialchars_decode( $HTMLFormBuilder->getFormHTML() ) );
 
 		$this->view->setTemplate( "forms.tpl" );
 		$this->view->render( "App/Views/Home.php" );
 	}
 
-	public function iframe()
+	public function iframeAction()
 	{
-		echo( "<iframe src=\"" . HOME . "forms/46/7b8857ed2af3c6bd9be7e46497e771be\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\"></iframe>" );
+		echo( "<iframe src=\"" . HOME . "forms/46/e07d3f981b247aafdc8dd946f34e9f06\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\" style=\"width: 100%; max-width: 600px; height: 300px;\">Loading...</iframe>" );
 	}
 }
