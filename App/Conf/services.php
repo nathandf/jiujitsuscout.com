@@ -925,6 +925,7 @@ $container->register( "sms-messager", function() use ( $container ) {
 } );
 
 // Helpers
+
 $container->register( "access-control", function() {
 	$helper = new \Helpers\AccessControl;
 	return $helper;
@@ -1085,6 +1086,11 @@ $container->register( "questionnaire-dispatcher", function() use ( $container ) 
 		$container->getService( "respondent-question-answer-repository" )
 	);
 	return $dispatcher;
+} );
+
+$container->register( "quick-boi", function() {
+	$service = new \Model\Services\QuickBoi;
+	return $service;
 } );
 
 $container->register( "sequence-builder", function() use ( $container ) {

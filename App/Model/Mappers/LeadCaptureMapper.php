@@ -2,7 +2,7 @@
 
 namespace Model\Mappers;
 
-class LeadCaptureMapper extends DataMapper
+class LeadCaptureMapper
 {
 
 }

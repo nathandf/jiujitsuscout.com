@@ -51,9 +51,4 @@ class Forms extends Controller
 		$this->view->setTemplate( "forms.tpl" );
 		$this->view->render( "App/Views/Home.php" );
 	}
-
-	public function iframeAction()
-	{
-		echo( "<iframe src=\"" . HOME . "forms/46/e07d3f981b247aafdc8dd946f34e9f06\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\" style=\"width: 100%; max-width: 600px; height: 300px;\">Loading...</iframe>" );
-	}
 }

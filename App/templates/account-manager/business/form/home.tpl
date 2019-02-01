@@ -18,7 +18,7 @@
 		<a class="btn btn-inline bg-salmon text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/view">View Form</a>
 		<div class="clear"></div>
 		<p class="text-med">Form Code</p>
-		<div contenteditable id="form-html" tabindex="-1" class="inp text-sml">
+		<div contenteditable id="form-html" tabindex="-1" class="inp text-med-heavy">
 			{$form_code}
 		</div>
 		<div class="hr"></div>
