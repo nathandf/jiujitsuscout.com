@@ -30,7 +30,7 @@ class JjsAdmin extends Controller
         $resultsRepo = $this->load( "result-repository" );
         $phoneRepo = $this->load( "phone-repository" );
 
-        $accounts = $accountRepo->get[ "*" ]
+        $accounts = $accountRepo->get( [ "*" ] );
         $businesses = $businessRepo->getAll();
         $prospects = $prospectRepo->getAll();
         $noResultProspects = [];

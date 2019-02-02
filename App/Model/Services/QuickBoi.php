@@ -8,6 +8,7 @@ class QuickBoi
     private $application_namespace;
     private $entity_namepsace;
     private $entity_class_name;
+    private $entity_properties = [];
     private $mapper_namespace;
     private $mapper_class_name;
     private $repository_class_name;
@@ -158,7 +159,7 @@ class QuickBoi
         $filename = $this->formatDirnameFromClassName( $this->getApplicationNamespace() ) . "/" . $this->formatDirnameFromClassName( $this->entity_namespace ) . "/" . $this->entity_class_name . ".php";
         $filename = "./" . preg_replace( "/[\/]+/", "/", $filename );
 
-        $contents = "<?php\n\nnamespace {$this->getEntityNamespace()};\n\nclass {$this->entity_class_name}\n{\n\n}";
+        $contents = "<?php\n\nnamespace {$this->getEntityNamespace()};\n\nuse Contracts\EntityInterface;\n\nclass {$this->entity_class_name} implements EntityInterface\n{\n\n}";
 
         $this->createFile( $filename, $contents );
     }
@@ -168,7 +169,7 @@ class QuickBoi
         $filename = $this->formatDirnameFromClassName( $this->getApplicationNamespace() ) . "/" . $this->formatDirnameFromClassName( $this->repository_namespace ) . "/" . $this->repository_class_name . ".php";
         $filename = "./" . preg_replace( "/[\/]+/", "/", $filename );
 
-        $contents = "<?php\n\nnamespace {$this->getRepositoryNamespace()};\n\nclass {$this->repository_class_name}\n{\n\n}";
+        $contents = "<?php\n\nnamespace {$this->getRepositoryNamespace()};\n\nclass {$this->repository_class_name} extends Repository\n{\n\n}";
 
         $this->createFile( $filename, $contents );
     }
@@ -178,8 +179,18 @@ class QuickBoi
         $filename = $this->formatDirnameFromClassName( $this->getApplicationNamespace() ) . "/" . $this->formatDirnameFromClassName( $this->mapper_namespace ) . "/" . $this->mapper_class_name . ".php";
         $filename = "./" . preg_replace( "/[\/]+/", "/", $filename );
 
-        $contents = "<?php\n\nnamespace {$this->getMapperNamespace()};\n\nclass {$this->mapper_class_name}\n{\n\n}";
+        $contents = "<?php\n\nnamespace {$this->getMapperNamespace()};\n\nclass {$this->mapper_class_name} extends DataMapper\n{\n\n}";
 
         $this->createFile( $filename, $contents );
+    }
+
+    public function addEntityPropery( array $property )
+    {
+        $this->entity_properties[] = $property;
+    }
+
+    public function getEntityProp()
+    {
+        return $this->entity_properties;
     }
 }
