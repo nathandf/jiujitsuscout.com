@@ -639,24 +639,23 @@ class AccountManager extends Controller
 			// Get all businesses associated with this account. The quantity
 			// of the orderProducts will reflect the number of businesses
 			// returned
-			$businesses = $businessRepo->getAllByAccountID( $this->account->id );
+			$businesses = $businessRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
 
 			// Verify that all product ids returned are valid products
 			$product_ids = [];
 			$products = [];
 			$all_product_ids = [];
-			$all_products = $productRepo->getAll();
+			$all_products = $productRepo->get( [ "*" ] );
 			$product_id = $input->get( "product_id" );
 			$product_ids[] = $product_id;
 
 			// Quantity will be number of businesses
 			$quantity = count( $businesses );
-
 			// Add multiple instances of the same product to the
 			// product ids array.Create an array of the products and
 			// dynamically add a description with the related businesses
 			foreach ( $product_ids as $product_id ) {
-				$product = $productRepo->getByID( $product_id );
+				$product = $productRepo->get( [ "*" ], [ "id" => $product_id ], "single" );
 				$original_description = $product->description;
 				// Reset product description
 				$product->description = null;
@@ -696,7 +695,10 @@ class AccountManager extends Controller
 			// the products to the order. If not, create an new order
 			$order = $orderRepo->getUnpaidOrderByCustomerID( $customer->id );
 			if ( is_null( $order->id ) ) {
-				$order = $orderRepo->create( $customer->id, $paid = 0 );
+				$order = $orderRepo->insert([
+					"customer_id" => $customer->id,
+					"paid" => 0 
+				]);
 			}
 
 			// Create orderProducts for this order
