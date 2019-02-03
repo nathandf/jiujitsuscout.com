@@ -27,6 +27,7 @@ class Form extends Controller
         $userMailer = $this->load( "user-mailer" );
         $request = $this->load( "request" );
         $userRepo = $this->load( "user-repository" );
+        $leadCaptureBuilder = $this->load( "lead-capture-builder" );
 
         $embeddableForm = $embeddableFormRepo->getByToken( $this->params[ "token" ] );
 
@@ -149,6 +150,12 @@ class Form extends Controller
 
             // Get new prospect
             $prospect = $prospectRegistrar->getProspect();
+
+            // Record lead capture
+            $leadCaptureBuilder->setProspectID( $prospect->id )
+                ->setEmbeddableFormID( $embeddableForm->id )
+                ->build();
+
             // Assign phone to prospect
             $prospect->phone = $phoneRepo->getByID( $prospect->phone_id );
 

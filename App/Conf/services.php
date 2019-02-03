@@ -359,6 +359,14 @@ $container->register( "embeddable-form-group-repository", function() use ( $cont
 	return $repo;
 } );
 
+$container->register( "embeddable-form-lead-capture-repository", function() use ( $container ) {
+	$repo = new \Model\Services\EmbeddableFormLeadCaptureRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "embeddable-form-repository", function() use ( $container ) {
 	$repo = new \Model\Services\EmbeddableFormRepository(
 	    $container->getService( "dao" ),
@@ -496,6 +504,14 @@ $container->register( "landing-page-group-repository", function() use ( $contain
 	return $repo;
 } );
 
+$container->register( "landing-page-lead-capture-repository", function() use ( $container ) {
+	$repo = new \Model\Services\LandingPageLeadCaptureRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "landing-page-sequence-template-repository", function() use ( $container ) {
 	$repo = new \Model\Services\LandingPageSequenceTemplateRepository(
 	    $container->getService( "dao" ),
@@ -508,6 +524,24 @@ $container->register( "landing-page-template-repository", function() use ( $cont
 	$repo = new \Model\Services\LandingPageTemplateRepository(
 	    $container->getService( "dao" ),
 	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "lead-capture-repository", function() use ( $container ) {
+	$repo = new \Model\Services\LeadCaptureRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "lead-capture-builder", function() use ( $container ) {
+	$repo = new \Model\Services\LeadCaptureBuilder(
+	    $container->getService( "lead-capture-repository" ),
+	    $container->getService( "landing-page-lead-capture-repository" ),
+		$container->getService( "embeddable-form-lead-capture-repository" ),
+		$container->getService( "profile-lead-capture-repository" )
 	);
 	return $repo;
 } );
@@ -594,6 +628,14 @@ $container->register( "product-repository", function() use ( $container ) {
 
 $container->register( "product-account-type-repository", function() use ( $container ) {
 	$repo = new \Model\Services\ProductAccountTypeRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "profile-lead-capture-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ProfileLeadCaptureRepository(
 	    $container->getService( "dao" ),
 	    $container->getService( "entity-factory" )
 	);

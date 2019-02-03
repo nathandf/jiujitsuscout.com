@@ -172,6 +172,7 @@ class MartialArtsGyms extends Controller
             $faqAnswerRepo = $this->load( "faq-answer-repository" );
             $faStars = $this->load( "fa-stars" );
             $videoRepo = $this->load( "video-repository" );
+            $leadCaptureBuilder = $this->load( "lead-capture-builder" );
 
             if ( isset( $this->params[ "id" ] ) ) {
                 // Get business by the unique URL slug
@@ -348,8 +349,16 @@ class MartialArtsGyms extends Controller
 
                 $prospect = $prospectRegistrar->getProspect();
 
+                // Create a lead capture reference
+                $leadCaptureBuilder->isProfile()
+                    ->setProspectID( $prospect->id )
+                    ->setBusinessID( $this->business->id )
+                    ->build();
+
                 // Load the respondent object
-                $respondent = $respondentRepo->getByToken( $this->session->getSession( "respondent-token" ) );
+                $respondent = $respondentRepo->getByToken(
+                    $this->session->getSession( "respondent-token" )
+                );
 
                 $respondentRepo->updateProspectIDByID( $respondent->id, $prospect->id );
 
@@ -374,7 +383,8 @@ class MartialArtsGyms extends Controller
                             $users[] = $userRepo->getByID( $user_id );
                         }
 
-                        // Send lead caputre notification to all users in user_notification_recipient_ids array
+                        // Send lead caputre notification to all users in
+                        // user_notification_recipient_ids array
                         foreach ( $users as $user ) {
                             $userMailer->sendLeadCaptureNotification(
                                 $user->first_name,
@@ -570,6 +580,7 @@ class MartialArtsGyms extends Controller
         $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
         $landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
         $landingPageRepo = $this->load( "landing-page-repository" );
+        $leadCaptureBuilder = $this->load( "lead-capture-builder" );
 
         $this->view->assign( "business", $this->business );
         $this->requireParam( "slug" );
@@ -656,6 +667,11 @@ class MartialArtsGyms extends Controller
                 "phone_id" => $phone->id,
                 "source" => $landingPage->name
             ]);
+
+            // Create lead capture reference
+            $leadCaptureBuilder->setProspectID( $prospect->id )
+                ->setLandingPageID( $landingPage->id )
+                ->build();
 
             $userRepo = $this->load( "user-repository" );
             $userMailer = $this->load( "user-mailer" );

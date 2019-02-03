@@ -25,9 +25,9 @@ class QuickBoi
     public function buildModel( $model_name )
     {
         $this->buildModelNames( $model_name );
-        // $this->createEntityFile();
-        // $this->createRepositoryFile();
-        // $this->createMapperFile();
+        $this->createEntityFile();
+        $this->createRepositoryFile();
+        $this->createMapperFile();
         $this->createTable();
         $this->logQuery();
 
