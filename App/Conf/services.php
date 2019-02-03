@@ -1088,8 +1088,10 @@ $container->register( "questionnaire-dispatcher", function() use ( $container ) 
 	return $dispatcher;
 } );
 
-$container->register( "quick-boi", function() {
-	$service = new \Model\Services\QuickBoi;
+$container->register( "quick-boi", function() use ( $container ) {
+	$service = new \Model\Services\QuickBoi(
+		$container->getService( "dao" )
+	);
 	return $service;
 } );
 

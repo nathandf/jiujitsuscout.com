@@ -4,6 +4,7 @@ namespace Model\Services;
 
 class QuickBoi
 {
+    private $dao;
     private $id_string;
     private $application_namespace;
     private $entity_namepsace;
@@ -14,12 +15,18 @@ class QuickBoi
     private $repository_class_name;
     private $repository_namespace;
 
+    public function __construct( \PDO $dao )
+    {
+        $this->dao = $dao;
+    }
+
     public function buildModel( $model_name )
     {
         $this->buildModelNames( $model_name );
         $this->createEntityFile();
         $this->createRepositoryFile();
         $this->createMapperFile();
+        $this->createTable();
     }
 
     public function buildModelNames( $model_name )
@@ -159,7 +166,14 @@ class QuickBoi
         $filename = $this->formatDirnameFromClassName( $this->getApplicationNamespace() ) . "/" . $this->formatDirnameFromClassName( $this->entity_namespace ) . "/" . $this->entity_class_name . ".php";
         $filename = "./" . preg_replace( "/[\/]+/", "/", $filename );
 
-        $contents = "<?php\n\nnamespace {$this->getEntityNamespace()};\n\nuse Contracts\EntityInterface;\n\nclass {$this->entity_class_name} implements EntityInterface\n{\n\n}";
+        $property_string = "";
+        foreach ( $this->entity_properties as $key => $property ) {
+            if ( array_key_exists( "property_name", $property ) ) {
+                $property_string = $property_string . "\tpublic $" . $property[ "property_name" ] . ";\n";
+            }
+        }
+
+        $contents = "<?php\n\nnamespace {$this->getEntityNamespace()};\n\nuse Contracts\EntityInterface;\n\nclass {$this->entity_class_name} implements EntityInterface\n{\n{$property_string}}";
 
         $this->createFile( $filename, $contents );
     }
@@ -192,5 +206,81 @@ class QuickBoi
     public function getEntityProp()
     {
         return $this->entity_properties;
+    }
+
+    public function formatTableName( $string )
+    {
+        return strtolower( str_replace( "-", "_", $string ) );
+    }
+
+    private function formatColumnName( $column_name )
+    {
+        $column_name = preg_replace( "/[_]+/", "_", str_replace( "-", "_", str_replace( " ", "_", strtolower( trim( $column_name ) ) ) ) );
+        return $column_name;
+    }
+
+    public function setEngine( $engine )
+    {
+        $this->engine = $engine;
+    }
+
+    public function getEngine()
+    {
+        if ( isset( $this->engine ) === false ) {
+            throw new \Exception( "Engine has not been chosen" );
+        }
+
+        return $this->engine;
+    }
+
+    private function buildQueryFromProperties( array $properties )
+    {
+        $query = "CREATE TABLE `{$this->formatTableName( $this->id_string )}` ( {*columns*}{*primary_key*}) engine = {$this->getEngine()}";
+        $columns = "";
+        foreach ( $properties as $property ) {
+            $column = $column_name = $data_type = $is_primary = $auto_increment = "";
+            $is_null = "NOT NULL";
+            foreach ( $property as $key => $property_component ) {
+                switch ( $key ) {
+                    case "property_name":
+                        $column_name = $this->formatColumnName( $property_component );
+                        break;
+                    case "data_type":
+                        $data_type = $property_component;
+                        break;
+                    case "value_length":
+                        if ( $property_component != "" ) {
+                            $data_type = $data_type . "({$property_component})";
+                        }
+                        break;
+                    case "is_null":
+                        $is_null = "NULL";
+                        break;
+                    case "auto_increment";
+                        $auto_increment = " AUTO_INCREMENT";
+                        break;
+                }
+
+                $column = "`{$column_name}` {$data_type} {$is_null}{$auto_increment} , ";
+
+                if ( array_key_exists( "is_primary", $property ) ) {
+                    $query = preg_replace( "/\{\*primary_key\*\}/", "PRIMARY KEY (`{$column_name}`)", $query );
+                }
+            }
+
+            $columns = $columns . $column;
+        }
+
+        $query = preg_replace( "/\{\*columns\*\}/", $columns, $query );
+
+        return $query;
+    }
+
+    private function createTable()
+    {
+        $query = $this->buildQueryFromProperties( $this->entity_properties );
+        $db = $this->dao;
+        $sql = $db->prepare( $query );
+        $sql->execute();
     }
 }

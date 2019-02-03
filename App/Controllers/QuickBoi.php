@@ -8,7 +8,6 @@ class QuickBoi extends Controller
 {
     public function indexAction()
 	{
-		$db = $this->load( "dao" );
 		$input = $this->load( "input" );
 		$inputValidator = $this->load( "input-validator" );
 		$quickBoi = $this->load( "quick-boi" );
@@ -32,16 +31,14 @@ class QuickBoi extends Controller
 				"quick_boi"
 			)
 		) {
+            $quickBoi->setEngine( $input->get( "engine" ) );
+
             $property_indicies = $input->get( "property_indicies" );
             if ( is_array( $property_indicies ) ) {
                 foreach ( $property_indicies as $index ) {
                     $quickBoi->addEntityPropery( $input->get( "property_row_{$index}" ) );
                 }
             }
-
-            vdumpd($quickBoi->getEntityProp());
-
-            die();
 
 			$quickBoi->buildModel( $input->get( "model_name" ) );
 
