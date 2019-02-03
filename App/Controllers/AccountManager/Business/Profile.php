@@ -261,6 +261,7 @@ class Profile extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $businessRepo = $this->load( "business-repository" );
 
         if ( $input->exists() && $input->issetField( "update_message" ) && $inputValidator->validate(
                 $input,
@@ -286,7 +287,7 @@ class Profile extends Controller
                 "update_site_message"
             ) )
         {
-            $this->businessRepo->updateSiteMessageByID( $this->business->id, $input->get( "title" ), $input->get( "message" ) );
+            $businessRepo->updateSiteMessageByID( $this->business->id, $input->get( "title" ), $input->get( "message" ) );
             $this->view->redirect( "account-manager/business/profile/message" );
         }
 

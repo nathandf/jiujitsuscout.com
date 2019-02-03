@@ -66,6 +66,7 @@ $config[ "db" ] = [
         "password" => "XHN8yxNzpN2l",
     ]
 ];
+include('server_vars.php');
 
 // Google APIs
 $config[ "google" ] = [

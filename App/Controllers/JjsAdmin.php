@@ -29,8 +29,7 @@ class JjsAdmin extends Controller
         $searchRepo = $this->load( "search-repository" );
         $resultsRepo = $this->load( "result-repository" );
         $phoneRepo = $this->load( "phone-repository" );
-
-        $accounts = $accountRepo->get[ "*" ]
+        $accounts = $accountRepo->get[ "*" ];
         $businesses = $businessRepo->getAll();
         $prospects = $prospectRepo->getAll();
         $noResultProspects = [];
@@ -137,7 +136,6 @@ class JjsAdmin extends Controller
     {
         $businessRepo = $this->load( "business-repository" );
         $phoneRepo = $this->load( "phone-repository" );
-
 
         $businesses = $businessRepo->getAll();
 

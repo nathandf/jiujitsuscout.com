@@ -17,12 +17,15 @@ class GoogleGeocoder implements GeocoderInterface
 
 	public function getGeoInfoByAddress( $address )
 	{
+            
 		$address = urlencode($address );
 
 		$url = "{$this->gateway}?address={$address}&key={$this->api_key}";
 
 		$curl = curl_init();
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER,false );
+        
         curl_setopt( $curl, CURLOPT_URL, $url );
 
         $contents = curl_exec( $curl );
