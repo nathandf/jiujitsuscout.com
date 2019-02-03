@@ -66,7 +66,9 @@ $config[ "db" ] = [
         "password" => "XHN8yxNzpN2l",
     ]
 ];
-include('server_vars.php');
+
+// Local database vars
+include( "server-vars.php" );
 
 // Google APIs
 $config[ "google" ] = [
