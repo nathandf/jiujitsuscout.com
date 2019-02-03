@@ -341,13 +341,13 @@ class QuickBoi
         $query = $this->getQuery();
 
         if ( !file_exists( $this->getQueryLogFile() ) ) {
-            file_put_contents( $this->getQueryLogFile(), "\n" . $query );
+            file_put_contents( $this->getQueryLogFile(), "\n" . $query . ";" );
 
             return;
         }
 
         $content = file_get_contents( $this->getQueryLogFile() );
-        $content .= "\n" . $query;
+        $content .= "\n" . $query. ";";
 
         file_put_contents( $this->getQueryLogFile(), $content );
     }
