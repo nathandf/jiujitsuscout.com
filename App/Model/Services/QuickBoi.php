@@ -14,6 +14,8 @@ class QuickBoi
     private $mapper_class_name;
     private $repository_class_name;
     private $repository_namespace;
+    private $query;
+    private $query_log_file;
 
     public function __construct( \PDO $dao )
     {
@@ -23,10 +25,13 @@ class QuickBoi
     public function buildModel( $model_name )
     {
         $this->buildModelNames( $model_name );
-        $this->createEntityFile();
-        $this->createRepositoryFile();
-        $this->createMapperFile();
+        // $this->createEntityFile();
+        // $this->createRepositoryFile();
+        // $this->createMapperFile();
         $this->createTable();
+        $this->logQuery();
+
+        return;
     }
 
     public function buildModelNames( $model_name )
@@ -44,6 +49,8 @@ class QuickBoi
         $this->setEntityClassName( $this->formatClassNameFromIdString( $id_string ) )
             ->setRepositoryClassName( $this->formatClassNameFromIdString( $id_string ) )
             ->setMapperClassName( $this->formatClassNameFromIdString( $id_string ) );
+
+        return;
     }
 
     public function setApplicationNamespace( $namespace )
@@ -159,6 +166,8 @@ class QuickBoi
     {
         $this->checkFile( $filename, $contents );
         file_put_contents( $filename, $contents );
+
+        return;
     }
 
     private function createEntityFile()
@@ -176,6 +185,8 @@ class QuickBoi
         $contents = "<?php\n\nnamespace {$this->getEntityNamespace()};\n\nuse Contracts\EntityInterface;\n\nclass {$this->entity_class_name} implements EntityInterface\n{\n{$property_string}}";
 
         $this->createFile( $filename, $contents );
+
+        return;
     }
 
     private function createRepositoryFile()
@@ -186,6 +197,8 @@ class QuickBoi
         $contents = "<?php\n\nnamespace {$this->getRepositoryNamespace()};\n\nclass {$this->repository_class_name} extends Repository\n{\n\n}";
 
         $this->createFile( $filename, $contents );
+
+        return;
     }
 
     private function createMapperFile()
@@ -196,11 +209,15 @@ class QuickBoi
         $contents = "<?php\n\nnamespace {$this->getMapperNamespace()};\n\nclass {$this->mapper_class_name} extends DataMapper\n{\n\n}";
 
         $this->createFile( $filename, $contents );
+
+        return;
     }
 
     public function addEntityPropery( array $property )
     {
         $this->entity_properties[] = $property;
+
+        return;
     }
 
     public function getEntityProp()
@@ -222,6 +239,7 @@ class QuickBoi
     public function setEngine( $engine )
     {
         $this->engine = $engine;
+        return $this;
     }
 
     public function getEngine()
@@ -231,6 +249,21 @@ class QuickBoi
         }
 
         return $this->engine;
+    }
+
+    private function setQuery( $query )
+    {
+        $this->query = $query;
+        return $this;
+    }
+
+    private function getQuery()
+    {
+        if ( isset( $this->query ) === false ) {
+            throw new \Exception( "Query has not been created" );
+        }
+
+        return $this->query;
     }
 
     private function buildQueryFromProperties( array $properties )
@@ -279,8 +312,43 @@ class QuickBoi
     private function createTable()
     {
         $query = $this->buildQueryFromProperties( $this->entity_properties );
+        $this->setQuery( $query );
+
         $db = $this->dao;
         $sql = $db->prepare( $query );
         $sql->execute();
+
+        return;
+    }
+
+    public function setQueryLogFile( $filename )
+    {
+        $this->query_log_file = $filename;
+        return $this;
+    }
+
+    public function getQueryLogFile()
+    {
+        if ( isset( $this->query_log_file ) === false ) {
+            throw new \Exception( "Database updates filename not set." );
+        }
+
+        return $this->query_log_file;
+    }
+
+    private function logQuery()
+    {
+        $query = $this->getQuery();
+
+        if ( !file_exists( $this->getQueryLogFile() ) ) {
+            file_put_contents( $this->getQueryLogFile(), "\n" . $query );
+
+            return;
+        }
+
+        $content = file_get_contents( $this->getQueryLogFile() );
+        $content .= "\n" . $query;
+
+        file_put_contents( $this->getQueryLogFile(), $content );
     }
 }

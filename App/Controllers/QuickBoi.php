@@ -40,6 +40,8 @@ class QuickBoi extends Controller
                 }
             }
 
+            $quickBoi->setQueryLogFile( "production-updates.sql" );
+
 			$quickBoi->buildModel( $input->get( "model_name" ) );
 
 			$this->session->addFlashMessage( "Model successfully created: " . $input->get( "model_name" ) );
