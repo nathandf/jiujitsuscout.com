@@ -2,10 +2,8 @@
 
 namespace Model;
 
-use Contracts\EntityInterface;
-
-class LeadCapture implements EntityInterface
+class LeadCapture
 {
-    public $id;
-    public $prospect_id;
+	public $id;
+	public $propsect_id;
 }

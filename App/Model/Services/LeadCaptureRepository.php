@@ -2,7 +2,7 @@
 
 namespace Model\Services;
 
-class LeadCaptureRepository extends Repository
+class LeadCaptureRepository
 {
 
 }

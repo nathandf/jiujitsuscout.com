@@ -39,7 +39,7 @@ class HTMLFormBuilder
 	{
 		if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
 			$this->action = $url;
-			return;
+			return $this;
 		}
 
 		throw new \Exception( "The action you provided is not a valid URL" );
@@ -48,21 +48,25 @@ class HTMLFormBuilder
 	public function setToken( $token )
 	{
 		$this->token = $token;
+		return $this;
 	}
 
 	public function setApplicationPrefix( $prefix )
 	{
 		$this->application_prefix = $prefix;
+		return $this;
 	}
 
 	public function setJavascriptResourceURL( $url )
 	{
 		$this->javascript_resource_url = $url;
+		return $this;
 	}
 
 	public function setFormOffer( $form_offer )
 	{
 		$this->form_offer = $form_offer;
+		return $this;
 	}
 
 	public function addField( $name, $type, $required = false, $text = null, $value = null )
@@ -84,7 +88,7 @@ class HTMLFormBuilder
 		if ( $type == "message" ) {
 			$this->form_body = $this->form_body . '
 			<div class="{{application_prefix}}field-container">
-				<label class="{{application_prefix}}form-label" for="">' . ucwords( $name ) . '</label>' . $requiredIndicator . '
+				<label class="{{application_prefix}}form-input-label" for="">' . ucwords( $name ) . '</label>' . $requiredIndicator . '
 				<br/>
 				<textarea autocomplete="off" class="{{application_prefix}}form-textarea" id=""' . $requiredAttribute . ' name="' . preg_replace( "/[\s]+/", "_", strtolower( trim( $name ) ) ) . '"/></textarea>
 			</div>';
@@ -99,7 +103,7 @@ class HTMLFormBuilder
 			}
 			$this->form_body = $this->form_body . '
 			<div class="{{application_prefix}}field-container">
-				<label class="{{application_prefix}}form-label" for="">' . ucwords( $name ) . '</label>' . $requiredIndicator . '
+				<label class="{{application_prefix}}form-input-label" for="">' . ucwords( $name ) . '</label>' . $requiredIndicator . '
 				<br/>
 				<input autocomplete="off" class="{{application_prefix}}form-input" id=""' . $requiredAttribute . ' name="' . preg_replace( "/[\s]+/", "_", strtolower( trim( $name ) ) ) . '" type="' . $inputType . '" />
 			</div>';

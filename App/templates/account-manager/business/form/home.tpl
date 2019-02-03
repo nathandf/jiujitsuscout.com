@@ -15,8 +15,12 @@
 		<p class="text-xlrg-heavy">{$form->name}</p>
 		<div class="clear"></div>
 		<a class="btn btn-inline bg-mango text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/edit">Edit Form</a>
-		<a class="btn btn-inline bg-salmon text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/view">View Form Code</a>
+		<a class="btn btn-inline bg-salmon text-med push-t-med" href="{$HOME}account-manager/business/form/{$form->id}/view">View Form</a>
 		<div class="clear"></div>
+		<p class="text-med">Form Code</p>
+		<div contenteditable id="form-html" tabindex="-1" class="inp text-med-heavy">
+			{$form_code}
+		</div>
 		<div class="hr"></div>
 		<form action="{$HOME}account-manager/business/form/{$form->id}/" method="post">
 			<input type="hidden" name="token" value="{$csrf_token}">
