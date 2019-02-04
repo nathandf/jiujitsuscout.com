@@ -64,7 +64,7 @@ class AccountManager extends Controller
 		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
 		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
-		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
 		// Set data for the view
 		$this->view->assign( "total_users", $total_users );
@@ -96,7 +96,7 @@ class AccountManager extends Controller
 		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
 		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
-		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
 		// processing login form validation
 		if ( $input->exists() && $inputValidator->validate(
@@ -185,7 +185,7 @@ class AccountManager extends Controller
 		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
 		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
-		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
 		// Load input helpers
 		$input = $this->load( "input" );
@@ -483,7 +483,7 @@ class AccountManager extends Controller
 		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
 		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
-		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
 		if ( $input->exists() && $inputValidator->validate(
 
@@ -554,7 +554,7 @@ class AccountManager extends Controller
 		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
 		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
-		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
 		if ( $input->exists( "get" ) && $inputValidator->validate(
 
@@ -664,7 +664,7 @@ class AccountManager extends Controller
 		$facebookPixel->addEvent([
 			"ViewContent"
 		]);
-		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
 		if ( $input->exists() && $inputValidator->validate(
 
@@ -788,7 +788,7 @@ class AccountManager extends Controller
 		$facebookPixelBuilder->addEvent([
 			"ViewContent"
 		]);
-		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
 		$this->view->setTemplate( "account-manager/add-credit.tpl" );
 		$this->view->render( "App/Views/AccountManager.php" );

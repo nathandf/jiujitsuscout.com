@@ -56,7 +56,7 @@ class User extends Controller
 		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
 		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
-		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         // Set data for the view
         $this->view->assign( "account", $this->account );
