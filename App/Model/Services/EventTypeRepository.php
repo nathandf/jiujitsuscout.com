@@ -2,23 +2,22 @@
 
 namespace Model\Services;
 
-class EventTypeRepository extends Service
+class EventTypeRepository extends Repository
 {
+    public function getAll()
+    {
+        $mapper = $this->getMapper();
+        $eventTypes = $mapper->mapAll();
 
-  public function getAll()
-  {
-    $eventTypeMapper = new \Model\Mappers\EventTypeMapper( $this->container );
-    $eventTypes = $eventTypeMapper->mapAll();
-    return $eventTypes;
-  }
+        return $eventTypes;
+    }
 
-  public function getByID( $id )
-  {
-    $eventType = new \Model\EventType();
-    $eventTypeMapper = new \Model\Mappers\EventTypeMapper( $this->container );
-    $eventTypeMapper->mapFromID( $eventType, $id );
+    public function getByID( $id )
+    {
+        $mapper = $this->getMapper();
+        $eventType = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $eventType, $id );
 
-    return $eventType;
-  }
-
+        return $eventType;
+    }
 }

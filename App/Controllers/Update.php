@@ -6,54 +6,47 @@ use \Core\Controller;
 
 class Update extends Controller
 {
+	public function logosAction()
+	{
+		// TODO Update logo_image_id using the logo_filename property of the business
+		$businessRepo = $this->load( "business-repository" );
+		$imageRepo = $this->load( "image-repository" );
 
-    public function partnerDataTransferAction()
-    {
-        set_time_limit(600);
-        // $prospectRegistrar = $this->load( "prospect-registrar" );
-        // $prospectRepo = $this->load( "prospect-repository" );
-        // $phoneRepo = $this->load( "phone-repository" );
-        // $businessRepo = $this->load( "business-repository" );
-        // $reviewRepo = $this->load( "review-repository" );
-        //
-        // $dm = new \Model\Mappers\DataMapperTEMP($this->container);
-        //
-        // $ratings_reviews = $dm->getAll( "ratings_reviews" );
-        // $leads = $dm->getAll( "leads" );
-        // $tracking_codes = $dm->getAll( "partner_tracking_codes" );
-        // $businesses = $businessRepo->getAll();
-        //
-        // foreach ( $businesses as $business ) {
-        //     foreach ( $tracking_codes as $tc ) {
-        //         if ( $tc[ "owner" ] == $business->business_name ) {
-        //             $businessRepo->updateFacebookPixelIDBYID( trim( $tc[ "tracking_code_id" ] ), $business->id );
-        //         }
-        //     }
-        //     foreach ( $ratings_reviews as $rr ) {
-        //         if ( $rr[ "gym_name" ] == $business->business_name ) {
-        //             $reviewRepo->create(
-        //                 $business->id,
-        //                 $rr[ "name" ],
-        //                 $rr[ "email" ],
-        //                 $rr[ "review" ],
-        //                 $rr[ "rating" ],
-        //                 strtotime( $rr[ "timestamp" ] )
-        //             );
-        //         }
-        //     }
-        //     foreach ( $leads as $lead ) {
-        //         if ( $lead[ "gym_name" ] == $business->business_name ) {
-        //             $prospect = $prospectRegistrar->build();
-        //             $prospect->business_id = $business->id;
-        //             $prospect->first_name = $lead[ "name" ];
-        //             $prospect->last_name = "";
-        //             $prospect->email = $lead[ "email" ];
-        //             $prospect->source = $lead[ "source" ];
-        //             $phone = $phoneRepo->create( 1, preg_replace( "/[^0-9,.]/", "", $lead[ "phone_number" ] ) );
-        //             $prospect->phone_id = $phone->id;
-        //             $prospectRegistrar->register( $prospect );
-        //         }
-        //     }
-        // }
-    }
+		$businesses = $businessRepo->get( [ "*" ] );
+
+		foreach ( $businesses as $business ) {
+			echo( $business->business_name . "<br>" );
+			if (
+				!is_null( $business->logo_filename ) &&
+				$business->logo_filename != "default_logo.jpg" &&
+				$business->logo_image_id == null
+			) {
+				$image = $imageRepo->get( [ "*" ], [ "filename" => $business->logo_filename ], "single" );
+				if ( !is_null( $image ) ) {
+					$businessRepo->update(
+						[ "logo_image_id" => $image->id ],
+						[ "id" => $business->id ]
+					);
+					echo( "logo image id updated<br>" );
+				} else {
+					$now = time();
+					$image = $imageRepo->insert([
+						"business_id" => $business->id,
+						"filename" => $business->logo_filename,
+						"created_at" => $now,
+						"updated_at" => $now
+					]);
+					echo( "new image created - ID: {$image->id} - FILENAME: {$image->filename}<br>" );
+					$businessRepo->update(
+						[ "logo_image_id" => $image->id ],
+						[ "id" => $business->id ]
+					);
+					echo( "logo image id updated<br>" );
+				}
+			} else {
+				echo( "No logo or logo image id already exists" );
+			}
+			echo("<br><br>");
+		}
+	}
 }

@@ -3,8 +3,28 @@ body {
 	background: #EEF2F5;
 }
 
+.modal-nav-button:hover {
+	border-bottom: 2px solid #0667D0;
+	background: red;
+}
+
+.action-button-container {
+	box-sizing: border-box;
+	position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+	background-color: rgba( 256,256,256,.5 );
+	width: 100%;
+}
+
 .primary-nav-button-text {
-	font-size: 25px;
+	font-size: 2vw;
+	letter-spacing: -1px;
+}
+
+.primary-nav-button-icon {
+	font-size: 24px;
 }
 
 .leads {
@@ -247,7 +267,6 @@ header {
 	text-decoration: none;
 	font-family: 'Source Sans Pro', sans-serif;
 	width: 250px;
-	height: 84px;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	box-sizing: border-box;
@@ -306,12 +325,17 @@ header {
 	margin-right: 15px;
 	margin-top: 20px;
 }
+.lead-icon-container {
+	height: 100%;
+	box-sizing: border-box;
+	display: table;
+}
 
 .lead-icon {
 	box-sizing: border-box;
 	padding-left: 1px;
 	float: left;
-	margin-top: 13px;
+	margin-top: 0px;
 	margin-right: 10px;
 	margin-left: 10px;
 	color: #fff;
@@ -480,12 +504,6 @@ header {
 	display: none;
 }
 
-@media screen and (max-width: 600px) {
-	.primary-nav-button-text {
-		display: none;
-	}
-}
-
 @media screen and (max-width: 700px) {
 	.de_tab {
 		display: none;
@@ -536,14 +554,25 @@ header {
 }
 
 @media screen and (max-width: 920px) {
+	.primary-nav-button-icon {
+		font-size: 22px;
+	}
+
 	.date-tag {
 		text-align: center;
 	}
+
 	.lead-container {
 		display: block;
 		margin: 0 auto;
 		margin-bottom: 10px;
 		margin-top: 10px;
+	}
+}
+
+@media screen and (max-width: 840px) {
+	.primary-nav-button-text {
+		display: none;
 	}
 }
 

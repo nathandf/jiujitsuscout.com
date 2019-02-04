@@ -2,60 +2,58 @@
 
 namespace Model\Services;
 
-class NoteRepository extends Service
+class NoteRepository extends Repository
 {
-
     public function save( \Model\Note $note )
     {
-        $noteMapper = new \Model\Mappers\NoteMapper( $this->container );
-        $id = $noteMapper->create( $note );
+        $mapper = $this->getMapper();
+        $id = $mapper->create( $note );
 
         return $id;
     }
 
     public function getByID( $id )
     {
-        $note = new \Model\Note;
-        $noteMapper = new \Model\Mappers\NoteMapper( $this->container );
-        $noteMapper->mapFromID( $note, $id );
+        $mapper = $this->getMapper();
+        $note = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $note, $id );
 
         return $note;
     }
 
     public function getAllByProspectID( $prospect_id )
     {
-        $noteMapper = new \Model\Mappers\NoteMapper( $this->container );
-        $notes = $noteMapper->mapAllFromProspectID( $prospect_id );
+        $mapper = $this->getMapper();
+        $notes = $mapper->mapAllFromProspectID( $prospect_id );
 
         return $notes;
     }
 
     public function getAllByAppointmentID( $appointment_id )
     {
-        $noteMapper = new \Model\Mappers\NoteMapper( $this->container );
-        $notes = $noteMapper->mapAllFromAppointmentID( $appointment_id );
+        $mapper = $this->getMapper();
+        $notes = $mapper->mapAllFromAppointmentID( $appointment_id );
 
         return $notes;
     }
 
     public function getAllByMemberID( $member_id )
     {
-        $noteMapper = new \Model\Mappers\NoteMapper( $this->container );
-        $notes = $noteMapper->mapAllFromMemberID( $member_id );
+        $mapper = $this->getMapper();
+        $notes = $mapper->mapAllFromMemberID( $member_id );
 
         return $notes;
     }
 
     public function removeByID( $id )
     {
-        $noteMapper = new \Model\Mappers\NoteMapper( $this->container );
-        $noteMapper->delete( $id );
+        $mapper = $this->getMapper();
+        $mapper->delete( [ "id" ], [ $id ] );
     }
 
     public function removeAllByAppointmentID( $id )
     {
-        $noteMapper = new \Model\Mappers\NoteMapper( $this->container );
-        $noteMapper->deleteAllByAppointmentID( $id );
+        $mapper = $this->getMapper();
+        $mapper->deleteAllByAppointmentID( $id );
     }
-
 }

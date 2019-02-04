@@ -5,8 +5,8 @@
 {/block}
 
 {block name="bm-body"}
-	{include file="includes/navigation/business-manager-sub-menu.tpl"}
-	<div class="con-cnt-xxlrg push-t-med encapsulate bg-white">
+	{include file="includes/navigation/marketing-sub-menu.tpl"}
+	<div class="con-cnt-xlrg push-t-med encapsulate bg-white">
 		{include file="includes/navigation/business-manager-assets-inner-menu.tpl"}
 		<div class="inner-pad-med">
 			{if !empty($error_messages.website)}
@@ -20,7 +20,7 @@
 			<h2 class="">Website</h2>
 			<form action="" method="post">
 				<input type="hidden" name="token" value="{$csrf_token}">
-				<input type="text" name="website" class="inp field-med first" value="{$business->website}" placeholder="ex. https://www.yoursite.com">
+				<input type="text" name="website" class="inp inp-med-plus-plus first" value="{$business->website}" placeholder="ex. https://www.yoursite.com">
 				<div class="clear"></div>
 				<input class="btn btn-inline push-t-med" type="submit" value="Update Website" name="update-pixel" />
 				<div class="clear"></div>

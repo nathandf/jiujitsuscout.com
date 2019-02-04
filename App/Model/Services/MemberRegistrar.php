@@ -4,12 +4,12 @@ namespace Model\Services;
 
 class MemberRegistrar
 {
-  public $memberRepo;
+    public $memberRepo;
 
-  public function __construct( MemberRepository $repo )
-  {
-    $this->memberRepo = $repo;
-  }
+    public function __construct( MemberRepository $repo )
+    {
+        $this->memberRepo = $repo;
+    }
 
     public function register( \Model\Member $member )
     {
@@ -43,5 +43,4 @@ class MemberRegistrar
 
         return $member;
     }
-
 }

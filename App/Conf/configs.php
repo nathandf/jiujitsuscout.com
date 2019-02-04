@@ -67,6 +67,9 @@ $config[ "db" ] = [
     ]
 ];
 
+// Local database vars
+include( "server-vars.php" );
+
 // Google APIs
 $config[ "google" ] = [
     "api_key" => "AIzaSyAROndVkrCCoOGb2GDL5h9kuu9YF8zhHoM",

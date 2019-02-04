@@ -6,7 +6,6 @@ use Model\Group;
 
 class GroupMapper extends DataMapper
 {
-
     public function create( \Model\Group $group )
     {
         $id = $this->insert(
@@ -25,23 +24,23 @@ class GroupMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateGroup( $group, $resp );
+        $this->populate( $group, $resp );
 
         return $group;
     }
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
         $groups = [];
         $sql = $this->DB->prepare( "SELECT * FROM `group` WHERE business_id = :business_id" );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
-        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-        $group = $entityFactory->build( "Group" );
-        $this->populateGroup( $group, $resp );
 
-        $groups[] = $group;
+        while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            $group = $this->entityFactory->build( "Group" );
+            $this->populate( $group, $resp );
+
+            $groups[] = $group;
         }
 
         return $groups;
@@ -63,20 +62,4 @@ class GroupMapper extends DataMapper
         $this->update( "`group`", "name", $name, "id", $id );
         $this->update( "`group`", "description", $description, "id", $id );
     }
-
-    public function delete( $id )
-    {
-        $sql = $this->DB->prepare( "DELETE FROM `group` WHERE id = :id" );
-        $sql->bindParam( ":id", $id );
-        $sql->execute();
-    }
-
-    public function populateGroup( $group, $data )
-    {
-        $group->id                          = $data[ "id" ];
-        $group->business_id                 = $data[ "business_id" ];
-        $group->name                        = $data[ "name" ];
-        $group->description                 = $data[ "description" ];
-    }
-
 }

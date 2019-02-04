@@ -26,7 +26,7 @@
 						<input type="hidden" name="create_form" value="{$csrf_token}">
 						<div class="clear push-t-med"></div>
 						<p><b>Form Name:</b></p>
-						<input type="text" name="name" value="{$inputs.create_form.name|default:null}" class="inp field-sml" placeholder="Form name">
+						<input type="text" name="name" value="{$inputs.create_form.name|default:null}" class="inp inp-med-plus-plus" placeholder="Form name">
 						<div class="clear push-t-med"></div>
 						<p><b>Offer:</b></p>
 						<p class="text-sml">What are you offering in exchange for filling out this form?</p>

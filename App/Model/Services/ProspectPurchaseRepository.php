@@ -2,49 +2,49 @@
 
 namespace Model\Services;
 
-class ProspectPurchaseRepository extends Service
+class ProspectPurchaseRepository extends Repository
 {
     public function create( $business_id, $prospect_id )
     {
-        $prospectPurchase = new \Model\ProspectPurchase();
-        $prospectPurchaseMapper = new \Model\Mappers\ProspectPurchaseMapper( $this->container );
+        $mapper = $this->getMapper();
+        $prospectPurchase = $mapper->build( $this->entityName );
         $prospectPurchase->business_id = $business_id;
         $prospectPurchase->prospect_id = $prospect_id;
-        $prospectPurchaseMapper->create( $prospectPurchase );
+        $mapper->create( $prospectPurchase );
 
         return $prospectPurchase;
     }
 
     public function getAll()
     {
-        $prospectPurchaseMapper = new \Model\Mappers\ProspectPurchaseMapper( $this->container );
-        $prospectPurchases = $prospectPurchaseMapper->mapAll();
+        $mapper = $this->getMapper();
+        $prospectPurchases = $mapper->mapAll();
 
         return $prospectPurchases;
     }
 
     public function getAllByBusinessID( $business_id )
     {
-        $prospectPurchaseMapper = new \Model\Mappers\ProspectPurchaseMapper( $this->container );
-        $prospectPurchases = $prospectPurchaseMapper->mapAllFromBusinessID( $business_id );
+        $mapper = $this->getMapper();
+        $prospectPurchases = $mapper->mapAllFromBusinessID( $business_id );
 
         return $prospectPurchases;
     }
 
     public function getByID( $id )
     {
-        $prospectPurchase = new \Model\ProspectPurchase();
-        $prospectPurchaseMapper = new \Model\Mappers\ProspectPurchaseMapper( $this->container );
-        $prospectPurchases = $prospectPurchaseMapper->mapFromID( $prospectPurchase, $id );
+        $mapper = $this->getMapper();
+        $prospectPurchase = $mapper->build( $this->entityName );
+        $prospectPurchases = $mapper->mapFromID( $prospectPurchase, $id );
 
         return $prospectPurchase;
     }
 
     public function getByProspectID( $prospect_id )
     {
-        $prospectPurchase = new \Model\ProspectPurchase();
-        $prospectPurchaseMapper = new \Model\Mappers\ProspectPurchaseMapper( $this->container );
-        $prospectPurchases = $prospectPurchaseMapper->mapFromProspectID( $prospectPurchase, $prospect_id );
+        $mapper = $this->getMapper();
+        $prospectPurchase = $mapper->build( $this->entityName );
+        $prospectPurchases = $mapper->mapFromProspectID( $prospectPurchase, $prospect_id );
 
         return $prospectPurchases;
     }

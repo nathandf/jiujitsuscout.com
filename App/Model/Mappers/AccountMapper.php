@@ -6,7 +6,6 @@ use Model\Account;
 
 class AccountMapper extends DataMapper
 {
-
     public function create( \Model\Account $account )
     {
         $id = $this->insert(
@@ -25,21 +24,21 @@ class AccountMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateAccount( $account, $resp );
+        $this->populate( $account, $resp );
 
         return $account;
     }
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+
         $accounts = [];
         $sql = $this->DB->prepare( "SELECT * FROM account" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $account = $entityFactory->build( "Account" );
-            $this->populateAccount( $account, $resp );
+            $account = $this->entityFactory->build( "Account" );
+            $this->populate( $account, $resp );
             $accounts[] = $account;
         }
 
@@ -90,19 +89,4 @@ class AccountMapper extends DataMapper
     {
         $this->update( "account", "auto_purchase", $value, "id", $account_id );
     }
-
-    private function populateAccount( \Model\Account $account, $data )
-    {
-        $account->id = $data[ "id" ];
-        $account->account_status = $data[ "account_status" ];
-        $account->account_type_id = $data[ "account_type_id" ];
-        $account->currency = $data[ "currency" ];
-        $account->country = $data[ "country" ];
-        $account->profile_creation_date = $data[ "profile_creation_date" ];
-        $account->timezone = $data[ "timezone" ];
-        $account->primary_user_id = $data[ "primary_user_id" ];
-        $account->credit = $data[ "credit" ];
-        $account->auto_purchase = $data[ "auto_purchase" ];
-    }
-
 }

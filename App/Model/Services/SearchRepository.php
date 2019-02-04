@@ -2,36 +2,34 @@
 
 namespace Model\Services;
 
-class SearchRepository extends Service
+class SearchRepository extends Repository
 {
-
     public function create( $ip, $query, $time )
     {
-        $search = new \Model\Search;
-        $searchMapper = new \Model\Mappers\SearchMapper( $this->container );
+        $mapper = $this->getMapper();
+        $search = $mapper->build( $this->entityName );
         $search->ip = $ip;
         $search->query = $query;
         $search->time = $time;
-        $searchMapper->create( $search );
+        $mapper->create( $search );
 
         return $search;
     }
 
     public function getByID( $id )
     {
-        $search = new \Model\Search;
-        $searchMapper = new \Model\Mappers\SearchMapper( $this->container );
-        $searchMapper->mapFromID( $search, $id );
+        $mapper = $this->getMapper();
+        $search = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $search, $id );
 
         return $search;
     }
 
     public function getAll()
     {
-        $searchMapper = new \Model\Mappers\SearchMapper( $this->container );
-        $searches = $searchMapper->mapAll();
+        $mapper = $this->getMapper();
+        $searches = $mapper->mapAll();
 
         return $searches;
     }
-
 }

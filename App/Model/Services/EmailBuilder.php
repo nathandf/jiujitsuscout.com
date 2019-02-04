@@ -14,12 +14,12 @@ class EmailBuilder extends Service
 
 	}
 
-	private setEmail( $email )
+	private function setEmail( $email )
 	{
 		$this->email = $email;
 	}
 
-	public getEmail()
+	public function getEmail()
 	{
 		if ( isset( $this->email ) ) {
 			return $this->email;

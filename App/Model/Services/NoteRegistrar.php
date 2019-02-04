@@ -4,7 +4,6 @@ namespace Model\Services;
 
 class NoteRegistrar
 {
-
     public $factory;
     public $noteRepo;
 
@@ -30,5 +29,4 @@ class NoteRegistrar
 
         return $note_id;
     }
-
 }

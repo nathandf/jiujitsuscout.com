@@ -15,12 +15,10 @@
       </select>
       <select class="modal-select" name="month" form="appointment-scheduler-form">
         <option name="month" hidden="hidden" value="" selected="selected">--</option>
-
       </select>
       <select class="modal-select" name="day" form="appointment-scheduler-form">
         <option name="day" hidden="hidden" selected="selected">--</option>
       </select>
-
       <div class="clear mobile" style="margin-top: 10px;"></div>
       <span class="ml-r"></span>
       <label class="modal-label">Time:</label>
@@ -49,7 +47,6 @@
       <input type="hidden" name="action" value="appointment">
       <input type="hidden" name="schedule-action" value="1">
       <button type="submit" onclick="runTimeFunctions();" ontouch="runTimeFunctions();" name="appointment" value="true" class="modal-submit-button">Schedule</button><!-- end modal-button -->
-
       <div class="clear"></div>
     </div><!-- end modal-footer -->
     <input type="hidden" name="id" value="{$lead->id}">

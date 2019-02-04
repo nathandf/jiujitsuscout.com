@@ -2,12 +2,12 @@
 
 namespace Model\Services;
 
-class ProgramRepository extends Service
+class ProgramRepository extends Repository
 {
     public function getAll()
     {
-        $programMapper = new \Model\Mappers\ProgramMapper( $this->container );
-        $programs = $programMapper->mapAll();
+        $mapper = $this->getMapper();
+        $programs = $mapper->mapAll();
 
         return $programs;
     }

@@ -70,6 +70,7 @@ $( function() {
         function() {
             if ( $( this ).val() ) {
                 $( ".file-upload-button" ).show();
+                $( ".file-upload-container" ).show();
                 $( ".file-upload-field-container" ).show();
             }
         }
@@ -86,5 +87,13 @@ $( function() {
 
     $( "#create-account" ).on( "submit", function () {
         $( "#account-creation-loading-screen" ).show( "" );
+    } );
+
+    $( ".emailer-open" ).on( "click", function () {
+        $( "#emailer" ).toggle();
+    } );
+
+    $( ".lightbox-close" ).on( "click", function () {
+        $( ".lightbox-close" ).parent().hide();
     } );
 } );

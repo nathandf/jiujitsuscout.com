@@ -2,42 +2,42 @@
 
 namespace Model\Services;
 
-class ResultRepository extends Service
+class ResultRepository extends Repository
 {
 
     public function create( $search_id, $business_ids )
     {
-        $result = new \Model\Result;
-        $resultMapper = new \Model\Mappers\ResultMapper( $this->container );
+        $mapper = $this->getMapper();
+        $result = $mapper->build( $this->entityName );
         $result->search_id = $search_id;
         $result->business_ids = $business_ids;
-        $resultMapper->create( $result );
+        $mapper->create( $result );
 
         return $result;
     }
 
     public function getByID( $id )
     {
-        $result = new \Model\Result;
-        $resultMapper = new \Model\Mappers\ResultMapper( $this->container );
-        $resultMapper->mapFromID( $result, $id );
+        $mapper = $this->getMapper();
+        $result = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $result, $id );
 
         return $result;
     }
 
     public function getBySearchID( $search_id )
     {
-        $result = new \Model\Result;
-        $resultMapper = new \Model\Mappers\ResultMapper( $this->container );
-        $resultMapper->mapFromSearchID( $result, $search_id );
+        $mapper = $this->getMapper();
+        $result = $mapper->build( $this->entityName );
+        $mapper->mapFromSearchID( $result, $search_id );
 
         return $result;
     }
 
     public function getAll()
     {
-        $resultMapper = new \Model\Mappers\ResultMapper( $this->container );
-        $results = $resultMapper->mapAll();
+        $mapper = $this->getMapper();
+        $results = $mapper->mapAll();
 
         return $results;
     }

@@ -2,46 +2,45 @@
 
 namespace Model\Services;
 
-class AccountUserRepository extends Service
+class AccountUserRepository extends Repository
 {
-
-  public function register( $account_id, $user_id )
-  {
-    $accountUserMapper = new \Model\Mappers\AccountUserMapper( $this->container );
-    $accountUserMapper->create( $account_id, $user_id );
-  }
-
-  public function getAll()
-  {
-    $accountUserMapper = new \Model\Mappers\AccountUserMapper( $this->container );
-    $accountUsers = $accountUserMapper->mapAll();
-    return $accountUsers;
-  }
-
-    public function getAllByAccountID( $id )
+    public function register( $account_id, $user_id )
     {
-        $accountUserMapper = new \Model\Mappers\AccountUserMapper( $this->container );
-        $accountUsers = $accountUserMapper->mapAllFromAccountID( $id );
+        $mapper = $this->getMapper();
+        $mapper->create( $account_id, $user_id );
+    }
+
+    public function getAll()
+    {
+        $mapper = $this->getMapper();
+        $accountUsers = $mapper->mapAll();
 
         return $accountUsers;
     }
 
-  public function getByID( $id )
-  {
-    $accountUser = new \Model\AccountUser();
-    $accountUserMapper = new \Model\Mappers\AccountUserMapper( $this->container );
-    $accountUserMapper->mapFromID( $accountUser, $id );
+    public function getAllByAccountID( $id )
+    {
+        $mapper = $this->getMapper();
+        $accountUsers = $mapper->mapAllFromAccountID( $id );
 
-    return $accountUser;
-  }
+        return $accountUsers;
+    }
 
-  public function getByUserID( $id )
-  {
-    $accountUser = new \Model\AccountUser();
-    $accountUserMapper = new \Model\Mappers\AccountUserMapper( $this->container );
-    $accountUserMapper->mapFromUserID( $accountUser, $id );
+    public function getByID( $id )
+    {
+        $mapper = $this->getMapper();
+        $accountUser = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $accountUser, $id );
 
-    return $accountUser;
-  }
+        return $accountUser;
+    }
 
+    public function getByUserID( $id )
+    {
+        $mapper = $this->getMapper();
+        $accountUser = $mapper->build( $this->entityName );
+        $mapper->mapFromUserID( $accountUser, $id );
+
+        return $accountUser;
+    }
 }

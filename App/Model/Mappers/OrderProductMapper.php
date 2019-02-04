@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class OrderProductMapper extends DataMapper
 {
-
     public function create( \Model\OrderProduct $orderProduct )
     {
         $id = $this->insert(
@@ -20,13 +19,13 @@ class OrderProductMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+
         $orderProducts = [];
         $sql = $this->DB->prepare( "SELECT * FROM order_product" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $orderProduct = $entityFactory->build( "OrderProduct" );
-            $this->populateOrderProduct( $orderProduct, $resp );
+            $orderProduct = $this->entityFactory->build( "OrderProduct" );
+            $this->populate( $orderProduct, $resp );
             $orderProducts[] = $orderProduct;
         }
 
@@ -35,14 +34,14 @@ class OrderProductMapper extends DataMapper
 
     public function mapAllFromOrderID( $order_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+
         $orderProducts = [];
         $sql = $this->DB->prepare( "SELECT * FROM order_product WHERE order_id = :order_id" );
         $sql->bindParam( ":order_id", $order_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $orderProduct = $entityFactory->build( "OrderProduct" );
-            $this->populateOrderProduct( $orderProduct, $resp );
+            $orderProduct = $this->entityFactory->build( "OrderProduct" );
+            $this->populate( $orderProduct, $resp );
             $orderProducts[] = $orderProduct;
         }
 
@@ -55,25 +54,8 @@ class OrderProductMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateOrderProduct( $orderProduct, $resp );
+        $this->populate( $orderProduct, $resp );
 
         return $orderProduct;
     }
-
-    public function delete( $id )
-    {
-        $sql = $this->DB->prepare( "DELETE FROM order_product WHERE id = :id" );
-        $sql->bindParam( ":id", $id );
-        $sql->execute();
-    }
-
-    private function populateOrderProduct( \Model\OrderProduct $orderProduct, $data )
-    {
-        $orderProduct->id          = $data[ "id" ];
-        $orderProduct->order_id    = $data[ "order_id" ];
-        $orderProduct->product_id  = $data[ "product_id" ];
-        $orderProduct->quantity    = $data[ "quantity" ];
-        $orderProduct->description = $data[ "description" ];
-    }
-
 }

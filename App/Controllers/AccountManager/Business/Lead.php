@@ -13,7 +13,6 @@ class Lead extends Controller
     private $userRepo;
     private $user;
     private $prospectRepo;
-    private $smsMessageRepo;
 
     public function before()
     {
@@ -26,7 +25,6 @@ class Lead extends Controller
         $userRepo = $this->load( "user-repository" );
         $phoneRepo = $this->load( "phone-repository" );
         $prospectRepo = $this->load( "prospect-repository" );
-        $this->smsMessageRepo = $this->load( "sms-message-repository" );
         $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
         $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
         $currencyRepo = $this->load( "currency-repository" );
@@ -38,11 +36,15 @@ class Lead extends Controller
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
+
+        // Get business phone object
+        $this->business->phone = $phoneRepo->get( [ "*" ], [ "id" => $this->business->phone_id ], "single" );
+
         // Get currency object for business
         $this->business->currency = $currencyRepo->getByCode( $this->business->currency );
         // Verify that this prospect is owned by this business
@@ -89,7 +91,10 @@ class Lead extends Controller
         $noteRegistrar = $this->load( "note-registrar" );
         $prospectRepo = $this->load( "prospect-repository" );
         $groupRepo = $this->load( "group-repository" );
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
         $mailer = $this->load( "mailer" );
+        $emailTemplateRepo = $this->load( "email-template-repository" );
+        $emailerHelper = $this->load( "emailer-helper" );
 
         // If prospect requires purchase, redirect to purchase page
         if ( isset( $this->prospect->appraisal ) && ( isset( $this->prospect->purchase ) == false ) ) {
@@ -116,27 +121,28 @@ class Lead extends Controller
             }
         }
 
-        // Load all groups
-        $groupsAll = $groupRepo->getAllByBusinessID( $this->business->id );
+        $prospectGroups = $prospectGroupRepo->get( [ "*" ], [ "prospect_id" => $this->prospect->id ] );
         $groups = [];
-        $group_ids = explode( ",", $this->prospect->group_ids );
-        foreach ( $groupsAll as $group ) {
-            if ( in_array( $group->id, $group_ids ) ) {
+
+        foreach ( $prospectGroups as $prospectGroup ) {
+            $group = $groupRepo->get( [ "*" ], [ "id" => $prospectGroup->group_id ], "single" );
+            if ( !is_null( $group ) ) {
                 $groups[] = $group;
             }
         }
 
         // Set variables for sending an email
-        $recipient_first_name = $this->prospect->first_name;
-        $recipient_email = $this->prospect->email;
-        $sender_first_name = $this->user->first_name;
-        $sender_email = $this->user->email;
+        $emailerHelper->setSenderName( $this->user->first_name );
+        $emailerHelper->setSenderEmail( $this->user->email );
+        $emailerHelper->setRecipientName( $this->prospect->first_name );
+        $emailerHelper->setRecipientEmail( $this->prospect->email );
+
+        // Set email templates if any exist
+        $emailerHelper->emailTemplates = $emailTemplateRepo->getAllByBusinessID( $this->business->id );
 
         // If validation rules are passed, send an email
         if ( $input->exists() &&  $input->issetField( "send_email" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -155,25 +161,25 @@ class Lead extends Controller
                         "max" => 1000
                     ]
                 ],
-
                 "send_email" /* error index */
-            ) )
-        {
+            )
+        ) {
             // Prospect must have an email address to which to send the email
             if ( is_null( $this->prospect->email ) || $this->prospect->email == "" ) {
                 $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/?error=invalid_email" );
             }
             // Send email
-            $email_subject = $input->get( "subject" );
-            $email_body = $input->get( "body" );
-            $mailer->setRecipientName( $recipient_first_name );
-            $mailer->setRecipientEmailAddress( $recipient_email );
-            $mailer->setSenderName( $sender_first_name );
-            $mailer->setSenderEmailAddress( $sender_email );
+            $mailer->setRecipientName( $emailerHelper->recipient_name );
+            $mailer->setRecipientEmailAddress( $emailerHelper->recipient_email );
+            $mailer->setSenderName( $emailerHelper->sender_name );
+            $mailer->setSenderEmailAddress( $emailerHelper->sender_email );
             $mailer->setContentType( "text/html" );
-            $mailer->setEmailSubject( $email_subject );
-            $mailer->setEmailBody( $email_body );
+            $mailer->setEmailSubject( $input->get( "subject" ) );
+            $mailer->setEmailBody( $input->get( "body" ) );
             $mailer->mail();
+
+            $this->session->addFlashMessage( "Email Sent" );
+            $this->session->setFlashMessages();
 
             // Record email interaction
             $prospectRepo->updateTimesContactedByID( ( $this->prospect->times_contacted + 1 ), $this->prospect->id );
@@ -181,6 +187,7 @@ class Lead extends Controller
             // Create a note for this interaction
             $note_body = "Sent with JiuJitsuScout: " . $input->get( "body" );
             $noteRegistrar->save( $note_body, $this->business->id, $this->user->id, $this->prospect->id );
+
             $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/" );
         }
 
@@ -308,18 +315,14 @@ class Lead extends Controller
         $this->view->assign( "inputs", $inputs );
 
         // Set CSRF token and assign to view
-        $csrf_token = $this->session->generateCSRFToken();
-        $this->view->assign( "csrf_token", $csrf_token );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
         $this->view->setFlashMessages( $this->session->getFlashMessages( "flash_messages" ) );
 
         // where the form should get posted to
         $this->view->assign( "action", HOME . "account-manager/business/lead/" . $this->prospect->id . "/" );
 
-        $this->view->assign( "recipient_first_name", $recipient_first_name );
-        $this->view->assign( "recipient_email", $recipient_email );
-        $this->view->assign( "sender_first_name", $sender_first_name );
-        $this->view->assign( "sender_email", $sender_email );
+        $this->view->assign( "emailerHelper", $emailerHelper );
 
         $this->view->assign( "groups", $groups );
         $this->view->assign( "appointments", $appointments );
@@ -342,9 +345,9 @@ class Lead extends Controller
 
         $phone = $phoneRepo->getByID( $this->prospect->phone_id );
 
-        $country = $countryRepo->getByISO( $this->account->country );
+        $country = $countryRepo->get( [ "*" ], [ "iso" => $this->account->country ], "single" );
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         $prospectsAll = $prospectRepo->getAllByBusinessID( $this->business->id );
         $prospect_ids = [];
@@ -528,9 +531,7 @@ class Lead extends Controller
         $prospectRepo = $this->load( "prospect-repository" );
 
         if ( $input->exists() && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -579,31 +580,69 @@ class Lead extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
         $groupRepo = $this->load( "group-repository" );
         $prospectRepo = $this->load( "prospect-repository" );
 
-        $all_groups = $groupRepo->getAllByBusinessID( $this->business->id );
+        $groups = $groupRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $group_ids_all = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+        $prospect_group_group_ids = $prospectGroupRepo->get( [ "group_id" ], [ "prospect_id" => $this->prospect->id ], "raw" );
 
-        $prospect_group_ids = explode( ",", $this->prospect->group_ids );
-
-        if ( $input->exists() ) {
-            $group_ids = null;
-            if ( $input->issetField( "group_ids" ) ) {
-                $group_ids = implode( ",", $input->get( "group_ids" ) );
-            }
-            $prospectRepo->updateGroupIDsByID( $group_ids, $this->params[ "id" ] );
-
-            $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/groups" );
-        }
-
-        foreach ( $all_groups as $group ) {
+        foreach ( $groups as $group ) {
             $group->isset = false;
-            if ( in_array( $group->id, $prospect_group_ids ) ) {
+            if ( in_array( $group->id, $prospect_group_group_ids ) ) {
                 $group->isset = true;
             }
         }
 
-        $this->view->assign( "groups", $all_groups );
+        if ( $input->exists() && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ]
+                ],
+                "groups"
+            )
+        ) {
+            // Update group ids
+            $submitted_group_ids = [];
+            if ( $input->issetField( "group_ids" ) ) {
+                $submitted_group_ids = $input->get( "group_ids" );
+            }
+
+            // Create and new prospect group for any of the submitted
+            // group ids if it doesn't already exist
+            foreach ( $submitted_group_ids as $submitted_group_id ) {
+                if ( !in_array( $submitted_group_id, $prospect_group_group_ids, true ) ) {
+                    $prospectGroupRepo->insert([
+                        "prospect_id" => $this->prospect->id,
+                        "group_id" => $submitted_group_id
+                    ]);
+                }
+            }
+
+            // Delete the prospect groups with the group ids that were not
+            // submitted
+            foreach ( $group_ids_all as $_group_id ) {
+                if (
+                    !in_array( $_group_id, $submitted_group_ids ) &&
+                    in_array( $_group_id, $prospect_group_group_ids, true )
+                ) {
+                    $prospectGroupRepo->delete( [ "group_id", "prospect_id" ], [ $_group_id, $this->params[ "id" ] ] );
+                }
+            }
+
+            $this->session->addFlashMessage( "Groups Updated" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/lead/" . $this->prospect->id . "/groups" );
+        }
+
+        $this->view->assign( "groups", $groups );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/lead/groups.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Lead.php" );
@@ -720,4 +759,158 @@ class Lead extends Controller
         $this->view->render( "App/Views/AccountManager/Business/Lead.php" );
     }
 
+    public function sequencesAction()
+    {
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $businessSequenceRepo = $this->load( "business-sequence-repository" );
+        $prospectSequenceRepo = $this->load( "prospect-sequence-repository" );
+        $sequenceTemplateSequenceRepo = $this->load( "sequence-template-sequence-repository" );
+        $sequenceRepo = $this->load( "sequence-repository" );
+
+        // Get all sequences for this prospect
+        $prospectSequences = $prospectSequenceRepo->get( [ "*" ], [ "prospect_id" => $this->prospect->id ] );
+        $sequenceTemplates = $sequenceTemplateRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+
+        $activeSequenceTemplates = [];
+        $active_sequence_template_ids = [];
+        $inactiveSequenceTemplates = [];
+        $completedSequenceTemplates = [];
+        $completed_sequence_template_ids = [];
+
+        // Populate an array ($activeSequenceTemplates) with all sequence templates
+        // from which this prospect's sequences were created.
+        foreach ( $prospectSequences as $prospectSequence ) {
+            $sequence_template_id = $sequenceTemplateSequenceRepo->get( [ "sequence_template_id" ], [ "sequence_id" => $prospectSequence->sequence_id ], "single" )->sequence_template_id;
+            $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
+            $sequenceTemplate->sequence = $sequenceRepo->get( [ "*" ], [ "id" => $prospectSequence->sequence_id ], "single" );
+
+            if ( $sequenceTemplate->sequence->complete ) {
+                $completedSequenceTemplates[] = $sequenceTemplate;
+                $completed_sequence_template_ids[] = $sequence_template_id;
+
+                continue;
+            }
+
+            $activeSequenceTemplates[] = $sequenceTemplate;
+            $active_sequence_template_ids[] = $sequence_template_id;
+        }
+
+        // Populate an array ($inactiveSequenceTemplates) will all sequence templates
+        // that have not been used to generate sequences for this prospect
+        foreach ( $sequenceTemplates as $sequenceTemplate ) {
+            if (
+                !in_array( $sequenceTemplate->id, $active_sequence_template_ids ) &&
+                !in_array( $sequenceTemplate->id, $completed_sequence_template_ids )
+            ) {
+                $inactiveSequenceTemplates[] = $sequenceTemplate;
+            }
+        }
+
+        if ( $input->exists() && $input->issetField( "add_to_sequence" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ],
+                    "sequence_template_id" => [
+                        "required" => true,
+                        "in_array" => $sequenceTemplateRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" )
+                    ],
+                    "quantity" => [
+                        "numeric" => true
+                    ],
+                    "unit" => [
+                        "in_array" => [ "days", "weeks", "months" ]
+                    ]
+                ],
+                "add_to_sequence"
+            )
+        ) {
+            $sequenceBuilder = $this->load( "sequence-builder" );
+
+            $sequenceBuilder->setRecipientName( $this->prospect->getFullName() )
+                ->setSenderName( $this->business->business_name )
+                ->setRecipientEmail( $this->prospect->email )
+                ->setSenderEmail( $this->business->email )
+                ->setRecipientPhoneNumber( $this->phone->getPhoneNumber() )
+                ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() )
+                ->setBusinessID( $this->business->id )
+                ->setProspectID( $this->params[ "id" ] );
+
+            $timeZoneHelper = $this->load( "time-zone-helper" );
+
+            $sequenceBuilder->setTimeZoneOffset(
+                $timeZoneHelper->getServerTimeZoneOffset( $this->business->timezone )
+            );
+
+            // Set start time
+            if ( $input->issetField( "unit" ) && $input->issetField( "quantity" ) ) {
+                $sequenceBuilder->setStartTime(
+                    strtotime( "+{$input->get( "quantity" )} {$input->get( "unit" )}" )
+                );
+            }
+
+            // If a sequence was built successfully, create a prospect and business
+            // sequence reference and redirect to the sequence screen
+            $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $input->get( "sequence_template_id" ) ], "single" );
+
+            if ( $sequenceBuilder->buildFromSequenceTemplate( $sequenceTemplate->id ) ) {
+                $sequence = $sequenceBuilder->getSequence();
+
+                // Inform user of successful sequence creation
+                $this->session->addFlashMessage( "{$this->prospect->getFullName()} has been added to sequenece '{$sequenceTemplate->name}'" );
+                $this->session->setFlashMessages();
+
+                // Redirect back to the "choose sequence" page
+                $this->view->redirect( "account-manager/business/lead/" . $this->params[ "id" ] . "/sequences" );
+            }
+
+            // If sequence build fails, get the error messages from the sequence
+            // builder and set them to the input validator
+            $errorMessages = $sequenceBuilder->getErrorMessages();
+            foreach ( $errorMessages as $message ) {
+                $inputValidator->addError( "add_to_sequence", $message );
+            }
+
+        }
+
+        if ( $input->exists() && $input->issetField( "sequence_id" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ],
+                    "sequence_id" => [
+                        "required" => true
+                    ]
+                ],
+                "delete_sequence"
+            )
+        ) {
+            $sequenceDestroyer = $this->load( "sequence-destroyer" );
+            $eventDestroyer = $this->load( "event-destroyer" );
+
+            $sequenceDestroyer->destroy( $input->get( "sequence_id" ) );
+            $eventDestroyer->destroyBySequenceID( $input->get( "sequence_id" ) );
+
+            $this->session->addFlashMessage( "{$this->prospect->getFullName()} successfully removed from sequence." );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/lead/" . $this->params[ "id" ] . "/sequences" );
+        }
+
+        $this->view->assign( "activeSequenceTemplates", $activeSequenceTemplates );
+        $this->view->assign( "inactiveSequenceTemplates", $inactiveSequenceTemplates );
+        $this->view->assign( "completedSequenceTemplates", $completedSequenceTemplates );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "error_messages", $inputValidator->getErrors() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
+
+        $this->view->setTemplate( "account-manager/business/lead/sequences.tpl" );
+        $this->view->render( "App/Views/AccountManager/Business.php" );
+    }
 }

@@ -11,15 +11,25 @@
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
 			<h2 class="">Forms</h2>
+			<p class="text-sml">Create embeddable forms to capture leads with external lead generation sources</p>
 			<div class="hr-sml"></div>
 			<div class="clear"></div>
-			<a href="{$HOME}account-manager/business/form/new" class="btn btn-inline mat-hov push-t-med"><span class="text-med">Create a Form <i class="fa fa-plus" aria-hidden="true"></i></span></a>
-			<p class="text-sml">Create embeddable forms that you can use on your website</p>
-			<div class="hr-sml"></div>
+			<a href="{$HOME}account-manager/business/form/new" class="btn btn-inline mat-hov push-t-med"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">Create a Form</span></a>
 			<div class="clear push-b-med"></div>
 			{foreach from=$forms item=form}
-			<a class="link text-lrg-heavy tc-deep-blue" href="{$HOME}account-manager/business/form/{$form->id}/">{$form->name}</a>
-			<div class="clear"></div>
+			<a href="{$HOME}account-manager/business/form/{$form->id}/" class="tag-link">
+				<div class="tag mat-hov cursor-pt">
+					<div class="bg-red tc-white floatleft push-r-sml" style="border-radius: 3px; box-sizing: border-box; padding: 8px;">
+						<i aria-hidden="true" class="fa fa-file-text-o"></i>
+					</div>
+					<div class="floatleft">
+						<p class="text-med-heavy">{$form->name}</p>
+						<p class="text-med">{$form->offer}</p>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</a>
+			<div class="clear push-b-med"></div>
 			{foreachelse}
 			<p>You haven't made any forms yet</p>
 			{/foreach}

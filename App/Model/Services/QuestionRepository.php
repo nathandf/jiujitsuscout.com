@@ -2,41 +2,41 @@
 
 namespace Model\Services;
 
-class QuestionRepository extends Service
+class QuestionRepository extends Repository
 {
     public function create( $questionnaire_id, $placement, $text )
     {
-        $question = new \Model\Question();
-        $questionMapper = new \Model\Mappers\QuestionMapper( $this->container );
+        $mapper = $this->getMapper();
+        $question = $mapper->build( $this->entityName );
         $question->questionnaire_id = $questionnaire_id;
         $question->placement = $placement;
         $question->text = $text;
-        $questionMapper->create( $question );
+        $mapper->create( $question );
 
         return $question;
     }
 
     public function getAll()
     {
-        $questionMapper = new \Model\Mappers\QuestionMapper( $this->container );
-        $questions = $questionMapper->mapAll();
+        $mapper = $this->getMapper();
+        $questions = $mapper->mapAll();
 
         return $questions;
     }
 
     public function getByID( $id )
     {
-        $question = new \Model\Question();
-        $questionMapper = new \Model\Mappers\QuestionMapper( $this->container );
-        $questionMapper->mapFromID( $question, $id );
+        $mapper = $this->getMapper();
+        $question = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $question, $id );
 
         return $question;
     }
 
     public function getAllByQuestionnaireID( $questionnaire_id )
     {
-        $questionMapper = new \Model\Mappers\QuestionMapper( $this->container );
-        $questions = $questionMapper->mapAllFromQuestionnaireID( $questionnaire_id );
+        $mapper = $this->getMapper();
+        $questions = $mapper->mapAllFromQuestionnaireID( $questionnaire_id );
 
         return $questions;
     }

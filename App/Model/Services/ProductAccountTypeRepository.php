@@ -5,31 +5,32 @@ namespace Model\Services;
 use Model\ProductAccountType;
 use Model\Mappers\ProductAccountTypeMapper;
 
-class ProductAccountTypeRepository extends Service
+class ProductAccountTypeRepository extends Repository
 {
 
     public function getAll()
     {
-        $productAccountTypeMapper = new ProductAccountTypeMapper( $this->container );
-        $productAccountTypes = $productAccountTypeMapper->mapAll();
+        $mapper = $this->getMapper();
+        $productAccountTypes = $mapper->mapAll();
 
         return $productAccountTypes;
     }
 
     public function getByID( $id )
     {
-        $productAccountType = new ProductAccountType();
-        $productAccountTypeMapper = new ProductAccountTypeMapper( $this->container );
-        $productAccountTypeMapper->mapFromID( $productAccountType, $id );
+        $mapper = $this->getMapper();
+        $productAccountType = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $productAccountType, $id );
 
         return $productAccountType;
     }
 
     public function getByProductID( $product_id )
     {
-        $productAccountType = new ProductAccountType();
-        $productAccountTypeMapper = new ProductAccountTypeMapper( $this->container );
-        $productAccountTypeMapper->mapFromProductID( $productAccountType, $product_id );
+        $mapper = $this->getMapper();
+        $productAccountType = $mapper->build( $this->entityName );
+        $mapper->mapFromProductID( $productAccountType, $product_id );
+
         return $productAccountType;
     }
 

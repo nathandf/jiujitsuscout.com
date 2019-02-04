@@ -28,9 +28,9 @@ class Cart extends Controller
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
         // Get account type details
         $this->account_type = $accountTypeRepo->getByID( $this->account->account_type_id );
         // Grab business details

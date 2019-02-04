@@ -2,23 +2,22 @@
 
 namespace Model\Services;
 
-class InteractionTypeRepository extends Service
+class InteractionTypeRepository extends Repository
 {
+    public function getAll()
+    {
+        $mapper = $this->getMapper();
+        $interactionTypes = $mapper->mapAll();
 
-  public function getAll()
-  {
-    $interactionTypeMapper = new \Model\Mappers\InteractionTypeMapper( $this->container );
-    $interactionTypes = $interactionTypeMapper->mapAll();
-    return $interactionTypes;
-  }
+        return $interactionTypes;
+    }
 
-  public function getByID( $id )
-  {
-    $interactionType = new \Model\InteractionType();
-    $interactionTypeMapper = new \Model\Mappers\InteractionTypeMapper( $this->container );
-    $interactionTypeMapper->mapFromID( $interactionType, $id );
+    public function getByID( $id )
+    {
+        $mapper = $this->getMapper();
+        $interactionType = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $interactionType, $id );
 
-    return $interactionType;
-  }
-
+        return $interactionType;
+    }
 }

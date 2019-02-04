@@ -6,6 +6,7 @@ use Model\Services\AccountRepository,
     Model\Services\BusinessRepository,
     Model\Services\ReviewRepository,
     Model\Services\DisciplineRepository,
+    Model\Services\ImageRepository,
     Contracts\GeocoderInterface,
     Helpers\Geometry,
     Helpers\FAStars;
@@ -31,6 +32,7 @@ class SearchResultsDispatcher
         BusinessRepository $businessRepo,
         ReviewRepository $reviewRepo,
         DisciplineRepository $disciplineRepo,
+        ImageRepository $imageRepo,
         GeocoderInterface $geocoder,
         Geometry $geometry,
         FAStars $faStars
@@ -40,6 +42,7 @@ class SearchResultsDispatcher
         $this->businessRepo = $businessRepo;
         $this->reviewRepo = $reviewRepo;
         $this->disciplineRepo = $disciplineRepo;
+        $this->imageRepo = $imageRepo;
         $this->geocoder = $geocoder;
         $this->geometry = $geometry;
         $this->faStars = $faStars;
@@ -57,9 +60,10 @@ class SearchResultsDispatcher
             $businesses = $this->businessRepo->getAll();
         }
 
-        // Load the account tho which each businesses is associated
+        // Load the account and logo image of each business
         foreach ( $businesses as $business ) {
             $business->account = $this->accountRepo->getByID( $business->account_id );
+            $business->logo = $this->imageRepo->get( [ "*" ], [ "id" => $business->logo_image_id ], "single" );
         }
 
         // If unit is set and in array set new search unit

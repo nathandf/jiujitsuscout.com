@@ -2,32 +2,32 @@
 
 namespace Model\Services;
 
-class QuestionChoiceTypeRepository extends Service
+class QuestionChoiceTypeRepository extends Repository
 {
     public function create( $name, $description )
     {
-        $questionChoiceType = new \Model\QuestionChoiceType();
-        $questionChoiceTypeMapper = new \Model\Mappers\QuestionChoiceTypeMapper( $this->container );
+        $mapper = $this->getMapper();
+        $questionChoiceType = $mapper->build( $this->entityName );
         $questionChoiceType->name = $name;
         $questionChoiceType->description = $description;
-        $questionChoiceTypeMapper->create( $questionChoiceType );
+        $mapper->create( $questionChoiceType );
 
         return $questionChoiceType;
     }
 
     public function getAll()
     {
-        $questionChoiceTypeMapper = new \Model\Mappers\QuestionChoiceTypeMapper( $this->container );
-        $questionChoiceTypes = $questionChoiceTypeMapper->mapAll();
+        $mapper = $this->getMapper();
+        $questionChoiceTypes = $mapper->mapAll();
 
         return $questionChoiceTypes;
     }
 
     public function getByID( $id )
     {
-        $questionChoiceType = new \Model\QuestionChoiceType();
-        $questionChoiceTypeMapper = new \Model\Mappers\QuestionChoiceTypeMapper( $this->container );
-        $questionChoiceTypeMapper->mapFromID( $questionChoiceType, $id );
+        $mapper = $this->getMapper();
+        $questionChoiceType = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $questionChoiceType, $id );
 
         return $questionChoiceType;
     }

@@ -2,33 +2,25 @@
 
 namespace Model\Services;
 
-class SequenceRepository extends Service
+class SequenceRepository extends Repository
 {
+    public function getAllAvailableForCheckout()
+    {
+        $mapper = $this->getMapper();
+        $sequences = $mapper->mapAllFromCheckedOut();
 
-  public function getAll()
-  {
-    $sequenceMapper = new \Model\Mappers\SequenceMapper( $this->container );
-    $sequences = $sequenceMapper->mapAll();
-    return $sequences;
-  }
+        return $sequences;
+    }
 
-  public function getAllAvailableForCheckout()
-  {
-    $sequenceMapper = new \Model\Mappers\SequenceMapper( $this->container );
-    $sequences = $sequenceMapper->mapAllFromCheckedOut();
-    return $sequences;
-  }
+    public function checkOut( $id )
+    {
+        $mapper = $this->getMapper();
+        $mapper->updateCheckedOutByID( 1, $id );
+    }
 
-  public function checkOut( $id )
-  {
-    $sequenceMapper = new \Model\Mappers\SequenceMapper( $this->container );
-    $sequenceMapper->updateCheckedOutByID( 1, $id );
-  }
-
-  public function checkIn( $id )
-  {
-    $sequenceMapper = new \Model\Mappers\SequenceMapper( $this->container );
-    $sequenceMapper->updateCheckedOutByID( 0, $id );
-  }
-
+    public function checkIn( $id )
+    {
+        $mapper = $this->getMapper();
+        $mapper->updateCheckedOutByID( 0, $id );
+    }
 }

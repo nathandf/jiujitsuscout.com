@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class CustomerMapper extends DataMapper
 {
-
     public function create( \Model\Customer $customer )
     {
         $id = $this->insert(
@@ -20,13 +19,13 @@ class CustomerMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+
         $customers = [];
         $sql = $this->DB->prepare( "SELECT * FROM customer" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $customer = $entityFactory->build( "Customer" );
-            $this->populateCustomer( $customer, $resp );
+            $customer = $this->entityFactory->build( "Customer" );
+            $this->populate( $customer, $resp );
             $customers[] = $customer;
         }
 
@@ -39,7 +38,7 @@ class CustomerMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateCustomer( $customer, $resp );
+        $this->populate( $customer, $resp );
 
         return $customer;
     }
@@ -50,15 +49,8 @@ class CustomerMapper extends DataMapper
         $sql->bindParam( ":account_id", $account_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateCustomer( $customer, $resp );
+        $this->populate( $customer, $resp );
 
         return $customer;
     }
-
-    private function populateCustomer( \Model\Customer $customer, $data )
-    {
-        $customer->id         = $data[ "id" ];
-        $customer->account_id = $data[ "account_id" ];
-    }
-
 }

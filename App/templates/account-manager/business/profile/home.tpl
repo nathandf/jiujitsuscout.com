@@ -20,7 +20,7 @@
 					<table style="table-layout: auto;">
 						<tr>
 							<td>
-								{if !is_null($business->logo_filename)}
+								{if !is_null($business->logo_image_id)}
 								<i class="fa fa-check tc-good-green push-r-sml" aria-hidden="true"></i>
 								{else}
 								<i class="fa fa-close tc-red push-r-sml" aria-hidden="true"></i>
@@ -42,7 +42,7 @@
 							</td>
 							<td>
 								<p class="text-lrg">
-									<a class="link tc-deep-blue" href="{$HOME}account-manager/business/settings/location">Update your business's location</a>
+									<a class="link tc-deep-blue" href="{$HOME}account-manager/business/settings/location">Add your business's address</a>
 								</p>
 							</td>
 						</tr>
@@ -90,7 +90,7 @@
 						</tr>
 						<tr>
 							<td>
-								{if !is_null($business->video->id)}
+								{if !is_null($business->video_id)}
 								<i class="fa fa-check tc-good-green push-r-sml" aria-hidden="true"></i>
 								{else}
 								<i class="fa fa-close tc-red push-r-sml" aria-hidden="true"></i>
@@ -107,7 +107,7 @@
 			</div>
 		{/if}
 		<div>
-			<h2 class="h2">My Profile</h2>
+			<h2 class="h2">Lead Generation Profile</h2>
 			<table cellspacing="0" class="col-100 push-t-med push-b-med" style="border: 1px solid #CCC;">
 				<tr class="bg-green">
 					<th class="tc-white">Listing Clicks</td>

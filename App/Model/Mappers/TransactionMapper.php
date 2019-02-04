@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class TransactionMapper extends DataMapper
 {
-
     public function create( \Model\Transaction $transaction )
     {
         $now = time();
@@ -39,13 +38,13 @@ class TransactionMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
         $transactions = [];
         $sql = $this->DB->prepare( "SELECT * FROM transaction" );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $transaction = $entityFactory->build( "Transaction" );
-            $this->populateTransaction( $transaction, $resp );
+            $transaction = $this->entityFactory->build( "Transaction" );
+            $this->populate( $transaction, $resp );
             $transactions[] = $transaction;
         }
 
@@ -58,7 +57,7 @@ class TransactionMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateTransaction( $transaction, $resp );
+        $this->populate( $transaction, $resp );
 
         return $transaction;
     }
@@ -69,21 +68,8 @@ class TransactionMapper extends DataMapper
         $sql->bindParam( ":customer_id", $customer_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateTransaction( $transaction, $resp );
+        $this->populate( $transaction, $resp );
 
         return $transaction;
     }
-
-    private function populateTransaction( \Model\Transaction $transaction, $data )
-    {
-        $transaction->id          = $data[ "id" ];
-        $transaction->customer_id = $data[ "customer_id" ];
-        $transaction->order_id    = $data[ "order_id" ];
-        $transaction->status      = $data[ "status" ];
-        $transaction->transaction = $data[ "transaction_type" ];
-        $transaction->amount      = $data[ "amount" ];
-        $transaction->created_at  = $data[ "created_at" ];
-        $transaction->updated_at  = $data[ "updated_at" ];
-    }
-
 }

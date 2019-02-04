@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class FAQMapper extends DataMapper
 {
-
     public function create( \Model\FAQ $faq )
     {
         $id = $this->insert(
@@ -20,13 +19,13 @@ class FAQMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
         $faqs = [];
         $sql = $this->DB->prepare( "SELECT * FROM faq" );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $faq = $entityFactory->build( "FAQ" );
-            $this->populateFAQ( $faq, $resp );
+            $faq = $this->entityFactory->build( "FAQ" );
+            $this->populate( $faq, $resp );
             $faqs[] = $faq;
         }
 
@@ -39,15 +38,8 @@ class FAQMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateFAQ( $faq, $resp );
+        $this->populate( $faq, $resp );
+
         return $faq;
     }
-
-    private function populateFAQ( \Model\FAQ $faq, $data )
-    {
-        $faq->id = $data[ "id" ];
-        $faq->placement = $data[ "placement" ];
-        $faq->text = $data[ "text" ];
-    }
-
 }

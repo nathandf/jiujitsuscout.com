@@ -41,7 +41,6 @@
 						<a class="link tc-deep-blue" href="{$HOME}partner/">Add it now</a>
 					</p>
 				</div>
-
 			</div>
 			<div class="">
 				<div class="inner-pad-med">

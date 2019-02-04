@@ -49,7 +49,7 @@ class User implements UserInterface, EntityInterface
             return $this->first_name . " " . $this->last_name;
         }
 
-        return $first_name;
+        return $this->first_name;
     }
 
 }

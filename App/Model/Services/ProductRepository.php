@@ -2,21 +2,21 @@
 
 namespace Model\Services;
 
-class ProductRepository extends Service
+class ProductRepository extends Repository
 {
     public function getAll()
     {
-        $productMapper = new \Model\Mappers\ProductMapper( $this->container );
-        $products = $productMapper->mapAll();
+        $mapper = $this->getMapper();
+        $products = $mapper->mapAll();
 
         return $products;
     }
 
     public function getByID( $id )
     {
-        $product = new \Model\Product();
-        $productMapper = new \Model\Mappers\ProductMapper( $this->container );
-        $productMapper->mapFromID( $product, $id );
+        $mapper = $this->getMapper();
+        $product = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $product, $id );
 
         return $product;
     }

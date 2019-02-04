@@ -29,9 +29,9 @@ class LandingPage extends Controller
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
 
@@ -60,85 +60,226 @@ class LandingPage extends Controller
         $inputValidator = $this->load( "input-validator" );
         $groupRepo = $this->load( "group-repository" );
         $landingPageRepo = $this->load( "landing-page-repository" );
+        $landingPageGroupRepo = $this->load( "landing-page-group-repository" );
+        $landingPageSequenceTemplateRepo = $this->load( "landing-page-sequence-template-repository" );
+        $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
+        $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
+        $landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
+        $landingPageNotificationRecipientRepo = $this->load( "landing-page-notification-recipient-repository" );
+        $userRepo = $this->load( "user-repository" );
 
-        $landingPage = $landingPageRepo->getByID( $this->params[ "id" ] );
+        $landingPage = $landingPageRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
 
-        $facebook_pixel_active = false;
-        if ( !is_null( $landingPage->facebook_pixel_id ) && $landingPage->facebook_pixel_id != "" ) {
-            $facebook_pixel_active = true;
-        }
+        $users = $userRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
+        $user_ids = $userRepo->get( [ "id" ], [ "account_id" => $this->account->id ], "raw" );
+        $landing_page_notification_recipient_ids = $landingPageNotificationRecipientRepo->get(
+            [ "user_id" ],
+            [ "landing_page_id" => $landingPage->id ],
+            "raw"
+        );
 
-        $all_groups = $groupRepo->getAllByBusinessID( $this->business->id );
-
-        $landing_page_group_ids = explode( ",", $landingPage->group_ids );
-
-        if ( $input->exists() ) {
-
-            // Update groups
-            $group_ids = null;
-            if ( $input->issetField( "group_ids" ) ) {
-                $group_ids = implode( ",", $input->get( "group_ids" ) );
-            }
-            $landingPageRepo->updateGroupIDsByID( $group_ids, $this->params[ "id" ] );
-            // Facebook Pixel
-            if ( $input->issetField( "facebook_pixel_track" ) ) {
-                if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
-                    $landingPageRepo->updateFacebookPixelIDByID( $this->business->facebook_pixel_id, $landingPage->id );
-                }
-            } else {
-                $landingPageRepo->updateFacebookPixelIDByID( null, $landingPage->id );
-            }
-
-            if ( $inputValidator->validate(
-
-                    $input,
-
-                    [
-                        "token" => [
-                            "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                            "required" => true
-                        ],
-                        "update_landing_page" => [
-                            "required" => true
-                        ],
-                        "name" => [
-                            "name" => "Landing Page Name",
-                            "required" => true,
-                            "min" => 1,
-                            "max" => 200
-                        ],
-                        "slug" => [
-                            "name" => "Slug",
-                            "required" => true,
-                            "min" => 1,
-                            "max" => 100,
-                            "uri" => true
-                        ]
-                    ],
-
-                    "update_landing_page" /* error index */
-                ) )
-            {
-                $landingPageRepo->updateNameByID( $input->get( "name" ), $this->params[ "id" ] );
-                $landingPageRepo->modifySlug( $input->get( "slug" ), $this->params[ "id" ], $this->business->id );
-                $this->view->redirect( "account-manager/business/landing-page/" . $landingPage->id . "/" );
+        foreach ( $users as $user ) {
+            $user->isset = false;
+            if ( in_array( $user->id, $landing_page_notification_recipient_ids ) ) {
+                $user->isset = true;
             }
         }
 
-        foreach ( $all_groups as $group ) {
+        $facebookPixels = $facebookPixelRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $facebook_pixel_ids_all = $facebookPixelRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+        $landing_page_facebook_pixel_ids = $landingPageFacebookPixelRepo->get( [ "facebook_pixel_id" ], [ "landing_page_id" => $this->params[ "id" ] ], "raw" );
+
+        foreach ( $facebookPixels as $pixel ) {
+            $pixel->isset = false;
+            if ( in_array( $pixel->id, $landing_page_facebook_pixel_ids ) ) {
+                $pixel->isset = true;
+            }
+        }
+
+        $landingPageGroups = $landingPageGroupRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
+        $landing_page_group_group_ids = $landingPageGroupRepo->get( [ "group_id" ], [ "landing_page_id" => $landingPage->id ], "raw" );
+
+        $groupsAll = $groupRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $group_ids_all = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+
+        // Add an isset property to each group object. This value will be evaluated
+        // to determine whether the checkbox should be checked or not
+        foreach ( $groupsAll as $group ) {
             $group->isset = false;
-            if ( in_array( $group->id, $landing_page_group_ids ) ) {
+            if ( in_array( $group->id, $landing_page_group_group_ids ) ) {
                 $group->isset = true;
             }
         }
 
-        $csrf_token = $this->session->generateCSRFToken();
-        $this->view->assign( "csrf_token", $csrf_token );
-        $this->view->setErrorMessages( $inputValidator->getErrors() );
+        $sequenceTemplates = $sequenceTemplateRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $sequence_template_ids_all = $sequenceTemplateRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+        $sequence_template_ids = $landingPageSequenceTemplateRepo->get( [ "sequence_template_id" ], [ "landing_page_id" => $this->params[ "id" ] ], "raw" );
 
-        $this->view->assign( "facebook_pixel_active", $facebook_pixel_active );
-        $this->view->assign( "groups", $all_groups );
+        foreach ( $sequenceTemplates as $sequenceTemplate ) {
+            $sequenceTemplate->isset = false;
+            if ( in_array( $sequenceTemplate->id, $sequence_template_ids ) ) {
+                $sequenceTemplate->isset = true;
+            }
+        }
+
+        if ( $input->exists() && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "update_landing_page" => [
+                    "required" => true
+                ],
+                "name" => [
+                    "name" => "Landing Page Name",
+                    "required" => true,
+                    "min" => 1,
+                    "max" => 200
+                ],
+                "slug" => [
+                    "name" => "Slug",
+                    "required" => true,
+                    "min" => 1,
+                    "max" => 100,
+                    "uri" => true
+                ]
+            ],
+
+            "update_landing_page" /* error index */
+            )
+        ) {
+            // Update landingPageGroups
+            $submitted_user_ids = [];
+            if ( $input->issetField( "user_ids" ) ) {
+                $submitted_user_ids = $input->get( "user_ids" );
+            }
+
+            // Create and new landing page notification recipient for any of the submitted
+            // user ids if it doesn't already exist
+            foreach ( $submitted_user_ids as $user_id ) {
+                if ( !in_array( $user_id, $landing_page_notification_recipient_ids, true ) ) {
+                    $landingPageNotificationRecipientRepo->insert([
+                        "landing_page_id" => $landingPage->id,
+                        "user_id" => $user_id
+                    ]);
+                }
+            }
+
+            // Delete the landing page user recipients with the user ids that were not
+            // submitted if they exist
+            foreach ( $user_ids as $_user_id ) {
+                if (
+                    !in_array( $_user_id, $submitted_user_ids ) &&
+                    in_array( $_user_id, $landing_page_notification_recipient_ids, true )
+                ) {
+                    $landingPageNotificationRecipientRepo->delete( [ "user_id", "landing_page_id" ], [ $_user_id, $landingPage->id ] );
+                }
+            }
+
+            // Update landingPageGroups
+            $submitted_group_ids = [];
+            if ( $input->issetField( "group_ids" ) ) {
+                $submitted_group_ids = $input->get( "group_ids" );
+            }
+
+            // Create and new landing page group for any of the submitted
+            // group ids if it doesn't already exist
+            foreach ( $submitted_group_ids as $group_id ) {
+                if ( !in_array( $group_id, $landing_page_group_group_ids, true ) ) {
+                    $landingPageGroupRepo->insert([
+                        "landing_page_id" => $landingPage->id,
+                        "group_id" => $group_id
+                    ]);
+                }
+            }
+
+            // Delete the landing page groups with the group ids that were not
+            // submitted
+            foreach ( $group_ids_all as $_group_id ) {
+                if (
+                    !in_array( $_group_id, $submitted_group_ids ) &&
+                    in_array( $_group_id, $landing_page_group_group_ids, true )
+                ) {
+                    $landingPageGroupRepo->delete( [ "group_id", "landing_page_id" ], [ $_group_id, $landingPage->id ] );
+                }
+            }
+
+            // Update LandingPageSequenceTemplate
+            $submitted_sequence_template_ids = [];
+            if ( $input->issetField( "sequence_template_ids" ) ) {
+                $submitted_sequence_template_ids = $input->get( "sequence_template_ids" );
+            }
+
+            // Create and new landing page sequence template for any of the submitted
+            // sequence tepmlate ids if it doesn't already exist
+            foreach ( $submitted_sequence_template_ids as $submitted_sequence_template_id ) {
+                if ( !in_array( $submitted_sequence_template_id, $sequence_template_ids, true ) ) {
+                    $landingPageSequenceTemplateRepo->insert([
+                        "landing_page_id" => $landingPage->id,
+                        "sequence_template_id" => $submitted_sequence_template_id
+                    ]);
+                }
+            }
+
+            // Delete the landing page sequence templates with the sequence template ids that were not
+            // submitted
+            foreach ( $sequence_template_ids_all as $_sequence_template_id ) {
+                if (
+                    !in_array( $_sequence_template_id, $submitted_sequence_template_ids ) &&
+                    in_array( $_sequence_template_id, $sequence_template_ids, true )
+                ) {
+                    $landingPageSequenceTemplateRepo->delete( [ "sequence_template_id", "landing_page_id" ], [ $_sequence_template_id, $this->params[ "id" ] ] );
+                }
+            }
+
+            // Update LandingPageFacebookPixel
+            $submitted_facebook_pixel_ids = [];
+            if ( $input->issetField( "facebook_pixel_ids" ) ) {
+                $submitted_facebook_pixel_ids = $input->get( "facebook_pixel_ids" );
+            }
+
+            // Create and new landing page facebook pixel for any of the submitted
+            // facebook pixel ids if it doesn't already exist
+            foreach ( $submitted_facebook_pixel_ids as $submitted_facebook_pixel_id ) {
+                if ( !in_array( $submitted_facebook_pixel_id, $landing_page_facebook_pixel_ids, true ) ) {
+                    $landingPageFacebookPixelRepo->insert([
+                        "landing_page_id" => $landingPage->id,
+                        "facebook_pixel_id" => $submitted_facebook_pixel_id
+                    ]);
+                }
+            }
+
+            // Delete the landing page facebook pixels with the facebook pixel ids that were not
+            // submitted
+            foreach ( $facebook_pixel_ids_all as $_facebook_pixel_id ) {
+                if (
+                    !in_array( $_facebook_pixel_id, $submitted_facebook_pixel_ids ) &&
+                    in_array( $_facebook_pixel_id, $landing_page_facebook_pixel_ids, true )
+                ) {
+                    $landingPageFacebookPixelRepo->delete( [ "facebook_pixel_id", "landing_page_id" ], [ $_facebook_pixel_id, $this->params[ "id" ] ] );
+                }
+            }
+
+            $this->session->addFlashMessage( "Landing Page Updated" );
+            $this->session->setFlashMessages();
+
+            $landingPageRepo->updateNameByID( $input->get( "name" ), $this->params[ "id" ] );
+            $landingPageRepo->modifySlug( $input->get( "slug" ), $this->params[ "id" ], $this->business->id );
+
+            $this->view->redirect( "account-manager/business/landing-page/" . $landingPage->id . "/" );
+        }
+
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
+
+        $this->view->assign( "groups", $groupsAll );
         $this->view->assign( "page", $landingPage );
+        $this->view->assign( "sequence_templates", $sequenceTemplates );
+        $this->view->assign( "facebook_pixels", $facebookPixels );
+        $this->view->assign( "user_recipients", $users );
 
         $this->view->setTemplate( "account-manager/business/landing-page/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/LandingPage.php" );

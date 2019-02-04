@@ -2,41 +2,41 @@
 
 namespace Model\Services;
 
-class QuestionChoiceRepository extends Service
+class QuestionChoiceRepository extends Repository
 {
     public function create( $question_choice_type_id, $question_id, $text )
     {
-        $questionChoice = new \Model\QuestionChoice();
-        $questionChoiceMapper = new \Model\Mappers\QuestionChoiceMapper( $this->container );
+        $mapper = $this->getMapper();
+        $questionChoice = $mapper->build( $this->entityName );
         $questionChoice->question_choice_type_id = $question_choice_type_id;
         $questionChoice->question_id = $question_id;
         $questionChoice->text = $text;
-        $questionChoiceMapper->create( $questionChoice );
+        $mapper->create( $questionChoice );
 
         return $questionChoice;
     }
 
     public function getAll()
     {
-        $questionChoiceMapper = new \Model\Mappers\QuestionChoiceMapper( $this->container );
-        $questionChoices = $questionChoiceMapper->mapAll();
+        $mapper = $this->getMapper();
+        $questionChoices = $mapper->mapAll();
 
         return $questionChoices;
     }
 
     public function getByID( $id )
     {
-        $questionChoice = new \Model\QuestionChoice();
-        $questionChoiceMapper = new \Model\Mappers\QuestionChoiceMapper( $this->container );
-        $questionChoiceMapper->mapFromID( $questionChoice, $id );
+        $mapper = $this->getMapper();
+        $questionChoice = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $questionChoice, $id );
 
         return $questionChoice;
     }
 
     public function getAllByQuestionID( $question_id )
     {
-        $questionChoiceMapper = new \Model\Mappers\QuestionChoiceMapper( $this->container );
-        $questionChoices = $questionChoiceMapper->mapAllFromQuestionID( $question_id );
+        $mapper = $this->getMapper();
+        $questionChoices = $mapper->mapAllFromQuestionID( $question_id );
 
         return $questionChoices;
     }

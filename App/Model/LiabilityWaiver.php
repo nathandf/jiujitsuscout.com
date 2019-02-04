@@ -2,7 +2,7 @@
 
 namespace Model;
 
-use Contracts/EntityInterface;
+use Contracts\EntityInterface;
 
 class LiabilityWaiver
 {

@@ -6,7 +6,6 @@ use Model\Schedule;
 
 class ScheduleMapper extends DataMapper
 {
-
     public function create( \Model\Schedule $schedule )
     {
         $id = $this->insert(
@@ -26,21 +25,21 @@ class ScheduleMapper extends DataMapper
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
 
-        $this->populateSchedule( $schedule, $resp );
+        $this->populate( $schedule, $resp );
 
         return $schedule;
     }
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
         $schedules = [];
         $sql = $this->DB->prepare( 'SELECT * FROM schedule WHERE business_id = :business_id' );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $schedule = $entityFactory->build( "Schedule" );
-            $this->populateSchedule( $schedule, $resp );
+            $schedule = $this->entityFactory->build( "Schedule" );
+            $this->populate( $schedule, $resp );
             $schedules[] = $schedule;
         }
 
@@ -59,13 +58,4 @@ class ScheduleMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
     }
-
-    private function populateSchedule( \Model\Schedule $schedule, $data )
-    {
-        $schedule->id                      = $data[ "id" ];
-        $schedule->business_id             = $data[ "business_id" ];
-        $schedule->name                    = $data[ "name" ];
-        $schedule->description             = $data[ "description" ];
-    }
-
 }

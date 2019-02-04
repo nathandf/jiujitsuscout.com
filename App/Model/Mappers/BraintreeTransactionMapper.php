@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class BraintreeTransactionMapper extends DataMapper
 {
-
     public function create( \Model\BraintreeTransaction $braintreeTransaction )
     {
         $now = time();
@@ -29,13 +28,13 @@ class BraintreeTransactionMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
         $braintreeTransactions = [];
         $sql = $this->DB->prepare( "SELECT * FROM braintree_transaction" );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $braintreeTransaction = $entityFactory->build( "BraintreeTransaction" );
-            $this->populateBraintreeTransaction( $braintreeTransaction, $resp );
+            $braintreeTransaction = $this->entityFactory->build( "BraintreeTransaction" );
+            $this->populate( $braintreeTransaction, $resp );
             $braintreeTransactions[] = $braintreeTransaction;
         }
 
@@ -48,7 +47,7 @@ class BraintreeTransactionMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateBraintreeTransaction( $braintreeTransaction, $resp );
+        $this->populate( $braintreeTransaction, $resp );
 
         return $braintreeTransaction;
     }
@@ -59,7 +58,7 @@ class BraintreeTransactionMapper extends DataMapper
         $sql->bindParam( ":transaction_id", $transaction_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateBraintreeTransaction( $braintreeTransaction, $resp );
+        $this->populate( $braintreeTransaction, $resp );
 
         return $braintreeTransaction;
     }
@@ -70,17 +69,8 @@ class BraintreeTransactionMapper extends DataMapper
         $sql->bindParam( ":braintree_transaction_id", $braintree_transaction_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateBraintreeTransaction( $braintreeTransaction, $resp );
+        $this->populate( $braintreeTransaction, $resp );
 
         return $braintreeTransaction;
     }
-
-    private function populateBraintreeTransaction( \Model\BraintreeTransaction $braintreeTransaction, $data )
-    {
-        $braintreeTransaction->id                                   = $data[ "id" ];
-        $braintreeTransaction->transaction_id                       = $data[ "transaction_id" ];
-        $braintreeTransaction->braintree_transaction_id             = $data[ "braintree_transaction_id" ];
-        $braintreeTransaction->data                                 = $data[ "data" ];
-    }
-
 }

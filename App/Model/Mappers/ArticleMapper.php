@@ -25,13 +25,13 @@ class ArticleMapper extends DataMapper
 
     public function mapAllFromBlogID( $blog_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $articles = [];
         $sql = $this->DB->prepare( 'SELECT * FROM article WHERE blog_id = :blog_id' );
         $sql->bindParam( ":blog_id", $blog_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $article = $entityFactory->build( "Article" );
+            $article = $this->entityFactory->build( "Article" );
             $this->populate( $article, $resp );
             $articles[] = $article;
         }

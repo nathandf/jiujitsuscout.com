@@ -33,17 +33,19 @@ $Router->add( "{controller:martial-arts-gyms}/{region:[a-zA-Z-]+[0-9]*}/{localit
 $Router->add( "{controller:martial-arts-gyms}/{region:[a-zA-Z-]+[0-9]*}/{locality:[a-zA-Z-]+[0-9]*}/{siteslug:[a-zA-Z0-9-]*}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{controller:martial-arts-gyms}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{controller:martial-arts-gyms}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}/{slug:[a-zA-Z0-9-]+}" );
+$Router->add( "{path:martial-arts-gyms}/{id:[0-9]+}/promo/{slug:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]+}", [ "controller" => "landing-page-capture" ] );
 $Router->add( "{controller:martial-arts-gyms}/{siteslug:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{controller:martial-arts-gyms}/{siteslug:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]*}/{slug:[a-zA-Z0-9-]+}" );
+
+$Router->add( "{path:jjs-admin}/{controller:blog}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
+$Router->add( "{path:jjs-admin/blog}/{blogid:[0-9]+}/{controller:article}/{articleid:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
+$Router->add( "{path:jjs-admin}/{controller:business}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
 
 $Router->add( "{path:[a-zA-Z0-9-/]+}/{controller:[a-zA-Z0-9-]*}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
 
 // Form submission route
 $Router->add( "{controller:form*}/{token:[a-zA-Z0-9-]+}/{action:[a-zA-Z0-9-]*}" );
-
-$Router->add( "{path:jjs-admin}/{controller:blog}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
-$Router->add( "{path:jjs-admin/blog}/{blogid:[0-9]+}/{controller:article}/{articleid:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
-$Router->add( "{path:jjs-admin}/{controller:business}/{id:[0-9]+}/{action:[a-zA-Z0-9-]*}" );
+$Router->add( "{controller:forms*}/{id:[0-9]+}/{token:[a-zA-Z0-9-]+}", [ "action" => "index" ] );
 
 $Router->add( "{controller}/{action:[a-zA-Z0-9-]*}" );
 $Router->add( "{path:[a-zA-Z0-9-/]+}/{controller}/{action:[a-zA-Z0-9-]*}" );

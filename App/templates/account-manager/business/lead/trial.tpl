@@ -7,7 +7,7 @@
 {block name="bm-body"}
 {include file="includes/navigation/business-manager-sub-menu.tpl"}
 	<div class="con-cnt-xxlrg push-t-med inner-pad-med">
-		<a href="{$HOME}account-manager/business/lead/{$lead->id}/" class="btn btn-inline bg-salmon text-med push-t-med">< Lead Manager</a>
+		<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/leads">Leads</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/lead/{$lead->id}/">{$lead->getFullName()}</a> > Trial</p>
 		<a href="{$HOME}account-manager/business/trials" class="btn btn-inline bg-mango text-med push-t-med floatright">All Trials ></a>
 		<div class="clear"></div>
 		<p class="text-lrg-heavy push-t-med push-b">{$lead->first_name|default:null}{if $lead->last_name} {$lead->last_name}{/if}</p>

@@ -2,42 +2,42 @@
 
 namespace Model\Services;
 
-class ProspectAppraisalRepository extends Service
+class ProspectAppraisalRepository extends Repository
 {
     public function create( $prospect_id, $value, $currency = "USD" )
     {
-        $prospectAppraisal = new \Model\ProspectAppraisal();
-        $prospectAppraisalMapper = new \Model\Mappers\ProspectAppraisalMapper( $this->container );
+        $mapper = $this->getMapper();
+        $prospectAppraisal = $mapper->build( $this->entityName );
         $prospectAppraisal->prospect_id = $prospect_id;
         $prospectAppraisal->value = $value;
         $prospectAppraisal->currency = $currency;
-        $prospectAppraisalMapper->create( $prospectAppraisal );
+        $mapper->create( $prospectAppraisal );
 
         return $prospectAppraisal;
     }
 
     public function getAll()
     {
-        $prospectAppraisalMapper = new \Model\Mappers\ProspectAppraisalMapper( $this->container );
-        $prospectAppraisals = $prospectAppraisalMapper->mapAll();
+        $mapper = $this->getMapper();
+        $prospectAppraisals = $mapper->mapAll();
 
         return $prospectAppraisals;
     }
 
     public function getByID( $id )
     {
-        $prospectAppraisal = new \Model\ProspectAppraisal();
-        $prospectAppraisalMapper = new \Model\Mappers\ProspectAppraisalMapper( $this->container );
-        $prospectAppraisals = $prospectAppraisalMapper->mapFromID( $prospectAppraisal, $id );
+        $mapper = $this->getMapper();
+        $prospectAppraisal = $mapper->build( $this->entityName );
+        $prospectAppraisals = $mapper->mapFromID( $prospectAppraisal, $id );
 
         return $prospectAppraisal;
     }
 
     public function getByProspectID( $prospect_id )
     {
-        $prospectAppraisal = new \Model\ProspectAppraisal();
-        $prospectAppraisalMapper = new \Model\Mappers\ProspectAppraisalMapper( $this->container );
-        $prospectAppraisals = $prospectAppraisalMapper->mapFromProspectID( $prospectAppraisal, $prospect_id );
+        $mapper = $this->getMapper();
+        $prospectAppraisal = $mapper->build( $this->entityName );
+        $prospectAppraisals = $mapper->mapFromProspectID( $prospectAppraisal, $prospect_id );
 
         return $prospectAppraisals;
     }

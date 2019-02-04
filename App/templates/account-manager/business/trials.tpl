@@ -6,9 +6,9 @@
 
 {block name="bm-body"}
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
-	<div class="con-cnt-xxlrg first inner-pad-med">
+	<div class="con-cnt-xlrg push-t-med inner-pad-med">
 		<h2>Trials</h2>
-		<a href="{$HOME}account-manager/business/trial/new" class="btn btn-inline trials first mat-hov"><span class="text-med">New Trial <i class="fa fa-plus" aria-hidden="true"></i></span></a>
+		<a href="{$HOME}account-manager/business/trial/new" class="btn btn-inline trials first mat-hov"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Trial</span></a>
 		<div class="clear"></div>
 		<!-- <input type="search" class="inp field-med first last" placeholder="Search">
 		<div class="clear"></div> -->
@@ -19,12 +19,15 @@
 					<h3 class="first">Trial Ended</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/lead/{$trial->id}/trial" id="lead{$trial->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon icon-c-2"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon icon-c-2"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$trial->first_name} {$trial->last_name}</p>
 						<p>Start: {$trial->trial_start|date_format:"%a, %b %e %Y"}</p>
 						<p>End: {$trial->trial_end|date_format:"%a, %b %e %Y"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}
@@ -33,12 +36,15 @@
 					<h3 class="first">Today</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/lead/{$trial->id}/trial" id="lead{$trial->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$trial->first_name|substr:0:1|upper}</span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$trial->first_name|substr:0:1|upper}</span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$trial->first_name} {$trial->last_name}</p>
 						<p>Start: {$trial->trial_start|date_format:"%a, %b %e %Y"}</p>
 						<p>End: {$trial->trial_end|date_format:"%a, %b %e %Y"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}
@@ -47,12 +53,15 @@
 					<h3 class="first">Tomorrow</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/lead/{$trial->id}/trial" id="lead{$trial->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$trial->first_name|substr:0:1|upper}</span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$trial->first_name|substr:0:1|upper}</span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$trial->first_name} {$trial->last_name}</p>
 						<p>Start: {$trial->trial_start|date_format:"%a, %b %e %Y"}</p>
 						<p>End: {$trial->trial_end|date_format:"%a, %b %e %Y"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}
@@ -61,12 +70,15 @@
 					<h3 class="first">This Week</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/lead/{$trial->id}/trial" id="lead{$trial->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$trial->first_name|substr:0:1|upper}</span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$trial->first_name|substr:0:1|upper}</span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$trial->first_name} {$trial->last_name}</p>
 						<p>Start: {$trial->trial_start|date_format:"%a, %b %e %Y"}</p>
 						<p>End: {$trial->trial_end|date_format:"%a, %b %e %Y"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}
@@ -75,12 +87,15 @@
 					<h3 class="first">Next Week</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/lead/{$trial->id}/trial" id="lead{$trial->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$trial->first_name|substr:0:1|upper}</span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$trial->first_name|substr:0:1|upper}</span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$trial->first_name} {$trial->last_name}</p>
 						<p>Start: {$trial->trial_start|date_format:"%a, %b %e %Y"}</p>
 						<p>End: {$trial->trial_end|date_format:"%a, %b %e %Y"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}
@@ -89,12 +104,15 @@
 					<h3 class="first">Upcoming</h3>
 				{/if}
 				<a href="{$HOME}account-manager/business/lead/{$trial->id}/trial" id="lead{$trial->id}" class="lead-tag first mat-hov">
-					<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$trial->first_name|substr:0:1|upper}</span>
-					<div class="lead-data">
+					<div class="lead-icon-container floatleft">
+						<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$trial->first_name|substr:0:1|upper}</span>
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$trial->first_name} {$trial->last_name}</p>
 						<p>Start: {$trial->trial_start|date_format:"%a, %b %e %Y"}</p>
 						<p>End: {$trial->trial_end|date_format:"%a, %b %e %Y"}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}

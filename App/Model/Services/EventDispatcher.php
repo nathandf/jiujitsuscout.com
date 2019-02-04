@@ -16,9 +16,13 @@ use Model\Services\EventTextMessageDispatcher;
 
 class EventDispatcher
 {
+    public $all_events_dispatched = false;
 
-    public function __construct( EventRepository $eventRepo, EventEmailDispatcher $eventEmailDispatcher, EventTextMessageDispatcher $eventTextMessageDispatcher )
-    {
+    public function __construct(
+        EventRepository $eventRepo,
+        EventEmailDispatcher $eventEmailDispatcher,
+        EventTextMessageDispatcher $eventTextMessageDispatcher
+    ) {
         $this->eventRepo = $eventRepo;
         $this->eventEmailDispatcher = $eventEmailDispatcher;
         $this->eventTextMessageDispatcher = $eventTextMessageDispatcher;
@@ -27,27 +31,32 @@ class EventDispatcher
     /**
     * @param array event_ids
     */
-
     public function dispatch( array $event_ids )
     {
+        $event_count = count( $event_ids );
+        $e = 0;
         foreach ( $event_ids as $id ) {
-            $event = $this->eventRepo->getByID( $id );
-            switch ( $event->event_type_id ) {
-                case 1:
-                    $this->eventEmailDispatcher->dispatch( $event->id );
-                    echo "<br>";
-                    break;
-                case 2:
-                    $this->eventTextMessageDispatcher->dispatch( $event->id );
-                    echo "<br>";
-                    break;
-                case 3:
-                    echo "Wait" . "<br>";
-                    break;
-                default:
-                    break;
+            $e++;
+            $event = $this->eventRepo->get( [ "*" ], [ "id" => $id ], "single" );
+            if ( $event->time <= time() ) {
+                switch ( $event->event_type_id ) {
+                    case 1:
+                        $this->eventEmailDispatcher->dispatch( $event->id );
+                        break;
+                    case 2:
+                        $this->eventTextMessageDispatcher->dispatch( $event->id );
+                        break;
+                    default:
+                        break;
+                }
+
+                $this->eventRepo->update( [ "complete" => 1 ], [ "id" => $event->id ] );
+
+                // If the last event is dispatched, update all_events_dispatched to true
+                if ( $event_count == $e ) {
+                    $this->all_events_dispatched = true;
+                }
             }
         }
     }
-
 }
