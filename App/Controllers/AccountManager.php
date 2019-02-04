@@ -22,6 +22,7 @@ class AccountManager extends Controller
 		$businessRepo = $this->load( "business-repository" );
 		$userRepo = $this->load( "user-repository" );
 		$imageRepo = $this->load( "image-repository" );
+
 		// If user not validated with session or cookie, send them to sign in
 		if ( !$userAuth->userValidate() ) {
 			$this->view->redirect( "account-manager/sign-in" );
@@ -58,6 +59,13 @@ class AccountManager extends Controller
 		$this->users = $userRepo->get( [ "*" ], [ "account_id" => $this->user->account_id ] );
 		$total_users = count( $this->users );
 
+		// Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+
 		// Set data for the view
 		$this->view->assign( "total_users", $total_users );
 		$this->view->assign( "total_businesses", $total_businesses );
@@ -82,6 +90,13 @@ class AccountManager extends Controller
 			}
 			$this->view->redirect( "account-manager/" );
 		}
+
+		// Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
 
 		// processing login form validation
 		if ( $input->exists() && $inputValidator->validate(
@@ -164,6 +179,14 @@ class AccountManager extends Controller
 			$userRepo->updateCurrentBusinessID( $this->user );
 			$this->view->redirect( "account-manager/business/" );
 		}
+
+		// Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+
 		// Load input helpers
 		$input = $this->load( "input" );
 		$inputValidator = $this->load( "input-validator" );
@@ -455,6 +478,13 @@ class AccountManager extends Controller
 
 		$userEmails = $userRepo->getAllEmails();
 
+		// Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+
 		if ( $input->exists() && $inputValidator->validate(
 
 				$input,
@@ -518,6 +548,13 @@ class AccountManager extends Controller
 		$passwordResetRepo = $this->load( "password-reset-repository" );
 		$userRepo = $this->load( "user-repository" );
 		$userAuthenticator = $this->load( "user-authenticator" );
+
+		// Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
 
 		if ( $input->exists( "get" ) && $inputValidator->validate(
 
@@ -619,6 +656,16 @@ class AccountManager extends Controller
 			$this->view->render403();
 		}
 
+		// Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$facebookPixel->addEvent([
+			"ViewContent"
+		]);
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+
 		if ( $input->exists() && $inputValidator->validate(
 
 				$input,
@@ -697,7 +744,7 @@ class AccountManager extends Controller
 			if ( is_null( $order->id ) ) {
 				$order = $orderRepo->insert([
 					"customer_id" => $customer->id,
-					"paid" => 0 
+					"paid" => 0
 				]);
 			}
 
@@ -732,6 +779,17 @@ class AccountManager extends Controller
 		if ( !$accessControl->hasAccess( [ "administrator", "manager" ], $this->user->role ) ) {
 			$this->view->render403();
 		}
+
+		// Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$facebookPixelBuilder->addEvent([
+			"ViewContent"
+		]);
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+
 		$this->view->setTemplate( "account-manager/add-credit.tpl" );
 		$this->view->render( "App/Views/AccountManager.php" );
 	}

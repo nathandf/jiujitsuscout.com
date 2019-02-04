@@ -32,6 +32,13 @@ class Assets extends Controller
         // Grab business details
         $this->business = $this->businessRepo->getByID( $this->user->getCurrentBusinessID() );
 
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+
         // Set data for the view
         $this->view->assign( "account", $this->account );
         $this->view->assign( "user", $this->user );
@@ -284,7 +291,7 @@ class Assets extends Controller
                 if ( $input->get( "primary" ) ) {
                     $businessRepo->update( [ "video_id" => $newVideo->id ], [ "id" => $this->business->id ] );
                 }
-                
+
                 $this->session->addFlashMessage( "Video Uploaded" );
                 $this->session->setFlashMessages();
 

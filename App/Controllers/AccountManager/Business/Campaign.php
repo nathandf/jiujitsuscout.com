@@ -48,6 +48,13 @@ class Campaign extends Controller
             $this->view->redirect( "account-manager/business/campaigns/" );
         }
 
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+
         $this->view->assign( "account", $this->account );
         $this->view->assign( "user", $this->user );
         $this->view->assign( "business", $this->business );

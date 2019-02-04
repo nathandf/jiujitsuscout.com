@@ -50,6 +50,14 @@ class User extends Controller
 
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+
         // Set data for the view
         $this->view->assign( "account", $this->account );
         $this->view->assign( "account_type", $this->accountType );
