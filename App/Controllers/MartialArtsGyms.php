@@ -51,7 +51,7 @@ class MartialArtsGyms extends Controller
         $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         $this->view->assign( "business", $this->business );
-        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
         $this->view->assign( "google_api_key", $Config::$configs[ "google" ][ "api_key" ] );
     }
 
@@ -67,7 +67,7 @@ class MartialArtsGyms extends Controller
         $Config = $this->load( "config" );
 
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
         // If siteslug and id aren't set, show listings of gyms based on locality and region
         if ( !$this->issetParam( "siteslug" ) && !$this->issetParam( "id" ) ) {
             // If locality and region are not set, redirect to home page
@@ -478,7 +478,7 @@ class MartialArtsGyms extends Controller
         $Config = $this->load( "config" );
 
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         // Add Lead event
         $facebookPixelBuilder->addEvent([
@@ -529,7 +529,7 @@ class MartialArtsGyms extends Controller
         $phone = $phoneRepo->getByID( $this->business->phone_id );
         $this->business->phone_number = $phone->national_number;
 
-        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
         $this->view->assign( "business", $this->business );
         $this->view->setTemplate( "martial-arts-gyms/review-complete.tpl" );
         $this->view->render( "App/Views/MartialArtsGyms.php" );
@@ -547,11 +547,11 @@ class MartialArtsGyms extends Controller
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         // Replace the facebook pixel if user specifies a pixel id of their own
         if ( !is_null( $this->business->facebook_pixel_id ) && $this->business->facebook_pixel_id != "" ) {
-            $facebookPixelBuilder->setPixelID( $this->business->facebook_pixel_id );
+            $facebookPixelBuilder->addPixelID( $this->business->facebook_pixel_id );
         }
 
         // Add Lead event
@@ -750,7 +750,7 @@ class MartialArtsGyms extends Controller
         }
 
         $this->view->assign( "page", $landingPage );
-        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->buildPixel() );
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         // Set variables to populate inputs after form submission failure and assign to view
         $inputs = [];

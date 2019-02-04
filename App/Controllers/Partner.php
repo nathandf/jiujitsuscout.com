@@ -16,7 +16,7 @@ class Partner extends Controller
 		$currencyRepo = $this->load( "currency-repository" );
 		$Config = $this->load( "config" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
 		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
@@ -103,7 +103,7 @@ class Partner extends Controller
 		$Config = $this->load( "config" );
 		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 		$facebookPixelBuilder->addEvent( "Lead" );
 
 		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );

@@ -59,7 +59,7 @@ class LandingPageCapture extends Controller
             "Lead"
         ]);
 
-        $this->view->assign( "facebook_pixel", $this->facebookPixelBuilder->buildPixel() );
+        $this->view->assign( "facebook_pixel", $this->facebookPixelBuilder->build() );
         $this->view->setTemplate( "martial-arts-gyms/landing-page/thank-you.tpl" );
     }
 
@@ -69,7 +69,7 @@ class LandingPageCapture extends Controller
             "SelfSchedule"
         ]);
 
-        $this->view->assign( "facebook_pixel", $this->facebookPixelBuilder->buildPixel() );
+        $this->view->assign( "facebook_pixel", $this->facebookPixelBuilder->build() );
         $this->view->setTemplate( "martial-arts-gyms/landing-page/schedule.tpl" );
     }
 }

@@ -44,6 +44,13 @@ class Schedule extends Controller
             $this->view->redirect( "account-manager/business/schedules/" );
         }
 
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
         // Set data for the view
         $this->view->assign( "account", $this->account );
         $this->view->assign( "user", $this->user );

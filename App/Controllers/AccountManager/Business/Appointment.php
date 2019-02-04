@@ -53,6 +53,14 @@ class Appointment extends Controller
             $phone = $phoneRepo->getByID( $lead->phone_id );
             $lead->phone_number = "+" . $phone->country_code . " " . $phone->national_number;
         }
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
         // Set data for the view
         $this->view->assign( "page", "appointment" );
         $this->view->assign( "leads", $this->leads );

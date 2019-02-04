@@ -38,6 +38,13 @@ class Business extends Controller
         // Get currency object for business
         $this->business->currency = $currencyRepo->getByCode( $this->business->currency );
 
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
         // Set data for the view
         $this->view->assign( "account_type", $this->account_type );
         $this->view->assign( "account", $this->account );

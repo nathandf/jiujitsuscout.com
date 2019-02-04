@@ -41,7 +41,7 @@ class Home extends Controller
         $Config = $this->load( "config" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         // Get all businesses geo info to populate links
         $businesses = $businessRepo->get( [ "*" ] );
@@ -121,9 +121,9 @@ class Home extends Controller
         $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
         $Config = $this->load( "config" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
-        // Add InitiateCheckout Event if there are products in the cart
+        // Add Search Event
         $facebookPixelBuilder->addEvent([
             "Search"
         ]);
@@ -390,7 +390,7 @@ class Home extends Controller
     {
         $Config = $this->load( "config" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
@@ -428,7 +428,7 @@ class Home extends Controller
     {
         $Config = $this->load( "config" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         // Track leads
         $facebookPixelBuilder->addEvent([
