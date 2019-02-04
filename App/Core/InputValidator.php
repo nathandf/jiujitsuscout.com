@@ -1,6 +1,6 @@
 <?php
 
-namespace Helpers;
+namespace Core;
 
 class InputValidator
 {
@@ -78,6 +78,11 @@ class InputValidator
 								break;
 							case "equals":
 								if ( $value != $rule_value ) {
+									$this->addError( $error_index, "{$field_name} doesn't have the correct value" );
+								}
+								break;
+							case "not-equals":
+								if ( $value == $rule_value ) {
 									$this->addError( $error_index, "{$field_name} doesn't have the correct value" );
 								}
 								break;

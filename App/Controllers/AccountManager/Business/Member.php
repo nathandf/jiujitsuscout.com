@@ -599,6 +599,12 @@ class Member extends Controller
                     "sequence_template_id" => [
                         "required" => true,
                         "in_array" => $sequenceTemplateRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" )
+                    ],
+                    "quantity" => [
+                        "numeric" => true
+                    ],
+                    "unit" => [
+                        "in_array" => [ "days", "weeks", "months" ]
                     ]
                 ],
                 "add_to_sequence"
@@ -611,10 +617,22 @@ class Member extends Controller
                 ->setRecipientEmail( $this->member->email )
                 ->setSenderEmail( $this->business->email )
                 ->setRecipientPhoneNumber( $this->member->phone->getPhoneNumber() )
-                ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() );
-
-            $sequenceBuilder->setBusinessID( $this->business->id )
+                ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() )
+                ->setBusinessID( $this->business->id )
                 ->setMemberID( $this->params[ "id" ] );
+
+            $timeZoneHelper = $this->load( "time-zone-helper" );
+
+            $sequenceBuilder->setTimeZoneOffset(
+                $timeZoneHelper->getServerTimeZoneOffset( $this->business->timezone )
+            );
+
+            // Set start time
+            if ( $input->issetField( "unit" ) && $input->issetField( "quantity" ) ) {
+                $sequenceBuilder->setStartTime(
+                    strtotime( "+{$input->get( "quantity" )} {$input->get( "unit" )}" )
+                );
+            }
 
             // If a sequence was built successfully, create a member and business
             // sequence reference and redirect to the sequence screen

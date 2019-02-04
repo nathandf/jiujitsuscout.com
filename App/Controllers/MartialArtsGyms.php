@@ -719,31 +719,31 @@ class MartialArtsGyms extends Controller
             // Build sequence based on landing page sequence templates
             $landingPageSequenceTemplateRepo = $this->load( "landing-page-sequence-template-repository" );
             $sequenceBuilder = $this->load( "sequence-builder" );
-            $sequenceTemplateRepo = $this->load( "sequence-template-repository" );
             $businessSequenceRepo = $this->load( "business-sequence-repository" );
             $prospectSequenceRepo = $this->load( "prospect-sequence-repository" );
-            $sequenceTemplateSequenceRepo = $this->load( "sequence-template-sequence-repository" );
 
             // Load sequence template reference for this landing page
             $landingPageSequenceTemplates = $landingPageSequenceTemplateRepo->get( [ "*" ], [ "landing_page_id" => $landingPage->id ] );
 
+            $sequenceBuilder->setRecipientName( $prospect->getFullName() )
+                ->setSenderName( $this->business->business_name )
+                ->setRecipientEmail( $prospect->email )
+                ->setSenderEmail( $this->business->email )
+                ->setRecipientPhoneNumber( $phone->getPhoneNumber() )
+                ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() )
+                ->setBusinessID( $this->business->id )
+                ->setProspectID( $prospect->id );
+
+            $timeZoneHelper = $this->load( "time-zone-helper" );
+
+            $sequenceBuilder->setTimeZoneOffset(
+                $timeZoneHelper->getServerTimeZoneOffset( $this->business->timezone )
+            );
+
             foreach ( $landingPageSequenceTemplates as $landingPageSequenceTemplate ) {
-                $sequenceBuilder->setRecipientName( $prospect->getFullName() )
-                    ->setSenderName( $this->business->business_name )
-                    ->setRecipientEmail( $prospect->email )
-                    ->setSenderEmail( $this->business->email )
-                    ->setRecipientPhoneNumber( $phone->getPhoneNumber() )
-                    ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() )
-                    ->setBusinessID( $this->business->id )
-                    ->setProspectID( $prospect->id );
-
-                // If a sequence was built successfully, create a prospect and business
-                // sequence reference and redirect to the sequence screen
-                $sequenceTemplate = $sequenceTemplateRepo->get( [ "*" ], [ "id" => $landingPageSequenceTemplate->sequence_template_id ], "single" );
-
-                if ( $sequenceBuilder->buildFromSequenceTemplate( $sequenceTemplate->id ) ) {
-                    $sequence = $sequenceBuilder->getSequence();
-                }
+                $sequenceBuilder->buildFromSequenceTemplate(
+                    $landingPageSequenceTemplate->sequence_template_id
+                );
             }
 
             $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/promo/" . $landingPage->slug . "/thank-you" );

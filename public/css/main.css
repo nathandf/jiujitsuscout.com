@@ -511,10 +511,10 @@ td {
     margin-top: 15px;
     margin-bottom: 8px;
     border: 1px solid #F6F6F6;
-    border-left: 3px solid green;
+    border: 3px solid green;
     background: #FFF;
     width: 85%;
-    max-width: 300px;
+    max-width: 600px;
 }
 
 .con-message-failure {
@@ -1481,7 +1481,7 @@ td {
 
 .user-message-title {
     font-size: 20px;
-    font-color: #000;
+    color: #000;
 }
 
 .user-message-body {

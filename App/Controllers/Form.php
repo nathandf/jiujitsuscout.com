@@ -207,6 +207,12 @@ class Form extends Controller
                 ->setBusinessID( $business->id )
                 ->setProspectID( $prospect->id );
 
+            $timeZoneHelper = $this->load( "time-zone-helper" );
+
+            $sequenceBuilder->setTimeZoneOffset(
+                $timeZoneHelper->getServerTimeZoneOffset( $business->timezone )
+            );
+
             foreach ( $embeddableFormSequenceTemplates as $embeddableFormSequenceTemplate ) {
                 $sequenceBuilder->buildFromSequenceTemplate(
                     $embeddableFormSequenceTemplate->sequence_template_id

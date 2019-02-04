@@ -44,6 +44,8 @@ class SequenceBuilder
     private $prospect_id = null;
     private $member_id = null;
     private $sequence_template_sequence = null;
+    private $timezone_offset = null;
+    private $start_time = null;
 
 
     public function __construct(
@@ -241,6 +243,46 @@ class SequenceBuilder
         return;
     }
 
+    /*
+    * time in seconds
+    */
+    public function setStartTime( $time )
+    {
+        if ( !is_numeric( $time ) ) {
+            throw new \Exception( "Argument \"time\" must be a number" );
+        }
+
+        $this->start_time = $time;
+        return $this;
+    }
+
+    private function getStartTime()
+    {
+        if ( is_null( $this->start_time ) ) {
+            $this->setStartTime( time() );
+        }
+
+        return $this->start_time + $this->getTimeZoneOffset();
+    }
+
+    /*
+    * offset in seconds
+    */
+    public function setTimeZoneOffset( $offset )
+    {
+        $this->timezone_offset = $offset;
+        return $this;
+    }
+
+    private function getTimeZoneOffset()
+    {
+        if ( is_null( $this->timezone_offset ) ) {
+            throw new \Exception( "Cannot create sequence. Timezone has not been set" );
+        }
+
+        return $this->timezone_offset;
+    }
+
     public function buildFromSequenceTemplate( $sequence_template_id )
     {
         $sequenceTemplate = $this->sequenceTemplateRepo->get( [ "*" ], [ "id" => $sequence_template_id ], "single" );
@@ -278,7 +320,7 @@ class SequenceBuilder
 
         $this->setSequence( $sequence );
 
-        $time = time();
+        $time = $this->getStartTime();
 
         foreach ( $eventTemplates as $eventTemplate ) {
             switch ( $eventTemplate->event_type_id ) {

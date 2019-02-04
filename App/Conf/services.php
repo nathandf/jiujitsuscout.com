@@ -24,6 +24,16 @@ $container->register( "request", function() use ( $container ) {
 	return $request;
 } );
 
+$container->register( "input", function() {
+    $obj = new \Core\Input;
+    return $obj;
+} );
+
+$container->register( "input-validator", function() {
+    $obj = new \Core\InputValidator;
+    return $obj;
+} );
+
 $container->register( "router", function() use ( $container ) {
 	$router = new Core\Router( $container->getService( "config" ) );
 	return $router;
@@ -996,16 +1006,6 @@ $container->register( "form-validator", function() {
 	return $formValidator;
 } );
 
-$container->register( "input", function() {
-    $obj = new \Helpers\Input;
-    return $obj;
-} );
-
-$container->register( "input-validator", function() {
-    $obj = new \Helpers\InputValidator;
-    return $obj;
-} );
-
 $container->register( "facebook-pixel-builder", function() {
 	$helper = new \Helpers\FacebookPixelBuilder;
 	return $helper;
@@ -1044,6 +1044,11 @@ $container->register( "html-tag-converter", function() use ( $container ) {
 $container->register( "ip-info", function() use ( $container ) {
 	$IPInfo = new \Helpers\IPInfo( $container->getService( "config" ) );
 	return $IPInfo;
+} );
+
+$container->register( "time-converter", function() use ( $container ) {
+	$helper = new \Helpers\TimeConverter;
+	return $helper;
 } );
 
 $container->register( "timezonedb", function() use ( $container ) {

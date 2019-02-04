@@ -2,6 +2,7 @@
 
 {block name="bm-head"}
 	<link rel="stylesheet" href="{$HOME}public/css/sequence.css">
+	<script src="{$HOME}{$JS_SCRIPTS}sequences.js"></script>
 {/block}
 
 {block name="bm-body"}
@@ -27,10 +28,34 @@
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="add_to_sequence" value="{$csrf_token}">
 				<input type="hidden" name="sequence_template_id" value="{$sequence->id}">
-				<div class="bg-white col-100 inner-pad-sml" style="box-sizing: border-box; border: 2px solid #CCCCCC; border-radius: 5px;">
-					<button type="submit" class="floatright btn btn-inline bg-deep-blue"> <i class="fa fa-plus" aria-hidden="true"></i></button>
+				<div id="sequence-tag-{$sequence->id}" class="bg-white col-100 inner-pad-sml" style="box-sizing: border-box; border: 2px solid #CCCCCC; border-radius: 5px;">
+					<button type="button" class="floatright btn btn-inline bg-deep-blue sequence-dropdown-toggle" style="margin-bottom: 0px;"> <i class="fa fa-plus" aria-hidden="true"></i></button>
 					<p class="text-med-heavy">{$sequence->name}</p>
 					<p class="text-med">{$sequence->description}</p>
+					<div class="clear"></div>
+					<div id="sequence-tag-{$sequence->id}-dropdown" class="push-t-sml" style="display: none;">
+						<div class="hr-sml push-b-sml"></div>
+						<input class="checkbox start-time-toggle" type="checkbox" checked="checked" name="start_immediately"> <label for="specific-end-date">Start Sequence Immediately</label>
+						<div id="sequence-tag-{$sequence->id}-dropdown-time-select">
+							<div class="hr-sml"></div>
+							<div class="floatleft push-r-med push-t-sml">
+								<p class="text-sml">Start Time Quantity</p>
+								<input id="" type="quantity" class="inp field-sml" name="quantity" placeholder="Ex. 6">
+							</div>
+							<div class="floatleft push-r-med push-t-sml">
+								<p class="text-sml">Unit</p>
+								<select class="inp field-sml cursor-pt" name="unit" id="unit">
+									<option value="weeks" selected="selected" hidden="hidden">Week(s)</option>
+									<option id="day" value="days">Day(s)</option>
+									<option id="week" value="weeks">Week(s)</option>
+									<option id="month" value="months">Month(s)</option>
+								</select>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<button type="submit" class="btn btn-inline bg-deep-blue floatright push-t-sml" style="margin-bottom: 0px;">Create Sequence</button>
+						<div class="clear"></div>
+					</div>
 				</div>
 			</form>
 

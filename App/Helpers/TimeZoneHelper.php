@@ -20,6 +20,6 @@ class TimeZoneHelper
 
     public function getServerTimeZoneOffset( $timezone )
     {
-        return $this->timeZoneOffset( date_default_timezone_get(), $timezone );
+        return $this->getTimeZoneOffset( date_default_timezone_get(), $timezone );
     }
 }

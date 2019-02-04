@@ -36,5 +36,4 @@ ALTER TABLE `event` ADD `complete` TINYINT NOT NULL DEFAULT '0' AFTER `time`;
 CREATE TABLE `embeddable_form_group` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `embeddable_form_id` BIGINT NOT NULL , `group_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `landing_page_lead_capture` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `landing_page_id` BIGINT NOT NULL , `lead_capture_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
 CREATE TABLE `embeddable_form_lead_capture` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `embeddable_form_id` BIGINT NOT NULL , `lead_capture_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
-
 CREATE TABLE `profile_lead_capture` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `lead_capture_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
