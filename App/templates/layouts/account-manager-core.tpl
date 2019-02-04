@@ -10,3 +10,7 @@
 {block name="body"}
 	{block name="am-body"}{/block}
 {/block}
+
+{block name="footer"}
+	{block name="am-footer"}{/block}
+{/block}

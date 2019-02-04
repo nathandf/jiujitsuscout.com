@@ -661,7 +661,7 @@ class AccountManager extends Controller
 		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
 
 		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
-		$facebookPixel->addEvent([
+		$facebookPixelBuilder->addEvent([
 			"ViewContent"
 		]);
 		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
