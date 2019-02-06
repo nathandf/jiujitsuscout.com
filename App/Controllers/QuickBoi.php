@@ -52,6 +52,7 @@ class QuickBoi extends Controller
 
 		$this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
 		$this->view->assign( "flash_messages", $this->session->getFlashMessages() );
+        $this->view->assign( "error_messages", $inputValidator->getErrors() );
 
 		$this->view->setTemplate( "model-builder.tpl" );
 		$this->view->render( "App/Views/Home.php" );

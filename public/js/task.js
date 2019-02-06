@@ -12,4 +12,12 @@ $( function() {
         $( task_complete_form_id ).hide( 500 );
         $( task_drop_form_id ).hide( 500 );
     } );
+
+    $( ".task-submit" ).on( "click", function () {
+        checked = $( ".assignee-checkbox:checked" ).length;
+        if ( !checked ) {
+            alert( "You must assign at least 1 user to this task" );
+            return false;
+        }
+    } );
 } );

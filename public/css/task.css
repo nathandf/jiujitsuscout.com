@@ -1,6 +1,5 @@
 .task-group {
 	box-sizing: border-box;
-	width: 95%;
 	background: #FFFFFF;
 }
 
@@ -65,7 +64,7 @@
 
 .task-drop {
 	box-sizing: border-box;
-	padding: 20px;
+	padding: 15px;
 	border-bottom: 1px solid #C0C0C0;
 }
 
@@ -80,4 +79,12 @@
 
 .task-name-input:focus {
 	border-bottom: 1px solid #448AFF
+}
+
+.task-comment {
+	background: #F6F7F9;
+	border-radius: 5px;
+	box-sizing: border-box;
+	padding: 10px;
+	border: 2px solid #CCC;
 }

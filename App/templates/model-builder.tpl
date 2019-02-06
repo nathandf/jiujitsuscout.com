@@ -7,6 +7,13 @@
 {block name="body"}
 <div class="con-cnt-xlrg inner-pad-med">
 	<h3>Model Builder</h3>
+	{if !empty($error_messages.quick_boi)}
+		{foreach from=$error_messages.quick_boi item=message}
+			<div class="con-message-failure mat-hov cursor-pt --c-hide">
+				<p class="user-message-body">{$message}</p>
+			</div>
+		{/foreach}
+	{/if}
 	{include file="includes/snippets/flash-messages.tpl"}
 	<div class="push-t-med">
 		<form action="" method="post">

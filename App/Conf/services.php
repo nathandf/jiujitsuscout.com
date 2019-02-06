@@ -826,8 +826,32 @@ $container->register( "sequence-template-sequence-repository", function() use ( 
 	return $repo;
 } );
 
+$container->register( "task-assignee-repository", function() use ( $container ) {
+	$repo = new \Model\Services\TaskAssigneeRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "task-comment-repository", function() use ( $container ) {
+	$repo = new \Model\Services\TaskCommentRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "task-repository", function() use ( $container ) {
 	$repo = new \Model\Services\TaskRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "task-type-repository", function() use ( $container ) {
+	$repo = new \Model\Services\TaskTypeRepository(
 	    $container->getService( "dao" ),
 	    $container->getService( "entity-factory" )
 	);
