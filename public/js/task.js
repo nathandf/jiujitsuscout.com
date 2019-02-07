@@ -20,4 +20,8 @@ $( function() {
             return false;
         }
     } );
+
+    $( ".reschedule-trigger" ).on( "click", function () {
+        $( "#reschedule-modal" ).toggle();
+    } );
 } );

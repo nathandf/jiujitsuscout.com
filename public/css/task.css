@@ -82,9 +82,9 @@
 }
 
 .task-comment {
-	background: #F6F7F9;
+	background: #FFFFFF;
 	border-radius: 5px;
 	box-sizing: border-box;
 	padding: 10px;
-	border: 2px solid #CCC;
+	border: 1px solid #CCC;
 }

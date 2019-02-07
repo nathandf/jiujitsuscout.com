@@ -13,7 +13,7 @@
 		<div class="con con-cnt-xlrg inner-pad-med">
 			<h2 class="push-t-med">Tasks</h2>
 			<p class="text-sml">Track to-do items, get updates, send reminders.</p>
-			<div class="hr-sml"></div>
+			<div class="hr-full"></div>
 			<div class="clear"></div>
 			<a href="{$HOME}account-manager/business/task/new" class="btn btn-inline mat-hov bg-deep-purple push-t-med"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Task</span></a>
 			<div class="clear push-t-med"></div>
@@ -46,10 +46,10 @@
 				<div class="task-drop" id="task-drop-form-{$smarty.foreach.task_loop.iteration}" style="display: none;">
 					<p class="text-med">{$task->due_date|date_format:"%A, %b %e %Y"} @ {$task->due_date|date_format:"%l:%M%p"}</p>
 					<p class="text-med"><span class="text-med-heavy">Description: </span>{$task->message}</p>
-					<div class="hr-sml"></div>
+					<div class="hr-full"></div>
 					{foreach from=$task->comments item=comment name=comment_loop}
 						{if $smarty.foreach.comment_loop.iteration == 1}<h4 class="push-b-sml push-t-med">Comments:</h4>{/if}
-						<div class="task-comment push-b-med">
+						<div class="task-comment mat-box-shadow push-b-med">
 							<p class="text-sml-heavy">{$comment->commenter->getFullName()} — {$comment->created_at|date_format:"%A, %b %e %Y"} @ {$comment->created_at|date_format:"%l:%M%p"}</p>
 							<p class="text-med push-t-med">{$comment->body}</p>
 						</div>
@@ -60,12 +60,12 @@
 					<form method="post" action="">
 						<input type="hidden" name="token" value="{$csrf_token}">
 						<input type="hidden" name="task_id" value="{$task->id}">
-						<textarea name="comment" class="inp textarea" style="width: 100%;"></textarea>
+						<textarea name="comment" class="inp textarea" required="required" style="width: 100%;"></textarea>
 						<div class="clear"></div>
 						<button type="submit" style="margin-bottom: 0px" class="btn btn-inline bg-good-green floatright"><i class="fa fa-commenting push-r-sml" aria-hidden="true"></i>Post Comment</button>
 					</form>
 					<div class="clear"></div>
-					<div class="hr-sml"></div>
+					<div class="hr-full"></div>
 					{foreach from=$task->assignees item=assignee name=assignee_loop}
 						{if $smarty.foreach.assignee_loop.iteration == 1}<h4 class="push-b-sml">Assignees:</h4>{/if}
 						<p class="text-med"><span class="text"></span>{$assignee->user->getFullName()}</p>

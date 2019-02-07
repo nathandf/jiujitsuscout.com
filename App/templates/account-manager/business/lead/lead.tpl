@@ -7,7 +7,6 @@
 
 {block name="bm-body"}
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
-	{include file="includes/modals/lead-info.tpl"}
 	{include file="includes/widgets/emailer.tpl"}
 	{include file="includes/modals/actions-lead.tpl"}
 	<div class="clear"></div>

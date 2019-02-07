@@ -701,6 +701,16 @@ td {
     padding-bottom: 4px;
 }
 
+/* Horizontal Line */
+.hr-full {
+    display: block;
+    width: 100;
+    box-sizing: border-box;
+    border-bottom: 1px solid #BBBBBB;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
 .hr-cnt {
     display: block;
     width: 95%;
@@ -1628,6 +1638,12 @@ td {
 
 .cursor-pt:hover {
     cursor: pointer;
+}
+
+.border-std {
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 2px solid #CCCCCC;
 }
 
 .de-tab {

@@ -22,7 +22,7 @@
 </form>
 <div id="primary-video-picker-modal" style="display: none; overflow-y: scroll;" class="lightbox inner-pad-med">
 	<p id="primary-video-picker-close" class="lightbox-close"><i class="fa fa-2x fa-times" aria-hidden="true"></i></p>
-	<div class="con-cnt-xlrg bg-white inner-pad-med">
+	<div class="con-cnt-xlrg bg-white inner-pad-med border-std">
 		{foreach from=$videos item="_video"}
 			<div class="clear push-t-sml"></div>
 			<div>

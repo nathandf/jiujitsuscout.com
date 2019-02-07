@@ -7,16 +7,11 @@
 {/block}
 
 {block name="bm-body"}
-{include file="includes/navigation/business-manager-sub-menu.tpl"}
+	{include file="includes/navigation/business-manager-sub-menu.tpl"}
+	{include file="includes/modals/reschedule.tpl"}
 	<div class="con-cnt-xlrg push-t-med inner-pad-med">
 		<a class="btn btn-inline bg-deep-purple text-med push-b-med push-b-lrg" href="{$HOME}account-manager/business/tasks/">< All Tasks</a>
-		{if !empty($flash_messages)}
-			{foreach from=$flash_messages item=message}
-				<div class="con-message-success mat-hov cursor-pt --c-hide">
-					<p class="user-message-body">{$message}</p>
-				</div>
-			{/foreach}
-		{/if}
+		{include file="includes/snippets/flash-messages.tpl"}
 		{if !empty($error_messages.update_task)}
 			{foreach from=$error_messages.update_task item=message}
 				<div class="con-message-failure mat-hov cursor-pt --c-hide">
@@ -24,16 +19,25 @@
 				</div>
 			{/foreach}
 		{/if}
+		{if !empty($error_messages.reschedule_task)}
+			{foreach from=$error_messages.reschedule_task item=message}
+				<div class="con-message-failure mat-hov cursor-pt --c-hide">
+					<p class="user-message-body">{$message}</p>
+				</div>
+			{/foreach}
+		{/if}
 		<div class="clear"></div>
-		<form method="post" action="{$HOME}account-manager/business/task/new">
+		<button class="btn btn-inline bg-deep-blue reschedule-trigger">Reschedule Task</button>
+		<p class="text-lrg-heavy">Due: {$task->due_date|date_format:"%A, %b %e %Y"} @ {$task->due_date|date_format:"%l:%M%p"}</p>
+		<form method="post" action="">
 			<input type="hidden" name="token" value="{$csrf_token}">
-			<input type="hidden" name="create_task" value="{$csrf_token}">
+			<input type="hidden" name="update_task" value="{$csrf_token}">
 			<div class="clear first"></div>
 			<p class="text-sml">Task Name</p>
-			<input type="text" name="title" value="{$inputs.create_task.title|default:null}" class="inp inp-med-plus-plus" placeholder="Task name">
+			<input type="text" name="title" value="{$task->title}" class="inp inp-med-plus-plus" placeholder="Task name">
 			<div class="clear push-t-med"></div>
 			<p class="text-sml">Task Description</p>
-			<textarea name="message" class="inp textarea" id="" cols="30" rows="10" placeholder="Task description">{$inputs.create_task.message|default:null}</textarea>
+			<textarea name="message" class="inp textarea" id="" cols="30" rows="10" placeholder="Task description">{$task->message}</textarea>
 			<div class="hr"></div>
 			<div class="push-t-med">
 				<p class="text-lrg-heavy">Choose Task Type:</p>
@@ -49,7 +53,8 @@
 				<p class="text-lrg-heavy">Priority Level</p>
 				<div class="clear push-t-sml"></div>
 				<select class="inp inp-sml cursor-pt" name="priority" id="action" required="required">
-					<option name="task_type_id" value="low" selected="selected">Low</option>
+					<option name="task_type_id" value="{$task->priority}" hidden="hidden" selected="selected">{$task->priority|capitalize}</option>
+					<option name="task_type_id" value="low">Low</option>
 					<option name="task_type_id" value="medium">Medium</option>
 					<option name="task_type_id" value="high">High</option>
 					<option name="task_type_id" value="critical">Critical</option>
@@ -62,20 +67,13 @@
 				<p class="text-sml">Choose the users responsible for this task</p>
 				<div class="clear push-t-med push-b-med"></div>
 				{foreach from=$users item=user name=user_loop}
-				<input type="checkbox" id="users{$smarty.foreach.user_loop.index}" class="cursor-pt checkbox assignee-checkbox" name="user_ids[]" value="{$user->id}">
+				<input type="checkbox" id="users{$smarty.foreach.user_loop.index}" class="cursor-pt checkbox assignee-checkbox" name="user_ids[]" value="{$user->id}"{if $user->isset} checked="checked"{/if}>
 				<label for="users{$smarty.foreach.user_loop.index}"><b>{$user->getFullName()}</b></label>
 				<div class="clear"></div>
 				{foreachelse}
 			{/foreach}
 			<div class="hr"></div>
 			{/if}
-			<div class="clear"></div>
-			<p class="text-lrg-heavy push-t-med">Schedule Task:</p>
-			<p class="text-sml push-t-sml">Date</p>
-			{html_select_date class="inp inp-sml push-b-sml cursor-pt" start_year='-1' end_year='+3'}
-			<div class="clear"></div>
-			<p class="text-sml push-t-sml">Time</p>
-			{html_select_time class="inp inp-sml push-b-sml cursor-pt" minute_interval=15 display_seconds=false use_24_hours=false}
 			<div class="clear"></div>
 			<input type="submit" class="btn btn-inline push-t-med task-submit push-r-med floatleft" value="Update">
 		</form>

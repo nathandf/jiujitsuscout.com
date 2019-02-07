@@ -74,24 +74,83 @@ class Task extends Controller
         $task = $taskRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
 
         $users = $userRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
-        $user_ids = [];
+        $user_ids = $userRepo->get( [ "id" ], [ "account_id" => $this->account->id ], "raw" );
 
-        // Create an array of all user ids verify that the user chosen for the task is a user of this business
+        $task_assignee_user_ids = $taskAssigneeRepo->get(
+            [ "user_id" ],
+            [ "task_id" => $task->id ],
+            "raw"
+        );
+
         foreach ( $users as $user ) {
-            $user_ids[] = $user->id;
+            $user->isset = false;
+            if ( in_array( $user->id, $task_assignee_user_ids ) ) {
+                $user->isset = true;
+            }
         }
 
         $taskTypes = $taskTypeRepo->get( [ "*" ] );
         $task_type_ids = $taskTypeRepo->get( [ "id" ], [], "raw" );
 
-        if ( $input->exists() && $inputValidator->validate(
+        if ( $input->exists() && $input->issetField( "reschedule" ) && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "Date_Month" => [
+                    "required" => true
+                ],
+                "Date_Day" => [
+                    "required" => true
+                ],
+                "Date_Year" => [
+                    "required" => true
+                ],
+                "Time_Hour" => [
+                    "required" => true
+                ],
+                "Time_Minute" => [
+                    "required" => true
+                ],
+                "Time_Meridian" => [
+                    "required" => true
+                ]
+            ],
+            "reschedule_task" /* error index */
+            )
+        ) {
+            $month = $input->get( "Date_Month" );
+            $day = $input->get( "Date_Day" );
+            $year = $input->get( "Date_Year" );
+            $hour = $input->get( "Time_Hour" );
+            $minute = $input->get( "Time_Minute" );
+            $meridian = $input->get( "Time_Meridian" );
+
+            // Create unix time stamp for due date
+            $due_date_string = $month . "/" . $day . "/" . $year . " " . $hour . ":" . $minute . $meridian;
+            $due_date = strtotime( $due_date_string );
+
+            $taskRepo->update(
+                [ "due_date" => $due_date ],
+                [ "id" => $task->id ]
+            );
+
+            $this->session->addFlashMessage( "Task Rescheduled" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/task/" . $this->params[ "id" ] . "/" );
+        }
+
+        if ( $input->exists() && $input->issetField( "update_task" ) && $inputValidator->validate(
                 $input,
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
                         "required" => true
                     ],
-                    "create_task" => [
+                    "update_task" => [
                         "required" => true
                     ],
                     "title" => [
@@ -118,62 +177,55 @@ class Task extends Controller
                     "task_type_id" => [
                         "required" => true,
                         "in_array" => $task_type_ids
-                    ],
-                    "Date_Month" => [
-                        "required" => true
-                    ],
-                    "Date_Day" => [
-                        "required" => true
-                    ],
-                    "Date_Year" => [
-                        "required" => true
-                    ],
-                    "Time_Hour" => [
-                        "required" => true
-                    ],
-                    "Time_Minute" => [
-                        "required" => true
-                    ],
-                    "Time_Meridian" => [
-                        "required" => true
                     ]
                 ],
-
                 "update_task" /* error index */
-            ) )
-        {
-            $month = $input->get( "Date_Month" );
-            $day = $input->get( "Date_Day" );
-            $year = $input->get( "Date_Year" );
-            $hour = $input->get( "Time_Hour" );
-            $minute = $input->get( "Time_Minute" );
-            $meridian = $input->get( "Time_Meridian" );
+            )
+        ) {
+            $taskRepo->update(
+                [
+                    "business_id" => $this->business->id,
+                    "task_type_id" => $input->get( "task_type_id" ),
+                    "title" => $input->get( "title" ),
+                    "message" => $input->get( "message" ),
+                    "priority" => $input->get( "priority" ),
+                    "created_by_user_id" => $this->user->id
+                ],
+                [
+                    "id" => $task->id
+                ]
+            );
 
-            // Create unix time stamp for due date
-            $due_date_string = $month . "/" . $day . "/" . $year . " " . $hour . ":" . $minute . $meridian;
-            $due_date = strtotime( $due_date_string );
-
-            $taskRepo->update([
-                "business_id" => $this->business->id,
-                "task_type_id" => $input->get( "task_type_id" ),
-                "due_date" => $due_date,
-                "title" => $input->get( "title" ),
-                "message" => $input->get( "message" ),
-                "priority" => $input->get( "priority" ),
-                "created_by_user_id" => $this->user->id
-            ]);
-
-            $task_assignee_user_ids = [];
-            if ( is_array( $input->get( "user_ids" ) ) ) {
-                $task_assignee_user_ids = $input->get( "user_ids" );
+            // Update TaskAssignees
+            $submitted_user_ids = [];
+            if ( $input->issetField( "user_ids" ) ) {
+                $submitted_user_ids = $input->get( "user_ids" );
             }
 
-            foreach ( $task_assignee_user_ids as $user_id ) {
-                $taskAssigneeRepo->insert([
-                    "task_id" => $task->id,
-                    "user_id" => $user_id
-                ]);
+            // Create and new task assignee for any of the submitted
+            // user ids if it doesn't already exist
+            foreach ( $submitted_user_ids as $user_id ) {
+                if ( !in_array( $user_id, $task_assignee_user_ids, true ) ) {
+                    $taskAssigneeRepo->insert([
+                        "task_id" => $task->id,
+                        "user_id" => $user_id
+                    ]);
+                }
             }
+
+            // Delete the task assignees with the user ids that were not
+            // submitted if they exist
+            foreach ( $user_ids as $_user_id ) {
+                if (
+                    !in_array( $_user_id, $submitted_user_ids ) &&
+                    in_array( $_user_id, $task_assignee_user_ids, true )
+                ) {
+                    $taskAssigneeRepo->delete( [ "user_id", "task_id" ], [ $_user_id, $task->id ] );
+                }
+            }
+
+            $this->session->addFlashMessage( "Task Updated" );
+            $this->session->setFlashMessages();
 
             $this->view->redirect( "account-manager/business/task/" . $task->id . "/" );
         }

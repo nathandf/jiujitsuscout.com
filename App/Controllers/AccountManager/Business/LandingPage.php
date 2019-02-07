@@ -157,7 +157,7 @@ class LandingPage extends Controller
             "update_landing_page" /* error index */
             )
         ) {
-            // Update landingPageGroups
+            // Update landingPageNotificationRecipients
             $submitted_user_ids = [];
             if ( $input->issetField( "user_ids" ) ) {
                 $submitted_user_ids = $input->get( "user_ids" );
