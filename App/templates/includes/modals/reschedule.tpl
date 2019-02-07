@@ -1,6 +1,6 @@
 <div id="reschedule-modal" style="display: none; overflow-y: scroll;" class="lightbox inner-pad-med">
 	<p class="lightbox-close"><i class="fa fa-2x fa-times" aria-hidden="true"></i></p>
-	<div class="con-cnt-lrg bg-white inner-pad-med push-t-med border-std">
+	<div class="con-cnt-lrg bg-white inner-pad-med push-t-lrg border-std">
 		<form method="post" action="">
             <input type="hidden" name="token" value="{$csrf_token}">
             <input type="hidden" name="reschedule" value="true">

@@ -842,6 +842,22 @@ $container->register( "task-comment-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "task-prospect-repository", function() use ( $container ) {
+	$repo = new \Model\Services\TaskProspectRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "task-member-repository", function() use ( $container ) {
+	$repo = new \Model\Services\TaskMemberRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "task-repository", function() use ( $container ) {
 	$repo = new \Model\Services\TaskRepository(
 	    $container->getService( "dao" ),

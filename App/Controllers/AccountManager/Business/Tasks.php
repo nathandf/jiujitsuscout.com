@@ -72,6 +72,10 @@ class Tasks extends Controller
             }
         }
 
+        $taskTypes = $taskTypeRepo->get( [ "*" ] );
+
+        $users = $userRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
+
         if ( $input->exists() && $input->issetField( "complete_task" ) && $inputValidator->validate(
                 $input,
                 [
@@ -123,51 +127,9 @@ class Tasks extends Controller
             $this->view->redirect( "account-manager/business/tasks/" );
         }
 
-        if ( $input->exists() && $input->issetField( "send_reminder" ) && $inputValidator->validate(
-                $input,
-                [
-                    "token" => [
-                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                        "required" => true
-                    ],
-                    "task_id" => [
-                        "in_array" => $task_ids
-                    ]
-                ],
-
-                "send_reminder"/* error index */
-            )
-        ) {
-            $task = $taskRepo->getByID( $input->get( "task_id" ) );
-            $assigneeUser = $userRepo->getByID( $task->assignee_user_id );
-
-            $mailer->setRecipientName( $assigneeUser->first_name );
-            $mailer->setRecipientEmailAddress( $assigneeUser->email );
-            $mailer->setSenderName( "JiuJitsuScout" );
-            $mailer->setSenderEmailAddress( "alerts@jiujitsuscout.com" );
-            $mailer->setContentType( "text/html" );
-            $mailer->setEmailSubject( "Task Reminder from {$this->user->first_name}" );
-            $mailer->setEmailBody( "
-                <b>Task:</b>
-                <p>{$task->title}</p>
-                <b style='margin-top: 15px'>Description:</b>
-                <p>{$task->message}</p>
-                <b style='margin-top: 15px'>Task Due Date:</b>
-                <p>" . date( "l, M jS Y h:ia", $task->due_date ) . "</p>
-                <b style='margin-top: 15px'>Sent By:</b>
-                <p>{$this->user->first_name} {$this->user->last_name}</p>
-            " );
-            $mailer->mail();
-
-            // Create flash message
-            $this->session->addFlashMessage( "Reminder email sent" );
-            $this->session->setFlashMessages();
-
-            // Redirect to tasks home
-            $this->view->redirect( "account-manager/business/tasks/" );
-        }
-
         $this->view->assign( "tasks", $tasks );
+        $this->view->assign( "taskTypes", $taskTypes );
+        $this->view->assign( "users", $users );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );

@@ -10,7 +10,7 @@
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
 	{include file="includes/modals/reschedule.tpl"}
 	<div class="con-cnt-xlrg push-t-med inner-pad-med">
-		<a class="btn btn-inline bg-deep-purple text-med push-b-med push-b-lrg" href="{$HOME}account-manager/business/tasks/">< All Tasks</a>
+		<a class="btn btn-inline bg-deep-purple text-med push-b-med" href="{$HOME}account-manager/business/tasks/">< All Tasks</a>
 		{include file="includes/snippets/flash-messages.tpl"}
 		{if !empty($error_messages.update_task)}
 			{foreach from=$error_messages.update_task item=message}
@@ -27,7 +27,10 @@
 			{/foreach}
 		{/if}
 		<div class="clear"></div>
-		<button class="btn btn-inline bg-deep-blue reschedule-trigger">Reschedule Task</button>
+		<button class="btn btn-inline bg-deep-blue reschedule-trigger push-t-med">Reschedule Task</button>
+		<button class="btn btn-inline bg-salmon reschedule-trigger push-t-med">+ Prospect</button>
+		<button class="btn btn-inline bg-dark-mint reschedule-trigger push-t-med">+ Member</button>
+		<div class="hr-full"></div>
 		<p class="text-lrg-heavy">Due: {$task->due_date|date_format:"%A, %b %e %Y"} @ {$task->due_date|date_format:"%l:%M%p"}</p>
 		<form method="post" action="">
 			<input type="hidden" name="token" value="{$csrf_token}">

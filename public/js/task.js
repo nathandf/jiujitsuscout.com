@@ -24,4 +24,12 @@ $( function() {
     $( ".reschedule-trigger" ).on( "click", function () {
         $( "#reschedule-modal" ).toggle();
     } );
+
+    $( ".--no-prop" ).on( "click", function ( event ) {
+        event.preventDefault();
+    } );
+
+    $( ".--new-task-modal-trigger" ).on( "click", function () {
+        $( "#new-task-modal" ).toggle();
+    } );
 } );

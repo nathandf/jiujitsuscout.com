@@ -7,7 +7,8 @@
 {/block}
 
 {block name="bm-body"}
-{include file="includes/navigation/business-manager-sub-menu.tpl"}
+	{include file="includes/navigation/business-manager-sub-menu.tpl"}
+	{include file="includes/modals/new-task.tpl"}
 	<div>
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg inner-pad-med">
@@ -15,7 +16,7 @@
 			<p class="text-sml">Track to-do items, get updates, send reminders.</p>
 			<div class="hr-full"></div>
 			<div class="clear"></div>
-			<a href="{$HOME}account-manager/business/task/new" class="btn btn-inline mat-hov bg-deep-purple push-t-med"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Task</span></a>
+			<button class="btn btn-inline mat-hov bg-deep-purple push-t-med --new-task-modal-trigger"><i class="fa fa-plus push-r-sml" aria-hidden="true"></i><span class="text-med">New Task</span></button>
 			<div class="clear push-t-med"></div>
 			{if !empty($flash_messages)}
 				{foreach from=$flash_messages item=message}
@@ -32,20 +33,30 @@
 					<h3 class="push-l-sml">Pending Tasks</h3>
 				</div>
 				{/if}
-				<div id="task-complete-form-{$smarty.foreach.task_loop.iteration}" class="task cursor-pt">
-					<button id="task-drop-{$smarty.foreach.task_loop.iteration}" class="task-toggle-button --task-drop text-med floatright push-r-med cursor-pt"><i class="fa fa-bars" aria-hidden="true"></i></button>
-					<form method="post" action="">
-						<input type="hidden" name="token" value="{$csrf_token}">
-						<input type="hidden" name="task_id" value="{$task->id}">
-						<input type="hidden" name="complete_task" value="{$csrf_token}">
-						<button id="task-id-{$smarty.foreach.task_loop.iteration}" class="--task-complete task-check floatleft push-r-sml push-l-sml cursor-pt"><i class="fa fa-check" aria-hidden="true"></i></button>
-					</form>
-					<p class="text-med"><a class="link tc-dark-grey" href="{$HOME}account-manager/business/task/{$task->id}/">{$task->title|capitalize|truncate:100:"..."}</a></p>
-				</div>
+				<a class="tc-dark-grey" href="{$HOME}account-manager/business/task/{$task->id}/" style="text-decoration: none;">
+					<div id="task-complete-form-{$smarty.foreach.task_loop.iteration}" class="task cursor-pt">
+						<button id="task-drop-{$smarty.foreach.task_loop.iteration}" class="task-toggle-button --task-drop --no-prop text-med floatright push-r-med cursor-pt"><i class="fa fa-bars" aria-hidden="true"></i></button>
+						<form method="post" action="">
+							<input type="hidden" name="token" value="{$csrf_token}">
+							<input type="hidden" name="task_id" value="{$task->id}">
+							<input type="hidden" name="complete_task" value="{$csrf_token}">
+							<div class="floatleft task-priority-indicator {$task->priority}">&nbsp;</div>
+							<button id="task-id-{$smarty.foreach.task_loop.iteration}" class="--task-complete task-check floatleft push-r-sml push-l-sml cursor-pt"><i class="fa fa-check" aria-hidden="true"></i></button>
+						</form>
+						<p class="text-med">{$task->title|capitalize|truncate:100:"..."}</p>
+					</div>
+				</a>
 				<div class="clear"></div>
 				<div class="task-drop" id="task-drop-form-{$smarty.foreach.task_loop.iteration}" style="display: none;">
 					<p class="text-med">{$task->due_date|date_format:"%A, %b %e %Y"} @ {$task->due_date|date_format:"%l:%M%p"}</p>
 					<p class="text-med"><span class="text-med-heavy">Description: </span>{$task->message}</p>
+					{foreach from=$task->assignees item=assignee name=assignee_loop}
+						{if $smarty.foreach.assignee_loop.iteration == 1}<p class="text-med-heavy push-t-med">Assignees:</p>{/if}
+						<span class="text-sml">{$assignee->user->getFullName()}{if count($task->assignees) > 1 && $smarty.foreach.assignee_loop.iteration < count($task->assignees)}, {/if}</span>
+					{foreachelse}
+						<p class="text-sml">No users have been assigned to this task</p>
+					{/foreach}
+					<div class="clear"></div>
 					<div class="hr-full"></div>
 					{foreach from=$task->comments item=comment name=comment_loop}
 						{if $smarty.foreach.comment_loop.iteration == 1}<h4 class="push-b-sml push-t-med">Comments:</h4>{/if}
@@ -65,19 +76,6 @@
 						<button type="submit" style="margin-bottom: 0px" class="btn btn-inline bg-good-green floatright"><i class="fa fa-commenting push-r-sml" aria-hidden="true"></i>Post Comment</button>
 					</form>
 					<div class="clear"></div>
-					<div class="hr-full"></div>
-					{foreach from=$task->assignees item=assignee name=assignee_loop}
-						{if $smarty.foreach.assignee_loop.iteration == 1}<h4 class="push-b-sml">Assignees:</h4>{/if}
-						<p class="text-med"><span class="text"></span>{$assignee->user->getFullName()}</p>
-					{foreachelse}
-						<p class="text-sml">No users have been assigned to this task</p>
-					{/foreach}
-					<form method="post" action="">
-						<input type="hidden" name="token" value="{$csrf_token}">
-						<input type="hidden" name="task_id" value="{$task->id}">
-						<input type="hidden" name="send_reminder" value="{$csrf_token}">
-						<button type="submit" style="margin-bottom: 0px" class="btn btn-inline push-t-med --c-send-confirm"><i class="fa fa-envelope push-r-sml" aria-hidden="true"></i>Send Reminder</button>
-					</form>
 				</div>
 				{/foreach}
 			</div>

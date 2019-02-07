@@ -88,3 +88,25 @@
 	padding: 10px;
 	border: 1px solid #CCC;
 }
+
+.task-priority-indicator {
+	width: 5px;
+	box-sizing: border-box;
+	height: 100%;
+}
+
+.low {
+	background: green;
+}
+
+.medium {
+	background: yellow;
+}
+
+.high {
+	background: orange;
+}
+
+.critical {
+	background: red;
+}
