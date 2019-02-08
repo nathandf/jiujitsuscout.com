@@ -18,16 +18,18 @@
 				{if $smarty.foreach.past.index == 0}
 					<h3 class="first">Trial Ended</h3>
 				{/if}
-				<a href="{$HOME}account-manager/business/lead/{$trial->id}/trial" id="lead{$trial->id}" class="tag first mat-hov">
-					<div class="lead-icon-container floatleft">
-						<span class="lead-icon icon-c-2"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
+				<a href="{$HOME}account-manager/business/lead/{$trial->id}/trial" id="lead{$trial->id}">
+					<div class="tag push-t-med mat-hov">
+						<div class="lead-icon-container floatleft">
+							<span class="lead-icon icon-c-2"><i class="fa fa-exclamation" aria-hidden="true"></i></span>
+						</div>
+						<div class="lead-data floatleft">
+							<p class="lead-name">{$trial->first_name} {$trial->last_name}</p>
+							<p>Start: {$trial->trial_start|date_format:"%a, %b %e %Y"}</p>
+							<p>End: {$trial->trial_end|date_format:"%a, %b %e %Y"}</p>
+						</div>
+						<div class="clear"></div>
 					</div>
-					<div class="lead-data floatleft">
-						<p class="lead-name">{$trial->first_name} {$trial->last_name}</p>
-						<p>Start: {$trial->trial_start|date_format:"%a, %b %e %Y"}</p>
-						<p>End: {$trial->trial_end|date_format:"%a, %b %e %Y"}</p>
-					</div>
-					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 			{/foreach}

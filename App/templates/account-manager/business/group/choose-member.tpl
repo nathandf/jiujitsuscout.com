@@ -6,7 +6,7 @@
 
 {block name="bm-body"}
 	{include file="includes/navigation/communication-sub-menu.tpl"}
-	<div class="con-cnt-xxlrg first inner-pad-med">
+	<div class="con-cnt-xxlrg push-t-med inner-pad-med">
 		<h3>Choose a Member</h3>
 		<span>or <a class="link" href="{$HOME}account-manager/business/member/new">create a new one</a></span>
 		<div class="clear"></div>
