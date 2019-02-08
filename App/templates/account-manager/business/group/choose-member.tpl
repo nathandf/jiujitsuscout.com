@@ -19,7 +19,7 @@
 			<form method="post" action="">
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="member_id" value="{$member->id}">
-				<button class="lead-tag first mat-hov cursor-pt">
+				<button class="tag first mat-hov cursor-pt">
 					<div class="lead-icon-container floatleft">
 						<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$member->first_name|substr:0:1|upper}</span>
 					</div>

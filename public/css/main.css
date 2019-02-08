@@ -511,7 +511,7 @@ td {
     margin-top: 15px;
     margin-bottom: 8px;
     border: 1px solid #F6F6F6;
-    border: 3px solid green;
+    border-left: 3px solid green;
     background: #FFF;
     width: 85%;
     max-width: 600px;
@@ -660,6 +660,16 @@ td {
     width:  100%;
     border: 2px solid #CCCCCC;
     padding: 8px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #000000;
+    background: #FFFFFF;
+}
+
+.tag-no-pad {
+    box-sizing: border-box;
+    width:  100%;
+    border: 2px solid #CCCCCC;
     border-radius: 5px;
     text-decoration: none;
     color: #000000;

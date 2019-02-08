@@ -22,7 +22,7 @@
 			<h3>Leads</h3>
 			<div class="clear"></div>
 			{foreach from=$leads item=lead}
-			<a href="{$HOME}account-manager/business/lead/{$lead->id}/" id="lead{$lead->id}" class="lead-tag push-t-med mat-hov">
+			<a href="{$HOME}account-manager/business/lead/{$lead->id}/" id="lead{$lead->id}" class="tag push-t-med mat-hov">
 				<div class="lead-icon-container floatleft">
 				{if $lead->type == "trial"}
 					<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>
@@ -59,7 +59,7 @@
 		<h3>Members</h3>
 			<div class="clear"></div>
 			{foreach from=$members item=member}
-			<a href="{$HOME}account-manager/business/member/{$member->id}/" id="member{$member->id}" class="lead-tag push-t-med mat-hov">
+			<a href="{$HOME}account-manager/business/member/{$member->id}/" id="member{$member->id}" class="tag push-t-med mat-hov">
 				<div class="lead-icon-container floatleft">
 					<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$member->first_name|substr:0:1|upper}</span>
 				</div>

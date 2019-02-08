@@ -13,7 +13,7 @@
 		{foreach from=$leads item=lead}
 			{if $lead->requires_purchase == 0}
 				{if $lead->type != "trial"}
-				<a href="{$HOME}account-manager/business/trial/details?prospect_id={$lead->id}" id="lead{$lead->id}" class="lead-tag first mat-hov">
+				<a href="{$HOME}account-manager/business/trial/details?prospect_id={$lead->id}" id="lead{$lead->id}" class="tag first mat-hov">
 					<div class="lead-icon-container floatleft">
 					{if $lead->type == "trial"}
 						<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>

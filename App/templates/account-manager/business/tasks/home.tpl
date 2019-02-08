@@ -73,7 +73,7 @@
 						<input type="hidden" name="task_id" value="{$task->id}">
 						<textarea name="comment" class="inp textarea" required="required" style="width: 100%;"></textarea>
 						<div class="clear"></div>
-						<button type="submit" style="margin-bottom: 0px" class="btn btn-inline bg-good-green floatright"><i class="fa fa-commenting push-r-sml" aria-hidden="true"></i>Post Comment</button>
+						<button type="submit" style="margin-bottom: 0px" class="btn btn-inline bg-good-green floatright">Comment</button>
 					</form>
 					<div class="clear"></div>
 				</div>

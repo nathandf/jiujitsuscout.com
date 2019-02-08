@@ -16,7 +16,7 @@
 		<div id="lead-tag-container">
 			<p class='results_count_message'>Showing ({$members|@count}) Results</p>
 			{foreach from=$members item=member}
-				<a href="{$HOME}account-manager/business/member/{$member->id}/" id="member{$member->id}" class="lead-tag first mat-hov">
+				<a href="{$HOME}account-manager/business/member/{$member->id}/" id="member{$member->id}" class="tag first mat-hov">
 					<div class="lead-icon-container floatleft">
 						<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$member->first_name|substr:0:1|upper}</span>
 					</div>

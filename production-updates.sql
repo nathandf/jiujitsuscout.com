@@ -48,7 +48,7 @@ ALTER TABLE `task_comment` ADD `user_id` BIGINT NOT NULL AFTER `task_id`;
 ALTER TABLE `task` ADD `priority` VARCHAR(64) NOT NULL AFTER `message`;
 ALTER TABLE `task` DROP `assignee_user_id`;
 ALTER TABLE `task` CHANGE `status` `status` VARCHAR(256) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'pending';
-INSERT INTO `task_type` (`id`, `name`, `description`) VALUES (NULL, 'Follow-up Call', 'Call a lead or member');
+INSERT INTO `task_type` (`id`, `name`, `description`) VALUES (NULL, 'Follow-up Contact', 'Contact a lead or member');
 
 CREATE TABLE `task_prospect` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `task_id` BIGINT NOT NULL , `prospect_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
 CREATE TABLE `task_member` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `task_id` BIGINT NOT NULL , `member_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;

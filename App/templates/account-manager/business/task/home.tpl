@@ -9,6 +9,9 @@
 {block name="bm-body"}
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
 	{include file="includes/modals/reschedule.tpl"}
+	{include file="includes/modals/account-manager/choose-prospect.tpl"}
+	{include file="includes/modals/account-manager/choose-member.tpl"}
+	{include file="includes/modals/account-manager/actions-task.tpl"}
 	<div class="con-cnt-xlrg push-t-med inner-pad-med">
 		<a class="btn btn-inline bg-deep-purple text-med push-b-med" href="{$HOME}account-manager/business/tasks/">< All Tasks</a>
 		{include file="includes/snippets/flash-messages.tpl"}
@@ -27,11 +30,20 @@
 			{/foreach}
 		{/if}
 		<div class="clear"></div>
-		<button class="btn btn-inline bg-deep-blue reschedule-trigger push-t-med">Reschedule Task</button>
-		<button class="btn btn-inline bg-salmon reschedule-trigger push-t-med">+ Prospect</button>
-		<button class="btn btn-inline bg-dark-mint reschedule-trigger push-t-med">+ Member</button>
 		<div class="hr-full"></div>
 		<p class="text-lrg-heavy">Due: {$task->due_date|date_format:"%A, %b %e %Y"} @ {$task->due_date|date_format:"%l:%M%p"}</p>
+		<button class="task-actions-modal-trigger btn btn-inline bg-deep-blue push-t-med"><i aria-hidden="true" class="fa fa-plus push-r-sml"></i>Actions</button>
+		<div class="hr-full"></div>
+		<form id="remove-prospect-form" method="post" action="">
+			<input type="hidden" name="token" value="{$csrf_token}">
+			<input type="hidden" name="remove_prospect" value="{$csrf_token}">
+			<input id="remove-prospect-id" type="hidden" name="prospect_id" value="">
+		</form>
+		<form id="remove-member-form" method="post" action="">
+			<input type="hidden" name="token" value="{$csrf_token}">
+			<input type="hidden" name="remove_member" value="{$csrf_token}">
+			<input id="remove-member-id" type="hidden" name="member_id" value="">
+		</form>
 		<form method="post" action="">
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="update_task" value="{$csrf_token}">
@@ -41,7 +53,17 @@
 			<div class="clear push-t-med"></div>
 			<p class="text-sml">Task Description</p>
 			<textarea name="message" class="inp textarea" id="" cols="30" rows="10" placeholder="Task description">{$task->message}</textarea>
-			<div class="hr"></div>
+			<div class="clear"></div>
+			{if count($taskProspects) > 0 || count($taskMembers) > 0}<div class="hr-full"></div>{/if}
+			{foreach from=$taskProspects item=taskProspect name="tp_loop"}
+			{if $smarty.foreach.tp_loop.iteration == 1}<p class="text-med-heavy">Prospects</p>{/if}
+			<div class="task-person-tag"><a class="link tc-deep-blue" href="{$HOME}account-manager/business/lead/{$taskProspect->prospect->id}/">{$taskProspect->prospect->getFullName()}</a><span data-id="{$taskProspect->prospect->id}" class="remove-prospect tc-red text-lrg-heavy push-l-sml cursor-pt"><i aria-hidden="true" class="fa fa-close"></i></span></div>
+			{/foreach}
+			{foreach from=$taskMembers item=taskMember name="tm_loop"}
+			{if $smarty.foreach.tm_loop.iteration == 1}<p class="text-med-heavy push-t-sml">Members</p>{/if}
+			<div class="task-person-tag"><a class="link tc-deep-blue" href="{$HOME}account-manager/business/member/{$taskMember->member->id}/">{$taskMember->member->getFullName()}</a><span data-id="{$taskMember->member->id}" class="remove-member tc-red text-lrg-heavy push-l-sml cursor-pt"><i aria-hidden="true" class="fa fa-close"></i></span></div>
+			{/foreach}
+			<div class="hr-full"></div>
 			<div class="push-t-med">
 				<p class="text-lrg-heavy">Choose Task Type:</p>
 				<p class="text-sml">Select the category that best fits this task</p>
@@ -78,7 +100,7 @@
 			<div class="hr"></div>
 			{/if}
 			<div class="clear"></div>
-			<input type="submit" class="btn btn-inline push-t-med task-submit push-r-med floatleft" value="Update">
+			<button type="submit" class="btn btn-inline push-t-med task-submit --update-button push-r-med floatleft">Update</button>
 		</form>
 		<form method="post" action="">
 			<input type="hidden" name="token" value="{$csrf_token}">

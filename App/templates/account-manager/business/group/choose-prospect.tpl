@@ -19,7 +19,7 @@
 			<form method="post" action="">
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="prospect_id" value="{$lead->id}">
-				<button class="lead-tag first mat-hov cursor-pt">
+				<button class="tag first mat-hov cursor-pt">
 					<div class="lead-icon-container floatleft">
 					{if $lead->type == "trial"}
 						<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>

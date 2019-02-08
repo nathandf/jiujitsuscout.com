@@ -22,6 +22,7 @@ $( function() {
     } );
 
     $( ".reschedule-trigger" ).on( "click", function () {
+        $( ".lightbox" ).hide();
         $( "#reschedule-modal" ).toggle();
     } );
 
@@ -31,5 +32,39 @@ $( function() {
 
     $( ".--new-task-modal-trigger" ).on( "click", function () {
         $( "#new-task-modal" ).toggle();
+    } );
+
+    $( ".remove-member" ).on( "click", function () {
+        $( "#remove-member-id" ).val( this.dataset.id );
+        $( "#remove-member-form" ).submit();
+    } );
+
+    $( ".remove-prospect" ).on( "click", function () {
+        $( "#remove-prospect-id" ).val( this.dataset.id );
+        $( "#remove-prospect-form" ).submit();
+    } );
+
+    $( ".task-actions-modal-trigger" ).on( "click", function () {
+        $( "#task-actions-modal" ).toggle();
+    } );
+
+    $( ".choose-prospect-trigger" ).on( "click", function () {
+        $( ".lightbox" ).hide();
+		$( "#choose-prospect-modal" ).show();
+	} );
+
+	$( ".choose-member-trigger" ).on( "click", function () {
+        $( ".lightbox" ).hide();
+		$( "#choose-member-modal" ).show();
+	} );
+
+	$( ".choose-prospect-tag" ).on( "click", function() {
+		$( "#choose-prospect-id" ).val( this.dataset.id )
+		$( "#choose-prospect-modal-form" ).submit();
+    } );
+
+	$( ".choose-member-tag" ).on( "click", function() {
+		$( "#choose-member-id" ).val( this.dataset.id )
+		$( "#choose-member-modal-form" ).submit();
     } );
 } );

@@ -95,6 +95,19 @@
 	height: 100%;
 }
 
+.task-person-tag {
+	border-radius: 3px;
+	box-sizing: border-box;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 12px;
+	font-weight: 600;
+	margin-bottom: 8px;
+	background: #FFF;
+	display: inline-block;
+	border: 2px solid #CCC;
+}
+
 .low {
 	background: green;
 }
