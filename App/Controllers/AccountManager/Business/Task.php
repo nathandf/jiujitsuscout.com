@@ -74,6 +74,9 @@ class Task extends Controller
         $prospectRepo = $this->load( "prospect-repository" );
         $taskProspectRepo = $this->load( "task-prospect-repository" );
         $taskMemberRepo = $this->load( "task-member-repository" );
+        $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
+        $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
 
         $task = $taskRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
 
@@ -101,6 +104,33 @@ class Task extends Controller
         $task_prospect_prospect_ids = $taskProspectRepo->get( [ "prospect_id" ], [ "task_id" => $task->id ], "raw" );
         foreach ( $prospectsAll as $_prospect ) {
             if ( $_prospect->type != "member" && $_prospect->type != "trash" && !in_array( $_prospect->id, $task_prospect_prospect_ids ) ) {
+
+                // Get the phone object for this person
+                $phone = $phoneRepo->get( [ "*" ], [ "id" => $_prospect->phone_id ], "single" );
+                if ( !is_null( $phone ) ) {
+                    $_prospect->phone_number = !is_null( $phone->national_number ) ? $phone->getNicePhoneNumber() : null;
+                }
+
+
+                // Get appraisal for prospect if one exists
+                $appraisal = $prospectAppraisalRepo->get( [ "*" ], [ "prospect_id" => $_prospect->id ], "single" );
+
+                // If prospect doesn't have an appraisal
+                if ( is_null( $appraisal ) ) {
+                    $prospects[] = $_prospect;
+
+                    continue;
+                }
+
+                // Get purchase for prospect if one exists
+                $purchase = $prospectPurchaseRepo->get( [ "*" ], [ "prospect_id" => $_prospect->id ], "single" );
+
+                // Don't add this prospect to the list of prospects if it hasn't
+                // been purchased
+                if ( is_null( $purchase ) ) {
+                    continue;
+                }
+
                 $prospects[] = $_prospect;
             }
         }
@@ -110,6 +140,12 @@ class Task extends Controller
         $task_member_member_ids = $taskMemberRepo->get( [ "member_id" ], [ "task_id" => $task->id ], "raw" );
         foreach ( $membersAll as $_member ) {
             if ( !in_array( $_member->id, $task_member_member_ids ) ) {
+                // Get the phone object for this person
+                $phone = $phoneRepo->get( [ "*" ], [ "id" => $_member->phone_id ], "single" );
+                if ( !is_null( $phone ) ) {
+                    $_member->phone_number = !is_null( $phone->national_number ) ? $phone->getNicePhoneNumber() : null;
+                }
+
                 $members[] = $_member;
             }
         }

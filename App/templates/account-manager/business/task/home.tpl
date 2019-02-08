@@ -56,12 +56,12 @@
 			<div class="clear"></div>
 			{if count($taskProspects) > 0 || count($taskMembers) > 0}<div class="hr-full"></div>{/if}
 			{foreach from=$taskProspects item=taskProspect name="tp_loop"}
-			{if $smarty.foreach.tp_loop.iteration == 1}<p class="text-med-heavy">Prospects</p>{/if}
-			<div class="task-person-tag"><a class="link tc-deep-blue" href="{$HOME}account-manager/business/lead/{$taskProspect->prospect->id}/">{$taskProspect->prospect->getFullName()}</a><span data-id="{$taskProspect->prospect->id}" class="remove-prospect tc-red text-lrg-heavy push-l-sml cursor-pt"><i aria-hidden="true" class="fa fa-close"></i></span></div>
+			{if $smarty.foreach.tp_loop.iteration == 1}<p class="text-med-heavy">Leads</p>{/if}
+			<div class="task-person-tag"><a class="link tc-deep-blue" href="{$HOME}account-manager/business/lead/{$taskProspect->prospect->id}/">{$taskProspect->prospect->getFullName()|truncate:35:"..."}</a><span data-id="{$taskProspect->prospect->id}" class="remove-prospect tc-red text-lrg-heavy push-l-sml cursor-pt"><i aria-hidden="true" class="fa fa-close"></i></span></div>
 			{/foreach}
 			{foreach from=$taskMembers item=taskMember name="tm_loop"}
 			{if $smarty.foreach.tm_loop.iteration == 1}<p class="text-med-heavy push-t-sml">Members</p>{/if}
-			<div class="task-person-tag"><a class="link tc-deep-blue" href="{$HOME}account-manager/business/member/{$taskMember->member->id}/">{$taskMember->member->getFullName()}</a><span data-id="{$taskMember->member->id}" class="remove-member tc-red text-lrg-heavy push-l-sml cursor-pt"><i aria-hidden="true" class="fa fa-close"></i></span></div>
+			<div class="task-person-tag"><a class="link tc-deep-blue" href="{$HOME}account-manager/business/member/{$taskMember->member->id}/">{$taskMember->member->getFullName()|truncate:35:"..."}</a><span data-id="{$taskMember->member->id}" class="remove-member tc-red text-lrg-heavy push-l-sml cursor-pt"><i aria-hidden="true" class="fa fa-close"></i></span></div>
 			{/foreach}
 			<div class="hr-full"></div>
 			<div class="push-t-med">

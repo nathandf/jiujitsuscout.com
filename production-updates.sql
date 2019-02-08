@@ -52,3 +52,5 @@ INSERT INTO `task_type` (`id`, `name`, `description`) VALUES (NULL, 'Follow-up C
 
 CREATE TABLE `task_prospect` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `task_id` BIGINT NOT NULL , `prospect_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
 CREATE TABLE `task_member` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `task_id` BIGINT NOT NULL , `member_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
+INSERT INTO `task_type` (`id`, `name`, `description`) VALUES (NULL, 'Call', 'Make a call to a lead or member'), (NULL, 'Text', 'Send a text to a lead or member')
+ALTER TABLE `task` ADD `parent_task_id` BIGINT NOT NULL AFTER `task_type_id`;

@@ -34,14 +34,20 @@ $( function() {
         $( "#new-task-modal" ).toggle();
     } );
 
-    $( ".remove-member" ).on( "click", function () {
-        $( "#remove-member-id" ).val( this.dataset.id );
-        $( "#remove-member-form" ).submit();
+    $( ".remove-member" ).on( "click", function ( event ) {
+        confirmation = confirm( "Are you sure you want to remove this member?" );
+        if ( confirmation !== false ) {
+            $( "#remove-member-id" ).val( this.dataset.id );
+            $( "#remove-member-form" ).submit();
+        }
     } );
 
     $( ".remove-prospect" ).on( "click", function () {
-        $( "#remove-prospect-id" ).val( this.dataset.id );
-        $( "#remove-prospect-form" ).submit();
+        confirmation = confirm( "Are you sure you want to remove this lead?" );
+        if ( confirmation !== false ) {
+            $( "#remove-prospect-id" ).val( this.dataset.id );
+            $( "#remove-prospect-form" ).submit();
+        }
     } );
 
     $( ".task-actions-modal-trigger" ).on( "click", function () {

@@ -6,7 +6,7 @@
 	</form>
 	<p class="lightbox-close"><i class="fa fa-2x fa-times" aria-hidden="true"></i></p>
 	<div class="con-cnt-lrg bg-white inner-pad-med border-std push-t-lrg">
-		<p class="text-xlrg-heavy">Choose a prospect</p>
+		<p class="text-xlrg-heavy">Choose a lead</p>
 		<div class="hr-full"></div>
 		{if isset($prospects)}
 			{foreach from=$prospects item=prospect}
