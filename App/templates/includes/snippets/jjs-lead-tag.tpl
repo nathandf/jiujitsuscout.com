@@ -1,5 +1,5 @@
 
-<div class="lead-tag">
+<div class="tag">
 
 	<div class="column"><p><?=$name?></p></div>
 	<div class="column"><p><?=$phone?></p></div>

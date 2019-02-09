@@ -1,6 +1,7 @@
 {extends file="layouts/account-manager-core.tpl"}
 
 {block name="am-head"}
+	<script src="{$HOME}{$JS_SCRIPTS}business-manager-main.js"></script>
 	{block name="bm-head"}{/block}
 {/block}
 

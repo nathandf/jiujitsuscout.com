@@ -1,6 +1,6 @@
 <div id="account-manager-menu-modal" style="display: none; overflow-y: scroll;" class="lightbox inner-pad-med">
 	<p class="lightbox-close"><i class="fa fa-2x fa-times" aria-hidden="true"></i></p>
-	<div class="con-cnt-med-plus bg-white push-t-lrg" style="text-align: center;">
+	<div class="con-cnt-med-plus bg-white push-t-lrg border-std" style="text-align: center;">
 		<div class="inner-pad-sml tc-white bg-deep-blue">
 			<h3>Menu</h3>
 		</div>

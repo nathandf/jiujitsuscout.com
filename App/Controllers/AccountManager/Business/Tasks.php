@@ -53,27 +53,49 @@ class Tasks extends Controller
         $taskRepo = $this->load( "task-repository" );
         $userRepo = $this->load( "user-repository" );
         $mailer = $this->load( "mailer" );
+        $taskTypeRepo = $this->load( "task-type-repository" );
+        $taskAssigneeRepo = $this->load( "task-assignee-repository" );
+        $taskCommentRepo = $this->load( "task-comment-repository" );
+        $memberRepo = $this->load( "member-repository" );
+        $prospectRepo = $this->load( "prospect-repository" );
+        $taskProspectRepo = $this->load( "task-prospect-repository" );
+        $taskMemberRepo = $this->load( "task-member-repository" );
+        $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
+        $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
 
-        $tasksAll = $taskRepo->getAllByBusinessID( $this->business->id );
-        $tasks = [];
-        $task_ids = [];
+        $tasks = $taskRepo->get( [ "*" ], [ "business_id" => $this->business->id, "status" => "pending" ] );
+        $task_ids = $taskRepo->get( [ "id" ], [ "business_id" => $this->business->id, "status" => "pending" ], "raw" );
 
-        // Assign users to task according to task->assignee_user_id and task->created_by_user_id
-        foreach ( $tasksAll as $task ) {
-            if ( $task->status == "pending" ) {
-                $assignee_user = $userRepo->getByID( $task->assignee_user_id );
-                $created_by_user = $userRepo->getByID( $task->created_by_user_id );
-                $task->assignee_user = $assignee_user;
-                $task->created_by_user = $created_by_user;
-                $tasks[] = $task;
-                $task_ids[] = $task->id;
+        foreach ( $tasks as $task ) {
+            $task->assignees = $taskAssigneeRepo->get(  [ "*" ], [ "task_id" => $task->id ]  );
+            foreach ( $task->assignees as $assignee ) {
+                $assignee->user = $userRepo->get( [ "*" ], [ "id" => $assignee->user_id ], "single" );
             }
+
+            $task->comments = $taskCommentRepo->get( [ "*" ], [ "task_id" => $task->id ] );
+            foreach ( $task->comments as $comment ) {
+                $comment->commenter = $userRepo->get( [ "*" ], [ "id" => $comment->user_id ], "single" );
+            }
+
+            $task->taskProspects = $taskProspectRepo->get( [ "*" ], [ "task_id" => $task->id ] );
+            foreach ( $task->taskProspects as $taskProspect ) {
+                $taskProspect->prospect = $prospectRepo->get( [ "*" ], [ "id" => $taskProspect->prospect_id ], "single" );
+            }
+
+            $task->taskMembers = $taskMemberRepo->get( [ "*" ], [ "task_id" => $task->id ] );
+            foreach ( $task->taskMembers as $taskMember ) {
+                $taskMember->member = $memberRepo->get( [ "*" ], [ "id" => $taskMember->member_id ], "single" );
+            }
+
         }
 
+        $taskTypes = $taskTypeRepo->get( [ "*" ] );
+
+        $users = $userRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
+
         if ( $input->exists() && $input->issetField( "complete_task" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" =>  [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -84,62 +106,48 @@ class Tasks extends Controller
                         "in_array" => $task_ids
                     ]
                 ],
-
                 "complete_task" /* error index */
-
-            ) )
-        {
-            $taskRepo->updateStatusByID( $input->get( "task_id" ), "complete" );
+            )
+        ) {
+            $taskRepo->update( [ "status" => "complete" ], [ "id" => $input->get( "task_id" ) ] );
             $this->view->redirect( "account-manager/business/tasks/" );
         }
 
-        if ( $input->exists() && $input->issetField( "send_reminder" ) && $inputValidator->validate(
-
+        if ( $input->exists() && $input->issetField( "comment" ) && $inputValidator->validate(
                 $input,
-
                 [
-                    "token" => [
+                    "token" =>  [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
                         "required" => true
                     ],
                     "task_id" => [
+                        "required" => true,
                         "in_array" => $task_ids
+                    ],
+                    "comment" => [
+                        "required" => true
                     ]
                 ],
+                "complete_task" /* error index */
+            )
+        ) {
+            $timeZoneHelper = $this->load( "time-zone-helper" );
 
-                "send_reminder"/* error index */
-            ) )
-        {
-            $task = $taskRepo->getByID( $input->get( "task_id" ) );
-            $assigneeUser = $userRepo->getByID( $task->assignee_user_id );
+            $created_at = time() - $timeZoneHelper->getServerTimeZoneOffset( $this->business->timezone );
 
-            $mailer->setRecipientName( $assigneeUser->first_name );
-            $mailer->setRecipientEmailAddress( $assigneeUser->email );
-            $mailer->setSenderName( "JiuJitsuScout" );
-            $mailer->setSenderEmailAddress( "alerts@jiujitsuscout.com" );
-            $mailer->setContentType( "text/html" );
-            $mailer->setEmailSubject( "Task Reminder from {$this->user->first_name}" );
-            $mailer->setEmailBody( "
-                <b>Task:</b>
-                <p>{$task->title}</p>
-                <b style='margin-top: 15px'>Description:</b>
-                <p>{$task->message}</p>
-                <b style='margin-top: 15px'>Task Due Date:</b>
-                <p>" . date( "l, M jS Y h:ia", $task->due_date ) . "</p>
-                <b style='margin-top: 15px'>Sent By:</b>
-                <p>{$this->user->first_name} {$this->user->last_name}</p>
-            " );
-            $mailer->mail();
+            $taskComment = $taskCommentRepo->insert([
+                "task_id" => $input->get( "task_id" ),
+                "body" => $input->get( "comment" ),
+                "created_at" => $created_at,
+                "user_id" => $this->user->id
+            ]);
 
-            // Create flash message
-            $this->session->addFlashMessage( "Reminder email sent" );
-            $this->session->setFlashMessages();
-
-            // Redirect to tasks home
             $this->view->redirect( "account-manager/business/tasks/" );
         }
 
         $this->view->assign( "tasks", $tasks );
+        $this->view->assign( "taskTypes", $taskTypes );
+        $this->view->assign( "users", $users );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
@@ -148,5 +156,4 @@ class Tasks extends Controller
         $this->view->setTemplate( "account-manager/business/tasks/home.tpl" );
         $this->view->render( "App/Views/AccountManager/Business/Tasks.php" );
     }
-
 }

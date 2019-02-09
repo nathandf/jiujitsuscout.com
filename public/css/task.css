@@ -1,6 +1,5 @@
 .task-group {
 	box-sizing: border-box;
-	width: 95%;
 	background: #FFFFFF;
 }
 
@@ -65,7 +64,7 @@
 
 .task-drop {
 	box-sizing: border-box;
-	padding: 20px;
+	padding: 15px;
 	border-bottom: 1px solid #C0C0C0;
 }
 
@@ -80,4 +79,47 @@
 
 .task-name-input:focus {
 	border-bottom: 1px solid #448AFF
+}
+
+.task-comment {
+	background: #FFFFFF;
+	border-radius: 5px;
+	box-sizing: border-box;
+	padding: 10px;
+	border: 1px solid #CCC;
+}
+
+.task-priority-indicator {
+	width: 5px;
+	box-sizing: border-box;
+	height: 100%;
+}
+
+.task-person-tag {
+	border-radius: 3px;
+	box-sizing: border-box;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 12px;
+	font-weight: 600;
+	margin-bottom: 8px;
+	background: #FFF;
+	display: inline-block;
+	border: 2px solid #CCC;
+}
+
+.low {
+	background: green;
+}
+
+.medium {
+	background: yellow;
+}
+
+.high {
+	background: orange;
+}
+
+.critical {
+	background: red;
 }

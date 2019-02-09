@@ -10,7 +10,7 @@
 </script>
 <div id="emailer" style="display: none; overflow-y: scroll;" class="lightbox inner-pad-med">
 	<p class="lightbox-close"><i class="fa fa-2x fa-times" aria-hidden="true"></i></p>
-	<div class="con-cnt-lrg bg-white inner-pad-med push-t-lrg">
+	<div class="con-cnt-lrg bg-white inner-pad-med push-t-lrg border-std">
 		<h2 class="push-b-med">Send Email</h2>
 		{if isset($emailerHelper)}
 			{if $emailerHelper->ready()}

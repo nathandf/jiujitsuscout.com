@@ -37,3 +37,20 @@ CREATE TABLE `embeddable_form_group` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `em
 CREATE TABLE `landing_page_lead_capture` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `landing_page_id` BIGINT NOT NULL , `lead_capture_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
 CREATE TABLE `embeddable_form_lead_capture` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `embeddable_form_id` BIGINT NOT NULL , `lead_capture_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
 CREATE TABLE `profile_lead_capture` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `business_id` BIGINT NOT NULL , `lead_capture_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
+
+CREATE TABLE `task_assignee` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `task_id` BIGINT NOT NULL , `user_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
+CREATE TABLE `task_type` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `name` VARCHAR(256) NOT NULL , `description` VARCHAR(1024) NULL , PRIMARY KEY (`id`)) engine = InnoDB;
+ALTER TABLE `task` ADD `task_type_id` BIGINT NOT NULL AFTER `created_by_user_id`;
+INSERT INTO `task_type` (`id`, `name`, `description`) VALUES (NULL, 'General', 'A task that doesn\'t trigger any action');
+
+CREATE TABLE `task_comment` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `task_id` BIGINT NOT NULL , `body` VARCHAR(1024) NOT NULL , `created_at` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
+ALTER TABLE `task_comment` ADD `user_id` BIGINT NOT NULL AFTER `task_id`;
+ALTER TABLE `task` ADD `priority` VARCHAR(64) NOT NULL AFTER `message`;
+ALTER TABLE `task` DROP `assignee_user_id`;
+ALTER TABLE `task` CHANGE `status` `status` VARCHAR(256) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'pending';
+INSERT INTO `task_type` (`id`, `name`, `description`) VALUES (NULL, 'Follow-up Contact', 'Contact a lead or member');
+
+CREATE TABLE `task_prospect` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `task_id` BIGINT NOT NULL , `prospect_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
+CREATE TABLE `task_member` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `task_id` BIGINT NOT NULL , `member_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
+INSERT INTO `task_type` (`id`, `name`, `description`) VALUES (NULL, 'Call', 'Make a call to a lead or member'), (NULL, 'Text', 'Send a text to a lead or member')
+ALTER TABLE `task` ADD `parent_task_id` BIGINT NOT NULL AFTER `task_type_id`;

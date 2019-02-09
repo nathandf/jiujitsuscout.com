@@ -1,6 +1,6 @@
 <div id="actions-member-modal" style="display: none; overflow-y: scroll;" class="lightbox actions-modal inner-pad-med">
 	<p id="actions-member-modal-close" class="lightbox-close"><i class="fa fa-2x fa-times" aria-hidden="true"></i></p>
-	<div class="con-cnt-xlrg bg-white inner-pad-med push-t-lrg">
+	<div class="con-cnt-xlrg bg-white inner-pad-med push-t-lrg border-std">
 		<h2 class="push-b-med">Actions</h2>
 		<p class="text-med">Manage</p>
 		<div class="hr-sml"></div>

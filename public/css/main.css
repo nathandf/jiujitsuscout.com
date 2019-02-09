@@ -511,7 +511,7 @@ td {
     margin-top: 15px;
     margin-bottom: 8px;
     border: 1px solid #F6F6F6;
-    border: 3px solid green;
+    border-left: 3px solid green;
     background: #FFF;
     width: 85%;
     max-width: 600px;
@@ -666,6 +666,16 @@ td {
     background: #FFFFFF;
 }
 
+.tag-no-pad {
+    box-sizing: border-box;
+    width:  100%;
+    border: 2px solid #CCCCCC;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #000000;
+    background: #FFFFFF;
+}
+
 .tag-link {
     text-decoration: none;
 }
@@ -699,6 +709,16 @@ td {
     margin-bottom: 4px;
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+/* Horizontal Line */
+.hr-full {
+    display: block;
+    width: 100;
+    box-sizing: border-box;
+    border-bottom: 1px solid #BBBBBB;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .hr-cnt {
@@ -1577,6 +1597,10 @@ td {
     margin-right: 8px;
 }
 
+.push-r-xsml {
+    margin-right: 5px;
+}
+
 .push-r-sml {
     margin-right: 10px;
 }
@@ -1628,6 +1652,12 @@ td {
 
 .cursor-pt:hover {
     cursor: pointer;
+}
+
+.border-std {
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 2px solid #CCCCCC;
 }
 
 .de-tab {

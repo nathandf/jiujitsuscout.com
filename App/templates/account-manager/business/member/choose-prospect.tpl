@@ -16,7 +16,7 @@
 		<form action="{$HOME}account-manager/business/member/convert-prospect">
 			<input type="hidden" name="prospect_id" value="{$lead->id}">
 			<input type="hidden" name="token" value="{$csrf_token}">
-			<button id="lead{$lead->id}" class="lead-tag first mat-hov cursor-pt">
+			<button id="lead{$lead->id}" class="tag first mat-hov cursor-pt" style="text-align: left;">
 				<div class="lead-icon-container floatleft">
 				{if $lead->type == "trial"}
 					<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>
