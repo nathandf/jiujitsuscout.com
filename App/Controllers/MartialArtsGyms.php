@@ -734,12 +734,6 @@ class MartialArtsGyms extends Controller
                 ->setBusinessID( $this->business->id )
                 ->setProspectID( $prospect->id );
 
-            $timeZoneHelper = $this->load( "time-zone-helper" );
-
-            $sequenceBuilder->setTimeZoneOffset(
-                $timeZoneHelper->getServerTimeZoneOffset( $this->business->timezone )
-            );
-
             foreach ( $landingPageSequenceTemplates as $landingPageSequenceTemplate ) {
                 $sequenceBuilder->buildFromSequenceTemplate(
                     $landingPageSequenceTemplate->sequence_template_id
