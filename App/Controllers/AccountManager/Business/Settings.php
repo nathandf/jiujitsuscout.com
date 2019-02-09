@@ -130,9 +130,9 @@ class Settings extends Controller
             }
 
             $full_address = $address . " " . $input->get( "city" ) . ", " . $input->get( "region" ) . " " . $input->get( "postal_code" ) . ", " . $input->get( "country" );
-
             $geoInfo = $geocoder->getGeoInfoByAddress( $full_address );
-
+            $geo_assoc = $geocoder->getAssocInfoByGeoInfo($geoInfo);
+            $location_details['region'] =$geo_assoc->state;
             // Save new latitude and longitude
             $businessRepo->updateLatitudeLongitudeByID( $this->business->id, $geoInfo->results[ 0 ]->geometry->location->lat, $geoInfo->results[ 0 ]->geometry->location->lng );
 

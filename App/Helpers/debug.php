@@ -23,6 +23,10 @@
     function printa( $a ) {
         echo "\n\n<hr><pre>" . print_r( $a, true ) . "</pre>\n\n";
     }
+    function printad( $a,$d='' ) {
+        printa($a);
+        die($d);
+    }
     function printap( $a ) {
         echo "<hr>
         <div style='padding-left:300px;'><pre>" . print_r( $a, true ) . "</pre>
