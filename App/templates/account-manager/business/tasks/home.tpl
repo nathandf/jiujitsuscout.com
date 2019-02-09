@@ -57,6 +57,18 @@
 						<p class="text-sml">No users have been assigned to this task</p>
 					{/foreach}
 					<div class="clear"></div>
+					{if count($task->taskProspects) > 0 || count($task->taskMembers) > 0}
+					<div class="hr-full"></div>
+						{foreach from=$task->taskProspects item=taskProspect name="tp_loop"}
+						{if $smarty.foreach.tp_loop.iteration == 1}<p class="text-med-heavy">Leads</p>{/if}
+						<div class="task-person-tag"><a class="link tc-deep-blue" href="{$HOME}account-manager/business/lead/{$taskProspect->prospect->id}/">{$taskProspect->prospect->getFullName()|truncate:35:"..."}</a></div>
+						{/foreach}
+
+						{foreach from=$task->taskMembers item=taskMember name="tm_loop"}
+						{if $smarty.foreach.tm_loop.iteration == 1}<p class="text-med-heavy push-t-sml">Members</p>{/if}
+						<div class="task-person-tag"><a class="link tc-deep-blue" href="{$HOME}account-manager/business/member/{$taskMember->member->id}/">{$taskMember->member->getFullName()|truncate:35:"..."}</a></div>
+						{/foreach}
+					{/if}
 					<div class="hr-full"></div>
 					{foreach from=$task->comments item=comment name=comment_loop}
 						{if $smarty.foreach.comment_loop.iteration == 1}<h4 class="push-b-sml push-t-med">Comments:</h4>{/if}

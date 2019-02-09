@@ -56,6 +56,13 @@ class Tasks extends Controller
         $taskTypeRepo = $this->load( "task-type-repository" );
         $taskAssigneeRepo = $this->load( "task-assignee-repository" );
         $taskCommentRepo = $this->load( "task-comment-repository" );
+        $memberRepo = $this->load( "member-repository" );
+        $prospectRepo = $this->load( "prospect-repository" );
+        $taskProspectRepo = $this->load( "task-prospect-repository" );
+        $taskMemberRepo = $this->load( "task-member-repository" );
+        $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
+        $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
 
         $tasks = $taskRepo->get( [ "*" ], [ "business_id" => $this->business->id, "status" => "pending" ] );
         $task_ids = $taskRepo->get( [ "id" ], [ "business_id" => $this->business->id, "status" => "pending" ], "raw" );
@@ -70,6 +77,17 @@ class Tasks extends Controller
             foreach ( $task->comments as $comment ) {
                 $comment->commenter = $userRepo->get( [ "*" ], [ "id" => $comment->user_id ], "single" );
             }
+
+            $task->taskProspects = $taskProspectRepo->get( [ "*" ], [ "task_id" => $task->id ] );
+            foreach ( $task->taskProspects as $taskProspect ) {
+                $taskProspect->prospect = $prospectRepo->get( [ "*" ], [ "id" => $taskProspect->prospect_id ], "single" );
+            }
+
+            $task->taskMembers = $taskMemberRepo->get( [ "*" ], [ "task_id" => $task->id ] );
+            foreach ( $task->taskMembers as $taskMember ) {
+                $taskMember->member = $memberRepo->get( [ "*" ], [ "id" => $taskMember->member_id ], "single" );
+            }
+
         }
 
         $taskTypes = $taskTypeRepo->get( [ "*" ] );

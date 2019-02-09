@@ -35,19 +35,13 @@ $( function() {
     } );
 
     $( ".remove-member" ).on( "click", function ( event ) {
-        confirmation = confirm( "Are you sure you want to remove this member?" );
-        if ( confirmation !== false ) {
-            $( "#remove-member-id" ).val( this.dataset.id );
-            $( "#remove-member-form" ).submit();
-        }
+        $( "#remove-member-id" ).val( this.dataset.id );
+        $( "#remove-member-form" ).submit();
     } );
 
     $( ".remove-prospect" ).on( "click", function () {
-        confirmation = confirm( "Are you sure you want to remove this lead?" );
-        if ( confirmation !== false ) {
-            $( "#remove-prospect-id" ).val( this.dataset.id );
-            $( "#remove-prospect-form" ).submit();
-        }
+        $( "#remove-prospect-id" ).val( this.dataset.id );
+        $( "#remove-prospect-form" ).submit();
     } );
 
     $( ".task-actions-modal-trigger" ).on( "click", function () {
