@@ -1,3 +1,4 @@
 .idea/
 .htaccess
 App/Conf/server-vars.php
+cache/*/*.json
