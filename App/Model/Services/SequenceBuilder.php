@@ -262,7 +262,7 @@ class SequenceBuilder
             $this->setStartTime( time() );
         }
 
-        return $this->start_time + $this->getTimeZoneOffset();
+        return $this->start_time;
     }
 
     /*

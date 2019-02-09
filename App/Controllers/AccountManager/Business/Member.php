@@ -627,13 +627,7 @@ class Member extends Controller
                 ->setSenderPhoneNumber( $this->business->phone->getPhoneNumber() )
                 ->setBusinessID( $this->business->id )
                 ->setMemberID( $this->params[ "id" ] );
-
-            $timeZoneHelper = $this->load( "time-zone-helper" );
-
-            $sequenceBuilder->setTimeZoneOffset(
-                $timeZoneHelper->getServerTimeZoneOffset( $this->business->timezone )
-            );
-
+                
             // Set start time
             if ( $input->issetField( "unit" ) && $input->issetField( "quantity" ) ) {
                 $sequenceBuilder->setStartTime(

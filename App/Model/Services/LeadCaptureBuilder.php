@@ -94,14 +94,14 @@ class LeadCaptureBuilder
         }
 
         if ( !is_null( $this->landing_page_id ) ) {
-            $landingPageLeadCaptureRepo->insert([
+            $this->landingPageLeadCaptureRepo->insert([
                 "lead_capture_id" => $leadCapture->id,
                 "landing_page_id" => $this->landing_page_id
             ]);
         }
 
         if ( !is_null( $this->embeddable_form_id ) ) {
-            $embeddableFormLeadCaptureRepo->insert([
+            $this->embeddableFormLeadCaptureRepo->insert([
                 "lead_capture_id" => $leadCapture->id,
                 "embeddable_form_id" => $embeddable_form_id
             ]);
