@@ -55,7 +55,7 @@
 			<p class="text-sml push-t-sml">Time</p>
 			{html_select_time class="inp inp-sml push-b-sml cursor-pt" minute_interval=15 display_seconds=false use_24_hours=false}
 			<div class="clear"></div>
-			<button type="submit" class="btn btn-inline push-t-med task-submit --create-button">Create task</button>
+			<button type="submit" class="btn btn-inline push-t-med task-submit --create-button" style="display: none;">Create task</button>
 		</form>
 	</div>
 </div>

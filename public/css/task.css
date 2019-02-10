@@ -14,7 +14,7 @@
 
 .task {
 	box-sizing: border-box;
-	height: 45px;
+	min-height: 45px;
 	width: 100%;
 	line-height: 45px;
 	background: #FFFFFF;
@@ -24,6 +24,31 @@
 
 .task:hover {
 	background: #f1f1f1;
+}
+
+.task-left {
+	box-sizing: border-box;
+	width: 60px;
+	float: left;
+}
+
+.task-middle {
+	box-sizing: border-box;
+	float: left;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 60%;
+}
+
+.task-right {
+	box-sizing: border-box;
+	float: right;
+	display: table;
+}
+
+.task-check-container {
+	height: 100%;
+	display: block;
 }
 
 .task-check {

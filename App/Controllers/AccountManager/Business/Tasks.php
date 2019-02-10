@@ -64,7 +64,7 @@ class Tasks extends Controller
         $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
         $phoneRepo = $this->load( "phone-repository" );
 
-        $tasks = $taskRepo->get( [ "*" ], [ "business_id" => $this->business->id, "status" => "pending" ] );
+        $tasks = $taskRepo->getAllPendingOrderByTriggerTime( $this->business->id );
         $task_ids = $taskRepo->get( [ "id" ], [ "business_id" => $this->business->id, "status" => "pending" ], "raw" );
 
         foreach ( $tasks as $task ) {

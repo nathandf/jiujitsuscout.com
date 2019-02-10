@@ -842,6 +842,37 @@ $container->register( "task-comment-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "task-destroyer", function() use ( $container ) {
+	$service = new \Model\Services\TaskDestroyer(
+	    $container->getService( "task-repository" ),
+		$container->getService( "task-assignee-repository" ),
+		$container->getService( "task-prospect-repository" ),
+		$container->getService( "task-member-repository" ),
+		$container->getService( "task-comment-repository" )
+	);
+	return $service;
+} );
+
+$container->register( "task-email-builder", function() {
+	$repo = new \Model\Services\TaskEmailBuilder;
+	return $repo;
+} );
+
+$container->register( "task-dispatcher", function() use ( $container ) {
+	$repo = new \Model\Services\TaskDispatcher(
+	    $container->getService( "task-repository" ),
+		$container->getService( "task-assignee-repository" ),
+		$container->getService(  "task-prospect-repository" ),
+		$container->getService(  "task-member-repository" ),
+		$container->getService( "user-repository" ),
+		$container->getService(  "prospect-repository" ),
+		$container->getService(  "member-repository" ),
+		$container->getService( "task-email-builder" ),
+	    $container->getService( "mailer" )
+	);
+	return $repo;
+} );
+
 $container->register( "task-prospect-repository", function() use ( $container ) {
 	$repo = new \Model\Services\TaskProspectRepository(
 	    $container->getService( "dao" ),
