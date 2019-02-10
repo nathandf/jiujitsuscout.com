@@ -4,7 +4,7 @@ namespace Controllers\Cron;
 
 use Core\Controller;
 
-class Sequences extends Controller
+class Tasks extends Controller
 {
 	public function before()
 	{
@@ -25,19 +25,19 @@ class Sequences extends Controller
 		}
 
 		$this->logger = $this->load( "logger" );
-		$this->logger->info( "Cron Start: Sequences" );
+		$this->logger->info( "Cron Start: Tasks" );
 	}
 
 	public function after()
 	{
-		$this->logger->info( "Cron End: Sequences" );
+		$this->logger->info( "Cron End: Tasks" );
 		die();
 		exit();
 	}
 
 	public function indexAction()
 	{
-		$sequenceDispatcher = $this->load( "sequence-dispatcher" );
-        $sequenceDispatcher->dispatch();
+		$taskDispatcher = $this->load( "task-dispatcher" );
+        $taskDispatcher->dispatch();
 	}
 }

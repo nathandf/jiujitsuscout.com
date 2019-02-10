@@ -842,6 +842,22 @@ $container->register( "task-comment-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "task-email-builder", function() {
+	$repo = new \Model\Services\TaskEmailBuilder;
+	return $repo;
+} );
+
+$container->register( "task-dispatcher", function() use ( $container ) {
+	$repo = new \Model\Services\TaskDispatcher(
+	    $container->getService( "task-repository" ),
+		$container->getService( "task-assignee-repository" ),
+		$container->getService( "user-repository" ),
+		$container->getService( "task-email-builder" ),
+	    $container->getService( "mailer" )
+	);
+	return $repo;
+} );
+
 $container->register( "task-prospect-repository", function() use ( $container ) {
 	$repo = new \Model\Services\TaskProspectRepository(
 	    $container->getService( "dao" ),

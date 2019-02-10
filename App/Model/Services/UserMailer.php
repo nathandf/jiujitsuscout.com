@@ -24,7 +24,7 @@ class UserMailer
         $this->mailer->setRecipientName( $first_name );
         $this->mailer->setRecipientEmailAddress( $email );
         $this->mailer->setSenderName( "JiuJitsuScout" );
-        $this->mailer->setSenderEmailAddress( "jiujitsuscout@gmial.com" );
+        $this->mailer->setSenderEmailAddress( "jiujitsuscout@gmail.com" );
         $this->mailer->setContentType( "text/html" );
         $this->mailer->setEmailSubject( "Welcome to JiuJitsuScout!" );
         $this->mailer->setEmailBody(

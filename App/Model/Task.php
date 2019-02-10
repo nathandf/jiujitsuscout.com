@@ -14,4 +14,5 @@ class Task implements EntityInterface
     public $priority;
     public $remind_status;
     public $status;
+    public $checked_out;
 }
