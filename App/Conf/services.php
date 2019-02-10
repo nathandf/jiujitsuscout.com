@@ -851,7 +851,11 @@ $container->register( "task-dispatcher", function() use ( $container ) {
 	$repo = new \Model\Services\TaskDispatcher(
 	    $container->getService( "task-repository" ),
 		$container->getService( "task-assignee-repository" ),
+		$container->getService(  "task-prospect-repository" ),
+		$container->getService(  "task-member-repository" ),
 		$container->getService( "user-repository" ),
+		$container->getService(  "prospect-repository" ),
+		$container->getService(  "member-repository" ),
 		$container->getService( "task-email-builder" ),
 	    $container->getService( "mailer" )
 	);

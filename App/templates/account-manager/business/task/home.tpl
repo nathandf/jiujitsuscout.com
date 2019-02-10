@@ -70,7 +70,7 @@
 				<div class="clear push-t-sml"></div>
 				<select class="inp inp-sml cursor-pt" name="task_type_id" id="action" required="required">
 					{foreach from=$taskTypes item=taskType}
-					<option name="task_type_id" value="{$taskType->id}">{$taskType->name}</option>
+					<option name="task_type_id" value="{$taskType->id}"{if $taskType->id == $task->task_type_id}selected="selected" hidden="hidden"{/if}>{$taskType->name}</option>
 					{/foreach}
 				</select>
 			</div>
