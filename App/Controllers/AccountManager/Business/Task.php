@@ -36,7 +36,7 @@ class Task extends Controller
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
 
         // Verify that this business owns this landing page
-        $tasks = $taskRepo->getAllByBusinessID( $this->business->id );
+        $tasks = $taskRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $task_ids = [];
         foreach ( $tasks as $task ) {
             $task_ids[] = $task->id;

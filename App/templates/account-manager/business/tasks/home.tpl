@@ -35,21 +35,31 @@
 				{/if}
 				<a class="tc-dark-grey" href="{$HOME}account-manager/business/task/{$task->id}/" style="text-decoration: none;">
 					<div id="task-complete-form-{$smarty.foreach.task_loop.iteration}" class="task cursor-pt">
-						<button id="task-drop-{$smarty.foreach.task_loop.iteration}" class="task-toggle-button --task-drop --no-prop text-med floatright push-r-med cursor-pt"><i class="fa fa-bars" aria-hidden="true"></i></button>
 						<form method="post" action="">
 							<input type="hidden" name="token" value="{$csrf_token}">
 							<input type="hidden" name="task_id" value="{$task->id}">
 							<input type="hidden" name="complete_task" value="{$csrf_token}">
+						<div class="task-left">
 							<div class="floatleft task-priority-indicator {$task->priority}">&nbsp;</div>
-							<button id="task-id-{$smarty.foreach.task_loop.iteration}" class="--task-complete task-check floatleft push-r-sml push-l-sml cursor-pt"><i class="fa fa-check" aria-hidden="true"></i></button>
+							<div class="floatleft task-check-container">
+								<button id="task-id-{$smarty.foreach.task_loop.iteration}" class="--task-complete task-check push-r-sml push-l-sml cursor-pt"><i class="fa fa-check" aria-hidden="true"></i></button>
+								<div class="clear"></div>
+							</div>
+							<dvi class="clear"></dvi>
+						</div>
 						</form>
-						<p class="text-med">{$task->title|capitalize|truncate:100:"..."}</p>
+						<div class="task-middle">
+							<p class="task-title">{$task->title|capitalize|truncate:80:"..."}</p>
+						</div>
+						<div class="task-right">
+							<button id="task-drop-{$smarty.foreach.task_loop.iteration}" class="task-toggle-button --task-drop --no-prop floatright text-med push-r-med cursor-pt"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+						</div>
 					</div>
 				</a>
 				<div class="clear"></div>
 				<div class="task-drop" id="task-drop-form-{$smarty.foreach.task_loop.iteration}" style="display: none;">
-					<p class="text-med">{$task->due_date|date_format:"%A, %b %e %Y"} @ {$task->due_date|date_format:"%l:%M%p"}</p>
-					<p class="text-med"><span class="text-med-heavy">Description: </span>{$task->message}</p>
+					<p class="text-med-heavy">{$task->due_date|date_format:"%A, %b %e %Y"} @ {$task->due_date|date_format:"%l:%M%p"}</p>
+					<p class="text-med push-t-sml"><span class="text-med-heavy">Description: </span>{$task->message}</p>
 					{foreach from=$task->assignees item=assignee name=assignee_loop}
 						{if $smarty.foreach.assignee_loop.iteration == 1}<p class="text-med-heavy push-t-med">Assignees:</p>{/if}
 						<span class="text-sml">{$assignee->user->getFullName()}{if count($task->assignees) > 1 && $smarty.foreach.assignee_loop.iteration < count($task->assignees)}, {/if}</span>
