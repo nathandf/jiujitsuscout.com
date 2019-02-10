@@ -16,16 +16,15 @@ class TaskEmailBuilder
     		<h2 style="font-weight: 900; text-align: center; color: #FFF; background: #4A148C; padding: 20px; margin: 0 auto;">Task Due</h2>
     		<div style="padding: 15px;">
     			<div style="margin-top: 20px;"></div>
-                <p style="font-size: 10px; margin-bottom: 0px; word-wrap: break-word;">Task Name:</p>
-    			<p style="font-size: 22px; font-weight: 600; margin: 0 auto; word-break: break-all; max-width: 80ch; word-wrap: break-word; line-height: 22px;">{{task_title}}</p>
-                <p style="font-size: 10px; margin-top: 20px; margin-bottom: 0px; word-wrap: break-word;">Task Description:</p>
-    			<p style="font-size: 16px; margin: 0 auto; word-break: break-all; word-break: break-all; word-wrap: break-word;">{{task_message}}</p>
+    			<p style="font-size: 22px; white-space: pre-wrap; font-weight: 600; margin: 0 auto; width: 100%;">{{task_title}}</p>
+                <p style="font-size: 10px; font-weight: 600; margin-top: 20px; margin-bottom: 0px; word-wrap: break-word;">Description:</p>
+    			<p style="white-space: pre-wrap; font-size: 16px; margin: 0 auto; width: 100%;">{{task_message}}</p>
     			<div style="margin-top: 20px; margin-bottom: 20px;">
     				<div style="width: 100%; box-sizing: border-box; border-top: 1px solid #CCCCCC;"></div>
     			</div>
-    			<p style="word-wrap: break-word;">{{prospect_string}}</p>
-    			<p style="word-wrap: break-word;">{{member_string}}</p>
-    			<a href="https://www.jiujitsuscout.com/account-manager/business/task/{{task_id}}/" style="background: #4A148C; color: #FFFFFF; text-align: center; box-sizing: border-box; border-radius: 3px; display: block; width: 260px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none; margin: 0 auto; margin-top: 20px;">View Task</a>
+    			<p style="white-space: pre-wrap;">{{prospect_string}}</p>
+    			<p style="white-space: pre-wrap;">{{member_string}}</p>
+    			<a href="https://www.jiujitsuscout.com/account-manager/business/task/{{task_id}}/" style="background: #4A148C; color: #FFFFFF; text-align: center; box-sizing: border-box; border-radius: 3px; display: block; width: 75%; padding: 15px; font-size: 18px; font-weight: 600; text-decoration: none; margin: 0 auto; margin-top: 20px;">View Task</a>
             </div>
     	</div>
     </div>';
@@ -80,7 +79,8 @@ class TaskEmailBuilder
         $body = preg_replace( "/\{\{task_title\}\}/", $task->title, $body );
         $body = preg_replace( "/\{\{task_message\}\}/", $task->message, $body );
         $body = preg_replace( "/\{\{task_id\}\}/", $task->id, $body );
-        vdumpd($body);
+
+        // vdumpd($body);
         $this->setBody( $body );
     }
 
