@@ -13,7 +13,7 @@ use \Model\Services\TaskEmailBuilder;
 use Contracts\MailerInterface;
 
 /**
-* Class SequenceDispatcher
+* Class TaskDispatcher
 *
 * @package Model\Services
 *
@@ -66,9 +66,9 @@ class TaskDispatcher
         );
 
         foreach ( $tasks as $task ) {
-            if ( $task->due_date < time() ) {
+            if ( $task->trigger_time < time() ) {
                 // Check out task so it cannot be dispatched by another concurrent process
-                // $this->taskRepo->update( [ "checked_out" => 1 ], [ "id" => $task->id ] );
+                $this->taskRepo->update( [ "checked_out" => 1 ], [ "id" => $task->id ] );
 
                 // Assign task to task email builder
                 $this->taskEmailBuilder->setTask( $task );
@@ -117,7 +117,7 @@ class TaskDispatcher
                 }
 
                 // Update task remind status and check back in
-                // $this->taskRepo->update( [ "checked_out" => 0, "remind_status" => 1 ], [ "id" => $task->id ] );
+                $this->taskRepo->update( [ "checked_out" => 0, "remind_status" => 1 ], [ "id" => $task->id ] );
             }
         }
     }

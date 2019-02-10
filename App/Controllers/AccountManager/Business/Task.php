@@ -77,6 +77,7 @@ class Task extends Controller
         $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
         $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
         $phoneRepo = $this->load( "phone-repository" );
+        $taskDestroyer = $this->load( "task-destroyer" );
 
         $task = $taskRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
 
@@ -98,6 +99,8 @@ class Task extends Controller
 
         $taskTypes = $taskTypeRepo->get( [ "*" ] );
         $task_type_ids = $taskTypeRepo->get( [ "id" ], [], "raw" );
+
+        $task_ids = $taskRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
 
         $prospectsAll = $prospectRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $prospects = [];
@@ -250,10 +253,18 @@ class Task extends Controller
 
             // Create unix time stamp for due date
             $due_date_string = $month . "/" . $day . "/" . $year . " " . $hour . ":" . $minute . $meridian;
-            $due_date = strtotime( $due_date_string );
+
+            // Get timezone offset in seconds
+            $timeZoneHelper = $this->load( "time-zone-helper" );
+            $timezone_offset = $timeZoneHelper->getServerTimeZoneOffset( $this->business->timezone );
+
+            $trigger_time = strtotime( $due_date_string ) + $timezone_offset;
 
             $taskRepo->update(
-                [ "due_date" => $due_date ],
+                [
+                    "due_date" => $due_date_string,
+                    "trigger_time" => $trigger_time
+                ],
                 [ "id" => $task->id ]
             );
 
@@ -371,7 +382,7 @@ class Task extends Controller
                 "delete_task" /* error index */
             ) )
         {
-            $taskRepo->removeByID( $input->get( "task_id" ) );
+            $taskDestroyer->destroy( $input->get( "task_id" ) );
 
             // Create flash message
             $this->session->addFlashMessage( "Task Deleted" );
@@ -460,16 +471,13 @@ class Task extends Controller
         $taskTypes = $taskTypeRepo->get( [ "*" ] );
         $task_type_ids = $taskTypeRepo->get( [ "id" ], [], "raw" );
 
-        if ( $input->exists() && $inputValidator->validate(
+        if ( $input->exists() && $input->issetField( "create_task" ) && $inputValidator->validate(
 
                 $input,
 
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                        "required" => true
-                    ],
-                    "create_task" => [
                         "required" => true
                     ],
                     "title" => [
@@ -529,12 +537,18 @@ class Task extends Controller
 
             // Create unix time stamp for due date
             $due_date_string = $month . "/" . $day . "/" . $year . " " . $hour . ":" . $minute . $meridian;
-            $due_date = strtotime( $due_date_string );
+
+            // Get timezone offset in seconds
+            $timeZoneHelper = $this->load( "time-zone-helper" );
+            $timezone_offset = $timeZoneHelper->getServerTimeZoneOffset( $this->business->timezone );
+
+            $trigger_time = strtotime( $due_date_string ) + $timezone_offset;
 
             $task = $taskRepo->insert([
                 "business_id" => $this->business->id,
                 "task_type_id" => $input->get( "task_type_id" ),
-                "due_date" => $due_date,
+                "due_date" => $due_date_string,
+                "trigger_time" => $trigger_time,
                 "title" => $input->get( "title" ),
                 "message" => $input->get( "message" ),
                 "priority" => $input->get( "priority" ),

@@ -13,6 +13,14 @@ $( function() {
         $( task_drop_form_id ).hide( 500 );
     } );
 
+    $( ".assignee-checkbox" ).on( "click", function () {
+        if ( $( ".assignee-checkbox:checked" ).length ) {
+            $( ".task-submit" ).show();
+        } else {
+            $( ".task-submit" ).hide();
+        }
+    } );
+
     $( ".task-submit" ).on( "click", function () {
         checked = $( ".assignee-checkbox:checked" ).length;
         if ( !checked ) {

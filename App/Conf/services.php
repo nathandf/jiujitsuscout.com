@@ -842,6 +842,17 @@ $container->register( "task-comment-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "task-destroyer", function() use ( $container ) {
+	$service = new \Model\Services\TaskDestroyer(
+	    $container->getService( "task-repository" ),
+		$container->getService( "task-assignee-repository" ),
+		$container->getService( "task-prospect-repository" ),
+		$container->getService( "task-member-repository" ),
+		$container->getService( "task-comment-repository" )
+	);
+	return $service;
+} );
+
 $container->register( "task-email-builder", function() {
 	$repo = new \Model\Services\TaskEmailBuilder;
 	return $repo;
