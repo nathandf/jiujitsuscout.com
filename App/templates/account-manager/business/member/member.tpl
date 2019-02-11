@@ -7,13 +7,13 @@
 
 {block name="bm-body"}
 	{include file="includes/navigation/business-manager-sub-menu.tpl"}
-	{include file='includes/widgets/emailer.tpl'}
+	{include file="includes/widgets/emailer.tpl"}
 	{include file="includes/modals/actions-member.tpl"}
 	<div class="clear"></div>
 	<div class="con con-cnt-xxlrg inner-pad-med push-t-med">
 		<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/members">Members</a> > {$member->getFullName()}</p>
 		<div class="clear"></div>
-		<button id="member-actions-button" class="btn btn-inline bg-deep-blue tc-white push-t-med">+ Actions</button>
+		<button type="button" id="member-actions-button" class="btn btn-inline bg-deep-blue tc-white push-t-med">+ Actions</button>
 		{include file="includes/snippets/flash-messages.tpl"}
 		<table class="" style="border-collapse: collapse; width: 100%;">
 			<tr>
