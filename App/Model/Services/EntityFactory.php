@@ -11,10 +11,11 @@ class EntityFactory
         }
 
         $class = $namespace . ucfirst( $type );
-        vdumpd($class);
+
         if ( class_exists( $class ) ) {
             return new $class();
         } else {
+            vdumpd($class);
             throw new \Exception( "Class {$type}" );
         }
     }
