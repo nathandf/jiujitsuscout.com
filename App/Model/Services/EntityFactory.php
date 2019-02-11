@@ -15,7 +15,6 @@ class EntityFactory
         if ( class_exists( $class ) ) {
             return new $class();
         } else {
-            vdumpd($class);
             throw new \Exception( "Class {$type}" );
         }
     }
