@@ -23,12 +23,6 @@ class Test extends Controller
 		$this->view->render( "App/Views/Home.php" );
 	}
 
-    public function sequenceDispatcherAction()
-    {
-        $sequenceManager = $this->load( "sequence-dispatcher" );
-        $sequenceManager->dispatch();
-    }
-
     public function unsetAll()
     {
         unset( $_SESSION[ "respondent-token" ] );

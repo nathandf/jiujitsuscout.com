@@ -2,32 +2,32 @@
 
 namespace Model\Services;
 
-class QuestionnaireRepository extends Service
+class QuestionnaireRepository extends Repository
 {
     public function create( $name, $description )
     {
-        $questionnaire = new \Model\Questionnaire();
-        $questionnaireMapper = new \Model\Mappers\QuestionnaireMapper( $this->container );
+        $mapper = $this->getMapper();
+        $questionnaire = $mapper->build( $this->entityName );
         $questionnaire->name = $name;
         $questionnaire->description = $description;
-        $questionnaireMapper->create( $questionnaire );
+        $mapper->create( $questionnaire );
 
         return $questionnaire;
     }
 
     public function getAll()
     {
-        $questionnaireMapper = new \Model\Mappers\QuestionnaireMapper( $this->container );
-        $questionnaires = $questionnaireMapper->mapAll();
+        $mapper = $this->getMapper();
+        $questionnaires = $mapper->mapAll();
 
         return $questionnaires;
     }
 
     public function getByID( $id )
     {
-        $questionnaire = new \Model\Questionnaire();
-        $questionnaireMapper = new \Model\Mappers\QuestionnaireMapper( $this->container );
-        $questionnaireMapper->mapFromID( $questionnaire, $id );
+        $mapper = $this->getMapper();
+        $questionnaire = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $questionnaire, $id );
 
         return $questionnaire;
     }

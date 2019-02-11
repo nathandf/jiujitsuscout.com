@@ -30,10 +30,10 @@ class Campaign extends Controller
         $this->user = $userAuth->getUser();
 
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
 
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
 
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
@@ -47,6 +47,13 @@ class Campaign extends Controller
         if ( isset( $this->params[ "id" ] ) && !in_array( $this->params[ "id" ], $campaign_ids ) ) {
             $this->view->redirect( "account-manager/business/campaigns/" );
         }
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         $this->view->assign( "account", $this->account );
         $this->view->assign( "user", $this->user );

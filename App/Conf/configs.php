@@ -21,14 +21,14 @@ $config[ "logs_directory" ] = "App/logs/";
 
 // Routing
 $config[ "routing" ] = [
-    "production" => [
-        "root" => "https://www.jiujitsuscout.com/"
+    "development" => [
+        "root" => "/jiujitsuscout.com/"
     ],
     "staging" => [
         "root" => "http://develop.jiujitsuscout.stupidsimple.tech/"
     ],
-    "development" => [
-        "root" => "/jiujitsuscout.com/"
+    "production" => [
+        "root" => "https://www.jiujitsuscout.com/"
     ]
 ];
 
@@ -66,6 +66,9 @@ $config[ "db" ] = [
         "password" => "XHN8yxNzpN2l",
     ]
 ];
+
+// Local database vars
+include( "server-vars.php" );
 
 // Google APIs
 $config[ "google" ] = [

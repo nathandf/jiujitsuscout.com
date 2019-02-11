@@ -30,9 +30,9 @@ class Trial extends Controller
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
         // Load prospects by type associated with business
@@ -43,6 +43,14 @@ class Trial extends Controller
             $phone = $phoneRepo->getByID( $lead->phone_id );
             $lead->phone_number = "+" . $phone->country_code . " " . $phone->national_number;
         }
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
         // Set data for the view
         $this->view->assign( "leads", $this->leads );
         $this->view->assign( "account", $this->account );

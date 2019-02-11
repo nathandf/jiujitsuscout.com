@@ -6,8 +6,8 @@
 
 {block name="bm-body"}
 {include file="includes/navigation/business-manager-sub-menu.tpl"}
-	<div class="con-cnt-xlrg first inner-pad-med">
-		<a class="btn btn-inline bg-salmon text-med first" href="{$HOME}account-manager/business/lead/{$lead->id}/">< Lead Manager</a>
+	<div class="con-cnt-xlrg push-t-med inner-pad-med">
+		<p class="text-med-heavy"><a class="tc-deep-blue link" href="{$HOME}account-manager/business/">{$business->business_name}</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/leads">Leads</a> > <a class="tc-deep-blue link" href="{$HOME}account-manager/business/lead/{$lead->id}/">{$lead->getFullName()}</a> > Edit</p>
 		{if !empty($error_messages.edit)}
 			{foreach from=$error_messages.edit item=message}
 				<div class="con-message-failure mat-hov cursor-pt --c-hide">
@@ -20,16 +20,16 @@
 			<input type="hidden" name="token" value="{$csrf_token}">
 			<input type="hidden" name="update_prospect" value="{$csrf_token}">
 			<label class="text-sml">First name</label><br>
-			<input type="text" class="inp field-sml" name="first_name" value="{$lead->first_name}">
+			<input type="text" class="inp inp-med-plus-plus" name="first_name" value="{$lead->first_name}">
 			<div class="clear push-t-med"></div>
 			<label class="text-sml">Last name</label><br>
-			<input type="text" class="inp field-sml" name="last_name" value="{$lead->last_name}">
+			<input type="text" class="inp inp-med-plus-plus" name="last_name" value="{$lead->last_name}">
 			<div class="clear push-t-med"></div>
 			<label class="text-sml">Email</label><br>
-			<input type="text" class="inp field-sml" name="email" value="{$lead->email}">
+			<input type="text" class="inp inp-med-plus-plus" name="email" value="{$lead->email}">
 			<div class="clear push-t-med"></div>
 			<label class="text-sml">Country Code</label><br>
-			<select class="inp field-sml cursor-pt" id="country_code" name="country_code"/>
+			<select class="inp inp-sml cursor-pt" id="country_code" name="country_code"/>
 				{if $phone->country_code != null}
 				<option selected="selected" value="{$phone->country_code}">+{$phone->country_code}</option>
 				{else}
@@ -47,25 +47,21 @@
 			</select>
 			<div class="clear push-t-med"></div>
 			<label class="text-sml">Phone number</label><br>
-			<input type="text" class="inp field-sml" name="phone_number" value="{$phone->national_number|default:null}">
+			<input type="text" class="inp inp-med-plus-plus" name="phone_number" value="{$phone->national_number|default:null}">
 			<div class="clear push-t-med"></div>
 			<label class="text-sml">Address</label><br>
-			<input type="text" class="inp field-sml" name="address_1" value="{$lead->address_1}" placeholder="123 Anywher St.">
-			<input type="text" class="inp field-sml" name="address_2" value="{$lead->address_2}" placeholder="Ex. Apt #123">
+			<input type="text" class="inp inp-med-plus-plus" name="address_1" value="{$lead->address_1}" placeholder="123 Anywher St.">
+			<div class="clear push-t-med"></div>
+			<label class="text-sml">Address 2</label><br>
+			<input type="text" class="inp inp-med-plus-plus" name="address_2" value="{$lead->address_2}" placeholder="Ex. Apt #123">
 			<div class="clear push-t-med"></div>
 			<label class="text-sml">City</label><br>
-			<input type="text" class="inp field-sml" name="city" value="{$lead->city}" placeholder="City">
+			<input type="text" class="inp inp-med-plus-plus" name="city" value="{$lead->city}" placeholder="City">
 			<div class="clear push-t-med"></div>
 			<label class="text-sml">Region</label><br>
-			<input type="text" class="inp field-sml" name="region" value="{$lead->region}" placeholder="State/Region/Province">
+			<input type="text" class="inp inp-med-plus-plus" name="region" value="{$lead->region}" placeholder="State/Region/Province">
 			<div class="clear"></div>
 			<input type="submit" class="btn bnt-inline floatleft push-r push-t-med" value="Update Lead">
-		</form>
-		<form method="post" action="">
-			<input type="hidden" name="token" value="{$csrf_token}">
-			<input type="hidden" name="trash" value="{$csrf_token}">
-			<input type="hidden" name="prospect_id" value="{$lead->id}">
-			<button type="submit" class="btn btn-inline bg-red push-t-med push-l floatleft --c-trash"><i class="fa fa-trash" aria-hidden="true"></i></button>
 		</form>
 		<div class="clear"></div>
 	</div>

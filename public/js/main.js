@@ -70,6 +70,7 @@ $( function() {
         function() {
             if ( $( this ).val() ) {
                 $( ".file-upload-button" ).show();
+                $( ".file-upload-container" ).show();
                 $( ".file-upload-field-container" ).show();
             }
         }
@@ -86,5 +87,37 @@ $( function() {
 
     $( "#create-account" ).on( "submit", function () {
         $( "#account-creation-loading-screen" ).show( "" );
+    } );
+
+    $( ".emailer-open" ).on( "click", function () {
+        $( "#emailer" ).toggle();
+    } );
+
+    $( ".lightbox-close" ).on( "click", function () {
+        $( ".lightbox-close" ).parent().hide();
+    } );
+
+    $( ".--update-button" ).on( "click", function () {
+        $( this ).html( "Updating<i class=\"fa fa-spinner fa-spin push-l-sml\" aria-hidden=\"true\"></i>" );
+    } );
+
+    $( ".--save-button" ).on( "click", function () {
+        $( this ).html( "Saving<i class=\"fa fa-spinner fa-spin push-l-sml\" aria-hidden=\"true\"></i>" );
+    } );
+
+    $( ".--delete-button" ).on( "click", function () {
+        $( this ).html( "Deleting<i class=\"fa fa-spinner fa-spin push-l-sml\" aria-hidden=\"true\"></i>" );
+    } );
+
+    $( ".--load-button" ).on( "click", function () {
+        $( this ).html( "Loading<i class=\"fa fa-spinner fa-spin push-l-sml\" aria-hidden=\"true\"></i>" );
+    } );
+
+    $( ".--upload-button" ).on( "click", function () {
+        $( this ).html( "Uploading<i class=\"fa fa-spinner fa-spin push-l-sml\" aria-hidden=\"true\"></i>" );
+    } );
+
+    $( ".--create-button" ).on( "click", function () {
+        $( this ).html( "Creating<i class=\"fa fa-spinner fa-spin push-l-sml\" aria-hidden=\"true\"></i>" );
     } );
 } );

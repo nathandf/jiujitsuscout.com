@@ -22,7 +22,7 @@ class NearMe extends Controller
         $disciplineRepo = $this->load( "discipline-repository" );
         $Config = $this->load( "config" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         // Get all businesses geo info to populate links
         $businesses = $businessRepo->getAll();
@@ -50,7 +50,7 @@ class NearMe extends Controller
         ksort( $businesses_geo_info );
 
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
-        $facebookPixelBuilder->setPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         switch ( $setParams ) {
             case "region":

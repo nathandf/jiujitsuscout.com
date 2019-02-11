@@ -13,7 +13,8 @@
 		{foreach from=$leads item=lead}
 			{if $lead->requires_purchase == 0}
 				{if $lead->type != "trial"}
-				<a href="{$HOME}account-manager/business/trial/details?prospect_id={$lead->id}" id="lead{$lead->id}" class="lead-tag first mat-hov">
+				<a href="{$HOME}account-manager/business/trial/details?prospect_id={$lead->id}" id="lead{$lead->id}" class="tag first mat-hov">
+					<div class="lead-icon-container floatleft">
 					{if $lead->type == "trial"}
 						<span class="lead-icon icon-c-3"><i class="fa fa-calendar" aria-hidden="true"></i></span>
 					{elseif $lead->type == "lead"}
@@ -23,11 +24,13 @@
 						<span class="lead-icon {cycle values="icon-c-1,icon-c-2,icon-c-3,icon-c-4"}">{$lead->first_name|substr:0:1|upper}</span>
 						{/if}
 					{/if}
-					<div class="lead-data">
+					</div>
+					<div class="lead-data floatleft">
 						<p class="lead-name">{$lead->first_name|capitalize|truncate:20:"..."} {$lead->last_name|capitalize|truncate:20:"..."}</p>
 						<p>{$lead->phone_number}</p>
 						<p>{$lead->email|lower|truncate:20:"..."}</p>
 					</div>
+					<div class="clear"></div>
 				</a>
 				<div class="clear"></div>
 				{/if}

@@ -28,15 +28,22 @@ class Business extends Controller
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
         // Get account type details
         $this->account_type = $accountTypeRepo->getByID( $this->account->account_type_id );
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
         // Get currency object for business
         $this->business->currency = $currencyRepo->getByCode( $this->business->currency );
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         // Set data for the view
         $this->view->assign( "account_type", $this->account_type );
@@ -155,6 +162,7 @@ class Business extends Controller
         $groupRepo = $this->load( "group-repository" );
         $factory = $this->load( "entity-factory" );
         $appointmentRepo = $this->load( "appointment-repository" );
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
 
         // Get all leads and trials
         $prospectsAll = $prospectRepo->getAllByStatusAndBusinessID( "pending", $this->business->id );
@@ -187,7 +195,10 @@ class Business extends Controller
                 $trials[] = $prospect;
             }
 
-            // Create rray of all lead's ids
+            // Get all appointmments for prospects
+            $prospect->appointments = $appointmentRepo->getAllByProspectID( $prospect->id );
+
+            // Create array of all lead's ids
             $prospect_ids[] = $prospect->id;
         }
 
@@ -281,13 +292,15 @@ class Business extends Controller
                                 case ( preg_match( "/group-[ 0-9 ]+/", $input->get( "action" ) ) ? true : false ):
                                     // Using regex to see if action == group, a hyphen, and any combination of numbers
                                     $group_id = intval( str_replace( "group-", "", $input->get( "action" ) ) );
-                                    $current_groups = explode( ",", $prospect->group_ids );
-                                    if ( !in_array( $group_id, $current_groups ) ) {
-                                        $current_groups[] = $group_id;
-                                        $prospectRepo->updateGroupIDsByID( implode( ",", $current_groups ), $prospect->id );
+                                    $group_ids = $prospectGroupRepo->get( [ "id" ], [ "prospect_id" => $prospect_id ], "raw" );
+                                    if ( !in_array( $group_id, $group_ids ) ) {
+                                        $prospectGroupRepo->insert([
+                                            "prospect_id" => $prospect_id,
+                                            "group_id" => $group_id
+                                        ]);
                                     }
                                     // Get group
-                                    $group = $groupRepo->getByID( $group_id );
+                                    $group = $groupRepo->get( [ "*" ], [ "id" => $group_id ], "single" );
                                     // Set flash message
                                     if ( $iteration == $prospect_count ) {
                                         $this->session->addFlashMessage( "Leads added to '{$group->name}' group ($prospect_count)" );
@@ -324,20 +337,17 @@ class Business extends Controller
         $groupRepo = $this->load( "group-repository" );
         $entityFactory = $this->load( "entity-factory" );
         $countryRepo = $this->load( "country-repository" );
+        $prospectGroupRepo = $this->load( "prospect-group-repository" );
 
         // Get all coutnry data
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         // Set current coutnry
-        $country = $countryRepo->getByISO( $this->account->country );
+        $country = $countryRepo->get( [ "*" ], [ "iso" => $this->account->country ], "single" );
 
         // Groups and group IDs
-        $groups = $groupRepo->getAllByBusinessID( $this->business->id );
-        $group_ids = [];
-
-        foreach ( $groups as $group ) {
-            $group_ids[] = $group->id;
-        }
+        $groups = $groupRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $group_ids = $groupRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
 
         // Add lead
         if ( $input->exists() && $inputValidator->validate( $input,
@@ -389,14 +399,12 @@ class Business extends Controller
 
             if ( $input->issetField( "group_ids" ) && !empty( $input->get( "group_ids" ) ) ) {
                 $submitted_group_ids = $input->get( "group_ids" );
-                foreach ( $submitted_group_ids as $key => $submitted_group_id ) {
-                    // Verify that the all submitted group ids are owned by this business. If not, unset.
-                    if ( !in_array( $submitted_group_id, $group_ids ) ) {
-                        unset( $submitted_group_ids[ $key ] );
-                    }
+                foreach ( $submitted_group_ids as $group_id ) {
+                    $prospectGroupRepo->insert([
+                        "prospect_id" => $prospect_id,
+                        "group_id" => $group_id
+                    ]);
                 }
-
-                $prospectRepo->updateGroupIDsByID( implode( ",", $submitted_group_ids ), $prospect_id );
             }
 
             if ( $input->issetField( "schedule_appointment" ) && $input->get( "schedule_appointment" ) == "true" ) {
@@ -423,8 +431,7 @@ class Business extends Controller
         $this->view->assign( "countries", $countries );
         $this->view->assign( "country_code", $country->phonecode );
 
-        $csrf_token = $this->session->generateCSRFToken();
-        $this->view->assign( "csrf_token", $csrf_token );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setFlashMessages( $this->session->getFlashMessages( "flash_messages" ) );
@@ -446,6 +453,7 @@ class Business extends Controller
         }
 
         $this->view->assign( "members", $members );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/business/members.tpl" );
         $this->view->render( "App/Views/AccountManager/Business.php" );

@@ -13,7 +13,7 @@ class Profile extends Controller
         $userAuth = $this->load( "user-authenticator" );
         $accountRepo = $this->load( "account-repository" );
         $accountUserRepo = $this->load( "account-user-repository" );
-        $this->businessRepo = $this->load( "business-repository" );
+        $businessRepo = $this->load( "business-repository" );
         $userRepo = $this->load( "user-repository" );
 
         // If user not validated with session or cookie, send them to sign in
@@ -25,13 +25,20 @@ class Profile extends Controller
         $this->user = $userAuth->getUser();
 
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
 
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
 
         // Grab business details
-        $this->business = $this->businessRepo->getByID( $this->user->getCurrentBusinessID() );
+        $this->business = $businessRepo->get( [ "*" ], [ "id" => $this->user->getCurrentBusinessID() ], "single" );
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         // Set data for the view
         $this->view->assign( "account", $this->account );
@@ -90,16 +97,13 @@ class Profile extends Controller
             }
 
             // Load images
-            $images = $imageRepo->getAllByBusinessID( $this->business->id );
-
-            // Load video
-            $this->business->video = $videoRepo->getByID( $this->business->video_id );
+            $images = $imageRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
 
             if ( count( $images ) > 0 ) {
                 $profile_completion_percentage += 17;
             }
 
-            if ( !is_null( $this->business->logo_filename ) ) {
+            if ( !is_null( $this->business->logo_image_id ) ) {
                 $profile_completion_percentage += 17;
             }
 
@@ -107,13 +111,13 @@ class Profile extends Controller
                 $profile_completion_percentage += 17;
             }
 
-            if ( !is_null( $this->business->video->id ) ) {
+            if ( !is_null( $this->business->video_id ) ) {
                 $profile_completion_percentage += 15;
             }
 
             if ( $profile_completion_percentage == 100 ) {
                 $businessRepo = $this->load( "business-repository" );
-                $businessRepo->updateProfileCompleteByID( $this->business->id );
+                $businessRepo->update( [ "profile_complete" => 1 ], [ "id" => $this->business->id ] );
                 $this->view->redirect( "account-manager/business/profile/" );
             }
 
@@ -137,38 +141,45 @@ class Profile extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $imageManager = $this->load( "image-manager" );
+        $imageRepo = $this->load( "image-repository" );
+        $businessRepo = $this->load( "business-repository" );
         $config = $this->load( "config" );
 
-        if ( $input->exists() && $input->issetField( "upload_image" ) && $inputValidator->validate(
+        $images = $imageRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $image_ids = $imageRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
 
+        $this->business->logo = null;
+        if ( !is_null( $this->business->logo_image_id ) ) {
+            $this->business->logo = $imageRepo->get( [ "*" ], [ "id" => $this->business->logo_image_id ], "single" );
+        }
+
+        if ( $input->exists() && $inputValidator->validate(
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
                         "required" => true
                     ],
-                    "upload_image" => [
-                        "required" => true
+                    "image_id" => [
+                        "required" => true,
+                        "in_array" => $image_ids
                     ]
-
                 ],
-
                 "upload_image" /* error index */
-            ) )
-        {
-            if ( $this->business->logo_filename == $config::$configs[ "default_logo" ] ) {
-                $imageManager->saveImageTo( "image" );
-            } else {
-                $imageManager->overwriteImage( "image", "public/img/uploads/", "public/img/uploads/" . $this->business->logo_filename );
-            }
+            )
+        ) {
+            $businessRepo->update( [ "logo_image_id" => $input->get( "image_id" ) ], [ "id" => $this->business->id ] );
 
-            $this->businessRepo->updateLogoByID( $this->business->id, $imageManager->getNewImageFileName() );
+            $this->session->addFlashMessage( "Logo Updated" );
+            $this->session->setFlashMessages();
+
             $this->view->redirect( "account-manager/business/profile/logo" );
         }
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
+        $this->view->assign( "images", $images );
 
         $this->view->setTemplate( "account-manager/business/profile/logo.tpl" );
         $this->view->render( "App/Views/AccountManager/Assets.php" );
@@ -257,6 +268,7 @@ class Profile extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
+        $businessRepo = $this->load( "business-repository" );
 
         if ( $input->exists() && $input->issetField( "update_message" ) && $inputValidator->validate(
                 $input,
@@ -282,7 +294,7 @@ class Profile extends Controller
                 "update_site_message"
             ) )
         {
-            $this->businessRepo->updateSiteMessageByID( $this->business->id, $input->get( "title" ), $input->get( "message" ) );
+            $businessRepo->updateSiteMessageByID( $this->business->id, $input->get( "title" ), $input->get( "message" ) );
             $this->view->redirect( "account-manager/business/profile/message" );
         }
 
@@ -366,73 +378,35 @@ class Profile extends Controller
     {
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
-        $videoManager = $this->load( "video-manager" );
         $videoRepo = $this->load( "video-repository" );
         $businessRepo = $this->load( "business-repository" );
 
-        $video = $videoRepo->getByID( $this->business->video_id );
+        $video = null;
+        if ( !is_null( $this->business->video_id ) ) {
+            $video = $videoRepo->get( [ "*" ], [ "id" => $this->business->video_id ], "single" );
+        }
 
-        if ( $input->exists() && $input->issetField( "video" ) && $inputValidator->validate(
+        $video_ids = $videoRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+        $videos = $videoRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+
+        if ( $input->exists() && $input->issetField( "video_id" ) && $inputValidator->validate(
                 $input,
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
                         "required" => true
                     ],
-                    "video" => [
-                        "required" => true
-                    ],
-                    "name" => [
-                        "name" => "Video Title",
-                        "min" => 1,
-                        "max" => 512
-                    ],
-                    "description" => [
-                        "name" => "Description",
-                        "min" => 1
+                    "video_id" => [
+                        "reuired" => true,
+                        "in_array" => $video_ids
                     ]
                 ],
                 "upload_video"
             )
         ) {
-            if ( is_null( $video->id ) ) {
-                // If no video has been uploaded before, save the file and create a video reference in the database
-                if ( $videoManager->saveVideoTo( "video" ) ) {
-                    $newVideo = $videoRepo->create(
-                        $videoManager->getNewVideoFileName(),
-                        $videoManager->getNewVideoType(),
-                        $this->business->id,
-                        $input->get( "name" ),
-                        $input->get( "description" )
-                    );
-                } else {
-                    // Redirect back to upload page if no video was uploaded
-                    $this->session->addFlashMessage( "No video was uploaded" );
-                    $this->session->setFlashMessages();
-                    $this->view->redirect( "account-manager/business/profile/video" );
-                }
-            } else {
-                // If a video has been uploaded, overwrite the file, save the new reference, and remove the old
-                if ( $videoManager->overwriteVideo( "video", "public/videos/" . $video->filename ) ) {
-                    $newVideo = $videoRepo->create(
-                        $videoManager->getNewVideoFileName(),
-                        $videoManager->getNewVideoType(),
-                        $this->business->id,
-                        $input->get( "name" ),
-                        $input->get( "description" )
-                    );
-                    $videoRepo->removeByID( $this->business->video_id );
-                } else {
-                    // Redirect back to upload page if no video was uploaded
-                    $this->session->addFlashMessage( "No video was uploaded" );
-                    $this->session->setFlashMessages();
-                    $this->view->redirect( "account-manager/business/profile/video" );
-                }
-            }
+            $businessRepo->update( [ "video_id" => $input->get( "video_id" ) ], [ "id" => $this->business->id ] );
 
-            $businessRepo->updateVideoIDByID( $this->business->id, $newVideo->id );
-
-            $this->session->addFlashMessage( "Video Uploaded" );
+            $this->session->addFlashMessage( "Primary Video Updated" );
             $this->session->setFlashMessages();
 
             $this->view->redirect( "account-manager/business/profile/video" );
@@ -440,6 +414,7 @@ class Profile extends Controller
 
         $this->view->assign( "flash_messages", $this->session->getFlashMessages( "flash_messages" ) );
         $this->view->assign( "video", $video );
+        $this->view->assign( "videos", $videos );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );

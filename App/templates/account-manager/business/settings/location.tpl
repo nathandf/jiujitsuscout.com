@@ -26,30 +26,30 @@
 					<input type="hidden" name="update_location" value="{$csrf_token}">
 					<label class="text-sml">Address 1</label>
 					<div class="clear"></div>
-					<input class="inp field-med" type="text" name='address_1' placeholder="123 Anywhere St"  value='{$business->address_1}'>
+					<input class="inp inp-med-plus-plus" type="text" name='address_1' placeholder="123 Anywhere St"  value='{$business->address_1}'>
 					<div class="clear push-t-med"></div>
 					<label class="text-sml">Address 2</label>
 					<div class="clear"></div>
-					<input class="inp field-med" type="text" name='address_2' placeholder="ex. ste 101" value='{$business->address_2}'>
+					<input class="inp inp-med-plus-plus" type="text" name='address_2' placeholder="ex. ste 101" value='{$business->address_2}'>
 					<div class="clear push-t-med push-t-med push-t-med"></div>
 					<label class="text-sml">City</label>
 					<div class="clear"></div>
-					<input class="inp field-med" type="text" name='city' placeholder="Anytown"  value='{$business->city}'>
+					<input class="inp inp-med-plus-plus" type="text" name='city' placeholder="Anytown"  value='{$business->city}'>
 					<div class="clear push-t-med push-t-med"></div>
 					<label class="text-sml">Region/State</label>
 					<div class="clear"></div>
-					<input class="inp field-med" type="text" name='region' value='{$business->region}'>
+					<input class="inp inp-med-plus-plus" type="text" name='region' value='{$business->region}'>
 					<div class="clear push-t-med"></div>
 					<label class="text-sml">Post Code </label>
 					<div class="clear"></div>
-					<input class="inp field-med" type="text" name='postal_code' placeholder="Postal code" value='{$business->postal_code}'>
+					<input class="inp inp-med-plus-plus" type="text" name='postal_code' placeholder="Postal code" value='{$business->postal_code}'>
 					<div class="clear push-t-med"></div>
 					<label class="text-sml">Country </label>
 					<div class="clear"></div>
-					<select class="inp cursor-pt field-med" name="country" form="location">
+					<select class="inp cursor-pt inp-sml" name="country" form="location">
 						<option name="country" value='{$business->country}' selected="selected"><span class="inner_option">{$business->country}</span></option>
 						{foreach from=$countries item=country}
-							<option name="country" value="{$country->iso}">{$country->nice_name}</option>
+							<option name="country" value="{$country->iso}">{$country->nicename}</option>
 						{/foreach}
 					</select>
 					<div class="clear push-t-med"></div>

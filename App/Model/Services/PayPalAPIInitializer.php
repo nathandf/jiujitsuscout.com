@@ -7,7 +7,6 @@ use PayPal\Auth\OAuthTokenCredential;
 
 class PayPalAPIInitializer
 {
-
     private $configs;
 
     public function __construct( \Conf\Config $Config )
@@ -35,5 +34,4 @@ class PayPalAPIInitializer
 
         return $api;
     }
-
 }

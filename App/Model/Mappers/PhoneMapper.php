@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class PhoneMapper extends DataMapper
 {
-
     public function create( \Model\Phone $phone )
     {
         if ( isset( $phone->country_code ) === false || $phone->country_code == "" ) {
@@ -39,13 +38,13 @@ class PhoneMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
         $phones = [];
         $sql = $this->DB->prepare( "SELECT * FROM phone" );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $phone = $entityFactory->build( "Phone" );
-            $this->populatePhone( $phone, $resp );
+            $phone = $this->entityFactory->build( "Phone" );
+            $this->populate( $phone, $resp );
             $phones[] = $phone;
         }
 
@@ -58,15 +57,8 @@ class PhoneMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populatePhone( $phone, $resp );
+        $this->populate( $phone, $resp );
+
         return $phone;
     }
-
-    private function populatePhone( \Model\Phone $phone, $data )
-    {
-        $phone->id                = $data[ "id" ];
-        $phone->setCountryCode( $data[ "country_code" ] );
-        $phone->setNationalNumber( $data[ "national_number" ] );
-    }
-
 }

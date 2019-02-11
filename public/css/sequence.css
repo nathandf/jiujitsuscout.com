@@ -1,0 +1,92 @@
+.sequence-tag {
+	width: 100%;
+	box-sizing: border-box;
+	border-radius: 5px;
+	border: 2px solid #CCC;
+	padding: 10px;
+	background: #FFF;
+}
+
+.event-type-tag {
+	width: 100%;
+	border-radius: 2px;
+	border: 2px solid #CCC;
+	padding: 10px;
+	background: #FFFFFF;
+	margin-top: 15px;
+	box-sizing: border-box;
+}
+
+.event {
+	width: auto;
+	padding: 8px;
+	box-sizing: border-box;
+	border: 2px solid #CCCCCC;
+	border-radius: 5px;
+	background: #FFFFFF;
+}
+
+.event-number-container {
+	background: #FFFFFF;
+	color: #666;
+	display: block;
+	height: 20px;
+	width: 20px;
+	line-height: 20px;
+	font-size: 12px;
+	box-sizing: border-box;
+	border-radius: 20px;
+	border: 1px solid #666;
+
+	font-weight: 600;
+	margin-right: 10px;
+}
+
+.event-number {
+	margin-left: 6px;
+	margin-top: -1px;
+}
+
+.event-number-dd {
+	margin-left: 3px;
+	margin-top: -1px;
+}
+
+.event-icon {
+	padding: 5px;
+	border-radius: 5px;
+	color: #FFF;
+	font-size: 15px;
+}
+
+.wait {
+	padding: 3px;
+	color: #FFF;
+	box-sizing: border-box;
+	border-radius: 5px;
+	text-align: left;
+	/* border: 2px solid #CCCCCC; */
+}
+
+.event-number-container-hidden {
+	background: none;
+	display: block;
+	height: 20px;
+	width: 20px;
+	line-height: 20px;
+	font-size: 12px;
+	box-sizing: border-box;
+	border-radius: 20px;
+	font-weight: 600;
+	margin-right: 10px;
+}
+
+.placement-button {
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 15px;
+	font-weight: 600;
+	color: #FFFFFF;
+	border-radius: 3px;
+}

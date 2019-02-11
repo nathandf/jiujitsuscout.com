@@ -2,32 +2,32 @@
 
 namespace Model\Services;
 
-class PasswordResetRepository extends Service
+class PasswordResetRepository extends Repository
 {
     public function create( $email, $nonce_token_id )
     {
-        $passwordReset = new \Model\PasswordReset();
-        $passwordResetMapper = new \Model\Mappers\PasswordResetMapper( $this->container );
+        $mapper = $this->getMapper();
+        $passwordReset = $mapper->build( $this->entityName );
         $passwordReset->email = $email;
         $passwordReset->nonce_token_id = $nonce_token_id;
-        $passwordResetMapper->create( $passwordReset );
+        $mapper->create( $passwordReset );
 
         return $passwordReset;
     }
 
     public function getAll()
     {
-        $passwordResetMapper = new \Model\Mappers\PasswordResetMapper( $this->container );
-        $passwordResets = $passwordResetMapper->mapAll();
+        $mapper = $this->getMapper();
+        $passwordResets = $mapper->mapAll();
 
         return $passwordResets;
     }
 
     public function getByNonceTokenID( $nonce_token_id )
     {
-        $passwordReset = new \Model\PasswordReset();
-        $passwordResetMapper = new \Model\Mappers\PasswordResetMapper( $this->container );
-        $passwordResetMapper->mapFromNonceTokenID( $passwordReset, $nonce_token_id );
+        $mapper = $this->getMapper();
+        $passwordReset = $mapper->build( $this->entityName );
+        $mapper->mapFromNonceTokenID( $passwordReset, $nonce_token_id );
 
         return $passwordReset;
     }

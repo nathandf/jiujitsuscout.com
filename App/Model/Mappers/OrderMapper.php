@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class OrderMapper extends DataMapper
 {
-
     public function create( \Model\Order $order )
     {
         $id = $this->insert(
@@ -20,13 +19,13 @@ class OrderMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+
         $orders = [];
         $sql = $this->DB->prepare( "SELECT * FROM `order`" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $order = $entityFactory->build( "Order" );
-            $this->populateOrder( $order, $resp );
+            $order = $this->entityFactory->build( "Order" );
+            $this->populate( $order, $resp );
             $orders[] = $order;
         }
 
@@ -39,7 +38,7 @@ class OrderMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateOrder( $order, $resp );
+        $this->populate( $order, $resp );
 
         return $order;
     }
@@ -50,7 +49,7 @@ class OrderMapper extends DataMapper
         $sql->bindParam( ":customer_id", $customer_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateOrder( $order, $resp );
+        $this->populate( $order, $resp );
 
         return $order;
     }
@@ -62,7 +61,7 @@ class OrderMapper extends DataMapper
         $sql->bindParam( ":paid", $paid );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateOrder( $order, $resp );
+        $this->populate( $order, $resp );
 
         return $order;
     }
@@ -71,19 +70,4 @@ class OrderMapper extends DataMapper
     {
         $this->update( "`order`", "paid", $paid, "id", $id );
     }
-
-    public function delete( $id )
-    {
-        $sql = $this->DB->prepare( "DELETE FROM `order` WHERE id = :id" );
-        $sql->bindParam( ":id", $id );
-        $sql->execute();
-    }
-
-    private function populateOrder( \Model\Order $order, $data )
-    {
-        $order->id          = $data[ "id" ];
-        $order->customer_id = $data[ "customer_id" ];
-        $order->paid        = $data[ "paid" ];
-    }
-
 }

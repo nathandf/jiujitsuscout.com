@@ -2,23 +2,22 @@
 
 namespace Model\Services;
 
-class CampaignTypeRepository extends Service
+class CampaignTypeRepository extends Repository
 {
+    public function getAll()
+    {
+        $mapper = $this->getMapper();
+        $campaignTypes = $mapper->mapAll();
 
-  public function getAll()
-  {
-    $campaignTypeMapper = new \Model\Mappers\CampaignTypeMapper( $this->container );
-    $campaignTypes = $campaignTypeMapper->mapAll();
-    return $campaignTypes;
-  }
+        return $campaignTypes;
+    }
 
-  public function getByID( $id )
-  {
-    $campaignType = new \Model\CampaignType();
-    $campaignTypeMapper = new \Model\Mappers\CampaignTypeMapper( $this->container );
-    $campaignTypeMapper->mapFromID( $campaignType, $id );
+    public function getByID( $id )
+    {
+        $mapper = $this->getMapper();
+        $campaignType = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $campaignType, $id );
 
-    return $campaignType;
-  }
-
+        return $campaignType;
+    }
 }

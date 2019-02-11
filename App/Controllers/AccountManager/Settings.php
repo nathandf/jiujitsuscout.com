@@ -23,15 +23,23 @@ class Settings extends Controller
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
 
         // Load account type details
-		$this->accountType = $accountTypeRepo->getByID( $this->account->account_type_id );
+		$this->accountType = $accountTypeRepo->get( [ "*" ], [ "id" => $this->account->account_type_id ], "single" );
 
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+        
         // Set data for the view
         $this->view->assign( "account", $this->account );
         $this->view->assign( "account_type", $this->accountType );
@@ -61,7 +69,7 @@ class Settings extends Controller
         // Load user emails to veryify submitted email address is unique
         $user_emails = $userRepo->getAllEmails();
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         if ( $input->exists() && $inputValidator->validate(
 

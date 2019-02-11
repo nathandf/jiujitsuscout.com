@@ -5,69 +5,69 @@ namespace Model\Services;
 use Model\Account;
 use Model\Mappers\AccountMapper;
 
-class AccountRepository extends Service
+class AccountRepository extends Repository
 {
 
     public function create( $account_type_id, $country, $currency, $timezone )
     {
-        $account = new Account();
-        $accountMapper = new AccountMapper( $this->container );
+        $mapper = $this->getMapper();
+        $account = $mapper->build( $this->entityName );
         $account->account_type_id = $account_type_id;
         $account->country = $country;
         $account->currency = $currency;
         $account->timezone = $timezone;
-        $accountMapper->create( $account );
+        $mapper->create( $account );
 
         return $account;
     }
 
     public function getByID( $id )
     {
-        $account = new Account();
-        $accountMapper = new AccountMapper( $this->container );
-        $accountMapper->mapFromID( $account, $id );
+        $mapper = $this->getMapper();
+        $account = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $account, $id );
 
         return $account;
     }
 
     public function getAll()
     {
-        $accountMapper = new \Model\Mappers\AccountMapper( $this->container );
-        $accounts = $accountMapper->mapAll();
+        $mapper = $this->getMapper();
+        $accounts = $mapper->mapAll();
 
         return $accounts;
     }
 
     public function getAllEmails()
     {
-        $accountMapper = new AccountMapper( $this->container );
-        $emails = $accountMapper->getAllEmails();
+        $mapper = $this->getMapper();
+        $emails = $mapper->getAllEmails();
 
         return $emails;
     }
 
     public function updatePrimaryUserIDByID( $user_id, $id )
     {
-        $accountMapper = new AccountMapper( $this->container );
-        $accountMapper->updatePrimaryUserIDByID( $user_id, $id );
+        $mapper = $this->getMapper();
+        $mapper->updatePrimaryUserIDByID( $user_id, $id );
     }
 
     public function addAccountCreditByID( $id, $amount )
     {
-        $accountMapper = new AccountMapper( $this->container );
-        $accountMapper->addAccountCreditByID( $id, $amount );
+        $mapper = $this->getMapper();
+        $mapper->addAccountCreditByID( $id, $amount );
     }
 
     public function debitAccountByID( $id, $amount )
     {
-        $accountMapper = new AccountMapper( $this->container );
-        $accountMapper->subtractAccountCreditByID( $id, $amount );
+        $mapper = $this->getMapper();
+        $mapper->subtractAccountCreditByID( $id, $amount );
     }
 
     public function updateAccountTypeIDByID( $account_id, $account_type_id )
     {
-        $accountMapper = new AccountMapper( $this->container );
-        $accountMapper->updateAccountTypeIDByID( $account_id, $account_type_id );
+        $mapper = $this->getMapper();
+        $mapper->updateAccountTypeIDByID( $account_id, $account_type_id );
     }
 
 }

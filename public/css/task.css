@@ -1,6 +1,5 @@
 .task-group {
 	box-sizing: border-box;
-	width: 95%;
 	background: #FFFFFF;
 }
 
@@ -15,7 +14,7 @@
 
 .task {
 	box-sizing: border-box;
-	height: 45px;
+	min-height: 45px;
 	width: 100%;
 	line-height: 45px;
 	background: #FFFFFF;
@@ -25,6 +24,31 @@
 
 .task:hover {
 	background: #f1f1f1;
+}
+
+.task-left {
+	box-sizing: border-box;
+	width: 60px;
+	float: left;
+}
+
+.task-middle {
+	box-sizing: border-box;
+	float: left;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 60%;
+}
+
+.task-right {
+	box-sizing: border-box;
+	float: right;
+	display: table;
+}
+
+.task-check-container {
+	height: 100%;
+	display: block;
 }
 
 .task-check {
@@ -65,7 +89,7 @@
 
 .task-drop {
 	box-sizing: border-box;
-	padding: 20px;
+	padding: 15px;
 	border-bottom: 1px solid #C0C0C0;
 }
 
@@ -80,4 +104,47 @@
 
 .task-name-input:focus {
 	border-bottom: 1px solid #448AFF
+}
+
+.task-comment {
+	background: #FFFFFF;
+	border-radius: 5px;
+	box-sizing: border-box;
+	padding: 10px;
+	border: 1px solid #CCC;
+}
+
+.task-priority-indicator {
+	width: 5px;
+	box-sizing: border-box;
+	height: 100%;
+}
+
+.task-person-tag {
+	border-radius: 3px;
+	box-sizing: border-box;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 12px;
+	font-weight: 600;
+	margin-bottom: 8px;
+	background: #FFF;
+	display: inline-block;
+	border: 2px solid #CCC;
+}
+
+.low {
+	background: green;
+}
+
+.medium {
+	background: yellow;
+}
+
+.high {
+	background: orange;
+}
+
+.critical {
+	background: red;
 }

@@ -2,41 +2,41 @@
 
 namespace Model\Services;
 
-class QuestionChoiceWeightRepository extends Service
+class QuestionChoiceWeightRepository extends Repository
 {
     public function create( $question_choice_id, $weight )
     {
-        $questionChoiceWeight = new \Model\QuestionChoiceWeight();
-        $questionChoiceWeightMapper = new \Model\Mappers\QuestionChoiceWeightMapper( $this->container );
+        $mapper = $this->getMapper();
+        $questionChoiceWeight = $mapper->build( $this->entityName );
         $questionChoiceWeight->question_choice_id = $question_choice_id;
         $questionChoiceWeight->weight = $weight;
-        $questionChoiceWeightMapper->create( $questionChoiceWeight );
+        $mapper->create( $questionChoiceWeight );
 
         return $questionChoiceWeight;
     }
 
     public function getAll()
     {
-        $questionChoiceWeightMapper = new \Model\Mappers\QuestionChoiceWeightMapper( $this->container );
-        $questionChoiceWeights = $questionChoiceWeightMapper->mapAll();
+        $mapper = $this->getMapper();
+        $questionChoiceWeights = $mapper->mapAll();
 
         return $questionChoiceWeights;
     }
 
     public function getByID( $id )
     {
-        $questionChoiceWeight = new \Model\QuestionChoiceWeight();
-        $questionChoiceWeightMapper = new \Model\Mappers\QuestionChoiceWeightMapper( $this->container );
-        $questionChoiceWeightMapper->mapFromID( $questionChoiceWeight, $id );
+        $mapper = $this->getMapper();
+        $questionChoiceWeight = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $questionChoiceWeight, $id );
 
         return $questionChoiceWeight;
     }
 
     public function getByQuestionChoiceID( $question_choice_id )
     {
-        $questionChoiceWeight = new \Model\QuestionChoiceWeight();
-        $questionChoiceWeightMapper = new \Model\Mappers\QuestionChoiceWeightMapper( $this->container );
-        $questionChoiceWeightMapper->mapFromID( $questionChoiceWeight, $question_choice_id );
+        $mapper = $this->getMapper();
+        $questionChoiceWeight = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $questionChoiceWeight, $question_choice_id );
 
         return $questionChoiceWeight;
     }

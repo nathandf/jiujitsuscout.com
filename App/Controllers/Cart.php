@@ -28,9 +28,9 @@ class Cart extends Controller
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
         // Get account type details
         $this->account_type = $accountTypeRepo->getByID( $this->account->account_type_id );
         // Grab business details
@@ -125,7 +125,7 @@ class Cart extends Controller
         }
 
         // Setup facebook pixel
-        $facebookPixelBuilder->setPixelID( $facebookPixelID );
+        $facebookPixelBuilder->addPixelID( $facebookPixelID );
 
         // Add InitiateCheckout Event if there are products in the cart
         if ( count( $orderProducts ) > 0 ) {
@@ -343,7 +343,7 @@ class Cart extends Controller
         $facebookPixelID = $Config::$configs[ "facebook" ][ "jjs_pixel_id" ];
 
         // Setup facebook pixel
-        $facebookPixelBuilder->setPixelID( $facebookPixelID );
+        $facebookPixelBuilder->addPixelID( $facebookPixelID );
 
         // Add InitiateCheckout Event if there are products in the cart
         $facebookPixelBuilder->addEvent([
@@ -363,7 +363,7 @@ class Cart extends Controller
         $facebookPixelID = $Config::$configs[ "facebook" ][ "jjs_pixel_id" ];
 
         // Setup facebook pixel
-        $facebookPixelBuilder->setPixelID( $facebookPixelID );
+        $facebookPixelBuilder->addPixelID( $facebookPixelID );
 
         $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 

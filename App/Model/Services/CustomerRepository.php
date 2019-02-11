@@ -2,40 +2,40 @@
 
 namespace Model\Services;
 
-class CustomerRepository extends Service
+class CustomerRepository extends Repository
 {
     public function create( $account_id )
     {
-        $customer = new \Model\Customer();
-        $customerMapper = new \Model\Mappers\CustomerMapper( $this->container );
+        $mapper = $this->getMapper();
+        $customer = $mapper->build( $this->entityName );
         $customer->account_id = $account_id;
-        $customerMapper->create( $customer );
+        $mapper->create( $customer );
 
         return $customer;
     }
 
     public function getAll()
     {
-        $customerMapper = new \Model\Mappers\CustomerMapper( $this->container );
-        $customers = $customerMapper->mapAll();
+        $mapper = $this->getMapper();
+        $customers = $mapper->mapAll();
 
         return $customers;
     }
 
     public function getByID( $id )
     {
-        $customer = new \Model\Customer();
-        $customerMapper = new \Model\Mappers\CustomerMapper( $this->container );
-        $customerMapper->mapFromID( $customer, $id );
+        $mapper = $this->getMapper();
+        $customer = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $customer, $id );
 
         return $customer;
     }
 
     public function getByAccountID( $account_id )
     {
-        $customer = new \Model\Customer();
-        $customerMapper = new \Model\Mappers\CustomerMapper( $this->container );
-        $customerMapper->mapFromAccountID( $customer, $account_id );
+        $mapper = $this->getMapper();
+        $customer = $mapper->build( $this->entityName );
+        $mapper->mapFromAccountID( $customer, $account_id );
 
         return $customer;
     }

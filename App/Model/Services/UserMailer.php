@@ -24,13 +24,13 @@ class UserMailer
         $this->mailer->setRecipientName( $first_name );
         $this->mailer->setRecipientEmailAddress( $email );
         $this->mailer->setSenderName( "JiuJitsuScout" );
-        $this->mailer->setSenderEmailAddress( "jiujitsuscout@gmial.com" );
+        $this->mailer->setSenderEmailAddress( "jiujitsuscout@gmail.com" );
         $this->mailer->setContentType( "text/html" );
         $this->mailer->setEmailSubject( "Welcome to JiuJitsuScout!" );
-        $this->mailer->setEmailBody( "
-            Your JiuJitsuScout account has been created!
+        $this->mailer->setEmailBody(
+            "<p>Your JiuJitsuScout account has been created!</p>
 
-            Here's few more things that need to be done before your profile starts to generate leads.
+            <p>Here's few more things that need to be done before your profile starts generating leads.</p>
 
             <ul>
                 <li>Add your logo</li>
@@ -41,14 +41,14 @@ class UserMailer
                 <li>Upload a video of your classes in action!</li>
             </ul>
 
-            Log in to you account to get started.
+            <p>Log in to you account to get started.</p>
 
             <table cellspacing=0 style=\"border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;\">
                 <tr>
                     <td><a href=\"https://www.jiujitsuscout.com/account-manager/\" style=\"background: #0667D4; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;\">Log in</a></td>
                 </tr>
-            </table>
-        " );
+            </table>"
+        );
         $this->mailer->mail();
 
         return true;

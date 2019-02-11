@@ -13,7 +13,6 @@ class ProspectAppraiser
 	public $respondentRepo;
 	public $respondentQuestionAnswerRepo;
     public $prospectAppraisalRepo;
-	// TODO Add prospect appraisal details to the Model
 	public $prospect_price = 5;
 	public $base_question_value = 1;
 

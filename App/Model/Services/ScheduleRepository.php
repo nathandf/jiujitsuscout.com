@@ -5,50 +5,48 @@ namespace Model\Services;
 use Model\Schedule;
 use Model\Mappers\ScheduleMapper;
 
-class ScheduleRepository extends Service
+class ScheduleRepository extends Repository
 {
-
     public function create( $business_id, $name, $description )
     {
-        $schedule = new Schedule();
-        $scheduleMapper = new ScheduleMapper( $this->container );
+        $mapper = $this->getMapper();
+        $schedule = $mapper->build( $this->entityName );
         $schedule->business_id = $business_id;
         $schedule->name = $name;
         $schedule->description = $description;
-        $scheduleMapper->create( $schedule );
+        $mapper->create( $schedule );
 
         return $schedule;
     }
 
     public function getByID( $id )
     {
-        $schedule = new Schedule();
-        $scheduleMapper = new ScheduleMapper( $this->container );
-        $scheduleMapper->mapFromID( $schedule, $id );
+        $mapper = $this->getMapper();
+        $schedule = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $schedule, $id );
 
         return $schedule;
     }
 
     public function getAllByBusinessID( $business_id )
     {
-        $scheduleMapper = new \Model\Mappers\ScheduleMapper( $this->container );
-        $schedules = $scheduleMapper->mapAllFromBusinessID( $business_id );
+        $mapper = $this->getMapper();
+        $schedules = $mapper->mapAllFromBusinessID( $business_id );
 
         return $schedules;
     }
 
     public function updateByID( $schedule_id, $name, $description )
     {
-        $scheduleMapper = new \Model\Mappers\ScheduleMapper( $this->container );
-        $scheduleMapper->updateByID( $schedule_id, $name, $description );
+        $mapper = $this->getMapper();
+        $mapper->updateByID( $schedule_id, $name, $description );
 
         return true;
     }
 
     public function removeByID( $id )
     {
-        $scheduleMapper = new \Model\Mappers\ScheduleMapper( $this->container );
-        $scheduleMapper->deleteByID( $id );
+        $mapper = $this->getMapper();
+        $mapper->deleteByID( $id );
     }
-
 }

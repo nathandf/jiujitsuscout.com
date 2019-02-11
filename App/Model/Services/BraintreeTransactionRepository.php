@@ -2,52 +2,52 @@
 
 namespace Model\Services;
 
-class BraintreeTransactionRepository extends Service
+class BraintreeTransactionRepository extends Repository
 {
     public function create( $transaction_id, $braintree_transaction_id, $data )
     {
-        $braintreeTransaction = new \Model\BraintreeTransaction();
-        $braintreeTransactionMapper = new \Model\Mappers\BraintreeTransactionMapper( $this->container );
+        $mapper = $this->getMapper();
+        $braintreeTransaction = $mapper->build( $this->entityName );
         $braintreeTransaction->transaction_id = $transaction_id;
         $braintreeTransaction->braintree_transaction_id = $data;
         $braintreeTransaction->data = $data;
 
-        $braintreeTransactionMapper->create( $braintreeTransaction );
+        $mapper->create( $braintreeTransaction );
 
         return $braintreeTransaction;
     }
 
     public function getAll()
     {
-        $braintreeTransactionMapper = new \Model\Mappers\BraintreeTransactionMapper( $this->container );
-        $braintreeTransactions = $braintreeTransactionMapper->mapAll();
+        $mapper = $this->getMapper();
+        $braintreeTransactions = $mapper->mapAll();
 
         return $braintreeTransactions;
     }
 
     public function getByID( $id )
     {
-        $braintreeTransaction = new \Model\BraintreeTransaction();
-        $braintreeTransactionMapper = new \Model\Mappers\BraintreeTransactionMapper( $this->container );
-        $braintreeTransactionMapper->mapFromID( $braintreeTransaction, $id );
+        $mapper = $this->getMapper();
+        $braintreeTransaction = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $braintreeTransaction, $id );
 
         return $braintreeTransaction;
     }
 
     public function getByTransactionID( $transaction_id )
     {
-        $braintreeTransaction = new \Model\BraintreeTransaction();
-        $braintreeTransactionMapper = new \Model\Mappers\BraintreeTransactionMapper( $this->container );
-        $braintreeTransactionMapper->mapFromTransactionID( $braintreeTransaction, $braintree_transaction_id );
+        $mapper = $this->getMapper();
+        $braintreeTransaction = $mapper->build( $this->entityName );
+        $mapper->mapFromTransactionID( $braintreeTransaction, $braintree_transaction_id );
 
         return $braintreeTransaction;
     }
 
     public function getByBraintreeTransactionID( $braintree_transaction_id )
     {
-        $braintreeTransaction = new \Model\BraintreeTransaction();
-        $braintreeTransactionMapper = new \Model\Mappers\BraintreeTransactionMapper( $this->container );
-        $braintreeTransactionMapper->mapFromBraintreeTransactionID( $braintreeTransaction, $braintree_transaction_id );
+        $mapper = $this->getMapper();
+        $braintreeTransaction = $mapper->build( $this->entityName );
+        $mapper->mapFromBraintreeTransactionID( $braintreeTransaction, $braintree_transaction_id );
 
         return $braintreeTransaction;
     }

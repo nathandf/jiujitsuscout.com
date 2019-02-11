@@ -29,21 +29,29 @@ class Task extends Controller
         // User is logged in. Get the user object from the UserAuthenticator service
         $this->user = $userAuth->getUser();
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
 
         // Verify that this business owns this landing page
-        $tasks = $taskRepo->getAllByBusinessID( $this->business->id );
+        $tasks = $taskRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $task_ids = [];
         foreach ( $tasks as $task ) {
             $task_ids[] = $task->id;
         }
+
         if ( isset( $this->params[ "id" ] ) && !in_array( $this->params[ "id" ], $task_ids ) ) {
             $this->view->redirect( "account-manager/business/tasks/" );
         }
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         $this->view->assign( "account", $this->account );
         $this->view->assign( "user", $this->user );
@@ -59,96 +67,183 @@ class Task extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $taskRepo = $this->load( "task-repository" );
+        $taskTypeRepo = $this->load( "task-type-repository" );
+        $taskAssigneeRepo = $this->load( "task-assignee-repository" );
         $userRepo = $this->load( "user-repository" );
+        $memberRepo = $this->load( "member-repository" );
+        $prospectRepo = $this->load( "prospect-repository" );
+        $taskProspectRepo = $this->load( "task-prospect-repository" );
+        $taskMemberRepo = $this->load( "task-member-repository" );
+        $prospectAppraisalRepo = $this->load( "prospect-appraisal-repository" );
+        $prospectPurchaseRepo = $this->load( "prospect-purchase-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
+        $taskDestroyer = $this->load( "task-destroyer" );
 
-        $tasksAll = $taskRepo->getAllByBusinessID( $this->business->id );
-        $task_ids = [];
+        $task = $taskRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
 
-        foreach ( $tasksAll as $task ) {
-            $task_ids[] = $task->id;
-        }
+        $users = $userRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
+        $user_ids = $userRepo->get( [ "id" ], [ "account_id" => $this->account->id ], "raw" );
 
-        // Set task from query string param
-        $task = $taskRepo->getByID( $this->params[ "id" ] );
+        $task_assignee_user_ids = $taskAssigneeRepo->get(
+            [ "user_id" ],
+            [ "task_id" => $task->id ],
+            "raw"
+        );
 
-        // Set current selected date and time values as default
-        $month = date( "m", $task->due_date );
-        $day = date( "d", $task->due_date );
-        $year = date( "Y", $task->due_date );
-
-        $hour = date( "H", $task->due_date );
-        $minute = date( "i", $task->due_date );
-
-        // Assign date and time values to view
-        $this->view->assign( "month", $month );
-        $this->view->assign( "day", $day );
-        $this->view->assign( "year", $year );
-        $this->view->assign( "hour", $hour );
-        $this->view->assign( "minute", $minute );
-
-        // Load user assigned to this task
-        $task->assignee_user = $userRepo->getByID( $task->assignee_user_id );
-
-        // Load All users
-        $users = $userRepo->getAllByAccountID( $this->account->id );
-        $user_ids = [];
-
-        // Create an array of all user ids verify that the user chosen for the task is a user of this business
         foreach ( $users as $user ) {
-            $user_ids[] = $user->id;
+            $user->isset = false;
+            if ( in_array( $user->id, $task_assignee_user_ids ) ) {
+                $user->isset = true;
+            }
         }
 
-        if ( $input->exists() && $input->issetField( "update_task" ) && $inputValidator->validate(
+        $taskTypes = $taskTypeRepo->get( [ "*" ] );
+        $task_type_ids = $taskTypeRepo->get( [ "id" ], [], "raw" );
 
+        $task_ids = $taskRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );
+
+        $prospectsAll = $prospectRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $prospects = [];
+        $task_prospect_prospect_ids = $taskProspectRepo->get( [ "prospect_id" ], [ "task_id" => $task->id ], "raw" );
+        foreach ( $prospectsAll as $_prospect ) {
+            if ( $_prospect->type != "member" && $_prospect->type != "trash" && !in_array( $_prospect->id, $task_prospect_prospect_ids ) ) {
+
+                // Get the phone object for this person
+                $phone = $phoneRepo->get( [ "*" ], [ "id" => $_prospect->phone_id ], "single" );
+                if ( !is_null( $phone ) ) {
+                    $_prospect->phone_number = !is_null( $phone->national_number ) ? $phone->getNicePhoneNumber() : null;
+                }
+
+
+                // Get appraisal for prospect if one exists
+                $appraisal = $prospectAppraisalRepo->get( [ "*" ], [ "prospect_id" => $_prospect->id ], "single" );
+
+                // If prospect doesn't have an appraisal
+                if ( is_null( $appraisal ) ) {
+                    $prospects[] = $_prospect;
+
+                    continue;
+                }
+
+                // Get purchase for prospect if one exists
+                $purchase = $prospectPurchaseRepo->get( [ "*" ], [ "prospect_id" => $_prospect->id ], "single" );
+
+                // Don't add this prospect to the list of prospects if it hasn't
+                // been purchased
+                if ( is_null( $purchase ) ) {
+                    continue;
+                }
+
+                $prospects[] = $_prospect;
+            }
+        }
+
+        $membersAll = $memberRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
+        $members = [];
+        $task_member_member_ids = $taskMemberRepo->get( [ "member_id" ], [ "task_id" => $task->id ], "raw" );
+        foreach ( $membersAll as $_member ) {
+            if ( !in_array( $_member->id, $task_member_member_ids ) ) {
+                // Get the phone object for this person
+                $phone = $phoneRepo->get( [ "*" ], [ "id" => $_member->phone_id ], "single" );
+                if ( !is_null( $phone ) ) {
+                    $_member->phone_number = !is_null( $phone->national_number ) ? $phone->getNicePhoneNumber() : null;
+                }
+
+                $members[] = $_member;
+            }
+        }
+
+        $taskProspects = $taskProspectRepo->get( [ "*" ], [ "task_id" => $task->id ] );
+        foreach ( $taskProspects as $taskProspect ) {
+            $taskProspect->prospect = $prospectRepo->get( [ "*" ], [ "id" => $taskProspect->prospect_id ], "single" );
+        }
+
+        $taskMembers = $taskMemberRepo->get( [ "*" ], [ "task_id" => $task->id ] );
+        foreach ( $taskMembers as $taskMember ) {
+            $taskMember->member = $memberRepo->get( [ "*" ], [ "id" => $taskMember->member_id ], "single" );
+        }
+
+        if ( $input->exists() && $input->issetField( "add_prospect" ) && $inputValidator->validate(
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
                         "required" => true
                     ],
-                    "update_task" => [
-                        "required" => true
-                    ],
-                    "title" => [
-                        "name" => "Task Name",
+                    "prospect_id" => [
                         "required" => true,
-                        "min" => 1,
-                        "max" => 200,
-                    ],
-                    "message" => [
-                        "name" => "Description",
-                        "min" => 1,
-                        "max" => 1000
-                    ],
-                    "user_id" => [
-                        "name" => "User ID",
-                        "required" => true,
-                        "in_array" => $user_ids
-                    ],
-                    "Date_Month" => [
-                        "required" => true
-                    ],
-                    "Date_Day" => [
-                        "required" => true
-                    ],
-                    "Date_Year" => [
-                        "required" => true
-                    ],
-                    "Time_Hour" => [
-                        "required" => true
-                    ],
-                    "Time_Minute" => [
-                        "required" => true
-                    ],
-                    "Time_Meridian" => [
-                        "required" => true
+                        "in_array" => $prospectRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" )
                     ]
                 ],
+                "add_prospect"
+            )
+        ) {
+            $taskProspectRepo->insert([
+                "task_id" => $task->id,
+                "prospect_id" => $input->get( "prospect_id" )
+            ]);
 
-                "update_task" /* error index */
-            ) )
-        {
+            $this->session->addFlashMessage( "Prospect added to task" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/task/" . $task->id . "/" );
+        }
+
+        if ( $input->exists() && $input->issetField( "add_member" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "member_id" => [
+                        "required" => true,
+                        "in_array" => $memberRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" )
+                    ]
+                ],
+                "add_member"
+            )
+        ) {
+            $taskMemberRepo->insert([
+                "task_id" => $task->id,
+                "member_id" => $input->get( "member_id" )
+            ]);
+
+            $this->session->addFlashMessage( "Member added to task" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/task/" . $task->id . "/" );
+        }
+
+        if ( $input->exists() && $input->issetField( "reschedule" ) && $inputValidator->validate(
+            $input,
+            [
+                "token" => [
+                    "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                    "required" => true
+                ],
+                "Date_Month" => [
+                    "required" => true
+                ],
+                "Date_Day" => [
+                    "required" => true
+                ],
+                "Date_Year" => [
+                    "required" => true
+                ],
+                "Time_Hour" => [
+                    "required" => true
+                ],
+                "Time_Minute" => [
+                    "required" => true
+                ],
+                "Time_Meridian" => [
+                    "required" => true
+                ]
+            ],
+            "reschedule_task" /* error index */
+            )
+        ) {
             $month = $input->get( "Date_Month" );
             $day = $input->get( "Date_Day" );
             $year = $input->get( "Date_Year" );
@@ -158,28 +253,112 @@ class Task extends Controller
 
             // Create unix time stamp for due date
             $due_date_string = $month . "/" . $day . "/" . $year . " " . $hour . ":" . $minute . $meridian;
-            $due_date = strtotime( $due_date_string );
 
-            // Update User ID
-            $taskRepo->updateAssigneeUserIDByID( $this->params[ "id" ], $input->get( "user_id" ) );
+            // Get timezone offset in seconds
+            $timeZoneHelper = $this->load( "time-zone-helper" );
+            $timezone_offset = $timeZoneHelper->getServerTimeZoneOffset( $this->business->timezone );
 
-            // Update Due Date
-            $taskRepo->updateDueDateByID( $this->params[ "id" ], $due_date );
+            $trigger_time = strtotime( $due_date_string ) + $timezone_offset;
 
-            // Update Title
-            $taskRepo->updateTitleByID( $this->params[ "id" ], $input->get( "title" ) );
+            $taskRepo->update(
+                [
+                    "due_date" => $due_date_string,
+                    "trigger_time" => $trigger_time
+                ],
+                [ "id" => $task->id ]
+            );
 
-            // Update Message(Description)
-            $taskRepo->updateMessageByID( $this->params[ "id" ], $input->get( "message" ) );
-
-            // Update status to pending
-            $taskRepo->updateStatusByID( $this->params[ "id" ], "pending" );
-
-            // Create flash message
-            $this->session->addFlashMessage( "Task Updated" );
+            $this->session->addFlashMessage( "Task Rescheduled" );
             $this->session->setFlashMessages();
 
             $this->view->redirect( "account-manager/business/task/" . $this->params[ "id" ] . "/" );
+        }
+
+        if ( $input->exists() && $input->issetField( "update_task" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "update_task" => [
+                        "required" => true
+                    ],
+                    "title" => [
+                        "name" => "Task Title",
+                        "required" => true,
+                        "min" => 1,
+                        "max" => 200,
+                    ],
+                    "message" => [
+                        "name" => "Description",
+                        "min" => 1,
+                        "max" => 1000
+                    ],
+                    "user_ids" => [
+                        "name" => "User ID",
+                        "required" => true,
+                        "is_array" => true
+                    ],
+                    "priority" => [
+                        "name" => "Priority",
+                        "required" => true,
+                        "in_array" => [ "low", "medium", "high", "critical" ]
+                    ],
+                    "task_type_id" => [
+                        "required" => true,
+                        "in_array" => $task_type_ids
+                    ]
+                ],
+                "update_task" /* error index */
+            )
+        ) {
+            $taskRepo->update(
+                [
+                    "business_id" => $this->business->id,
+                    "task_type_id" => $input->get( "task_type_id" ),
+                    "title" => $input->get( "title" ),
+                    "message" => $input->get( "message" ),
+                    "priority" => $input->get( "priority" ),
+                    "created_by_user_id" => $this->user->id
+                ],
+                [
+                    "id" => $task->id
+                ]
+            );
+
+            // Update TaskAssignees
+            $submitted_user_ids = [];
+            if ( $input->issetField( "user_ids" ) ) {
+                $submitted_user_ids = $input->get( "user_ids" );
+            }
+
+            // Create and new task assignee for any of the submitted
+            // user ids if it doesn't already exist
+            foreach ( $submitted_user_ids as $user_id ) {
+                if ( !in_array( $user_id, $task_assignee_user_ids, true ) ) {
+                    $taskAssigneeRepo->insert([
+                        "task_id" => $task->id,
+                        "user_id" => $user_id
+                    ]);
+                }
+            }
+
+            // Delete the task assignees with the user ids that were not
+            // submitted if they exist
+            foreach ( $user_ids as $_user_id ) {
+                if (
+                    !in_array( $_user_id, $submitted_user_ids ) &&
+                    in_array( $_user_id, $task_assignee_user_ids, true )
+                ) {
+                    $taskAssigneeRepo->delete( [ "user_id", "task_id" ], [ $_user_id, $task->id ] );
+                }
+            }
+
+            $this->session->addFlashMessage( "Task Updated" );
+            $this->session->setFlashMessages();
+
+            $this->view->redirect( "account-manager/business/task/" . $task->id . "/" );
         }
 
         if ( $input->exists() && $input->issetField( "trash" ) && $inputValidator->validate(
@@ -203,7 +382,7 @@ class Task extends Controller
                 "delete_task" /* error index */
             ) )
         {
-            $taskRepo->removeByID( $input->get( "task_id" ) );
+            $taskDestroyer->destroy( $input->get( "task_id" ) );
 
             // Create flash message
             $this->session->addFlashMessage( "Task Deleted" );
@@ -212,8 +391,53 @@ class Task extends Controller
             $this->view->redirect( "account-manager/business/tasks/" );
         }
 
+        if ( $input->exists() && $input->issetField( "remove_prospect" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "prospect_id" => [
+                        "required" => true,
+                        "in_array" => $prospectRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" )
+                    ]
+                ],
+                "remove_prospect"
+            )
+        ) {
+            $taskProspectRepo->delete( [ "task_id","prospect_id" ], [ $task->id, $input->get( "prospect_id" ) ] );
+
+            $this->view->redirect( "account-manager/business/task/" . $task->id . "/" );
+        }
+
+        if ( $input->exists() && $input->issetField( "remove_member" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "member_id" => [
+                        "required" => true,
+                        "in_array" => $memberRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" )
+                    ]
+                ],
+                "remove_member"
+            )
+        ) {
+            $taskMemberRepo->delete( [ "task_id","member_id" ], [ $task->id, $input->get( "member_id" ) ] );
+
+            $this->view->redirect( "account-manager/business/task/" . $task->id . "/" );
+        }
+
         $this->view->assign( "task", $task );
         $this->view->assign( "users", $users );
+        $this->view->assign( "taskTypes", $taskTypes );
+        $this->view->assign( "prospects", $prospects );
+        $this->view->assign( "taskProspects", $taskProspects );
+        $this->view->assign( "members", $members );
+        $this->view->assign( "taskMembers", $taskMembers );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
@@ -232,9 +456,11 @@ class Task extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
         $taskRepo = $this->load( "task-repository" );
+        $taskTypeRepo = $this->load( "task-type-repository" );
+        $taskAssigneeRepo = $this->load( "task-assignee-repository" );
         $userRepo = $this->load( "user-repository" );
 
-        $users = $userRepo->getAllByAccountID( $this->account->id );
+        $users = $userRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
         $user_ids = [];
 
         // Create an array of all user ids verify that the user chosen for the task is a user of this business
@@ -242,16 +468,16 @@ class Task extends Controller
             $user_ids[] = $user->id;
         }
 
-        if ( $input->exists() && $inputValidator->validate(
+        $taskTypes = $taskTypeRepo->get( [ "*" ] );
+        $task_type_ids = $taskTypeRepo->get( [ "id" ], [], "raw" );
+
+        if ( $input->exists() && $input->issetField( "create_task" ) && $inputValidator->validate(
 
                 $input,
 
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                        "required" => true
-                    ],
-                    "create_task" => [
                         "required" => true
                     ],
                     "title" => [
@@ -265,10 +491,19 @@ class Task extends Controller
                         "min" => 1,
                         "max" => 1000
                     ],
-                    "user_id" => [
+                    "user_ids" => [
                         "name" => "User ID",
                         "required" => true,
-                        "in_array" => $user_ids
+                        "is_array" => true
+                    ],
+                    "priority" => [
+                        "name" => "Priority",
+                        "required" => true,
+                        "in_array" => [ "low", "medium", "high", "critical" ]
+                    ],
+                    "task_type_id" => [
+                        "required" => true,
+                        "in_array" => $task_type_ids
                     ],
                     "Date_Month" => [
                         "required" => true
@@ -302,9 +537,36 @@ class Task extends Controller
 
             // Create unix time stamp for due date
             $due_date_string = $month . "/" . $day . "/" . $year . " " . $hour . ":" . $minute . $meridian;
-            $due_date = strtotime( $due_date_string );
 
-            $task = $taskRepo->create( $this->business->id, $input->get( "user_id" ), $this->user->id, $due_date, $input->get( "title" ), $input->get( "message" ) );
+            // Get timezone offset in seconds
+            $timeZoneHelper = $this->load( "time-zone-helper" );
+            $timezone_offset = $timeZoneHelper->getServerTimeZoneOffset( $this->business->timezone );
+
+            $trigger_time = strtotime( $due_date_string ) + $timezone_offset;
+
+            $task = $taskRepo->insert([
+                "business_id" => $this->business->id,
+                "task_type_id" => $input->get( "task_type_id" ),
+                "due_date" => $due_date_string,
+                "trigger_time" => $trigger_time,
+                "title" => $input->get( "title" ),
+                "message" => $input->get( "message" ),
+                "priority" => $input->get( "priority" ),
+                "created_by_user_id" => $this->user->id
+            ]);
+
+            $task_assignee_user_ids = [];
+            if ( is_array( $input->get( "user_ids" ) ) ) {
+                $task_assignee_user_ids = $input->get( "user_ids" );
+            }
+
+            foreach ( $task_assignee_user_ids as $user_id ) {
+                $taskAssigneeRepo->insert([
+                    "task_id" => $task->id,
+                    "user_id" => $user_id
+                ]);
+            }
+
             $this->view->redirect( "account-manager/business/task/" . $task->id . "/" );
         }
 
@@ -321,6 +583,7 @@ class Task extends Controller
 
         $this->view->assign( "current_user", $this->user );
         $this->view->assign( "users", $users );
+        $this->view->assign( "taskTypes", $taskTypes );
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );

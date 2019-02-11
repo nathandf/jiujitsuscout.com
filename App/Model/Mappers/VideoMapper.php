@@ -28,13 +28,13 @@ class VideoMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
         $videos = [];
         $sql = $this->DB->prepare( "SELECT * FROM video WHERE business_id = :business_id ORDER BY id DESC" );
         $sql->bindParam( "business_id", $business_id );
         $sql->execute();
+
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $video = $entityFactory->build( "Video" );
+            $video = $this->entityFactory->build( "Video" );
             $this->populate( $video, $resp );
             $videos[] = $video;
         }

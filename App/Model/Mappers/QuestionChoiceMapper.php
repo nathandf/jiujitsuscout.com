@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class QuestionChoiceMapper extends DataMapper
 {
-
     public function create( \Model\QuestionChoice $questionChoice )
     {
         $id = $this->insert(
@@ -20,13 +19,13 @@ class QuestionChoiceMapper extends DataMapper
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+
         $questionChoices = [];
         $sql = $this->DB->prepare( "SELECT * FROM question_choice" );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $questionChoice = $entityFactory->build( "QuestionChoice" );
-            $this->populateQuestionChoice( $questionChoice, $resp );
+            $questionChoice = $this->entityFactory->build( "QuestionChoice" );
+            $this->populate( $questionChoice, $resp );
             $questionChoices[] = $questionChoice;
         }
 
@@ -39,33 +38,24 @@ class QuestionChoiceMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateQuestionChoice( $questionChoice, $resp );
+        $this->populate( $questionChoice, $resp );
 
         return $questionChoice;
     }
 
     public function mapAllFromQuestionID( $question_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+
         $questionChoices = [];
         $sql = $this->DB->prepare( "SELECT * FROM question_choice WHERE question_id = :question_id" );
         $sql->bindParam( ":question_id", $question_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $questionChoice = $entityFactory->build( "QuestionChoice" );
-            $this->populateQuestionChoice( $questionChoice, $resp );
+            $questionChoice = $this->entityFactory->build( "QuestionChoice" );
+            $this->populate( $questionChoice, $resp );
             $questionChoices[] = $questionChoice;
         }
 
         return $questionChoices;
     }
-
-    private function populateQuestionChoice( \Model\QuestionChoice $questionChoice, $data )
-    {
-        $questionChoice->id                      = $data[ "id" ];
-        $questionChoice->question_choice_type_id = $data[ "question_choice_type_id" ];
-        $questionChoice->question_id             = $data[ "question_id" ];
-        $questionChoice->text                    = $data[ "text" ];
-    }
-
 }

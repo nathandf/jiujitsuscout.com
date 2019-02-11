@@ -4,7 +4,6 @@ namespace Model\Mappers;
 
 class ResultMapper extends DataMapper
 {
-
     public function create( \Model\Result $result )
     {
         $id = $this->insert(
@@ -32,7 +31,7 @@ class ResultMapper extends DataMapper
         $sql->bindParam( ":id", $id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateResult( $result, $resp );
+        $this->populate( $result, $resp );
 
         return $result;
     }
@@ -43,35 +42,25 @@ class ResultMapper extends DataMapper
         $sql->bindParam( ":search_id", $search_id );
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
-        $this->populateResult( $result, $resp );
+        $this->populate( $result, $resp );
 
         return $result;
     }
 
     public function mapAll()
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
-
         $results = [];
 
         $sql = $this->DB->prepare( "SELECT * FROM `result`" );
         $sql->execute();
 
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $result = $entityFactory->build( "Result" );
-            $this->populateResult( $result, $resp );
+            $result = $this->entityFactory->build( "Result" );
+            $this->populate( $result, $resp );
 
             $results[] = $result;
         }
 
         return $results;
     }
-
-    public function populateResult( $result, $data )
-    {
-        $result->id                 = $data[ "id" ];
-        $result->search_id          = $data[ "search_id" ];
-        $result->business_ids       = $data[ "business_ids" ];
-    }
-
 }

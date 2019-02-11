@@ -26,10 +26,10 @@ class Schedule extends Controller
         $this->user = $userAuth->getUser();
 
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
 
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
 
         // Grab business details
         $this->business = $this->businessRepo->getByID( $this->user->getCurrentBusinessID() );
@@ -43,6 +43,13 @@ class Schedule extends Controller
         if ( isset( $this->params[ "id" ] ) && !in_array( $this->params[ "id" ], $schedule_ids ) ) {
             $this->view->redirect( "account-manager/business/schedules/" );
         }
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         // Set data for the view
         $this->view->assign( "account", $this->account );

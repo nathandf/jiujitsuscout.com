@@ -12,4 +12,67 @@ $( function() {
         $( task_complete_form_id ).hide( 500 );
         $( task_drop_form_id ).hide( 500 );
     } );
+
+    $( ".assignee-checkbox" ).on( "click", function () {
+        if ( $( ".assignee-checkbox:checked" ).length ) {
+            $( ".task-submit" ).show();
+        } else {
+            $( ".task-submit" ).hide();
+        }
+    } );
+
+    $( ".task-submit" ).on( "click", function () {
+        checked = $( ".assignee-checkbox:checked" ).length;
+        if ( !checked ) {
+            alert( "You must assign at least 1 user to this task" );
+            return false;
+        }
+    } );
+
+    $( ".reschedule-trigger" ).on( "click", function () {
+        $( ".lightbox" ).hide();
+        $( "#reschedule-modal" ).toggle();
+    } );
+
+    $( ".--no-prop" ).on( "click", function ( event ) {
+        event.preventDefault();
+    } );
+
+    $( ".--new-task-modal-trigger" ).on( "click", function () {
+        $( "#new-task-modal" ).toggle();
+    } );
+
+    $( ".remove-member" ).on( "click", function ( event ) {
+        $( "#remove-member-id" ).val( this.dataset.id );
+        $( "#remove-member-form" ).submit();
+    } );
+
+    $( ".remove-prospect" ).on( "click", function () {
+        $( "#remove-prospect-id" ).val( this.dataset.id );
+        $( "#remove-prospect-form" ).submit();
+    } );
+
+    $( ".task-actions-modal-trigger" ).on( "click", function () {
+        $( "#task-actions-modal" ).toggle();
+    } );
+
+    $( ".choose-prospect-trigger" ).on( "click", function () {
+        $( ".lightbox" ).hide();
+		$( "#choose-prospect-modal" ).show();
+	} );
+
+	$( ".choose-member-trigger" ).on( "click", function () {
+        $( ".lightbox" ).hide();
+		$( "#choose-member-modal" ).show();
+	} );
+
+	$( ".choose-prospect-tag" ).on( "click", function() {
+		$( "#choose-prospect-id" ).val( this.dataset.id )
+		$( "#choose-prospect-modal-form" ).submit();
+    } );
+
+	$( ".choose-member-tag" ).on( "click", function() {
+		$( "#choose-member-id" ).val( this.dataset.id )
+		$( "#choose-member-modal-form" ).submit();
+    } );
 } );

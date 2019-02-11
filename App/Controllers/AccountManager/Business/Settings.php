@@ -26,10 +26,10 @@ class Settings extends Controller
         $this->user = $userAuth->getUser();
 
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
 
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
 
         // Grab business details
         $this->business = $this->businessRepo->getByID( $this->user->getCurrentBusinessID() );
@@ -38,6 +38,13 @@ class Settings extends Controller
         if ( !$accessControl->hasAccess( [ "administrator" ], $this->user->role ) ) {
             $this->view->render403();
         }
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
         // Set data for the view
         $this->view->assign( "account", $this->account );
@@ -59,7 +66,7 @@ class Settings extends Controller
         $businessRepo = $this->load( "business-repository" );
         $geocoder = $this->load( "geocoder" );
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         if ( $input->exists() && $inputValidator->validate(
 
@@ -274,7 +281,7 @@ class Settings extends Controller
         $factory = $this->load( "entity-factory" );
         $businessRepo = $this->load( "business-repository" );
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         $phone = $phoneRepo->getByID( $this->business->phone_id );
 

@@ -6,7 +6,6 @@ use Model\Course;
 
 class CourseScheduleMapper extends DataMapper
 {
-
     public function create( \Model\CourseSchedule $courseSchedule )
     {
         $id = $this->insert(
@@ -26,21 +25,21 @@ class CourseScheduleMapper extends DataMapper
         $sql->execute();
         $resp = $sql->fetch( \PDO::FETCH_ASSOC );
 
-        $this->populateCourseSchedule( $courseSchedule, $resp );
+        $this->populate( $courseSchedule, $resp );
 
         return $courseSchedule;
     }
 
     public function mapAllFromScheduleID( $schedule_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+
         $courseSchedules = [];
         $sql = $this->DB->prepare( "SELECT * FROM course_schedule WHERE schedule_id = :schedule_id" );
         $sql->bindParam( ":schedule_id", $schedule_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $courseSchedule = $entityFactory->build( "CourseSchedule" );
-            $this->populateCourseSchedule( $courseSchedule, $resp );
+            $courseSchedule = $this->entityFactory->build( "CourseSchedule" );
+            $this->populate( $courseSchedule, $resp );
             $courseSchedules[] = $courseSchedule;
         }
 
@@ -49,14 +48,14 @@ class CourseScheduleMapper extends DataMapper
 
     public function mapAllFromCourseID( $course_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+
         $courseSchedules = [];
         $sql = $this->DB->prepare( "SELECT * FROM course_schedule WHERE course_id = :course_id" );
         $sql->bindParam( ":course_id", $course_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $courseSchedule = $entityFactory->build( "CourseSchedule" );
-            $this->populateCourseSchedule( $courseSchedule, $resp );
+            $courseSchedule = $this->entityFactory->build( "CourseSchedule" );
+            $this->populate( $courseSchedule, $resp );
             $courseSchedules[] = $courseSchedule;
         }
 
@@ -83,12 +82,4 @@ class CourseScheduleMapper extends DataMapper
         $sql->bindParam( ":course_id", $course_id );
         $sql->execute();
     }
-
-    private function populateCourseSchedule( \Model\CourseSchedule $courseSchedule, $data )
-    {
-        $courseSchedule->id                      = $data[ "id" ];
-        $courseSchedule->course_id               = $data[ "course_id" ];
-        $courseSchedule->schedule_id             = $data[ "schedule_id" ];
-    }
-
 }

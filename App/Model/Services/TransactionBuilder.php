@@ -76,7 +76,7 @@ class TransactionBuilder
             $orderProducts = $this->orderProductRepo->getAllByOrderID( $order->id );
 
             // Populate orderProducts with respective Product object
-            $this->populateOrderProducts( $orderProducts );
+            $this->populate( $orderProducts );
 
             $this->setOrderProducts( $orderProducts );
 

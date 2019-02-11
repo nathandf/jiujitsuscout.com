@@ -27,13 +27,13 @@ class User extends Controller
         $this->user = $userAuth->getUser();
 
         // Get AccountUser reference
-        $accountUser = $accountUserRepo->getByUserID( $this->user->id );
+        $accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
 
         // Grab account details
-        $this->account = $accountRepo->getByID( $accountUser->account_id );
+        $this->account = $accountRepo->get( [ "*" ], [ "id" => $accountUser->account_id ], "single" );
 
         // Load account type details
-		$this->accountType = $accountTypeRepo->getByID( $this->account->account_type_id );
+		$this->accountType = $accountTypeRepo->get( [ "*" ], [ "id" => $this->account->account_type_id ], "single" );
 
         // Get all users
         $users = $userRepo->getAllByAccountID( $this->account->id );
@@ -50,6 +50,14 @@ class User extends Controller
 
         // Grab business details
         $this->business = $businessRepo->getByID( $this->user->getCurrentBusinessID() );
+
+        // Track with facebook pixel
+		$Config = $this->load( "config" );
+		$facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
         // Set data for the view
         $this->view->assign( "account", $this->account );
         $this->view->assign( "account_type", $this->accountType );
@@ -76,7 +84,7 @@ class User extends Controller
             $this->view->render403();
         }
 
-        $countries = $countryRepo->getAll();
+        $countries = $countryRepo->get( [ "*" ] );
 
         // Load in the user refenced by the id param
         $userToEdit = $userRepo->getByID( $this->params[ "id" ] );

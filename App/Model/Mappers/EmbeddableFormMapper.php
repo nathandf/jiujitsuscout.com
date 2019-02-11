@@ -43,13 +43,13 @@ class EmbeddableFormMapper extends DataMapper
 
     public function mapAllFromBusinessID( $business_id )
     {
-        $entityFactory = $this->container->getService( "entity-factory" );
+        
         $embeddableForms = [];
         $sql = $this->DB->prepare( "SELECT * FROM embeddable_form WHERE business_id = :business_id" );
         $sql->bindParam( ":business_id", $business_id );
         $sql->execute();
         while ( $resp = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            $embeddableForm = $entityFactory->build( "EmbeddableForm" );
+            $embeddableForm = $this->entityFactory->build( "EmbeddableForm" );
             $this->populate( $embeddableForm, $resp );
 
             $embeddableForms[] = $embeddableForm;

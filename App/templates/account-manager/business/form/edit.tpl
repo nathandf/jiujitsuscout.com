@@ -26,8 +26,8 @@
 		<a class="btn btn-inline bg-deep-blue text-med push-b-med" href="{$HOME}account-manager/business/form/{$form->id}/">< Back to form</a>
 		<div class="clear push-t-med"></div>
 		<p class="text-xlrg-heavy">{$form->name}</p>
-		<div class="hr-sml push-b-sml"></div>
 		<p class="text-sml">Add a new field to this form</p>
+		<div class="hr-sml"></div>
 		<div class="clear push-t-med"></div>
 		{if !empty($error_messages.add_field)}
 			{foreach from=$error_messages.add_field item=message}

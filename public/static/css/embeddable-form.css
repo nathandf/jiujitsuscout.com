@@ -1,9 +1,12 @@
 .EmbeddableFormWidgetByJiuJitsuScout__form-container {
+	font-family: Tahoma, Arial, sans-serif;
 	box-sizing: border-box;
 	width: 100%;
 	max-width: 400px;
 	border: 2px solid #CCC;
 	padding: 20px;
+	padding-bottom: 10px;
+	padding-top: 0px;
 	display: block;
 	margin: 0 auto;
 	background-color: none;
@@ -11,14 +14,14 @@
 }
 
 .EmbeddableFormWidgetByJiuJitsuScout__form-offer {
-	text-align: center;
-	font-size: 16px;
+	text-align: left;
+	font-size: 22px;
 	font-weight: 600;
 }
 
 .EmbeddableFormWidgetByJiuJitsuScout__field-container {
 	display: block;
-	margin-top: 15px;
+	margin-top: 12px;
 }
 
 .EmbeddableFormWidgetByJiuJitsuScout__form-input-label {
@@ -44,8 +47,12 @@
 }
 
 .EmbeddableFormWidgetByJiuJitsuScout__form-submit-button {
+	-webkit-appearance: none;
+	border: none;
+	font-family: Tahoma, Arial, sans-serif;
 	color:#FFF;
 	font-size: 18px;
+	font-weight: 600;
 	width: 100%;
 	box-sizing: border-box;
 	padding: 8px;

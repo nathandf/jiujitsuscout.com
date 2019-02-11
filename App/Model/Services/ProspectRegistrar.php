@@ -4,7 +4,6 @@ namespace Model\Services;
 
 class ProspectRegistrar
 {
-
     public function __construct( ProspectRepository $repo, EntityFactory $factory )
     {
         $this->repo = $repo;
@@ -54,5 +53,4 @@ class ProspectRegistrar
             $prospect->{$property} = $property_value;
         }
     }
-
 }

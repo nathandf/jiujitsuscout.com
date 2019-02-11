@@ -27,6 +27,7 @@ class Form extends Controller
         $userMailer = $this->load( "user-mailer" );
         $request = $this->load( "request" );
         $userRepo = $this->load( "user-repository" );
+        $leadCaptureBuilder = $this->load( "lead-capture-builder" );
 
         $embeddableForm = $embeddableFormRepo->getByToken( $this->params[ "token" ] );
 
@@ -39,6 +40,9 @@ class Form extends Controller
 
         // Get the business that owns this form
         $business = $businessRepo->getByID( $embeddableForm->business_id );
+
+        // Get phone for business
+        $business->phone = $phoneRepo->get( [ "*" ], [ "id" => $business->phone_id ], "single" );
 
         // Get all elements of this embeddable form and assign respective embeddable form
         // element type object.
@@ -90,11 +94,9 @@ class Form extends Controller
 
             // Handle submitted fields to create propectProperties
             foreach ( $prospectInfo as $key => $element ) {
-
                 switch ( $key ) {
-
                     case "phone_number":
-                        $country = $countryRepo->getByISO( $business->country );
+                        $country = $countryRepo->get( [ "*" ], [ "iso" => $business->country ], "single" );
                         $phone = $phoneRepo->create( $country->phonecode, $input->get( $key ) );
                         $prospectInfo[ "phone_id" ] = $phone->id;
                         $hasPhone = true;
@@ -148,6 +150,12 @@ class Form extends Controller
 
             // Get new prospect
             $prospect = $prospectRegistrar->getProspect();
+
+            // Record lead capture
+            $leadCaptureBuilder->setProspectID( $prospect->id )
+                ->setEmbeddableFormID( $embeddableForm->id )
+                ->build();
+
             // Assign phone to prospect
             $prospect->phone = $phoneRepo->getByID( $prospect->phone_id );
 
@@ -179,6 +187,35 @@ class Form extends Controller
                     $prospect_id = $prospect->id,
                     $member_id = null,
                     $appointemnt_id = null
+                );
+            }
+
+            // Embeddable Form sequences
+            $sequenceBuilder = $this->load( "sequence-builder" );
+            $embeddableFormSequenceTemplateRepo = $this->load( "embeddable-form-sequence-template-repository" );
+            $embeddableFormSequenceTemplates = $embeddableFormSequenceTemplateRepo->get(
+                [ "*" ],
+                [ "embeddable_form_id" => $embeddableForm->id ]
+            );
+
+            $sequenceBuilder->setRecipientName( $prospect->getFullName() )
+                ->setSenderName( $business->business_name )
+                ->setRecipientEmail( $prospect->email )
+                ->setSenderEmail( $business->email )
+                ->setRecipientPhoneNumber( $prospect->phone->getPhoneNumber() )
+                ->setSenderPhoneNumber( $business->phone->getPhoneNumber() )
+                ->setBusinessID( $business->id )
+                ->setProspectID( $prospect->id );
+
+            $timeZoneHelper = $this->load( "time-zone-helper" );
+
+            $sequenceBuilder->setTimeZoneOffset(
+                $timeZoneHelper->getServerTimeZoneOffset( $business->timezone )
+            );
+
+            foreach ( $embeddableFormSequenceTemplates as $embeddableFormSequenceTemplate ) {
+                $sequenceBuilder->buildFromSequenceTemplate(
+                    $embeddableFormSequenceTemplate->sequence_template_id
                 );
             }
 

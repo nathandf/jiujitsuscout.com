@@ -23,7 +23,7 @@
 					<input type="hidden" name="update_contact_info" value="{$csrf_token}">
 					<label class="text-sml">Country Code</lable><br>
 					<div class="clear"></div>
-					<select class="inp field-med cursor-pt" id="country_code" name="country_code"/>
+					<select class="inp inp-sml cursor-pt" id="country_code" name="country_code"/>
 						{if $phone->country_code != null}
 						<option selected="selected" value="{$phone->country_code}">+{$phone->country_code}</option>
 						{else}
@@ -42,11 +42,11 @@
 					<div class="clear push-t-med"></div>
 					<label class="text-sml">Phone Number</label>
 					<div class="clear"></div>
-					<input class="inp field-med" type="text" name='phone_number' value='{$phone->national_number}'>
+					<input class="inp inp-med-plus-plus" type="text" name='phone_number' value='{$phone->national_number}'>
 					<div class="clear push-t-med"></div>
 					<label class="text-sml">Email Address</label>
 					<div class="clear"></div>
-					<input class="inp field-med" type="text" name='email' value='{$business->email}'>
+					<input class="inp inp-med-plus-plus" type="text" name='email' value='{$business->email}'>
 					<div class="clear push-t-med"></div>
 					<input type="submit" class="btn btn-inline push-t-med" value="Update Contact Info">
 				</form>

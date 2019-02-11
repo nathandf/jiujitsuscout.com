@@ -10,25 +10,24 @@
 		<div class="clear"></div>
 		<div class="con con-cnt-xlrg push-t-med inner-pad-med">
 			<h2 class="">Landing Pages</h2>
-			<p class="text-sml push-t-med">Capture leads with landing pages you create! The JiuJitsuScout Landing Page builder makes it super easy to build effective landing pages that drive action and capture leads.</p>
+			<p class="text-sml">Capture leads with landing pages! The JiuJitsuScout Landing Page builder makes it super easy to build effective landing pages that drive action and capture leads.</p>
 			<div class="hr-sml"></div>
 			<a href="{$HOME}account-manager/business/landing-page/choose-template" class="btn btn-inline push-t-med mat-hov"><span class="text-med">Create Landing Page <i class="fa fa-plus" aria-hidden="true"></i></span></a>
+			<div class="clear push-t-med"></div>
 			{foreach from=$pages item=page}
-			<div class="landing-page-tag">
-				<div class="landing-page-icon bg-deep-blue push-r floatleft"><i class="fa fa-2x fa-globe" aria-hidden="true"></i></div>
-				<div class="landing-page-info floatleft">
-					<p><b>{$page->name}</b></p>
+			<a href="{$HOME}account-manager/business/landing-page/{$page->id}/" class="tag-link">
+				<div class="tag mat-hov cursor-pt">
+					<div class="bg-deep-blue tc-white floatleft push-r-sml" style="border-radius: 3px; box-sizing: border-box; padding: 8px;">
+						<i aria-hidden="true" class="fa fa-globe"></i>
+					</div>
+					<div class="floatleft">
+						<p class="text-med-heavy">{$page->name}</p>
+						<p class="text-med" style="max-width: 80ch;">{$page->slug}</p>
+					</div>
 					<div class="clear"></div>
-					<p><b>Slug: </b>{$page->slug}</p>
 				</div>
-				<div class="m-clear"></div>
-				<div class="action-buttons">
-					<a class="btn btn-inline action-button text-med floatright" href="{$HOME}account-manager/business/landing-page/{$page->id}/preview">Preview</a>
-					<a class="btn btn-inline action-button push-r bg-forest text-med floatright" href="{$HOME}account-manager/business/landing-page/{$page->id}/">Edit</a>
-				</div>
-				<div class="clear"></div>
-			</div>
-			<div class="clear"></div>
+			</a>
+			<div class="clear push-b-med"></div>
 			{/foreach}
 		</div>
 	</div><!-- end content -->

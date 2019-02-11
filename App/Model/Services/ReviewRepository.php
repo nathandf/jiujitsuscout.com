@@ -2,37 +2,37 @@
 
 namespace Model\Services;
 
-class ReviewRepository extends Service
+class ReviewRepository extends Repository
 {
 
     public function create( $business_id, $name, $email, $review_body, $rating, $datetime )
     {
-        $review = new \Model\Review();
-        $reviewMapper = new \Model\Mappers\ReviewMapper( $this->container );
+        $mapper = $this->getMapper();
+        $review = $mapper->build( $this->entityName );
         $review->business_id = $business_id;
         $review->name = $name;
         $review->email = $email;
         $review->review_body = $review_body;
         $review->rating = $rating;
         $review->datetime = $datetime;
-        $reviewMapper->create( $review );
+        $mapper->create( $review );
 
         return $review;
     }
 
     public function getByID( $id )
     {
-        $review = new \Model\Review();
-        $reviewMapper = new \Model\Mappers\ReviewMapper( $this->container );
-        $reviewMapper->mapFromID( $review, $id );
+        $mapper = $this->getMapper();
+        $review = $mapper->build( $this->entityName );
+        $mapper->mapFromID( $review, $id );
 
         return $review;
     }
 
     public function getAllByBusinessID( $id )
     {
-        $reviewMapper = new \Model\Mappers\ReviewMapper( $this->container );
-        $reviews = $reviewMapper->mapAllFromBusinessID( $id );
+        $mapper = $this->getMapper();
+        $reviews = $mapper->mapAllFromBusinessID( $id );
         return $reviews;
     }
 
