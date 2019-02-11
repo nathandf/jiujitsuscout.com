@@ -27,6 +27,9 @@ $config[ "routing" ] = [
     "staging" => [
         "root" => "http://develop.jiujitsuscout.stupidsimple.tech/"
     ],
+    // "production" => [
+    //     "root" => "/jiujitsuscout.com/"
+    // ]
     "production" => [
         "root" => "https://www.jiujitsuscout.com/"
     ]

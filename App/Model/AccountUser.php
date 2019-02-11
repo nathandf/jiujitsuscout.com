@@ -4,7 +4,7 @@ namespace Model;
 
 use Contracts\EntityInterface;
 
-class AccountUser extends EntityInterface
+class AccountUser implements EntityInterface
 {
     public $id;
     public $account_id;
