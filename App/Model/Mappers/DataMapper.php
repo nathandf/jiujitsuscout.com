@@ -130,7 +130,6 @@ abstract class DataMapper implements DataMapperInterface
         }
 
         while ( $response = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
-            echo($this->formatEntityNameFromTable());
             $entity = $this->build( $this->formatEntityNameFromTable() );
             $this->populate( $entity, $response );
             $entities[] = $entity;
