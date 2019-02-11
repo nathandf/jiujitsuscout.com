@@ -2,7 +2,9 @@
 
 namespace Model;
 
-class AccountUser
+use Contracts\EntityInterface;
+
+class AccountUser extends EntityInterface
 {
 
   public $id;
