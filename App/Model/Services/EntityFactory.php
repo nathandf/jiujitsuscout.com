@@ -10,7 +10,7 @@ class EntityFactory
             throw new \Exception( "Invalid Entity Type: \"$type\"." );
         }
 
-        $class = $namespace . ucfirst( $type );
+        $class = $namespace . ucwords( $type );
 
         if ( class_exists( $class ) ) {
             return new $class();

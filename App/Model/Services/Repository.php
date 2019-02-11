@@ -50,7 +50,6 @@ abstract class Repository implements RepositoryInterface
         // Derive the name of the mapper and entity from the class name of this repository
         $repositoryClassName = explode( "\\", get_class( $this ) );
         $entityName = $this->mapperNamespace . str_replace( "Repository", "", end( $repositoryClassName ) );
-
         // Set entity name
         $this->setEntityName( $entityName );
     }
