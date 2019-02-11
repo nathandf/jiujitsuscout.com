@@ -10,16 +10,16 @@ require_once( "App/Helpers/debug.php" );
 $container = new Core\DI_Container;
 
 // Environment
-Conf\Config::setEnv( "development" );
+Conf\Config::setEnv( "production" );
 
 // Load services using DI_Container
 require_once( "App/Conf/services.php" );
 
 // Error handling
 Core\Error::setEnv( Conf\Config::getEnv() );
-error_reporting( E_ALL );
-set_error_handler( "Core\Error::errorHandler" );
-set_exception_handler( "Core\Error::exceptionHandler" );
+// error_reporting( E_ALL );
+// set_error_handler( "Core\Error::errorHandler" );
+// set_exception_handler( "Core\Error::exceptionHandler" );
 
 // Session and token handling
 $session = $container->getService( "session" );

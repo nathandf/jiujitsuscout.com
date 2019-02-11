@@ -52,9 +52,10 @@ INSERT INTO `task_type` (`id`, `name`, `description`) VALUES (NULL, 'Follow-up C
 
 CREATE TABLE `task_prospect` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `task_id` BIGINT NOT NULL , `prospect_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
 CREATE TABLE `task_member` ( `id` BIGINT NOT NULL AUTO_INCREMENT , `task_id` BIGINT NOT NULL , `member_id` BIGINT NOT NULL , PRIMARY KEY (`id`)) engine = InnoDB;
-INSERT INTO `task_type` (`id`, `name`, `description`) VALUES (NULL, 'Call', 'Make a call to a lead or member'), (NULL, 'Text', 'Send a text to a lead or member')
+INSERT INTO `task_type` (`id`, `name`, `description`) VALUES (NULL, 'Call', 'Make a call to a lead or member'), (NULL, 'Text', 'Send a text to a lead or member');
 ALTER TABLE `task` ADD `parent_task_id` BIGINT NOT NULL AFTER `task_type_id`;
 ALTER TABLE `task` ADD `checked_out` TINYINT NOT NULL DEFAULT '0' AFTER `remind_status`;
 INSERT INTO `task_type` (`id`, `name`, `description`) VALUES ('5', 'Trial Membership Follow-up', 'Make contact with a prospect about their trial membership');
 INSERT INTO `task_type` (`id`, `name`, `description`) VALUES ('6', 'Checkup', 'Check up on a prospect or member');
 ALTER TABLE `task` ADD `trigger_time` VARCHAR(256) NOT NULL AFTER `due_date`;
+ALTER TABLE `address` CHANGE `address_1` `address_1` VARCHAR(256) NULL DEFAULT NULL, CHANGE `address_2` `address_2` VARCHAR(256) NULL DEFAULT NULL, CHANGE `city` `city` VARCHAR(256) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL, CHANGE `region` `region` VARCHAR(256) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL, CHANGE `postal_code` `postal_code` VARCHAR(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL, CHANGE `country_id` `country_id` BIGINT(20) NULL DEFAULT NULL;

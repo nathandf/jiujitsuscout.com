@@ -6,47 +6,33 @@ use \Core\Controller;
 
 class Update extends Controller
 {
-	public function logosAction()
+	public function facebookPixels()
 	{
-		// TODO Update logo_image_id using the logo_filename property of the business
 		$businessRepo = $this->load( "business-repository" );
-		$imageRepo = $this->load( "image-repository" );
+		$facebookPixelRepo = $this->load( "facebook-pixel-repository" );
+		$landingPageRepo = $this->load( "landing-page-repository" );
+		$landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
 
 		$businesses = $businessRepo->get( [ "*" ] );
 
 		foreach ( $businesses as $business ) {
-			echo( $business->business_name . "<br>" );
-			if (
-				!is_null( $business->logo_filename ) &&
-				$business->logo_filename != "default_logo.jpg" &&
-				$business->logo_image_id == null
-			) {
-				$image = $imageRepo->get( [ "*" ], [ "filename" => $business->logo_filename ], "single" );
-				if ( !is_null( $image ) ) {
-					$businessRepo->update(
-						[ "logo_image_id" => $image->id ],
-						[ "id" => $business->id ]
-					);
-					echo( "logo image id updated<br>" );
-				} else {
-					$now = time();
-					$image = $imageRepo->insert([
-						"business_id" => $business->id,
-						"filename" => $business->logo_filename,
-						"created_at" => $now,
-						"updated_at" => $now
-					]);
-					echo( "new image created - ID: {$image->id} - FILENAME: {$image->filename}<br>" );
-					$businessRepo->update(
-						[ "logo_image_id" => $image->id ],
-						[ "id" => $business->id ]
-					);
-					echo( "logo image id updated<br>" );
+			if ( !is_null( $business->facebook_pixel_id ) ) {
+				$facebookPixel = $facebookPixelRepo->insert([
+					"business_id" => $business->id,
+					"facebook_pixel_id" => $business->facebook_pixel_id,
+					"name" => $business->business_name . " - Primary"
+				]);
+
+				$landingPages = $landingPageRepo->get( [ "*" ], [ "business_id" => $business->id ] );
+				foreach ( $landingPages as $landingPage ) {
+					if ( !is_null( $landingPage->facebook_pixel_id ) ) {
+						$landingPageFacebookPixelRepo->insert([
+							"landing_page_id" => $landingPage->id,
+							"facebook_pixel_id" => $facebookPixel->id
+						]);
+					}
 				}
-			} else {
-				echo( "No logo or logo image id already exists" );
 			}
-			echo("<br><br>");
 		}
 	}
 }
