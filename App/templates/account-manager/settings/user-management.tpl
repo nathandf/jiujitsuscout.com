@@ -25,7 +25,7 @@
 			{/if}
 			<div class="clear"></div>
 			{foreach from=$users item=_user}
-			<a href="{$HOME}account-manager/settings/user/{$user->id}/" class="tag-link">
+			<a href="{$HOME}account-manager/settings/user/{$_user->id}/" class="tag-link">
 				<div class="tag mat-hov cursor-pt">
 					<div class="bg-salmon tc-white floatleft push-r-sml" style="border-radius: 3px; box-sizing: border-box; padding: 8px;">
 						<i aria-hidden="true" class="fa fa-user-o"></i>

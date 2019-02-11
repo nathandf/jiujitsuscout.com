@@ -21,13 +21,16 @@ $config[ "logs_directory" ] = "App/logs/";
 
 // Routing
 $config[ "routing" ] = [
-    "production" => [
-        "root" => "https://www.jiujitsuscout.com/"
-    ],
+    // "production" => [
+    //     "root" => "https://www.jiujitsuscout.com/"
+    // ],
     "staging" => [
         "root" => "http://develop.jiujitsuscout.stupidsimple.tech/"
     ],
     "development" => [
+        "root" => "/jiujitsuscout.com/"
+    ],
+    "production" => [
         "root" => "/jiujitsuscout.com/"
     ]
 ];
@@ -47,11 +50,17 @@ $config[ "email_settings" ] = [
 
 // Database
 $config[ "db" ] = [
+    // "development" => [
+    //     "host" => "localhost",
+    //     "dbname" => "yurigloc_jjs_development",
+    //     "user" => "yurigloc_develop",
+    //     "password" => "Q7Np4WBUfCveynAy",
+    // ],
     "development" => [
         "host" => "localhost",
-        "dbname" => "yurigloc_jjs_development",
-        "user" => "yurigloc_develop",
-        "password" => "Q7Np4WBUfCveynAy",
+        "dbname" => "yurigloc_jjs_main",
+        "user" => "yurigloc_main",
+        "password" => "XHN8yxNzpN2l",
     ],
     "staging" => [
         "host" => "localhost",
