@@ -130,6 +130,7 @@ abstract class DataMapper implements DataMapperInterface
         }
 
         while ( $response = $sql->fetch( \PDO::FETCH_ASSOC ) ) {
+            echo($this->formatEntityNameFromTable());
             $entity = $this->build( $this->formatEntityNameFromTable() );
             $this->populate( $entity, $response );
             $entities[] = $entity;
@@ -176,7 +177,7 @@ abstract class DataMapper implements DataMapperInterface
         // was called.
 
         $query = "UPDATE " . "`" . $this->getTable() . "`" . " SET " . $this->formatQuerySet( $columns_to_update, "0" ) . $this->formatQueryWhere( $where_columns, "1" );
-        
+
         $sql = $this->DB->prepare( $query );
 
         foreach ( $columns_to_update as $key => &$value ) {
@@ -276,12 +277,13 @@ abstract class DataMapper implements DataMapperInterface
     protected function formatEntityNameFromTable()
     {
         $parts = explode( "_", $this->getTable() );
+        $formatted_parts = [];
 
         foreach ( $parts as $part ) {
-            $part = ucfirst( $part );
+            $formatted_parts[] = ucfirst( $part );
         }
 
-        return implode( "", $parts );
+        return implode( "", $formatted_parts );
     }
 
 
