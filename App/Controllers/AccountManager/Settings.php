@@ -39,7 +39,7 @@ class Settings extends Controller
 
 		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
-        
+
         // Set data for the view
         $this->view->assign( "account", $this->account );
         $this->view->assign( "account_type", $this->accountType );
@@ -132,10 +132,9 @@ class Settings extends Controller
                         "equals-hidden" => $this->session->getSession( "csrf-token" )
                     ]
                 ],
-
                 "add_user"
-            ) )
-        {
+            )
+        ) {
             $phone = $phoneRepo->create( $input->get( "country_code" ), $input->get( "phone_number" ) );
             $userRegistrar->register(
                     $this->account->id,
@@ -180,9 +179,7 @@ class Settings extends Controller
         $userRepo = $this->load( "user-repository" );
 
         if ( $input->exists() && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -208,11 +205,9 @@ class Settings extends Controller
                         "equals" => $input->get( "password" )
                     ]
                 ],
-
                 "update_password"
-
-            ) )
-        {
+            )
+        ) {
             $userRepo->updatePasswordByID( $input->get( "password" ), $this->user->id );
             $this->view->redirect( "account-manager/settings/user-management" );
         }
@@ -240,6 +235,7 @@ class Settings extends Controller
         $users = $userRepo->getAllByAccountID( $this->account->id );
 
         $this->view->assign( "users", $users );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/settings/user-management.tpl" );
         $this->view->render( "App/Views/AccountManager/Settings.php" );

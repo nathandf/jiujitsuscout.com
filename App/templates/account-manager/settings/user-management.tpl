@@ -11,6 +11,7 @@
 		{include file="includes/navigation/account-manager-settings-menu.tpl"}
 		<div class="inner-pad-med">
 			<h2 class="h2">User Management</h2>
+			{include file="includes/snippets/flash-messages.tpl"}
 			<p class="push-t-med">
 				<span class="text-sml">Max Users: </span>
 				{if $account_type->max_users > 998}

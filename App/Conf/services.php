@@ -937,6 +937,18 @@ $container->register( "unsubscribe-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "user-destroyer", function() use ( $container ) {
+	$repo = new \Model\Services\UserDestroyer(
+	    $container->getService( "user-repository" ),
+		$container->getService( "account-user-repository" ),
+		$container->getService( "business-user-repository" ),
+		$container->getService( "landing-page-notification-recipient-repository" ),
+		$container->getService( "user-email-signature-repository" ),
+		$container->getService( "note-repository" )
+	);
+	return $repo;
+} );
+
 $container->register( "user-email-signature-repository", function() use ( $container ) {
 	$repo = new \Model\Services\UserEmailSignatureRepository(
 	    $container->getService( "dao" ),
