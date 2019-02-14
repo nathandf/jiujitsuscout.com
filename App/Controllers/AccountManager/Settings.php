@@ -231,14 +231,38 @@ class Settings extends Controller
     public function userManagementAction()
     {
         $userRepo = $this->load( "user-repository" );
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
 
         $users = $userRepo->getAllByAccountID( $this->account->id );
 
+        if ( $input->exists() && $input->issetField( "delete_self" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ]
+                ],
+                "delete_self"
+            )
+        ) {
+            if ( count( $users ) > 1 && $this->user->role != "owner" ) {
+                $userDestroyer = $this->load( "user-destroyer" );
+                $userDestroyer->destroy( $this->user->id );
+
+                $this->view->redirect( "account-manager/logout" );
+            }
+
+            $inputValidator->addError( "delete_user", "Option currently unavailable" );
+        }
+
         $this->view->assign( "users", $users );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setTemplate( "account-manager/settings/user-management.tpl" );
         $this->view->render( "App/Views/AccountManager/Settings.php" );
     }
-
 }
