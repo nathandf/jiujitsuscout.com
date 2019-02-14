@@ -165,7 +165,7 @@ class AccountManager extends Controller
 		}
 		$this->user = $userAuth->getUser();
 		$accountUser = $accountUserRepo->get( [ "*" ], [ "user_id" => $this->user->id ], "single" );
-
+		
 		// Load account user reference
 		$businesses = $businessRepo->getAllByAccountID( $accountUser->account_id );
 		$total_businesses = count( $businesses );

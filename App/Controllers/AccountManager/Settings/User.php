@@ -36,11 +36,11 @@ class User extends Controller
 		$this->accountType = $accountTypeRepo->get( [ "*" ], [ "id" => $this->account->account_type_id ], "single" );
 
         // Get all users
-        $users = $userRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
-        $user_ids = $userRepo->get( [ "id" ], [ "account_id" => $this->account->id ], "raw" );
+        $this->users = $userRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
+        $this->user_ids = $userRepo->get( [ "id" ], [ "account_id" => $this->account->id ], "raw" );
 
         // Only allow access to current logged in user
-        if ( !in_array( $this->params[ "id" ], $user_ids ) ) {
+        if ( !in_array( $this->params[ "id" ], $this->user_ids ) ) {
             $this->view->redirect( "account-manager/settings/user-management" );
         }
 
@@ -170,18 +170,23 @@ class User extends Controller
         ) {
             $user = $userRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
 
-            if ( $user->role == "owner" ) {
-                $inputValidator->addErrorMessage( "delete_user", "You cannot delete account owner" );
-                $this->view->redirect( "account-manager/settings/user/" . $user->id . "/edit" );
+            if ( $user->role != "owner" && count( $this->users ) > 1 ) {
+                $userDestroyer = $this->load( "user-destroyer" );
+                $userDestroyer->destroy( $user->id );
+
+                $this->session->addFlashMessage( "User {$user->getFullName()} Deleted" );
+                $this->session->setFlashMessages();
+
+                $this->view->redirect( "account-manager/settings/" );
             }
 
-            $userDestroyer = $this->load( "user-destroyer" );
-            $userDestroyer->destroy( $user->id );
+            if ( count( $this->users ) < 2 ) {
+                $inputValidator->addError( "delete_user", "You cannot delete the last user on the account" );
+            }
 
-            $this->session->addFlashMessage( "User {$user->getFullName()} Deleted" );
-            $this->session->setFlashMessages();
-
-            $this->view->redirect( "account-manager/settings/" );
+            if ( $user->role == "owner" ) {
+                $inputValidator->addError( "delete_user", "Owner cannot be deleted" );
+            }
         }
 
         $this->view->assign( "user_to_edit", $userToEdit );

@@ -7,7 +7,7 @@
 {block name="am-body"}
 	{include file="includes/navigation/account-manager-login-menu.tpl"}
 	{include file="includes/navigation/account-manager-menu.tpl"}
-	<div class="con-cnt-xxlrg bg-white mat-box-shadow push-t-med">
+	<div class="con-cnt-xxlrg bg-white mat-box-shadow push-t-med push-b-lrg">
 		{include file="includes/navigation/account-manager-settings-menu.tpl"}
 		<div class="inner-pad-med">
 			<h2 class="h2 push-b push-t">Edit user details</h2>
