@@ -7,10 +7,11 @@
 {block name="am-body"}
 	{include file="includes/navigation/account-manager-login-menu.tpl"}
 	{include file="includes/navigation/account-manager-menu.tpl"}
-	<div class="con-cnt-xxlrg bg-white mat-box-shadow push-t-med">
+	<div class="con-cnt-xxlrg bg-white mat-box-shadow push-t-med push-b-lrg">
 		{include file="includes/navigation/account-manager-settings-menu.tpl"}
 		<div class="inner-pad-med">
 			<h2 class="h2 push-b push-t">Edit user details</h2>
+			{include file="includes/snippets/flash-messages.tpl"}
 			{if !empty($error_messages.edit_user)}
 				{foreach from=$error_messages.edit_user item=message}
 					<div class="con-message-failure mat-hov cursor-pt --c-hide">
@@ -18,9 +19,17 @@
 					</div>
 				{/foreach}
 			{/if}
-			<form class="push-t-med" method="post" action="">
+			{if !empty($error_messages.delete_user)}
+				{foreach from=$error_messages.delete_user item=message}
+					<div class="con-message-failure mat-hov cursor-pt --c-hide">
+						<p class="user-message-body">{$message}</p>
+					</div>
+				{/foreach}
+			{/if}
+			<div class="push-t-med"></div>
+			<form method="post" action="">
 				<input type="hidden" name="token" value="{$csrf_token}">
-				<input type="hidden" name="edit_user" value="{$csrf_token}">
+				<input type="hidden" name="update_user" value="{$csrf_token}">
 				<div class="clear push-t-med"></div>
 				<label class="text-sml">First name</label><br>
 				<input type="text" class="inp inp-med-plus-plus" name="first_name" value="{$user_to_edit->first_name}">
@@ -69,8 +78,14 @@
 					{/foreach}
 				</select>
 				<div class="clear"></div>
-				<input type="submit" class="btn bnt-inline push-t-med" value="Update User">
+				<button type="submit" class="btn btn-inline push-t-med floatleft">Update</button>
 			</form>
+			<form action="" method="post">
+				<input type="hidden" name="token" value="{$csrf_token}">
+				<input type="hidden" name="delete_user" value="{$csrf_token}">
+				<button type="submit" class="btn btn-inline push-t-med bg-red tc-white floatright --c-trash" name="delete_user" value="true"><i aria-hidden="true" class="fa fa-trash push-r-sml"></i>Delete User</button>
+			</form>
+			<div class="clear"></div>
 		</div>
 	</div>
 {/block}

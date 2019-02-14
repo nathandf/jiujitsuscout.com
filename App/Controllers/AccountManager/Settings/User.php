@@ -36,15 +36,11 @@ class User extends Controller
 		$this->accountType = $accountTypeRepo->get( [ "*" ], [ "id" => $this->account->account_type_id ], "single" );
 
         // Get all users
-        $users = $userRepo->getAllByAccountID( $this->account->id );
-        $user_ids = [];
-
-        foreach ( $users as $user ) {
-            $user_ids[] = $user->id;
-        }
+        $this->users = $userRepo->get( [ "*" ], [ "account_id" => $this->account->id ] );
+        $this->user_ids = $userRepo->get( [ "id" ], [ "account_id" => $this->account->id ], "raw" );
 
         // Only allow access to current logged in user
-        if ( !in_array( $this->params[ "id" ], $user_ids ) ) {
+        if ( !in_array( $this->params[ "id" ], $this->user_ids ) ) {
             $this->view->redirect( "account-manager/settings/user-management" );
         }
 
@@ -80,7 +76,7 @@ class User extends Controller
         $factory = $this->load( "entity-factory" );
         $accessControl = $this->load( "access-control" );
 
-        if ( !$accessControl->hasAccess( [ "administrator" ], $this->user->role ) ) {
+        if ( !$accessControl->hasAccess( [ "owner", "administrator" ], $this->user->role ) ) {
             $this->view->render403();
         }
 
@@ -94,20 +90,16 @@ class User extends Controller
 
         // Get array of user emails to verify submitted email is unique
         $user_emails = $userRepo->getAllEmails();
+
         // Remove userToEdits email from the array so that the form can be submitted with no error
         $email_index = array_search( $userToEdit->email, $user_emails );
         unset( $user_emails[ $email_index ] );
 
-        if ( $input->exists() && $input->issetField( "edit_user" ) && $inputValidator->validate(
-
+        if ( $input->exists() && $input->issetField( "update_user" ) && $inputValidator->validate(
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                        "required" => true
-                    ],
-                    "edit_user" => [
                         "required" => true
                     ],
                     "first_name" => [
@@ -137,10 +129,9 @@ class User extends Controller
                         "name" => "Role"
                     ]
                 ],
-
                 "edit_user" /* error index */
-            ) )
-        {
+            )
+        ) {
             $user = $factory->build( "User" );
             $user->first_name = $input->get( "first_name" );
             $user->last_name = $input->get( "last_name" );
@@ -160,7 +151,42 @@ class User extends Controller
                 $userRepo->updateRoleByID( $this->params[ "id" ], $input->get( "role" ) );
             }
 
+            $this->session->addFlashMessage( "User Updated" );
+            $this->session->setFlashMessages();
+
             $this->view->redirect( "account-manager/settings/user/" . $userToEdit->id . "/edit" );
+        }
+
+        if ( $input->exists() && $input->issetField( "delete_user" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ]
+                ],
+                "delete_user"
+            )
+        ) {
+            $user = $userRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+
+            if ( $user->role != "owner" && count( $this->users ) > 1 ) {
+                $userDestroyer = $this->load( "user-destroyer" );
+                $userDestroyer->destroy( $user->id );
+
+                $this->session->addFlashMessage( "User {$user->getFullName()} Deleted" );
+                $this->session->setFlashMessages();
+
+                $this->view->redirect( "account-manager/settings/" );
+            }
+
+            if ( count( $this->users ) < 2 ) {
+                $inputValidator->addError( "delete_user", "You cannot delete the last user on the account" );
+            }
+
+            if ( $user->role == "owner" ) {
+                $inputValidator->addError( "delete_user", "Owner cannot be deleted" );
+            }
         }
 
         $this->view->assign( "user_to_edit", $userToEdit );
@@ -170,6 +196,7 @@ class User extends Controller
 
         $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
         $this->view->setErrorMessages( $inputValidator->getErrors() );
+        $this->view->setFlashMessages( $this->session->getFlashMessages() );
 
         $this->view->setTemplate( "account-manager/settings/user/edit.tpl" );
         $this->view->render( "App/Views/AccountManager/Settings/User.php" );

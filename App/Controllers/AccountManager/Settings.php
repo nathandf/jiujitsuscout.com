@@ -39,7 +39,7 @@ class Settings extends Controller
 
 		$facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 		$this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
-        
+
         // Set data for the view
         $this->view->assign( "account", $this->account );
         $this->view->assign( "account_type", $this->accountType );
@@ -62,7 +62,7 @@ class Settings extends Controller
         $userRegistrar = $this->load( "user-registrar" );
         $accessControl = $this->load( "access-control" );
 
-        if ( !$accessControl->hasAccess( [ "administrator", "manager" ], $this->user->role ) ) {
+        if ( !$accessControl->hasAccess( [ "owner", "administrator", "manager" ], $this->user->role ) ) {
             $this->view->render403();
         }
 
@@ -132,10 +132,9 @@ class Settings extends Controller
                         "equals-hidden" => $this->session->getSession( "csrf-token" )
                     ]
                 ],
-
                 "add_user"
-            ) )
-        {
+            )
+        ) {
             $phone = $phoneRepo->create( $input->get( "country_code" ), $input->get( "phone_number" ) );
             $userRegistrar->register(
                     $this->account->id,
@@ -180,9 +179,7 @@ class Settings extends Controller
         $userRepo = $this->load( "user-repository" );
 
         if ( $input->exists() && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -208,11 +205,9 @@ class Settings extends Controller
                         "equals" => $input->get( "password" )
                     ]
                 ],
-
                 "update_password"
-
-            ) )
-        {
+            )
+        ) {
             $userRepo->updatePasswordByID( $input->get( "password" ), $this->user->id );
             $this->view->redirect( "account-manager/settings/user-management" );
         }
@@ -236,13 +231,38 @@ class Settings extends Controller
     public function userManagementAction()
     {
         $userRepo = $this->load( "user-repository" );
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
 
         $users = $userRepo->getAllByAccountID( $this->account->id );
 
+        if ( $input->exists() && $input->issetField( "delete_self" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "required" => true,
+                        "equals-hidden" => $this->session->getSession( "csrf-token" )
+                    ]
+                ],
+                "delete_self"
+            )
+        ) {
+            if ( count( $users ) > 1 && $this->user->role != "owner" ) {
+                $userDestroyer = $this->load( "user-destroyer" );
+                $userDestroyer->destroy( $this->user->id );
+
+                $this->view->redirect( "account-manager/logout" );
+            }
+
+            $inputValidator->addError( "delete_user", "Option currently unavailable" );
+        }
+
         $this->view->assign( "users", $users );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "flash_messages", $this->session->getFlashMessages() );
+        $this->view->setErrorMessages( $inputValidator->getErrors() );
 
         $this->view->setTemplate( "account-manager/settings/user-management.tpl" );
         $this->view->render( "App/Views/AccountManager/Settings.php" );
     }
-
 }

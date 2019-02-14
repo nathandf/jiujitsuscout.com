@@ -5,6 +5,7 @@ namespace Helpers;
 class AccessControl
 {
     public $available_roles = [
+        "owner",
         "administrator",
         "manager",
         "standard"

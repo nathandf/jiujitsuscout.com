@@ -11,6 +11,14 @@
 		{include file="includes/navigation/account-manager-settings-menu.tpl"}
 		<div class="inner-pad-med">
 			<h2 class="h2">User Management</h2>
+			{if !empty($error_messages.delete_user)}
+				{foreach from=$error_messages.delete_user item=message}
+					<div class="con-message-failure mat-hov cursor-pt --c-hide">
+						<p class="user-message-body">{$message}</p>
+					</div>
+				{/foreach}
+			{/if}
+			{include file="includes/snippets/flash-messages.tpl"}
 			<p class="push-t-med">
 				<span class="text-sml">Max Users: </span>
 				{if $account_type->max_users > 998}
@@ -43,6 +51,13 @@
 			</a>
 			<div class="clear push-b-med"></div>
 			{/foreach}
+			<div class="clear"></div>
+			<div class="hr-full"></div>
+			<form action="{$HOME}account-manager/settings/user-management" method="post">
+				<input type="hidden" name="token" value="{$csrf_token}">
+				<input type="hidden" name="delete_self" value="{$csrf_token}">
+				<button id="user-self-delete" type="submit" class="btn btn-inline floatright bg-red" style="margin-bottom: 0px;"><i aria-hidden="true" class="fa fa-trash push-r-sml"></i>Delete My Account</button>
+			</form>
 			<div class="clear"></div>
 		</div>
 	</div>
