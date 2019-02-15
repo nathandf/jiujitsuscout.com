@@ -34,8 +34,8 @@ class Settings extends Controller
         // Grab business details
         $this->business = $this->businessRepo->getByID( $this->user->getCurrentBusinessID() );
 
-        // Restrict entire controller to admins
-        if ( !$accessControl->hasAccess( [ "administrator" ], $this->user->role ) ) {
+        // Restrict entire controller to owner and admins
+        if ( !$accessControl->hasAccess( [ "owner", "administrator" ], $this->user->role ) ) {
             $this->view->render403();
         }
 
