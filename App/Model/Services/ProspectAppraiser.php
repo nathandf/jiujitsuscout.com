@@ -15,8 +15,9 @@ class ProspectAppraiser
 	public $respondentQuestionAnswerRepo;
     public $prospectAppraisalRepo;
     public $prospectAppraiserDetailsRepository;
-	public $prospect_price = 5;
-	public $base_question_value = 1;
+	public $prospect_price;
+    public $base_price;
+	public $base_question_value;
 
 	public function __construct(
 		QuestionChoiceWeightRepository $questionChoiceWeightRepo,
@@ -24,21 +25,22 @@ class ProspectAppraiser
 		RespondentQuestionAnswerRepository $respondentQuestionAnswerRepo,
         ProspectAppraisalRepository $prospectAppraisalRepo,
         ProspectAppraiserDetailsRepository $prospectAppraiserDetailsRepo
-	)
-	{
+	) {
 		$this->questionChoiceWeightRepo = $questionChoiceWeightRepo;
 		$this->respondentRepo = $respondentRepo;
 		$this->respondentQuestionAnswerRepo = $respondentQuestionAnswerRepo;
         $this->prospectAppraisalRepo = $prospectAppraisalRepo;
         $this->prospectAppraiserDetailsRepo = $prospectAppraiserDetailsRepo;
 
-        $prospectAppraiserDetailsRepo->get( [ "base_price" ], [ "business_id" => 0 ], "raw" );
-        $prospectAppraiserDetailsRepo->get( [ "base_question_value" ], [ "business_id" => 0 ], "raw" );
-        // $this->setBasePrice(
-        // );
-        //
-        // $this->setBaseQuestionValue(
-        // );
+        $this->setBasePrice(
+            $prospectAppraiserDetailsRepo->get( [ "base_price" ], [ "business_id" => 0 ], "raw" )[ 0 ]
+        );
+
+        $this->setBaseQuestionValue(
+            $prospectAppraiserDetailsRepo->get( [ "base_question_value" ], [ "business_id" => 0 ], "raw" )[ 0 ]
+        );
+
+        $this->setProspectPrice( $this->getBasePrice() );
 	}
 
 	public function appraise( \Model\Prospect $prospect )
@@ -74,8 +76,18 @@ class ProspectAppraiser
         $this->base_price = $base_price;
     }
 
+    public function getBasePrice()
+    {
+        return $this->base_price;
+    }
+
     private function setBaseQuestionValue( $value )
     {
         $this->base_question_value = $value;
+    }
+
+    private function setProspectPrice( $price )
+    {
+        $this->prospect_price = $price;
     }
 }
