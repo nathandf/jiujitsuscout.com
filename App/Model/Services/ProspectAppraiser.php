@@ -30,7 +30,15 @@ class ProspectAppraiser
 		$this->respondentRepo = $respondentRepo;
 		$this->respondentQuestionAnswerRepo = $respondentQuestionAnswerRepo;
         $this->prospectAppraisalRepo = $prospectAppraisalRepo;
-        $this->prospectAppraiserDetaislRepo = $prospectAppraiserDetailsRepo;
+        $this->prospectAppraiserDetailsRepo = $prospectAppraiserDetailsRepo;
+
+        $prospectAppraiserDetailsRepo->get( [ "base_price" ], [ "business_id" => 0 ], "raw" );
+        $prospectAppraiserDetailsRepo->get( [ "base_question_value" ], [ "business_id" => 0 ], "raw" );
+        // $this->setBasePrice(
+        // );
+        //
+        // $this->setBaseQuestionValue(
+        // );
 	}
 
 	public function appraise( \Model\Prospect $prospect )
@@ -60,4 +68,14 @@ class ProspectAppraiser
 	{
 		$this->prospect_price = $this->prospect_price + ( $value_to_be_weighted * $weight );
 	}
+
+    private function setBasePrice( $base_price )
+    {
+        $this->base_price = $base_price;
+    }
+
+    private function setBaseQuestionValue( $value )
+    {
+        $this->base_question_value = $value;
+    }
 }
