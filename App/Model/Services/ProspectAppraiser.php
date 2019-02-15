@@ -5,7 +5,8 @@ namespace Model\Services;
 use Model\Services\QuestionChoiceWeightRepository,
     Model\Services\RespondentRepository,
 	Model\Services\RespondentQuestionAnswerRepository,
-    Model\Services\ProspectAppraisalRepository;
+    Model\Services\ProspectAppraisalRepository,
+    Model\Services\ProspectAppraiserDetailsRepository;
 
 class ProspectAppraiser
 {
@@ -13,6 +14,7 @@ class ProspectAppraiser
 	public $respondentRepo;
 	public $respondentQuestionAnswerRepo;
     public $prospectAppraisalRepo;
+    public $prospectAppraiserDetailsRepository;
 	public $prospect_price = 5;
 	public $base_question_value = 1;
 
@@ -20,13 +22,15 @@ class ProspectAppraiser
 		QuestionChoiceWeightRepository $questionChoiceWeightRepo,
 		RespondentRepository $respondentRepo,
 		RespondentQuestionAnswerRepository $respondentQuestionAnswerRepo,
-        ProspectAppraisalRepository $prospectAppraisalRepo
+        ProspectAppraisalRepository $prospectAppraisalRepo,
+        ProspectAppraiserDetailsRepository $prospectAppraiserDetailsRepo
 	)
 	{
 		$this->questionChoiceWeightRepo = $questionChoiceWeightRepo;
 		$this->respondentRepo = $respondentRepo;
 		$this->respondentQuestionAnswerRepo = $respondentQuestionAnswerRepo;
         $this->prospectAppraisalRepo = $prospectAppraisalRepo;
+        $this->prospectAppraiserDetaislRepo = $prospectAppraiserDetailsRepo;
 	}
 
 	public function appraise( \Model\Prospect $prospect )
