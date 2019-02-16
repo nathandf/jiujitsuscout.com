@@ -254,6 +254,9 @@ class Assets extends Controller
 
         $videos = $videoRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
 
+        ini_set( "post_max_size", "100M" );
+        ini_set( "upload_max_filesize", "100M" );
+
         if ( $input->exists() && $input->issetField( "video" ) && $inputValidator->validate(
                 $input,
                 [

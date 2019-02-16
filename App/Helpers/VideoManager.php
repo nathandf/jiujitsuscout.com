@@ -29,7 +29,6 @@ class VideoManager
             $this->setNewVideoFileName( $new_video_name );
             $this->setNewVideoType( $_FILES[ $index ][ "type" ] );
 
-            die("----");
             return $new_video_name;
         }
 
