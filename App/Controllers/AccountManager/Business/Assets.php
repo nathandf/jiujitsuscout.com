@@ -257,6 +257,8 @@ class Assets extends Controller
         ini_set( "post_max_size", "100M" );
         ini_set( "upload_max_filesize", "100M" );
 
+        die( "This feature is under construction" );
+
         if ( $input->exists() && $input->issetField( "video" ) && $inputValidator->validate(
                 $input,
                 [
