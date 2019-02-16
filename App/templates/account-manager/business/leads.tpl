@@ -56,23 +56,25 @@
 						</tr>
 						{foreach from=$prospects item=prospect}
 							{if $prospect->type == "trial" || $prospect->type == "lead"}
-								{if $prospect->requires_purchase && !isset($prospect->prospect_purchase) && isset($prospect->appraisal) && ( $user->role == "administrator" || $user->role == "manager")}
-								<tr>
-									<td>
-									</td>
-									<td>
-										<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="tag floatleft unpurchased push-t-med mat-hov">
-											<div class="lead-icon-container floatleft">
-												<span class="lead-icon bg-good-green tc-black" style="color: #fff;"><i class="fa fa-user" aria-hidden="true"></i></span>
-											</div>
-											<div class="lead-data floatleft">
-												<p class="lead-name">New Lead</p>
-												<p class="text-lrg">{$business->currency->symbol}{$prospect->appraisal->value|string_format:"%.2f"}</p>
-											</div>
-											<div class="clear"></div>
-										</a>
-									</td>
-								<tr>
+								{if $prospect->requires_purchase && !isset($prospect->prospect_purchase) && isset($prospect->appraisal)}
+									{if in_array( $user->role, [ "owner", "administrator", "manager" ] )}
+									<tr>
+										<td>
+										</td>
+										<td>
+											<a href="{$HOME}account-manager/business/lead/{$prospect->id}/" id="lead{$prospect->id}" class="tag floatleft unpurchased push-t-med mat-hov">
+												<div class="lead-icon-container floatleft">
+													<span class="lead-icon bg-good-green tc-black" style="color: #fff;"><i class="fa fa-user" aria-hidden="true"></i></span>
+												</div>
+												<div class="lead-data floatleft">
+													<p class="lead-name">New Lead</p>
+													<p class="text-lrg">{$business->currency->symbol}{$prospect->appraisal->value|string_format:"%.2f"}</p>
+												</div>
+												<div class="clear"></div>
+											</a>
+										</td>
+									<tr>
+									{/if}
 								{else}
 								<tr>
 									<td>

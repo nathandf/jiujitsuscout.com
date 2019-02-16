@@ -659,7 +659,7 @@ class Lead extends Controller
     {
         // Restrict access to administrators and managers
         $accessControl = $this->load( "access-control" );
-        if ( !$accessControl->hasAccess( [ "administrator", "manager" ], $this->user->role ) ) {
+        if ( !$accessControl->hasAccess( [ "owner", "administrator", "manager" ], $this->user->role ) ) {
             $this->view->render403();
         }
 

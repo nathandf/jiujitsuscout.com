@@ -1201,9 +1201,18 @@ $container->register( "prospect-appraiser", function() use ( $container ) {
 		$container->getService( "question-choice-weight-repository" ),
 		$container->getService( "respondent-repository" ),
 		$container->getService( "respondent-question-answer-repository" ),
-		$container->getService( "prospect-appraisal-repository" )
+		$container->getService( "prospect-appraisal-repository" ),
+		$container->getService( "prospect-appraiser-details-repository" )
 	);
 	return $prospectAppraiser;
+} );
+
+$container->register( "prospect-appraiser-details-repository", function() use ( $container ) {
+	$repo = new \Model\Services\ProspectAppraiserDetailsRepository(
+		$container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
 } );
 
 $container->register( "questionnaire-dispatcher", function() use ( $container ) {

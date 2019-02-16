@@ -5,7 +5,8 @@ namespace Model\Services;
 use Model\Services\QuestionChoiceWeightRepository,
     Model\Services\RespondentRepository,
 	Model\Services\RespondentQuestionAnswerRepository,
-    Model\Services\ProspectAppraisalRepository;
+    Model\Services\ProspectAppraisalRepository,
+    Model\Services\ProspectAppraiserDetailsRepository;
 
 class ProspectAppraiser
 {
@@ -13,20 +14,33 @@ class ProspectAppraiser
 	public $respondentRepo;
 	public $respondentQuestionAnswerRepo;
     public $prospectAppraisalRepo;
-	public $prospect_price = 5;
-	public $base_question_value = 1;
+    public $prospectAppraiserDetailsRepository;
+	public $prospect_price;
+    public $base_price;
+	public $base_question_value;
 
 	public function __construct(
 		QuestionChoiceWeightRepository $questionChoiceWeightRepo,
 		RespondentRepository $respondentRepo,
 		RespondentQuestionAnswerRepository $respondentQuestionAnswerRepo,
-        ProspectAppraisalRepository $prospectAppraisalRepo
-	)
-	{
+        ProspectAppraisalRepository $prospectAppraisalRepo,
+        ProspectAppraiserDetailsRepository $prospectAppraiserDetailsRepo
+	) {
 		$this->questionChoiceWeightRepo = $questionChoiceWeightRepo;
 		$this->respondentRepo = $respondentRepo;
 		$this->respondentQuestionAnswerRepo = $respondentQuestionAnswerRepo;
         $this->prospectAppraisalRepo = $prospectAppraisalRepo;
+        $this->prospectAppraiserDetailsRepo = $prospectAppraiserDetailsRepo;
+
+        $this->setBasePrice(
+            $prospectAppraiserDetailsRepo->get( [ "base_price" ], [ "business_id" => 0 ], "raw" )[ 0 ]
+        );
+
+        $this->setBaseQuestionValue(
+            $prospectAppraiserDetailsRepo->get( [ "base_question_value" ], [ "business_id" => 0 ], "raw" )[ 0 ]
+        );
+
+        $this->setProspectPrice( $this->getBasePrice() );
 	}
 
 	public function appraise( \Model\Prospect $prospect )
@@ -56,4 +70,24 @@ class ProspectAppraiser
 	{
 		$this->prospect_price = $this->prospect_price + ( $value_to_be_weighted * $weight );
 	}
+
+    private function setBasePrice( $base_price )
+    {
+        $this->base_price = $base_price;
+    }
+
+    public function getBasePrice()
+    {
+        return $this->base_price;
+    }
+
+    private function setBaseQuestionValue( $value )
+    {
+        $this->base_question_value = $value;
+    }
+
+    private function setProspectPrice( $price )
+    {
+        $this->prospect_price = $price;
+    }
 }
