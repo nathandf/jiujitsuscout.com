@@ -12,6 +12,7 @@ class VideoManager
 
     public function saveVideoTo( $index, $save_to_path = "public/videos/" )
     {
+        vdumpd($_FILES);
         if ( isset( $_FILES[ $index ] ) ) {
             $file_name      = $_FILES[ $index ][ "name" ];
             $file_type      = $_FILES[ $index ][ "type" ];
