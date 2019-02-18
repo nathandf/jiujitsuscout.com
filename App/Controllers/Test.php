@@ -27,4 +27,15 @@ class Test extends Controller
     {
         unset( $_SESSION[ "respondent-token" ] );
     }
+
+    public function twilio()
+    {
+        $smsMessager = $this->load( "sms-messager" );
+        $smsMessager->setRecipientCountryCode( 1 )
+            ->setRecipientNationalNumber( "8122763172" )
+            ->setSenderCountryCode( 1 )
+            ->setSenderNationalNumber( "2812451567" )
+            ->setSMSBody( "This is a test" )
+            ->send();
+    }
 }

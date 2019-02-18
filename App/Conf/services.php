@@ -929,6 +929,20 @@ $container->register( "transaction-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "twilio-client-initializer", function() use ( $container ) {
+	$obj = new \Model\Services\TwilioClientInitializer(
+	    $container->getService( "config" )
+	);
+	return $obj;
+} );
+
+$container->register( "twilio-sms-messager", function() use ( $container ) {
+	$obj = new \Model\Services\TwilioSMSMessager(
+	    $container->getService( "twilio-client-initializer" )
+	);
+	return $obj;
+} );
+
 $container->register( "unsubscribe-repository", function() use ( $container ) {
 	$repo = new \Model\Services\UnsubscribeRepository(
 	    $container->getService( "dao" ),
@@ -1047,11 +1061,6 @@ $container->register( "user-mailer", function() use ( $container ) {
 $container->register( "sales-agent-mailer", function() use ( $container ) {
 	$mailerService = new \Model\Services\SalesAgentMailer( $container->getService( "mailer" ) );
 	return $mailerService;
-} );
-
-$container->register( "twilio-sms-messager", function() {
-	$twilioMessager = new \Model\Services\TwilioSMSMessager;
-	return $twilioMessager;
 } );
 
 $container->register( "sms-messager", function() use ( $container ) {
