@@ -83,9 +83,9 @@
 				<div class="clear"></div>
 				{/foreach}
 				{else}
-				<p class="push-t-med">-- No Text Messages have been created yet --</p>
+				<p class="push-t-med">-- No Emails have been created yet --</p>
 				<div class="clear push-t-med"></div>
-				<a class="btn btn-inline text-med-heavy bg-deep-blue" href="{$HOME}account-manager/business/text-message/new">Create a Text Message +</a>
+				<a class="btn btn-inline text-med-heavy bg-deep-blue" href="{$HOME}account-manager/business/email/new">Create an Email +</a>
 				{/if}
 			</div>
 			<div id="text-message-templates-container" class="event-templates-container" style="display: none;">

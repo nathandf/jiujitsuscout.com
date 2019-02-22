@@ -929,16 +929,23 @@ $container->register( "transaction-repository", function() use ( $container ) {
 	return $repo;
 } );
 
-$container->register( "twilio-client-initializer", function() use ( $container ) {
-	$obj = new \Model\Services\TwilioClientInitializer(
+$container->register( "twilio-api-initializer", function() use ( $container ) {
+	$obj = new \Model\Services\TwilioAPIInitializer(
 	    $container->getService( "config" )
+	);
+	return $obj;
+} );
+
+$container->register( "twilio-service-dispatcher", function() use ( $container ) {
+	$obj = new \Model\Services\TwilioServiceDispatcher(
+	    $container->getService( "twilio-api-initializer" )
 	);
 	return $obj;
 } );
 
 $container->register( "twilio-sms-messager", function() use ( $container ) {
 	$obj = new \Model\Services\TwilioSMSMessager(
-	    $container->getService( "twilio-client-initializer" )
+	    $container->getService( "twilio-api-initializer" )
 	);
 	return $obj;
 } );

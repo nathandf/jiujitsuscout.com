@@ -30,12 +30,35 @@ class Test extends Controller
 
     public function twilio()
     {
+        $input = $this->load( "input" );
         $smsMessager = $this->load( "sms-messager" );
-        $smsMessager->setRecipientCountryCode( 1 )
-            ->setRecipientNationalNumber( "8122763172" )
-            ->setSenderCountryCode( 1 )
-            ->setSenderNationalNumber( "2812451567" )
-            ->setSMSBody( "This is a test" )
-            ->send();
+
+        if ( $input->exists() && $input->issetField( "body" ) ) {
+            $smsMessager->setRecipientCountryCode( 1 )
+                ->setRecipientNationalNumber( "8122763172" )
+                ->setSenderCountryCode( 1 )
+                ->setSenderNationalNumber( "2812451567" )
+                ->setSMSBody( trim( $input->get( "body" ) ) )
+                ->send();
+            $this->view->redirect( "test/twilio" );
+        }
+
+        $this->view->setTemplate( "test/sms-message.tpl" );
+        $this->view->render( "App/Views/Home.php" );
+    }
+
+    public function twilioPurchaseNumber()
+    {
+        $businessRepo = $this->load( "business-repository" );
+        $twilioServiceDispatcher = $this->load( "twilio-service-dispatcher" );
+
+        $business = $businessRepo->get( [ "*" ], [ "id" => 1 ], "single" );
+
+        $number = $twilioServiceDispatcher->purchaseNumber(
+            "US",
+            $business->getLatLonArray()
+        );
+
+        vdumpd( $number );
     }
 }

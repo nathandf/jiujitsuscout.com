@@ -219,6 +219,9 @@ class Email extends Controller
                 $emailBuilderHelper->getEmailBody()
             );
 
+            $this->session->addFlashMessage( "Email Created: {$input->get( "name" )}" );
+            $this->session->setFlashMessages();
+
             $this->view->redirect( "account-manager/business/email/" . $emailTemplate->id . "/" );
         }
 

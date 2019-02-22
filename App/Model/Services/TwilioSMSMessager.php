@@ -3,9 +3,11 @@
 namespace Model\Services;
 
 use Contracts\SMSMessagerInterface;
+use \Model\Services\TwilioAPIInitializer;
 
 class TwilioSMSMessager implements SMSMessagerInterface
 {
+    private $api;
     private $client;
     private $recipient_country_code;
     private $recipient_national_number;
@@ -14,20 +16,23 @@ class TwilioSMSMessager implements SMSMessagerInterface
     private $sms_body;
 
     public function __construct(
-        \Model\Services\TwilioClientInitializer $twilioClientInitializer
+        TwilioAPIInitializer $twilioAPIInitializer
     ){
-        $this->client = $twilioClientInitializer->init();
+        $this->api = $twilioAPIInitializer;
+        $this->client = $this->api->init();
     }
 
     public function send()
     {
-        $this->client->messages->create(
+        $message = $this->client->messages->create(
             $this->getRecipientFullPhoneNumber(),
             [
-                'from' => $this->getSenderFullPhoneNumber(),
-                'body' => $this->getSMSBody()
+                "from" => $this->getSenderFullPhoneNumber(),
+                "body" => $this->getSMSBody(),
+                "statusCallback" => $this->api->getStatusCallback()
             ]
         );
+
         return $this;
     }
 
