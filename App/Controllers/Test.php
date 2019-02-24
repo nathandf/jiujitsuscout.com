@@ -58,7 +58,11 @@ class Test extends Controller
             "US",
             $business->getLatLonArray()
         );
+    }
 
-        vdumpd( $number );
+    public function twilioCall()
+    {
+        $twilioServiceDispatcher = $this->load( "twilio-service-dispatcher" );
+        $twilioServiceDispatcher->call( "+18122763172", "+12812451567"  );
     }
 }

@@ -11,8 +11,10 @@ class TwilioSMSMessager implements SMSMessagerInterface
     private $client;
     private $recipient_country_code;
     private $recipient_national_number;
+    private $recipient_E164_phone_number = null;
     private $sender_country_code;
     private $sender_national_number;
+    private $sender_E164_phone_number = null;
     private $sms_body;
 
     public function __construct(
@@ -24,6 +26,23 @@ class TwilioSMSMessager implements SMSMessagerInterface
 
     public function send()
     {
+        // Send using E164 formatted phone numbers if not null
+        if (
+            !is_null( $recipient_E164_phone_number ) &&
+            !is_null( $sender_E164_phone_number )
+        ) {
+            $message = $this->client->messages->create(
+                $this->recipient_E164_phone_number,
+                [
+                    "from" => $this->sender_E164_phone_number,
+                    "body" => $this->getSMSBody(),
+                    "statusCallback" => $this->api->getStatusCallback()
+                ]
+            );
+
+            return $this;
+        }
+
         $message = $this->client->messages->create(
             $this->getRecipientFullPhoneNumber(),
             [
@@ -119,5 +138,17 @@ class TwilioSMSMessager implements SMSMessagerInterface
     public function getSenderFullPhoneNumber()
     {
         return "+" . $this->getSenderCountryCode() . $this->getSenderNationalNumber();
+    }
+
+    public function setRecipientE164PhoneNumber( $phone_number )
+    {
+        $this->$recipient_E164_phone_number = $phone_number;
+        return $this;
+    }
+
+    public function setSenderE164PhoneNumber( $phone_number )
+    {
+        $this->$sender_E164_phone_number = $phone_number;
+        return $this;
     }
 }

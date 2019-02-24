@@ -23,10 +23,10 @@ class TwilioAPIInitializer
 				$this->setStatusCallback( "https://postb.in/oYxlZsq2" );
 				break;
 			case "production":
-				$this->setStatusCallback( "https://www.jiujitsuscout.com/webhooks/twilio/status-callback" );
+				$this->setStatusCallback( "https://www.jiujitsuscout.com/webhooks/twilio/status/" );
 				break;
 			default:
-				$this->setStatusCallback( "https://www.jiujitsuscout.com/webhooks/twilio/status-callback" );
+				$this->setStatusCallback( "https://www.jiujitsuscout.com/webhooks/twilio/status/" );
 				break;
 		}
 	}

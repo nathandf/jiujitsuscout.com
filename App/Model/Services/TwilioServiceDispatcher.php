@@ -30,7 +30,7 @@ class TwilioServiceDispatcher
         return $numbers;
     }
 
-    public function purchaseNumber( $iso, array $latLonArray )
+    public function purchaseBusinessNumber( $business_id, $iso, array $latLonArray )
     {
         $numbers = $this->findAvailableNumbersNearLatLon(
             $iso,
@@ -43,7 +43,11 @@ class TwilioServiceDispatcher
             $number = $this->client->incomingPhoneNumbers
                 ->create(
                     [
-                        "phoneNumber" => $numbers[0]->phoneNumber
+                        "phoneNumber" => $numbers[0]->phoneNumber,
+                        "smsMethod" => "POST",
+                        "smsUrl" => "https://jiujitsuscout.com/webhooks/twilio/{$busness_id}/incoming/sms",
+                        "voiceMethod" => "POST",
+                        "voiceUrl" => "https://jiujitsuscout.com/webhooks/twilio/{$buisness_id}/incoming/voice"
                     ]
                 );
         }
@@ -51,14 +55,25 @@ class TwilioServiceDispatcher
         return $number;
     }
 
-    public function forwardCall( $phone_number )
-    {
-        $twiml = new Twiml();
-        $wiml->dial( $this->formatPhoneNumberE164( $phone_number ) );
-    }
-
     private function formatPhoneNumberE164( $phone_number )
     {
         return $phone_number;
+    }
+
+    public function call( $to_phone_number, $from_phone_number )
+    {
+        $this->client->account->calls->create(
+            $to_phone_number,
+            $from_phone_number,
+            [
+                "url" => "http://demo.twilio.com/docs/voice.xml"
+            ]
+        );
+    }
+
+    public function forwardCall( $phone_number )
+    {
+        $twiml = new Twiml();
+        $twiml->dial( $this->formatPhoneNumberE164( $phone_number ) );
     }
 }
