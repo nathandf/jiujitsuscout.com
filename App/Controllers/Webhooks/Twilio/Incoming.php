@@ -8,12 +8,20 @@ class Incoming extends Controller
 {
     public function before()
     {
-        $this->requireParam( "id" );
+        $this->requireParam( "sid" );
         $businessRepo = $this->load( "business-repository" );
         $phoneRepo = $this->load( "phone-repository" );
         $this->twilioServiceDispatcher = $this->load( "twilio-service-dispatcher" );
+        $twilioPhoneNumberRepo = $this->load( "twilio-phone-number-repository" );
 
-        $this->business = $businessRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
+        $this->twilioPhoneNumber = $twilioPhoenNumberRepo->get( [ "*" ], [ "sid" => $this->params[ "sid" ] ], "single" );
+
+        // If no twilio phone number exists
+        if ( is_null( $this->twilioPhoneNumber ) ) {
+            return;
+        }
+
+        $this->business = $businessRepo->get( [ "*" ], [ "id" => $this->twilioPhoneNumber->business_id ], "single" );
         $this->business->phone = $phoneRepo->get( [ "*" ], [ "id" => $this->business->phone_id ], "single" );
     }
 

@@ -50,19 +50,35 @@ class Test extends Controller
     public function twilioPurchaseNumber()
     {
         $businessRepo = $this->load( "business-repository" );
+        $countryRepo = $this->load( "country-repository" );
+        $addressRepo = $this->load( "address-repository" );
+        $twilioPhoneNumberRepo = $this->load( "twilio-phone-number-repository" );
         $twilioServiceDispatcher = $this->load( "twilio-service-dispatcher" );
+        $twilioPhoneNumberBuyer = $this->load( "twilio-phone-number-buyer" );
 
-        $business = $businessRepo->get( [ "*" ], [ "id" => 1 ], "single" );
+        $business = $businessRepo->get( [ "*" ], [ "id" => 64 ], "single" );
+        $business->address = $addressRepo->get( [ "*" ], [ "id" => $business->address_id ], "single" );
+        $business->country = $countryRepo->get( [ "*" ], [ "id" => $business->address->country_id ], "single" );
 
-        $number = $twilioServiceDispatcher->purchaseNumber(
-            "US",
+        $numbers = $twilioServiceDispatcher->findAvailableNumbersNearLatLon(
+            $business->country->iso,
             $business->getLatLonArray()
         );
+
+        if ( !empty( $numbers ) ) {
+            $twilioPhoneNumberBuyer->buy( $numbers[ 0 ] );
+        }
     }
 
     public function twilioCall()
     {
         $twilioServiceDispatcher = $this->load( "twilio-service-dispatcher" );
         $twilioServiceDispatcher->call( "+18122763172", "+12812451567"  );
+    }
+
+    public function twilioFetchPhoneNumber()
+    {
+        $twilioPhoneNumberBuyer = $this->load( "twilio-phone-number-buyer" );
+        $number = $twilioPhoneNumberBuyer->updateByPhoneNumber( "+13462203101" );
     }
 }

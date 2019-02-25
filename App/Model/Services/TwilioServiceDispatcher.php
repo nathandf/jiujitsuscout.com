@@ -18,7 +18,7 @@ class TwilioServiceDispatcher
     }
 
     // $iso -> ISO6631-1 alpha-2 format
-    public function findAvailableNumbersNearLatLon( $iso, array $latLonArray )
+    public function findAvailableNumbersNearLatLon( $iso, $latLonArray )
     {
         $numbers = [];
         if ( !empty( $latLonArray ) ) {
@@ -28,31 +28,6 @@ class TwilioServiceDispatcher
         }
 
         return $numbers;
-    }
-
-    public function purchaseBusinessNumber( $business_id, $iso, array $latLonArray )
-    {
-        $numbers = $this->findAvailableNumbersNearLatLon(
-            $iso,
-            $latLonArray
-        );
-
-        $number = null;
-        if ( !empty( $numbers ) ) {
-            // Purchase the first number on the list.
-            $number = $this->client->incomingPhoneNumbers
-                ->create(
-                    [
-                        "phoneNumber" => $numbers[0]->phoneNumber,
-                        "smsMethod" => "POST",
-                        "smsUrl" => "https://jiujitsuscout.com/webhooks/twilio/{$busness_id}/incoming/sms",
-                        "voiceMethod" => "POST",
-                        "voiceUrl" => "https://jiujitsuscout.com/webhooks/twilio/{$buisness_id}/incoming/voice"
-                    ]
-                );
-        }
-
-        return $number;
     }
 
     private function formatPhoneNumberE164( $phone_number )

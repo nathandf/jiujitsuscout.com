@@ -936,6 +936,21 @@ $container->register( "twilio-api-initializer", function() use ( $container ) {
 	return $obj;
 } );
 
+$container->register( "twilio-phone-number-repository", function() use ( $container ) {
+	$repo = new \Model\Services\TwilioPhoneNumberRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "twilio-phone-number-buyer", function() use ( $container ) {
+	$obj = new \Model\Services\TwilioPhoneNumberBuyer(
+	    $container->getService( "twilio-api-initializer" )
+	);
+	return $obj;
+} );
+
 $container->register( "twilio-service-dispatcher", function() use ( $container ) {
 	$obj = new \Model\Services\TwilioServiceDispatcher(
 	    $container->getService( "twilio-api-initializer" )
