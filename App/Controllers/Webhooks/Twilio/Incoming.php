@@ -6,6 +6,8 @@ use \Core\Controller;
 
 class Incoming extends Controller
 {
+    public $business_phone = null;
+
     public function before()
     {
         $this->requireParam( "sid" );
@@ -21,8 +23,10 @@ class Incoming extends Controller
             return;
         }
 
-        $this->business = $businessRepo->get( [ "*" ], [ "id" => $this->twilioPhoneNumber->business_id ], "single" );
-        $this->business->phone = $phoneRepo->get( [ "*" ], [ "id" => $this->business->phone_id ], "single" );
+        $tbusiness = $businessRepo->get( [ "*" ], [ "id" => $this->twilioPhoneNumber->business_id ], "single" );
+        if ( !is_null( $business ) ) {
+            $this->business_phone = $phoneRepo->get( [ "*" ], [ "id" => $business->phone_id ], "single" );
+        }
     }
 
     public function smsAction()
@@ -33,8 +37,10 @@ class Incoming extends Controller
     public function callAction()
     {
         // Forward the call the business's phone number
-        $this->twilioServiceDispatcher->forwardCall(
-            $this->business->phone->getE164FormattedPhoneNumber()
-        );
+        if ( !is_null( $this->business_phone ) ) {
+            $this->twilioServiceDispatcher->forwardCall(
+                $this->business_phone->getE164FormattedPhoneNumber()
+            );
+        }
     }
 }
