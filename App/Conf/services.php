@@ -929,6 +929,42 @@ $container->register( "transaction-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "twilio-api-initializer", function() use ( $container ) {
+	$obj = new \Model\Services\TwilioAPIInitializer(
+	    $container->getService( "config" )
+	);
+	return $obj;
+} );
+
+$container->register( "twilio-phone-number-repository", function() use ( $container ) {
+	$repo = new \Model\Services\TwilioPhoneNumberRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "twilio-phone-number-buyer", function() use ( $container ) {
+	$obj = new \Model\Services\TwilioPhoneNumberBuyer(
+	    $container->getService( "twilio-api-initializer" )
+	);
+	return $obj;
+} );
+
+$container->register( "twilio-service-dispatcher", function() use ( $container ) {
+	$obj = new \Model\Services\TwilioServiceDispatcher(
+	    $container->getService( "twilio-api-initializer" )
+	);
+	return $obj;
+} );
+
+$container->register( "twilio-sms-messager", function() use ( $container ) {
+	$obj = new \Model\Services\TwilioSMSMessager(
+	    $container->getService( "twilio-api-initializer" )
+	);
+	return $obj;
+} );
+
 $container->register( "unsubscribe-repository", function() use ( $container ) {
 	$repo = new \Model\Services\UnsubscribeRepository(
 	    $container->getService( "dao" ),
@@ -1047,11 +1083,6 @@ $container->register( "user-mailer", function() use ( $container ) {
 $container->register( "sales-agent-mailer", function() use ( $container ) {
 	$mailerService = new \Model\Services\SalesAgentMailer( $container->getService( "mailer" ) );
 	return $mailerService;
-} );
-
-$container->register( "twilio-sms-messager", function() {
-	$twilioMessager = new \Model\Services\TwilioSMSMessager;
-	return $twilioMessager;
 } );
 
 $container->register( "sms-messager", function() use ( $container ) {

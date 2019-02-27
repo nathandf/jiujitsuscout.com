@@ -80,7 +80,7 @@ class Form extends Controller
 
         $embeddableForm = $embeddableFormRepo->get( [ "*" ], [ "id" => $this->params[ "id" ] ], "single" );
         $embeddableForm = $embeddableFormRepo->getByID( $this->params[ "id" ] );
-        $formCode = "<iframe src=\"" . HOME . "forms/{$this->business->id}/{$embeddableForm->token}\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\" style=\"width: 100%; max-width: 600px; height: 400px;\">Loading...</iframe>";
+        $formCode = "<iframe src=\"" . HOME . "forms/{$this->business->id}/{$embeddableForm->token}\" target=\"_parent\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\" style=\"width: 100%; max-width: 600px; height: 400px;\">Loading...</iframe>";
 
         $sequenceTemplates = $sequenceTemplateRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $sequence_template_ids_all = $sequenceTemplateRepo->get( [ "id" ], [ "business_id" => $this->business->id ], "raw" );

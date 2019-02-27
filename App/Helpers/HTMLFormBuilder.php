@@ -18,7 +18,7 @@ class HTMLFormBuilder
 	<script type="text/javascript" src="{{javascript_resource_url}}"></script>
 	<div class="{{application_prefix}}form-container">
 		<p class="{{application_prefix}}form-offer">{{form_offer}}</p>
-		<form action="{{action}}" id="" method="post">
+		<form action="{{action}}" id="" method="post" target="_parent">
 			<div style="position:absolute;left:-9999px;">
 				<input id="f873f916d9706847402b08cd30c5d584" type="text" name="f873f916d9706847402b08cd30c5d584" tabindex="-1" autocomplete="off">
 			</div>
