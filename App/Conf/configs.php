@@ -98,9 +98,9 @@ $config[ "sendgrid" ] = [
 
 // Twilio API
 $config[ "twilio" ] = [
-    "twilio_primary_number" => "+18327569315",
-    "twilio_account_sid" => "AC3d93be2edcbca441047413b94b2dc0f2",
-    "twilio_auth_token" => "8ed2a4adecc920d870cd605464bd5bf4"
+    "primary_number" => "+12812451567",
+    "account_sid" => "AC3d93be2edcbca441047413b94b2dc0f2",
+    "auth_token" => "8ed2a4adecc920d870cd605464bd5bf4"
 ];
 
 // PayPal API

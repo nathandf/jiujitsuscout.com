@@ -6,7 +6,6 @@ use Contracts\EntityInterface;
 
 class Business implements EntityInterface
 {
-
     public $video_id;
     public $logo_image_id;
     public $facebook_pixel_id;
@@ -33,4 +32,12 @@ class Business implements EntityInterface
         return $slug;
     }
 
+    public function getLatLonArray()
+    {
+        if ( !is_null( $this->latitude ) && !is_null( $this->longitude ) ) {
+            return [ $this->latitude, $this->longitude ];
+        }
+
+        return [];
+    }
 }
