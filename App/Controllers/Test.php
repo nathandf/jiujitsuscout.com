@@ -65,8 +65,18 @@ class Test extends Controller
             $business->getLatLonArray()
         );
 
+        // Purchase a local number if one exists
         if ( !empty( $numbers ) ) {
-            $twilioPhoneNumberBuyer->buy( $numbers[ 0 ] );
+            $number = $twilioPhoneNumberBuyer->buy( $numbers[ 0 ] );
+            if ( $number ) {
+                // Create a twilio phone number entity if a number was purchased
+                $twilioPhoneNumberRepo->create([
+                    "business_id" => $business->id,
+                    "sid" => $number->sid,
+                    "phone_number" => $number->phoneNumber,
+                    "friendly_name" => $number->friendlyName
+                ]);
+            }
         }
     }
 

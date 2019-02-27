@@ -14,7 +14,7 @@ class Incoming extends Controller
         $this->twilioServiceDispatcher = $this->load( "twilio-service-dispatcher" );
         $twilioPhoneNumberRepo = $this->load( "twilio-phone-number-repository" );
 
-        $this->twilioPhoneNumber = $twilioPhoenNumberRepo->get( [ "*" ], [ "sid" => $this->params[ "sid" ] ], "single" );
+        $this->twilioPhoneNumber = $twilioPhoneNumberRepo->get( [ "*" ], [ "sid" => $this->params[ "sid" ] ], "single" );
 
         // If no twilio phone number exists
         if ( is_null( $this->twilioPhoneNumber ) ) {
