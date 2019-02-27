@@ -34,7 +34,7 @@ class Incoming extends Controller
         // TODO get sender data
     }
 
-    public function callAction()
+    public function voiceAction()
     {
         // Forward the call the business's phone number
         if ( !is_null( $this->business_phone ) ) {
