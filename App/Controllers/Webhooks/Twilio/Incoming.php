@@ -23,7 +23,7 @@ class Incoming extends Controller
             return;
         }
 
-        $tbusiness = $businessRepo->get( [ "*" ], [ "id" => $this->twilioPhoneNumber->business_id ], "single" );
+        $business = $businessRepo->get( [ "*" ], [ "id" => $this->twilioPhoneNumber->business_id ], "single" );
         if ( !is_null( $business ) ) {
             $this->business_phone = $phoneRepo->get( [ "*" ], [ "id" => $business->phone_id ], "single" );
         }
