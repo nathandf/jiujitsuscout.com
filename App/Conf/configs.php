@@ -8,7 +8,7 @@ $config[ "approved_server_names" ] = [
 
 $config[ "allowable_origins" ] = [
     "https://www.jiujitsuscout.com"
-]
+];
 
 $config[ "indexable_domains" ] = [
     "www.jiujitsuscout.com"
