@@ -63,7 +63,7 @@ class Form extends Controller
         }
 
         // Add this business's website to the origin whitelist for CORs
-        $origins = $config::$configs[ "allowable_origins" ]
+        $origins = $config::$configs[ "allowable_origins" ];
         array_push( $origins, $business->website );
         $request->populateWhitelist( $origins );
 
