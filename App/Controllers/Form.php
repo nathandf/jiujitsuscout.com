@@ -28,6 +28,7 @@ class Form extends Controller
         $request = $this->load( "request" );
         $userRepo = $this->load( "user-repository" );
         $leadCaptureBuilder = $this->load( "lead-capture-builder" );
+        $config = $this->load( "config" );
 
         $embeddableForm = $embeddableFormRepo->getByToken( $this->params[ "token" ] );
 
@@ -62,10 +63,12 @@ class Form extends Controller
         }
 
         // Add this business's website to the origin whitelist for CORs
-        $request->populateWhitelist( $business->website );
+        $origins = $config::$configs[ "allowable_origins" ];
+        array_push( $origins, $business->website );
+        $request->populateWhitelist( $origins );
 
         // Check that the origin of this request is on the whitelist and set the access
-        // control cross origin header through the request object
+        // control cross origin header through the request object.
         if ( !$request->allowOrigin( $request->getOrigin() ) ) {
             $this->view->render403();
         }

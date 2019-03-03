@@ -70,7 +70,7 @@ class LeadCaptureBuilder
 
     public function setEmbeddableFormID( $embeddable_form_id )
     {
-        $this->embeddable_id = $embeddable_id;
+        $this->embeddable_form_id = $embeddable_form_id;
         return $this;
     }
 
@@ -103,7 +103,7 @@ class LeadCaptureBuilder
         if ( !is_null( $this->embeddable_form_id ) ) {
             $this->embeddableFormLeadCaptureRepo->insert([
                 "lead_capture_id" => $leadCapture->id,
-                "embeddable_form_id" => $embeddable_form_id
+                "embeddable_form_id" => $this->embeddable_form_id
             ]);
         }
 
