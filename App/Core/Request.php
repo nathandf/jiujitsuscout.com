@@ -6,6 +6,7 @@ class Request
 {
 	private $origin_whitelist = [];
 
+	// TODO validate that origins are valid URLs
 	public function populateWhitelist( $origins )
 	{
 		if ( is_array( $origins ) ) {
@@ -41,8 +42,6 @@ class Request
 		} else {
 			$origin = $_SERVER[ "REMOTE_ADDR" ];
 		}
-
-		vdumpd( $origin );
 
 		return $origin;
 	}
