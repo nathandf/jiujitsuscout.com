@@ -39,7 +39,7 @@ class Form extends Controller
         $source = "Embeddable Form: " . $embeddableForm->name;
 
         // Get the business that owns this form
-        $business = $businessRepo->getByID( $embeddableForm->business_id );
+        $business = $businessRepo->get( [ "*" ], [ "id" => $embeddableForm->business_id ], "single");
 
         // Get phone for business
         $business->phone = $phoneRepo->get( [ "*" ], [ "id" => $business->phone_id ], "single" );
@@ -55,7 +55,7 @@ class Form extends Controller
             );
 
             // Create an array of all possible submittable fields based on elements
-            // of this form. The keys of this array will formatted and map directly
+            // of this form. The keys of this array will be formatted and map directly
             // to properties of the prospect being registered or related objects
             $index = preg_replace( "/[\s]+/", "_", trim( strtolower( $embeddableFormElement->type->name ) ) );
             $prospectInfo[ "$index" ] = null;
