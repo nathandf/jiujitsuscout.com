@@ -50,5 +50,9 @@ class TwilioServiceDispatcher
     {
         $twiml = new Twiml();
         $twiml->dial( $this->formatPhoneNumberE164( $phone_number ) );
+
+        echo($twiml);
+
+        return $twiml;
     }
 }
