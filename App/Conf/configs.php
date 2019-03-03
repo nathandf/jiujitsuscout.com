@@ -6,6 +6,10 @@ $config[ "approved_server_names" ] = [
     "stupidsimple.tech"
 ];
 
+$config[ "allowable_origins" ] = [
+    "https://www.jiujitsuscout.com"
+]
+
 $config[ "indexable_domains" ] = [
     "www.jiujitsuscout.com"
 ];
