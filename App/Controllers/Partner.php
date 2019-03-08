@@ -161,8 +161,8 @@ class Partner extends Controller
 						"min" => 1,
 						"max" => 100
 					],
-					"first_name" => [
-						"name" => "First Name",
+					"name" => [
+						"name" => "Name",
 						"required" => true,
 						"min" => 1,
 						"max" => 150
@@ -185,11 +185,6 @@ class Partner extends Controller
 					"password" => [
 						"name" => "Password",
 						"required" => true
-					],
-					"confirm_password" => [
-						"name" => "Confirm Password",
-						"required" => true,
-						"equals" => $input->get( "password" )
 					],
 					"terms_conditions_agreement" =>  [
 						"name" => "Terms and Conditions",
@@ -221,7 +216,7 @@ class Partner extends Controller
 				"account_id" => $account->id,
 				"business_name" => $input->get( "gym_name" ),
 				"email" => $input->get( "email" ),
-				"contact_name" => $input->get( "first_name" ),
+				"contact_name" => $input->get( "name" ),
 				"phone_id" => $phone->id,
 				"address_id" => $address->id,
 				"timezone" => $this->timezone,
@@ -231,11 +226,11 @@ class Partner extends Controller
 			// Register user
 			$user = $userRepo->insert([
 				"account_id" => $account->id,
-				"first_name" => $input->get( "first_name" ),
+				"first_name" => $input->get( "name" ),
 				"phone_id" => $phone->id,
 				"current_business_id" => $business->id,
 				"email" => $input->get( "email" ),
-				"role" => "administrator",
+				"role" => "owner",
 				"password" => password_hash( $input->get( "password" ), PASSWORD_BCRYPT ),
 				"terms_conditions_agreement" => $input->get( "terms_conditions_agreement" )
 			]);
@@ -272,7 +267,7 @@ class Partner extends Controller
         // add_note
         if ( $input->issetField( "create_account" ) ) {
             $inputs[ "create_account" ][ "gym_name" ] = $input->get( "gym_name" );
-            $inputs[ "create_account" ][ "first_name" ] = $input->get( "first_name" );
+            $inputs[ "create_account" ][ "name" ] = $input->get( "name" );
             $inputs[ "create_account" ][ "email" ] = $input->get( "email" );
 			$inputs[ "create_account" ][ "country_code" ] = $input->get( "country_code" );
             $inputs[ "create_account" ][ "phone_number" ] = $input->get( "phone_number" );
