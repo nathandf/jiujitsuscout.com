@@ -13,11 +13,11 @@
 		{include file="includes/modals/marketing-consultation.tpl"}
 		<div id="get-started" class="clear"></div>
 		<div>
-			<p class="push-t-lrg push-b-lrg headline" style="text-align: center;">Capture more leads{if isset($geoInfo->city)} in <span class="city-name" id="city-name">{$geoInfo->city}</span>{else}.{/if}</p>
 			<div class="con-cnt-lrg inner-pad-med">
-				<p class="sub-title text-xlrg">The Lead Generating. Follow-up Automating. Growth Stimulating. Marketing Automation platform for martial arts businesses.</p>
+				<p class="title">A better way market your gym</p>
+				<p class="sub-title push-t-lrg">The Lead Generating. Follow-up Automating. Growth Stimulating. Marketing Automation platform for martial arts businesses.</p>
 			</div>
-			<div class="con-cnt-med-plus-plus push-t-med border-std inner-pad-med bg-white">
+			<div class="con-cnt-med-plus-plus border-std inner-pad-med bg-white push-t-med">
 				<form method="post" action="{$HOME}partner/sign-up">
 					<p class="label">Name of your gym</p>
 					<input type="text" name="gym_name" class="inp inp-full">

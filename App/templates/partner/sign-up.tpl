@@ -9,7 +9,7 @@
 	<body>
 		{include file="includes/loading-screens/account-creation.tpl"}
     	{include file='includes/navigation/main-menu.tpl'}
-		<p class="title">Create your account</p>
+		<p class="title title-h2 push-t-med">Create your account</p>
 		<div class="con-cnt-med-plus-plus inner-pad-med border-std bg-white push-t-med push-b-lrg">
 			{if !empty($error_messages.create_account)}
 				{foreach from=$error_messages.create_account item=message}
