@@ -6,7 +6,6 @@ use \Core\Controller;
 
 class Home extends Controller
 {
-
     public function before()
     {
         $ipinfo = $this->load( "ip-info" );
@@ -79,18 +78,15 @@ class Home extends Controller
         $discipline = null;
 
         if ( $input->exists( "get" ) && $input->issetField( "discipline" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "discipline" => [
                         "required" => true
                     ]
                 ],
-
                 "discipline" /* error index */
-            ) )
-        {
+            )
+        ) {
             if ( in_array( str_replace( "-", " ", $input->get( "discipline" ) ), $discipline_names ) ) {
                 $discipline = $disciplineRepo->get( [ "*" ], [ "name" => str_replace( "-", " ", $input->get( "discipline" ) ) ] );
             }
@@ -398,6 +394,54 @@ class Home extends Controller
         $this->view->render( "App/Views/Home.php" );
     }
 
+    public function studentRegistration()
+    {
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
+        $respondentRepo = $this->load( "respondent-repository" );
+
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        $facebookPixelBuilder->addEvent([
+            "ViewContent"
+        ]);
+
+        // Dispatch questionnaire
+
+        // Check session for a respondent token. If one doesnt exit, create a
+        // new respondent and dispatch the questionnaire. If a respondent does
+        // exist, load the respodent and pass through the last question id to
+        // start the questionnaire where that respondent left off.
+        $respondent_token = $this->session->getSession( "respondent-token" );
+
+        if ( is_null( $respondent_token ) ) {
+            // Generate a new token
+            $respondent_token = $this->session->generateToken();
+
+            // Set the session with the new respondent token
+            $this->session->setSession( "respondent-token", $respondent_token );
+
+            // Create a respondent with this questionnaire_id and respondent token
+            $respondentRepo->create( 2, $respondent_token );
+        }
+
+        // Load the respondent object
+        $respondent = $respondentRepo->getByToken( $respondent_token );
+
+        // Dispatch the questionnaire and return the questionnaire object
+        $questionnaireDispatcher->dispatch( 2 );
+        $questionnaire = $questionnaireDispatcher->getQuestionnaire();
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "questionnaire", $questionnaire );
+        $this->view->assign( "respondent", $respondent );
+
+        $this->view->setTemplate( "student-registration.tpl" );
+        $this->view->render( "App/Views/Home.php" );
+    }
+
     public function aboutUs()
     {
         $this->view->setTemplate( "about-us.tpl" );
@@ -460,5 +504,4 @@ class Home extends Controller
     {
         $this->view->redirect( "martial-arts-gyms/" );
     }
-
 }
