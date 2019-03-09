@@ -834,15 +834,16 @@ td {
 }
 
 .inp {
-	font-size: 15px;
+	font-size: 16px;
 	width: 85%;
 	box-sizing: border-box;
-    padding: 3px;
+    padding: 13px 15px;
 	background: #FFF;
-	color: #555;
-	border: 2px solid #CCC;
+	color: #2F3033;
+	border: 1px solid #D3D4D5;
 	border-radius: 4px;
-    text-indent: 10px;
+    line-height: 24px;
+    vertical-align: middle;
 }
 
 .inp:focus {
@@ -886,6 +887,10 @@ td {
 
 .inp-lrg {
     width: var(--lrg);
+}
+
+.inp-full {
+    width: 100%;
 }
 
 .text-input {
@@ -981,6 +986,13 @@ td {
 	outline-style: auto;
 }
 
+.label {
+    color: #2F3033;
+    font-weight: 700;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
 .checkbox-sml {
     width: 15px;
     height: 15px;
@@ -994,6 +1006,26 @@ td {
 .checkbox-lrg {
     width: 25px;
     height: 25px;
+}
+
+.button {
+    min-height: 46px;
+    line-height: 23px;
+    font-size: 16px;
+    text-align: center;
+    justify-content: center;
+    background: var(--main-btn-bg);
+    color: var(--main-btn-color);
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    border-radius: 3px;
+    transition: .4s;
+}
+
+.button:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    cursor: pointer;
 }
 
 /* Buttons */
@@ -1013,7 +1045,7 @@ td {
 
 .btn:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-    cursor: pointer
+    cursor: pointer;
 }
 
 .btn-cnt {
@@ -1401,6 +1433,29 @@ td {
     text-align: center;
     margin-top: 15px;
     margin-bottom: 15px;
+}
+
+.title {
+    color: #2F3033;
+    text-align: center;
+    font-weight: 700;
+    font-size: 42px;
+    font-family: 'Open Sans', 'Source Sans Pro', 'Roboto', 'Roboto Slab', sans-serif;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.title-h2 {
+    font-size: 30px;
+}
+
+.sub-title {
+    color: #2F3033;
+    text-align: center;
+    font-weight: 700;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .text-resp-sml {
@@ -1802,6 +1857,10 @@ td {
     .mob-pad-xlrg {
         padding-right: 10px;
         padding-left: 10px;
+    }
+
+    .title-h1 {
+        font-size: 33px;
     }
 
 }

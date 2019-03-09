@@ -13,20 +13,15 @@
 		{include file="includes/modals/marketing-consultation.tpl"}
 		<div id="get-started" class="clear"></div>
 		<div>
-			<p class="push-t-lrg push-b-lrg headline" style="text-align: center;">Capture more leads{if isset($geoInfo->city)} in <span class="city-name" id="city-name">{$geoInfo->city}</span>{else}.{/if}</p>
 			<div class="con-cnt-lrg inner-pad-med">
-				<p class="sub-title text-xlrg">Create a free account on our lead generation platform and fill your gym with excited new students. Only pay for the leads you want!</p>
+				<p class="title">A better way market your gym</p>
+				<p class="sub-title push-t-lrg">The Lead Generating. Follow-up Automating. Growth Stimulating. Marketing Automation platform for martial arts businesses.</p>
 			</div>
-			<div class="con-cnt-xlrg partner-box encapsulate first">
+			<div class="con-cnt-med-plus-plus border-std inner-pad-med bg-white push-t-med">
 				<form method="post" action="{$HOME}partner/sign-up">
-					<div class="con-inline">
-						<div class="clear"></div>
-						<input type="text" name="gym_name" class="sign-up-field" placeholder="Name of your gym">
-					</div>
-					<div class="con-inline">
-						<input type="submit" class="sign-up-button mat-hov bg-deep-blue" value="Get Started"/>
-					</div>
-					<p class="partner-title-bottom">Millions of people are searching for martial arts around the world every day.<br>We'll help them find you.</p>
+					<p class="label">Name of your gym</p>
+					<input type="text" name="gym_name" class="inp inp-full">
+					<input type="submit" class="button push-t-med" value="Get Started"/>
 				</form>
 			</div>
 			<div class="clear"></div>
