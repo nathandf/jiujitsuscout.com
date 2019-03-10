@@ -495,6 +495,9 @@ class Home extends Controller
                 [ "id" => $respondent_id ]
             );
 
+            $prospectAppraiser = $this->load( "prospect-appraiser" );
+            $prospectAppraiser->appraise( $prospect );
+
             $this->view->redirect( "registration-complete" );
         }
 

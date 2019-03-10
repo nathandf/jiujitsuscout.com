@@ -1055,6 +1055,7 @@ td {
     box-sizing: border-box;
     margin: 0;
     font-size: 16px;
+    font-weight: 100;
 }
 
 .btn-cnt {
