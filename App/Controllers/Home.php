@@ -28,7 +28,6 @@ class Home extends Controller
         } else {
             $this->view->assign( "geo", $this->session->getCookie( "geo-info" ) );
         }
-
     }
 
     public function indexAction()
@@ -400,6 +399,8 @@ class Home extends Controller
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
         $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
         $respondentRepo = $this->load( "respondent-repository" );
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
 
         $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
@@ -429,6 +430,69 @@ class Home extends Controller
         // Load the respondent object
         $respondent = $respondentRepo->getByToken( $respondent_token );
 
+        if ( $input->exists() && $input->issetField( "register" ) && $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "name" => [
+                        "name" => "Name",
+                        "required" => true
+                    ],
+                    "email" => [
+                        "name" => "Email",
+                        "required" => true,
+                        "email" => true
+                    ],
+                    "country_code" => [
+                        "required" => true,
+                        "numeric" => true
+                    ],
+                    "phone_number" => [
+                        "name" => "Phone",
+                        "required" => true,
+                        "phone" => true
+                    ]
+                ],
+                "register"
+            )
+        ) {
+            $phoneRepo = $this->load( "phone-repository" );
+            $prospectRepo = $this-> load( "prospect-repository" );
+
+            $phone = $phoneRepo->insert([
+                "country_code" => $input->get( "country_code" ),
+                "national_number" => $input->get( "national_number" )
+            ]);
+
+            $prospect = $prospectRepo->insert([
+                "business_id" => 0,
+                "phone_id" => $phone->id,
+                "email" => $input->get( "email" )
+            ]);
+
+            $prospect->setNamesFromFullName( $input->get( "name" ) );
+
+            $prospectRepo->update(
+                [
+                    "first_name" => $prospect->getFirstName(),
+                    "last_name" => $prospect->getLastName()
+                ],
+                [
+                    "id" => $prospect->id
+                ]
+            );
+
+            $respondentRepo->update(
+                [ "prospect_id" => $prospect->id ],
+                [ "id" => $respondent_id ]
+            );
+
+            $this->view->redirect( "registration-complete" );
+        }
+
         // Dispatch the questionnaire and return the questionnaire object
         $questionnaireDispatcher->dispatch( 2 );
         $questionnaire = $questionnaireDispatcher->getQuestionnaire();
@@ -439,6 +503,35 @@ class Home extends Controller
         $this->view->assign( "respondent", $respondent );
 
         $this->view->setTemplate( "student-registration.tpl" );
+        $this->view->render( "App/Views/Home.php" );
+    }
+
+    public function registrationComplete()
+    {
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
+        $respondentRepo = $this->load( "respondent-repository" );
+
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        $facebookPixelBuilder->addEvent([
+            "CompleteRegistration",
+            "Lead"
+        ]);
+
+        $respondent_token = $this->session->getSession( "respondent-token" );
+        $respondent = $respondentRepo->get( [ "*" ], [ "token" => $respondent_token ], "single" );
+
+        if ( is_null( $respondent ) ) {
+            $this->view->redirect( "student-registration" );
+        }
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "respondent", $respondent );
+
+        $this->view->setTemplate( "registration-complete.tpl" );
         $this->view->render( "App/Views/Home.php" );
     }
 
