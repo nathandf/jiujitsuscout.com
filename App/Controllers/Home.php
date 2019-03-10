@@ -383,6 +383,11 @@ class Home extends Controller
 
     public function register()
     {
+        $this->view->redirect( "sign-up", 301 );
+    }
+
+    public function signUp()
+    {
         $Config = $this->load( "config" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
         $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );

@@ -10,7 +10,7 @@
     <ul class="nav-top-ul" itemscope itemtype="http://schema.org/BreadcrumbList">
         <div id="nav-items-container" class="nav-items-container">
             <li class="nav-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a class="nav-link-main" itemprop="item" href="{$HOME}account-manager/"><span itemprop="name">Sign in</span></a><meta itemprop="position" content="4" /></li>
-            <li class="nav-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a class="nav-link-main" itemprop="item" href="{$HOME}register"><span itemprop="name">Sign Up</span></a><meta itemprop="position" content="3" /></li>
+            <li class="nav-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a class="nav-link-main" itemprop="item" href="{$HOME}sign-up"><span itemprop="name">Sign Up</span></a><meta itemprop="position" content="3" /></li>
             <li class="nav-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a class="nav-link-main" itemprop="item" href="{$HOME}partner/"><span itemprop="name">Join as a Gym</span></a><meta itemprop="position" content="2" /></li>
             <li class="nav-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a class="nav-link-main" itemprop="item" href="{$HOME}"><span itemprop="name">Find Gyms</span></a><meta itemprop="position" content="1" /></li>
         </div>

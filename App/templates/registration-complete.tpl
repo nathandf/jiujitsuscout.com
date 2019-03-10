@@ -22,7 +22,7 @@
 			<p class="label">Postal Code</p>
 			<input type="text" class="inp inp-full" id="first_name" name="q" value="{$inputs.create_account.name|default:null}" required="required"/>
 			<div class="clear push-t-med"></div>
-			<input type="submit" class="button push-t-med" name="button" value="Find Gyms"/>
+			<button type="submit" class="button push-t-med">Find Gyms</button>
 		</form>
 	</div>
 {/block}

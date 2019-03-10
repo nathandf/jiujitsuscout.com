@@ -15,16 +15,17 @@
 		{include file='includes/navigation/main-menu.tpl'}
 		<div class="hero">
 			<div class="overlay">
-	      		<div class="con-cnt-xlrg register-box">
-					<div class="inner-pad-med">
-						<div class="inner-pad-sml push-t">
-							<h1 class="h1 ta-left push-b-med tc-white">Sign up</h1>
-							<h3 class="text-xlrg-heavy tc-white" style="text-align: left;">Get more students in your gym</h2>
-							<a href="{$HOME}partner/" class="btn btn-inline push-t-lrg">Join as a gym</a>
-						</div>
-						<div class="clear"></div>
-					</div>
+				<div class="inner-pad-med"></div>
+				<div class="con-cnt-med-plus-plus inner-pad-med border-std bg-white-transparent">
+					<h1 class="title title-h1 push-b-lrg" style="margin-top: 0;">Sign up for free classes</h1>
+					<p class="text-xlrg push-t-sml">• Register as a student</p>
+					<p class="text-xlrg push-t-sml">• Choose gyms by style and distance</p>
+					<p class="text-xlrg push-t-sml">• Get connected with the best martial arts gyms near you!</p>
+					<a href="{$HOME}student-registration" class="btn btn-full push-t-lrg">Join as a Student</a>
+					<div class="inner-pad-sml"></div>
+					<a href="{$HOME}partner/" class="tc-deep-blue push-t-med link">Join as a gym</a>
 				</div>
+				<div class="inner-pad-med"></div>
 	        </div>
 		</div><!-- end content-->
 		{include file='includes/footer.tpl'}
