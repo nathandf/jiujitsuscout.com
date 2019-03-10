@@ -407,6 +407,10 @@ class Home extends Controller
         $input = $this->load( "input" );
         $inputValidator = $this->load( "input-validator" );
 
+        if ( !is_null( $this->session->getCookie( "prospect-business-ids" ) ) ) {
+            $this->view->redirect( "registration-complete" );
+        }
+
         $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         $facebookPixelBuilder->addEvent([
@@ -498,6 +502,8 @@ class Home extends Controller
             $prospectAppraiser = $this->load( "prospect-appraiser" );
             $prospectAppraiser->appraise( $prospect );
 
+            $this->session->setCookie( "prospect-business-ids", json_encode( [ 0 ] ) );
+
             $this->view->redirect( "registration-complete" );
         }
 
@@ -523,16 +529,19 @@ class Home extends Controller
 
         $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
-        $facebookPixelBuilder->addEvent([
-            "CompleteRegistration",
-            "Lead"
-        ]);
-
         $respondent_token = $this->session->getSession( "respondent-token" );
         $respondent = $respondentRepo->get( [ "*" ], [ "token" => $respondent_token ], "single" );
 
-        if ( is_null( $respondent ) ) {
-            $this->view->redirect( "student-registration" );
+        // Only track the Registration and Lead if prospect-business-ids cookie
+        // has not been set and a respondent exists
+        if (
+            is_null( $this->session->getCookie( "prospect-business-ids" ) ) &&
+            !is_null( $respondent )
+        ) {
+            $facebookPixelBuilder->addEvent([
+                "CompleteRegistration",
+                "Lead"
+            ]);
         }
 
         $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
