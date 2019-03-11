@@ -68,12 +68,15 @@ class MartialArtsGyms extends Controller
 
         // Build facebook tracking pixel using jiujitsuscout clients pixel id
         $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
         // If siteslug and id aren't set, show listings of gyms based on locality and region
         if ( !$this->issetParam( "siteslug" ) && !$this->issetParam( "id" ) ) {
+
             // If locality and region are not set, redirect to home page
             if ( !$this->issetParam( "locality" ) || !$this->issetParam( "region" ) ) {
                 $this->view->redirect( "" );
             }
+
             // Display the listings based on locality and region
             $accountRepo = $this->load( "account-repository" );
             $reviewRepo = $this->load( "review-repository" );
@@ -153,7 +156,7 @@ class MartialArtsGyms extends Controller
             $this->view->assign( "businesses", $businesses );
 
         } else {
-            // Show listing based on site slug or business id
+            // Show lead capture profile based on site slug or business id
             $accountRepo = $this->load( "account-repository" );
             $reviewRepo = $this->load( "review-repository" );
             $input = $this->load( "input" );
@@ -203,6 +206,20 @@ class MartialArtsGyms extends Controller
                 $this->view->assign( "region", $this->params[ "region" ] );
             }
 
+            // Determine if this person has already gone through the registration process.
+            // If they have, determine if they are already a prospect with this
+            // business.
+            $prospect_business_ids = $this->session->getCookie( "prospect-business-ids" );
+            if ( !is_null( $prospect_business_ids )  ) {
+                $this->view->assign( "is_registered", true );
+                $prospect_business_ids_array = json_decode( $prospect_business_ids );
+                if ( is_array( $prospect_business_ids_array ) ) {
+                    if ( in_array( $this->business->id, $prospect_business_ids_array ) ) {
+                        $this->view->assign( "signed_up", true );
+                    }
+                }
+            }
+
             // Dispatch questionnaire
 
             // Check session for a respondent token. If one doesnt exit, create a
@@ -223,14 +240,14 @@ class MartialArtsGyms extends Controller
             }
 
             // Load the respondent object
-            $respondent = $respondentRepo->getByToken( $respondent_token );
+            $respondent = $respondentRepo->get( [ "*" ], [ "token" => $respondent_token ], "single" );
 
             // Dispatch the questionnaire and return the questionnaire object
             $questionnaireDispatcher->dispatch( 1 );
             $questionnaire = $questionnaireDispatcher->getQuestionnaire();
 
             // Get phone associated with this business
-            $phone = $phoneRepo->getByID( $this->business->phone_id );
+            $phone = $phoneRepo->get( [ "*" ], [ "id" => $this->business->phone_id ], "single" );
             $this->business->phone = $phone;
 
             // Load the account this business is associated with
@@ -304,6 +321,11 @@ class MartialArtsGyms extends Controller
                 }
             }
 
+            // If a visitor has already registered
+            if ( $input->exists() && $input->issetField( "pre_registered" ) ) {
+                $this->view->redirect( "martial-arts-gyms/" . $this->business->id . "/" . "confirm-registration" );
+            }
+
             if ( $input->exists() && $input->issetField( "capture" ) && $inputValidator->validate(
                 $input,
                 [
@@ -366,7 +388,7 @@ class MartialArtsGyms extends Controller
 
                 if ( $this->account->credit >= $prospect_price ) {
 
-                    if ( $this->account->auto_purchase == true ) {
+                    if ( $this->account->auto_purchase ) {
 
                         // Remove credit from the account for the amount of the prospect's appraisal
                         $accountRepo->debitAccountByID( $this->account->id, $prospect_price );
@@ -468,6 +490,11 @@ class MartialArtsGyms extends Controller
         }
 
         $this->view->render( "App/Views/MartialArtsGyms.php" );
+    }
+
+    public function confirmRegistrationAction()
+    {
+        echo( "Confirm Registration" );
     }
 
     public function registrationCompleteAction()

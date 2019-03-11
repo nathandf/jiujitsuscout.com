@@ -134,9 +134,7 @@ class Home extends Controller
         $discipline = null;
 
         if ( $input->exists( "get" ) && $input->issetField( "no_results" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),

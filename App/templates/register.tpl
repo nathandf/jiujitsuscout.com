@@ -16,7 +16,7 @@
 		<div class="hero">
 			<div class="overlay">
 				<div class="inner-pad-med"></div>
-				<div class="con-cnt-med-plus-plus inner-pad-med border-std bg-white-transparent">
+				<div class="con-cnt-med-plus-plus inner-pad-med border-std bg-white">
 					<h1 class="title title-h1 push-b-lrg" style="margin-top: 0;">Sign up for free classes</h1>
 					<p class="text-xlrg push-t-sml">• Register as a student</p>
 					<p class="text-xlrg push-t-sml">• Choose gyms by style and distance</p>
