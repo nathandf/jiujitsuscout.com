@@ -748,6 +748,22 @@ $container->register( "respondent-repository", function() use ( $container ) {
 	return $repo;
 } );
 
+$container->register( "respondent-business-registration-repository", function() use ( $container ) {
+	$repo = new \Model\Services\RespondentBusinessRegistrationRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
+$container->register( "respondent-registration-repository", function() use ( $container ) {
+	$repo = new \Model\Services\RespondentRegistrationRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "respondent-question-answer-repository", function() use ( $container ) {
 	$repo = new \Model\Services\RespondentQuestionAnswerRepository(
 	    $container->getService( "dao" ),

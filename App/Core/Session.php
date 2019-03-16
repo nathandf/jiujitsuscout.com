@@ -66,9 +66,9 @@ class Session
         return $this->crsf_token;
     }
 
-    public function setCookie( $index, $value )
+    public function setCookie( $index, $value, $time = 86400 )
     {
-        setcookie( $index, $value, time() + ( 3600 * 24 ), null, null, false, false );
+        setcookie( $index, $value, time() + $time, null, null, false, false );
     }
 
     public function getCookie( $index )

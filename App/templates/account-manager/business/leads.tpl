@@ -20,13 +20,7 @@
 						</div>
 					{/foreach}
 				{/if}
-				{if !empty($flash_messages)}
-					{foreach from=$flash_messages item=message}
-						<div class="con-message-success mat-hov cursor-pt --c-hide">
-							<p class="user-message-body">{$message}</p>
-						</div>
-					{/foreach}
-				{/if}
+				{include file="includes/snippets/flash-messages.tpl"}
 				<form method="post" action="{$HOME}account-manager/business/leads">
 					<input type="hidden" name="update_leads" value="{$csrf_token}">
 					<input type="hidden" name="token" value="{$csrf_token}">

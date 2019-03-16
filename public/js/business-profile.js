@@ -7,7 +7,7 @@ $( function () {
 		$( ".register-modal" ).hide();
 	} );
 
-	$( ".contact-business-button" ).on( "click", function() {
+	$( ".--trigger-register-modal" ).on( "click", function() {
 		if ( QuestionnaireDispatcher.questionnaire_complete ) {
 			$( ".register-modal" ).show();
 		}
