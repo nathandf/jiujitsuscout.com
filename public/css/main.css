@@ -1021,6 +1021,7 @@ td {
     margin: 0 auto;
     border-radius: 3px;
     transition: .4s;
+    text-decoration: none;
 }
 
 .button:hover {
@@ -1046,6 +1047,15 @@ td {
 .btn:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     cursor: pointer;
+}
+
+.btn-full {
+    text-align: center;
+    padding: 12px;
+    box-sizing: border-box;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 100;
 }
 
 .btn-cnt {
@@ -1270,6 +1280,11 @@ td {
     background: #FFF;
 }
 
+.bg-white-transparent {
+    background: #FFF;
+    background-color: rgba( 256, 256, 256, .75 );
+}
+
 /* Text Color */
 .tc-black {
     color: #000000;
@@ -1447,6 +1462,14 @@ td {
 
 .title-h2 {
     font-size: 30px;
+}
+
+.title-h3 {
+    font-size: 22px;
+}
+
+.title-h4 {
+    font-size: 15px;
 }
 
 .sub-title {

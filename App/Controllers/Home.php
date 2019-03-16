@@ -6,7 +6,6 @@ use \Core\Controller;
 
 class Home extends Controller
 {
-
     public function before()
     {
         $ipinfo = $this->load( "ip-info" );
@@ -29,7 +28,6 @@ class Home extends Controller
         } else {
             $this->view->assign( "geo", $this->session->getCookie( "geo-info" ) );
         }
-
     }
 
     public function indexAction()
@@ -79,18 +77,15 @@ class Home extends Controller
         $discipline = null;
 
         if ( $input->exists( "get" ) && $input->issetField( "discipline" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "discipline" => [
                         "required" => true
                     ]
                 ],
-
                 "discipline" /* error index */
-            ) )
-        {
+            )
+        ) {
             if ( in_array( str_replace( "-", " ", $input->get( "discipline" ) ), $discipline_names ) ) {
                 $discipline = $disciplineRepo->get( [ "*" ], [ "name" => str_replace( "-", " ", $input->get( "discipline" ) ) ] );
             }
@@ -139,9 +134,7 @@ class Home extends Controller
         $discipline = null;
 
         if ( $input->exists( "get" ) && $input->issetField( "no_results" ) && $inputValidator->validate(
-
                 $input,
-
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -208,7 +201,7 @@ class Home extends Controller
                 "search" /* error index */
             ) )
         {
-            // Return busiensses within the specified distance from the queried
+            // Return businesses within the specified distance from the queried
             // location as well as by discipline
             $results = $searchResultsDispatcher->dispatch(
                 $input->get( "q" ),
@@ -273,113 +266,6 @@ class Home extends Controller
         $this->view->render( "App/Views/Home.php" );
     }
 
-    public function requestAction()
-    {
-        $input = $this->load( "input" );
-        $inputValidator = $this->load( "input-validator" );
-        $businessRepo = $this->load( "business-repository" );
-        $prospectRegistrar = $this->load( "prospect-registrar" );
-        $phoneRepo = $this->load( "phone-repository" );
-        $userRepo = $this->load( "user-repository" );
-        $userMailer = $this->load( "user-mailer" );
-        $disciplineRepo = $this->load( "discipline-repository" );
-
-        // Get all discplines and create an array of discipline ids
-        $disciplines = $disciplineRepo->getAll();
-        $discipline_ids = [];
-        foreach ( $disciplines as $discipline ) {
-            $discipline_ids[] = $discipline->id;
-        }
-
-        if ( $input->exists() && !$input->issetField( "request" ) ) {
-            $this->view->redirect( "" );
-        }
-
-        if ( $input->exists() && $input->issetField( "request" ) && $inputValidator->validate(
-
-                $input,
-
-                [
-                    "token" => [
-                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
-                        "required" => true
-                    ],
-                    "request" => [
-                        "required" => true,
-                        "in_array" => [ "schedule", "offer" ]
-                    ],
-                    "business_id" => [
-                        "requred" => true,
-                        "in_array" => $businessRepo->get( [ "id" ], [], "raw" ),
-                    ],
-                    "name" => [
-                        "required" => true,
-                        "min" => 1,
-                        "max" => 256
-                    ],
-                    "email" => [
-                        "required" => true,
-                        "email" => true
-                    ],
-                    "number" => [
-                        "required" => true,
-                        "phone" => true
-                    ],
-                    "q" => [
-                        "required" => true
-                    ],
-                    "discid" => [
-                        "in_array" => $discipline_ids
-                    ]
-                ],
-
-                "request" /* error index */
-            ) )
-        {
-            // Get business by id
-            $business = $businessRepo->get( [ "*" ], [ "id", $input->get( "business_id" ) ] );
-            // Get phone of business
-            $businessPhone = $phoneRepo->get( [ "*" ], [ "id", $business->phone_id ] );
-            // Create a phone resource for prospect
-            $phone = $phoneRepo->create( $businessPhone->country_code, $input->get( "number" ) );
-            // Build prospect model then save
-            $prospect = $prospectRegistrar->build();
-            $prospect->business_id = $business->id;
-            $prospect->first_name = $input->get( "name" );
-            $prospect->email = $input->get( "email" );
-            $prospect->phone_id = $phone->id;
-            $prospectRegistrar->register( $prospect );
-            $user_ids = explode( ",", $business->user_notification_recipient_ids );
-
-            $prospect = $prospectRegistrar->getProspect();
-
-            // Add phone number property to lead
-            $prospect->phone_number = $phone->national_number;
-
-            // Get user notification recipients
-            foreach ( $user_ids as $id ) {
-                $user = $userRepo->getByID( $id );
-                $userMailer->sendLeadCaptureNotification(
-                    $user->first_name,
-                    $user->email,
-                    $prospect,
-                    "For <b>" . ucfirst( $business->business_name ) . "</b><br> " . ucfirst( $prospect->first_name ) . " filled out the " . $input->get( "request" ) . " request form in the JiuJitsuScout search listings."
-                );
-            }
-
-            // Send to business lead capture thank-you page
-            $this->view->redirect( "martial-arts-gyms/" . $business->site_slug . "/thank-you" );
-        }
-
-        $discid_query_string = null;
-        if ( $input->issetField( "discid" ) ) {
-            $discip_query_string = "&discid=" . $input->get( "discid" );
-        }
-
-        // If not validated, send back to search results page
-        $this->view->redirect( "search?q=" . $input->get( "q" ) . $discip_query_string );
-    }
-
     public function sitemap()
     {
         $this->view->setTemplate( "sitemap.tpl" );
@@ -388,13 +274,210 @@ class Home extends Controller
 
     public function register()
     {
+        $this->view->redirect( "sign-up", 301 );
+    }
+
+    public function signUp()
+    {
         $Config = $this->load( "config" );
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
         $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
 
         $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
 
-        $this->view->setTemplate( "register.tpl" );
+        $this->view->setTemplate( "sign-up.tpl" );
+        $this->view->render( "App/Views/Home.php" );
+    }
+
+    public function studentRegistration()
+    {
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
+        $respondentRepo = $this->load( "respondent-repository" );
+        $respondentRegistrationRepo = $this->load( "respondent-registration-repository" );
+        $respondentBusinessRegistrationRepo = $this->load( "respondent-business-registration-repository" );
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $leadCaptureBuilder = $this->load( "lead-capture-builder" );
+
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        $facebookPixelBuilder->addEvent([
+            "ViewContent"
+        ]);
+
+        // Dispatch questionnaire
+
+        // Check session for a respondent token. If one doesnt exit, create a
+        // new respondent and dispatch the questionnaire. If a respondent does
+        // exist, load the respodent and pass through the last question id to
+        // start the questionnaire where that respondent left off.
+        $respondent_token = $this->session->getSession( "respondent-token" );
+
+        if ( is_null( $respondent_token ) ) {
+            // Generate a new token
+            $respondent_token = $this->session->generateToken();
+
+            // Set the session with the new respondent token
+            $this->session->setSession( "respondent-token", $respondent_token );
+
+            // Create a respondent with this questionnaire_id and respondent token
+            $respondentRepo->create( 2, $respondent_token );
+        }
+
+        // Load the respondent object
+        $respondent = $respondentRepo->getByToken( $respondent_token );
+
+        $respondentRegistration = $respondentRegistrationRepo->get(
+            [ "*" ],
+            [ "respondent_id" => $respondent->id ],
+            "single"
+        );
+
+        if ( !is_null( $respondentRegistration ) ) {
+            $this->view->redirect( "registration-complete" );
+        }
+
+        if (
+            $input->exists() &&
+            $input->issetField( "register" ) &&
+            $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "name" => [
+                        "name" => "Name",
+                        "required" => true
+                    ],
+                    "email" => [
+                        "name" => "Email",
+                        "required" => true,
+                        "email" => true
+                    ],
+                    "country_code" => [
+                        "required" => true,
+                        "numeric" => true
+                    ],
+                    "phone_number" => [
+                        "name" => "Phone",
+                        "required" => true,
+                        "phone" => true
+                    ]
+                ],
+                "register"
+            )
+        ) {
+            $phoneRepo = $this->load( "phone-repository" );
+            $prospectRepo = $this-> load( "prospect-repository" );
+
+            $phone = $phoneRepo->insert([
+                "country_code" => $input->get( "country_code" ),
+                "national_number" => $input->get( "phone_number" )
+            ]);
+
+            $prospect = $prospectRepo->insert([
+                "business_id" => 0,
+                "first_name" => $input->get( "name" ),
+                "phone_id" => $phone->id,
+                "email" => $input->get( "email" ),
+                "source" => "Student Registration"
+            ]);
+
+            // If the name provided has spaces in it, it's probably a full name.
+            // Break it up into a first and last name if possible and update the
+            // prospect in the database.
+            $prospect->setNamesFromFullName( $input->get( "name" ) );
+
+            if (
+                !is_null( $prospect->getFirstName() ) &&
+                !is_null( $prospect->getLastName() )
+            ) {
+                $prospectRepo->update(
+                    [
+                        "first_name" => $prospect->getFirstName(),
+                        "last_name" => $prospect->getLastName()
+                    ],
+                    [
+                        "id" => $prospect->id
+                    ]
+                );
+            }
+
+            $respondentRegistration = $respondentRegistrationRepo->insert([
+                "respondent_id" => $respondent->id,
+                "first_name" => $prospect->getFirstName(),
+                "last_name" => $prospect->getLastName(),
+                "email" => $prospect->email,
+                "phone_id" => $prospect->phone_id
+            ]);
+
+            $respondentRepo->update(
+                [ "prospect_id" => $prospect->id ],
+                [ "id" => $respondent->id ]
+            );
+
+            $prospectAppraiser = $this->load( "prospect-appraiser" );
+            $prospectAppraiser->appraise( $prospect );
+
+            // Create a lead capture reference
+            $leadCaptureBuilder->setProspectID( $prospect->id )
+                ->setBusinessID( 0 )
+                ->build();
+
+            $respondentBusinessRegistrationRepo->insert([
+                "respondent_id" => $respondent->id,
+                "business_id" => 0
+            ]);
+
+            $this->view->redirect( "registration-complete" );
+        }
+
+        // Dispatch the questionnaire and return the questionnaire object
+        $questionnaireDispatcher->dispatch( 2 );
+        $questionnaire = $questionnaireDispatcher->getQuestionnaire();
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "questionnaire", $questionnaire );
+        $this->view->assign( "respondent", $respondent );
+
+        $this->view->setTemplate( "student-registration.tpl" );
+        $this->view->render( "App/Views/Home.php" );
+    }
+
+    public function registrationComplete()
+    {
+        $Config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
+        $respondentRepo = $this->load( "respondent-repository" );
+
+        $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] );
+
+        $respondent_token = $this->session->getSession( "respondent-token" );
+        $respondent = $respondentRepo->get( [ "*" ], [ "token" => $respondent_token ], "single" );
+
+        // Only track the Registration and Lead if prospect-business-ids cookie
+        // has not been set and a respondent exists
+        if (
+            is_null( $this->session->getCookie( "prospect-business-ids" ) ) &&
+            !is_null( $respondent )
+        ) {
+            $facebookPixelBuilder->addEvent([
+                "CompleteRegistration",
+                "Lead"
+            ]);
+        }
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+        $this->view->assign( "respondent", $respondent );
+
+        $this->view->setTemplate( "registration-complete.tpl" );
         $this->view->render( "App/Views/Home.php" );
     }
 
@@ -460,5 +543,4 @@ class Home extends Controller
     {
         $this->view->redirect( "martial-arts-gyms/" );
     }
-
 }

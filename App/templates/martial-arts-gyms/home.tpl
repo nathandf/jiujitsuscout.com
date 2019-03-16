@@ -101,11 +101,7 @@
 		</div>
 		<div class="col-100 inner-pad-med" style="padding-top: 15px;">
 			{if $business->message != null}
-			<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
-				<button class="btn btn-inline floatright bg-deep-blue text-med-heavy register-button" style="margin-bottom: 0;">Free Class</button>
-				<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
-				<div class="clear"></div>
-			</div>
+			{include file="includes/widgets/contact-business-bar.tpl"}
 			{if !is_null($business->video->id)}
 			{include file="includes/snippets/profile-video.tpl"}
 			{/if}
@@ -114,11 +110,7 @@
 				<p class="text-med-heavy" style="color: #333;"><span>{$business->message}</span></p>
 			</div>
 			{else}
-			<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
-				<button class="btn btn-inline floatright bg-deep-blue text-med-heavy register-button" style="margin-bottom: 0;">Free Class</button>
-				<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
-				<div class="clear"></div>
-			</div>
+			{include file="includes/widgets/contact-business-bar.tpl"}
 			{if !is_null($business->video->id)}
 			{include file="includes/snippets/profile-video.tpl"}
 			{/if}
@@ -187,11 +179,7 @@
 				</div><!-- end comments -->
 			</div><!-- end testimonials -->
 			<div class="clear"></div>
-			<div style="padding: 20px 0px 20px 0px; border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC;">
-				<button class="btn btn-inline floatright bg-deep-blue text-med-heavy register-button" style="margin-bottom: 0;">Free Class</button>
-				<button class="btn btn-inline --q-trigger floatleft contact-business-button" style="margin-bottom: 0;">Contact Gym</button>
-				<div class="clear"></div>
-			</div>
+			{include file="includes/widgets/contact-business-bar.tpl"}
 			<div class="clear"></div>
 		{/if}
 		{include file="includes/widgets/js-google-map.tpl"}

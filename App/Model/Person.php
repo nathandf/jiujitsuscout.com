@@ -4,7 +4,6 @@ namespace Model;
 
 class Person
 {
-
 	public $first_name;
     public $last_name;
     public $email;
@@ -29,6 +28,17 @@ class Person
         }
     }
 
+	public function setNamesFromFullName( $full_name )
+	{
+		$name = explode( " ", $full_name, 2 );
+        if ( count( $name ) > 1 ) {
+            $this->first_name = $name[ 0 ];
+            $this->setLastName( $name[ 1 ] );
+        } else {
+            $this->first_name = $full_name;
+        }
+	}
+
     public function setLastName( $last_name )
     {
         $this->last_name = $last_name;
@@ -46,6 +56,24 @@ class Person
 		}
 
 		return $this->first_name;
+	}
+
+	public function getFirstName()
+	{
+		if ( isset( $this->first_name ) ) {
+			return $this->first_name;
+		}
+
+		return null;
+	}
+
+	public function getLastName()
+	{
+		if ( isset( $this->last_name ) ) {
+			return $this->last_name;
+		}
+
+		return null;
 	}
 
     public function setPhoneNumber( $country_code, $national_number )
