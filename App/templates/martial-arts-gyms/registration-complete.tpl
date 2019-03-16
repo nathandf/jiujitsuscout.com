@@ -25,7 +25,6 @@
 						<p class="text-lrg">{$faqAnswer->text}</p>
 					</td>
 				<tr>
-
 				{/foreach}
 			</table>
 		{/if}

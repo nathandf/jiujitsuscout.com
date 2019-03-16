@@ -167,6 +167,8 @@ class MartialArtsGyms extends Controller
             $userMailer = $this->load( "user-mailer" );
             $questionnaireDispatcher = $this->load( "questionnaire-dispatcher" );
             $respondentRepo = $this->load( "respondent-repository" );
+            $respondentRegistrationRepo = $this->load( "respondent-registration-repository" );
+            $respondentBusinessRegistrationRepo = $this->load( "respondent-business-registration-repository" );
             $disciplineRepo = $this->load( "discipline-repository" );
             $imageRepo = $this->load( "image-repository" );
             $prospectAppraiser = $this->load( "prospect-appraiser" );
@@ -206,20 +208,6 @@ class MartialArtsGyms extends Controller
                 $this->view->assign( "region", $this->params[ "region" ] );
             }
 
-            // Determine if this person has already gone through the registration process.
-            // If they have, determine if they are already a prospect with this
-            // business.
-            $prospect_business_ids = $this->session->getCookie( "prospect-business-ids" );
-            if ( !is_null( $prospect_business_ids )  ) {
-                $this->view->assign( "is_registered", true );
-                $prospect_business_ids_array = json_decode( $prospect_business_ids );
-                if ( is_array( $prospect_business_ids_array ) ) {
-                    if ( in_array( $this->business->id, $prospect_business_ids_array ) ) {
-                        $this->view->assign( "signed_up", true );
-                    }
-                }
-            }
-
             // Dispatch questionnaire
 
             // Check session for a respondent token. If one doesnt exit, create a
@@ -241,6 +229,28 @@ class MartialArtsGyms extends Controller
 
             // Load the respondent object
             $respondent = $respondentRepo->get( [ "*" ], [ "token" => $respondent_token ], "single" );
+
+            // Determine if this person has already gone through the registration process.
+            // If they have, determine if they are already a prospect with this
+            // business.
+            $respondentRegistration = $respondentRegistrationRepo->get(
+                [ "*" ],
+                [ "respondent_id" => $respondent->id ],
+                "single"
+            );
+
+            $respondentBusinessRegistration = $respondentBusinessRegistrationRepo->get(
+                [ "*" ],
+                [ "respondent_id" => $respondent->id, "business_id" => $this->business->id ],
+                "single"
+            );
+
+            if ( !is_null( $respondentRegistration )  ) {
+                $this->view->assign( "is_registered", true );
+                if ( !is_null( $respondentBusinessRegistration ) ) {
+                    $this->view->assign( "signed_up", true );
+                }
+            }
 
             // Dispatch the questionnaire and return the questionnaire object
             $questionnaireDispatcher->dispatch( 1 );
@@ -353,8 +363,8 @@ class MartialArtsGyms extends Controller
                     ]
                 ],
                 "capture"
-                ) )
-            {
+                )
+            ) {
                 $message = null;
                 if ( $input->get( "message" ) != "" ) {
                     $message = "Message from lead: " . $input->get( "message" );
@@ -494,7 +504,128 @@ class MartialArtsGyms extends Controller
 
     public function confirmRegistrationAction()
     {
-        echo( "Confirm Registration" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $respondentRepo = $this->load( "respondent-repository" );
+        $respondentRegistrationRepo = $this->load( "respondent-registration-repository" );
+        $respondentBusinessRegistrationRepo = $this->load( "respondent-business-registration-repository" );
+        $prospectRepo = $this->load( "prospect-repository" );
+        $prospectAppraiser = $this->load( "prospect-appraiser" );
+        $phoneRepo = $this->load( "phone-repository" );
+        $userMailer = $this->load( "user-mailer" );
+        $leadCaptureBuilder = $this->load( "lead-capture-builder" );
+        $userRepo = $this->load( "user-repository" );
+
+        $respondent_token = $this->session->getSession( "respondent-token" );
+
+        // Visitor must have engaged with questionnaire on student registration
+        // page. Send them back.
+        if ( is_null( $respondent_token ) ) {
+            $this->view->redirect( "student-registration" );
+        }
+
+        $respondent = $respondentRepo->get( [ "*" ], [ "token" => $respondent_token ], "single" );
+        $respondentRegistration = $respondentRegistrationRepo->get( [ "*" ], [ "respondent_id" => $respondent->id ], "single" );
+        $respondentRegistration->phone = $phoneRepo->get( [ "*" ], [ "id" => $respondentRegistration->phone_id ], "single" );
+
+        // If this respondent has registered for this business then send them to
+        // the registration complete page
+        $respondentBusinessRegistration = $respondentBusinessRegistrationRepo->get(
+            [ "*" ],
+            [ "respondent_id" => $respondent->id, "business_id" => $this->business->id ],
+            "single"
+        );
+
+        if ( !is_null( $respondentBusinessRegistration ) ) {
+            $this->view->redirect( "martial-arts-gyms/" . $this->business->id . "/registration-complete" );
+        }
+
+        // Process prospect registration
+        if (
+            $input->exists() &&
+            $input->issetField( "confirm_registration" ) &&
+            $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ]
+                ],
+                "confirm_registration"
+            )
+        ) {
+            // Use the details the respondent regsistered with to create the prospect
+            $prospect = $prospectRepo->insert([
+                "business_id" => $this->business->id,
+                "first_name" => $respondentRegistration->first_name,
+                "last_name" => $respondentRegistration->last_name,
+                "email" => $respondentRegistration->email,
+                "phone_id" => $respondentRegistration->phone_id,
+                "source" => "JiuJitsuScout Profile",
+                "requires_purchase" => 1
+            ]);
+
+            $prospect->phone = $phoneRepo->get( [ "*" ], [ "id" => $respondentRegistration->phone_id ], "single" );
+
+            // Update the respondent's prospect id to the new prospect's id. This
+            // will ensue all actions taken after initially becoming a prospect are
+            // factored into the appraisal
+            $respondentRepo->update( [ "prospect_id" => $prospect->id ], [ "id" => $respondent->id ] );
+
+            $prospectAppraiser->appraise( $prospect );
+
+            // Add this business id to the list of business ids for which this person
+            // has registred and become a prospect
+            $respondentBusinessRegistrationRepo->insert([
+                "respondent_id" => $respondent->id,
+                "business_id" => $this->business->id
+            ]);
+
+            // Get the users that require email lead notifications
+            $users = [];
+            $user_ids = explode( ",", $this->business->user_notification_recipient_ids );
+
+            // Populate users array with users data
+            foreach ( $user_ids as $user_id ) {
+                $users[] = $userRepo->getByID( $user_id );
+            }
+
+            // Create a lead capture reference
+            $leadCaptureBuilder->isProfile()
+                ->setProspectID( $prospect->id )
+                ->setBusinessID( $this->business->id )
+                ->build();
+
+            // Send lead caputre notification to all users in
+            // user_notification_recipient_ids array
+            foreach ( $users as $user ) {
+                $userMailer->sendLeadCaptureNotification(
+                    $user->first_name,
+                    $user->email,
+                    [
+                        "name" => $prospect->getFullName(),
+                        "email" => $prospect->email,
+                        "number" => $prospect->phone->getNicePhoneNumber(),
+                        "source" => "JiuJitsuScout Profile",
+                        "id" => $prospect->id,
+                        "additional_info" => $message
+                    ]
+                );
+            }
+
+            // TODO Build Lead Capture
+
+            $this->view->redirect( "martial-arts-gyms/" . $this->business->id . "/registration-complete" );
+        }
+
+        $this->view->assign( "respondentRegistration", $respondentRegistration );
+        $this->view->assign( "error_messages", $inputValidator->getErrors() );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+
+        $this->view->setTemplate( "martial-arts-gyms/confirm-registration.tpl" );
+        $this->view->render( "App/Views/Home.php" );
     }
 
     public function registrationCompleteAction()
