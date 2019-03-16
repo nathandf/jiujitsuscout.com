@@ -47,7 +47,7 @@
 			<form method="post" action="">
 				<input type="hidden" name="token" value="{$csrf_token}">
 				<input type="hidden" name="reject" value="true">
-				<button class="tc-red cursor-pt text-med-heavy link --c-reject-prospect" style="display: block; margin: 0 auto; margin-top: 20px; background: none;">Reject this lead</button>
+				<button class="tc-red cursor-pt text-med-heavy link --c-reject-prospect" style="display: block; margin: 0 auto; margin-top: 20px; background: none;">Pass this lead on</button>
 			</form>
 			{if isset($respondent->questionAnswers) && $respondent->questionAnswers|count > 0}
 				<div class="col-100 push-t-med" style="border-top: 1px solid #CCC;"></div>
@@ -76,7 +76,7 @@
 				<form method="post" action="">
 					<input type="hidden" name="token" value="{$csrf_token}">
 					<input type="hidden" name="reject" value="true">
-					<button class="tc-red cursor-pt text-med-heavy link --c-reject-prospect" style="display: block; margin: 0 auto; margin-top: 20px; background: none;">Reject this lead</button>
+					<button class="tc-red cursor-pt text-med-heavy link --c-reject-prospect" style="display: block; margin: 0 auto; margin-top: 20px; background: none;">Pass this lead on</button>
 				</form>
 			{/if}
 		</div>

@@ -381,22 +381,31 @@ class Home extends Controller
 
             $prospect = $prospectRepo->insert([
                 "business_id" => 0,
+                "first_name" => $input->get( "name" ),
                 "phone_id" => $phone->id,
                 "email" => $input->get( "email" ),
                 "source" => "Student Registration"
             ]);
 
+            // If the name provided has spaces in it, it's probably a full name.
+            // Break it up into a first and last name if possible and update the
+            // prospect in the database.
             $prospect->setNamesFromFullName( $input->get( "name" ) );
 
-            $prospectRepo->update(
-                [
-                    "first_name" => $prospect->getFirstName(),
-                    "last_name" => $prospect->getLastName()
-                ],
-                [
-                    "id" => $prospect->id
-                ]
-            );
+            if (
+                !is_null( $prospect->getFirstName() ) &&
+                !is_null( $prospect->getLastName() )
+            ) {
+                $prospectRepo->update(
+                    [
+                        "first_name" => $prospect->getFirstName(),
+                        "last_name" => $prospect->getLastName()
+                    ],
+                    [
+                        "id" => $prospect->id
+                    ]
+                );
+            }
 
             $respondentRegistration = $respondentRegistrationRepo->insert([
                 "respondent_id" => $respondent->id,

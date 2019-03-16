@@ -110,7 +110,7 @@ class UserMailer
             <div>
                 <table cellspacing=0 style="width: 300px; table-layout: fixed; box-sizing: border-box; display: block; margin-left: 20px;">
                     <tr>
-                        <td><p>Someone is interested in visiting your business! Log into your account manager to purchase or reject this lead.</p></td>
+                        <td><p>Someone is interested in visiting your business! Log into your account manager to purchase or pass on this lead.</p></td>
                     </tr>
                 </table>
                 <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
