@@ -140,7 +140,7 @@ class UserMailer
                         <h3>Lead Purchase Confirmation</h3>
                     </tr>
                     <tr>
-                        <td><p>' . $prospect_info[ "name" ] . ' is interested in your services!. Call and text them immediately to schedule a visit to your business.</p></td>
+                        <td><p>' . $prospect_info[ "name" ] . ' is interested in your services! Call and text them immediately to schedule a visit to your business.</p></td>
                     </tr>
                 </table>
                 <table cellspacing=0 style="width: 300px; background: #f6f7f9; border-collapse: collapse; table-layout: fixed; border: 1px solid #CCCCCC; box-sizing: border-box; padding: 15px; display: block; margin-left: 20px;">

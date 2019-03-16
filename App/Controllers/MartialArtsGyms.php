@@ -598,24 +598,19 @@ class MartialArtsGyms extends Controller
                 ->setBusinessID( $this->business->id )
                 ->build();
 
-            // Send lead caputre notification to all users in
-            // user_notification_recipient_ids array
+            // Send the email to each user
             foreach ( $users as $user ) {
-                $userMailer->sendLeadCaptureNotification(
+                $userMailer->sendLeadCapturePurchaseRequiredNotification(
                     $user->first_name,
                     $user->email,
                     [
-                        "name" => $prospect->getFullName(),
-                        "email" => $prospect->email,
-                        "number" => $prospect->phone->getNicePhoneNumber(),
-                        "source" => "JiuJitsuScout Profile",
                         "id" => $prospect->id,
-                        "additional_info" => $message
+                        "name" => $prospect->first_name,
+                        "source" => "JiuJitsuScout Profile",
+                        "additional_info" => ""
                     ]
                 );
             }
-
-            // TODO Build Lead Capture
 
             $this->view->redirect( "martial-arts-gyms/" . $this->business->id . "/registration-complete" );
         }
