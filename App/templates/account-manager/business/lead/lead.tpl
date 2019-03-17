@@ -34,7 +34,7 @@
 			</tr>
 			<tr>
 				<td class="bg-white text-sml" class="text-med" style="overflow-x: hidden; text-align: center; border: 1px solid #CCC;">{$lead->source|default:"N/a"}</td>
-				<td class="bg-white text-sml" style="overflow-x: hidden; text-align: center; border: 1px solid #CCC;">{$lead->datetime_of_action|date_format:"%Y/%m/%d"|default:"N/a"}</td>
+				<td class="bg-white text-sml" style="overflow-x: hidden; text-align: center; border: 1px solid #CCC;">{$lead->datetime_of_action|date_format:"%m/%d/%Y"|default:"N/a"}</td>
 			</tr>
 		</table>
 		<div class="clear push-t-med"></div>
