@@ -138,6 +138,8 @@ class Task extends Controller
             }
         }
 
+        $prospects = array_reverse( $prospects );
+
         $membersAll = $memberRepo->get( [ "*" ], [ "business_id" => $this->business->id ] );
         $members = [];
         $task_member_member_ids = $taskMemberRepo->get( [ "member_id" ], [ "task_id" => $task->id ], "raw" );
@@ -152,6 +154,8 @@ class Task extends Controller
                 $members[] = $_member;
             }
         }
+
+        $members = array_reverse( $members );
 
         $taskProspects = $taskProspectRepo->get( [ "*" ], [ "task_id" => $task->id ] );
         foreach ( $taskProspects as $taskProspect ) {
