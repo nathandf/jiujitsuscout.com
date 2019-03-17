@@ -31,8 +31,8 @@
 								<input id="master-checkbox" type="checkbox" class="checkbox-med cursor-pt push-r">
 							</td>
 							<td>
-								<select class="first inp field-sml floatleft cursor-pt" name="action" id="action" required="required">
-									<option name="action" value="" hidden="hidden">-- Choose Action --</option>
+								<select class="first inp inp-sml floatleft cursor-pt" name="action" id="action" required="required">
+									<option name="action" value="" hidden="hidden">Choose Action</option>
 									<option name="action" value="contacted">Mark as Contacted</option>
 									<option name="action" value="uncontacted">Mark as Uncontacted</option>
 									<option name="action" value="member">Became Member</option>
