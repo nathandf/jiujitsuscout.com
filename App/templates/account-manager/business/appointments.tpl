@@ -14,13 +14,13 @@
 		<!-- <input type="search" class="inp field-med first last" placeholder="Search">
 		<div class="clear"></div> -->
 		<div id="lead-tag-container">
-			<p class='results_count_message'>Showing ({$appointments_total}) Appointments</p>
+			<p class='results_count_message push-b-med'>Showing ({$appointments_total}) Appointments</p>
 			{foreach from=$appointments_by_time.past item=appointment name=past}
 				{if $smarty.foreach.past.index == 0}
-					<h3 class="first">Passed</h3>
+					<p class="label">Passed</p>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}">
-					<div class="tag push-t-med mat-hov">
+					<div class="tag push-b-med mat-hov">
 						<div class="lead-icon-container floatleft">
 							<span class="lead-icon icon-c-2"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
 						</div>
@@ -36,10 +36,10 @@
 			{/foreach}
 			{foreach from=$appointments_by_time.today item=appointment name=today}
 				{if $smarty.foreach.today.index == 0}
-					<h3 class="first">Today</h3>
+					<p class="label">Today</p>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}">
-					<div class="tag push-t-med mat-hov">
+					<div class="tag push-b-med mat-hov">
 						<div class="lead-icon-container floatleft">
 							<span class="lead-icon icon-c-4"><i class="fa fa-clock-o"></i></span>
 						</div>
@@ -55,10 +55,10 @@
 			{/foreach}
 			{foreach from=$appointments_by_time.tomorrow item=appointment name=tomorrow}
 				{if $smarty.foreach.tomorrow.index == 0}
-					<h3 class="first">Tomorrow</h3>
+					<p class="label">Tomorrow</p>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}">
-					<div class="tag push-t-med mat-hov">
+					<div class="tag push-b-med mat-hov">
 						<div class="lead-icon-container floatleft">
 							<span class="lead-icon icon-c-3"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
 						</div>
@@ -74,10 +74,10 @@
 			{/foreach}
 			{foreach from=$appointments_by_time.this_week item=appointment name=this_week}
 				{if $smarty.foreach.this_week.index == 0}
-					<h3 class="first">This Week</h3>
+					<p class="label">This Week</p>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}">
-					<div class="tag push-t-med mat-hov">
+					<div class="tag push-b-med mat-hov">
 						<div class="lead-icon-container floatleft">
 							<span class="lead-icon icon-c-1"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
 						</div>
@@ -93,10 +93,10 @@
 			{/foreach}
 			{foreach from=$appointments_by_time.next_week item=appointment name=next_week}
 				{if $smarty.foreach.next_week.index == 0}
-					<h3 class="first">Next Week</h3>
+					<p class="label">Next Week</p>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}">
-					<div class="tag push-t-med mat-hov">
+					<div class="tag push-b-med mat-hov">
 						<div class="lead-icon-container floatleft">
 							<span class="lead-icon icon-c-1"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
 						</div>
@@ -112,10 +112,10 @@
 			{/foreach}
 			{foreach from=$appointments_by_time.upcoming item=appointment name=upcoming}
 				{if $smarty.foreach.upcoming.index == 0}
-					<h3 class="first">Upcoming</h3>
+					<p class="label">Upcoming</p>
 				{/if}
 				<a href="{$HOME}account-manager/business/appointment/{$appointment->id}/" id="appointment{$appointment->id}">
-					<div class="tag push-t-med mat-hov">
+					<div class="tag push-b-med mat-hov">
 						<div class="lead-icon-container floatleft">
 							<span class="lead-icon icon-c-1"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
 						</div>
