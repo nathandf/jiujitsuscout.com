@@ -26,7 +26,7 @@
 				<h2 class="title-wrapper">Kids Classes</h2>
 				<p class="label">Choose the most convenient time</p>
 				<form action="">
-					<button type="submit" class="button-link bg-deep-blue tc-white push-t-med" style="margin: 0 auto; margin-top: 25px;">Schedule Visit</button>
+					<button type="submit" class="button-link bg-white tc-deep-blue push-t-med" style="border: 2px solid #0667D0; margin: 0 auto; margin-top: 25px;">Schedule Visit</button>
 				</form>
 			</div>
 		</div>

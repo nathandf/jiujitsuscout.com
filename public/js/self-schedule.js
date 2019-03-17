@@ -1,15 +1,17 @@
 $( function() {
-    $( ".--choose-program" ).on( "click", function () {
-        $( "#programs" ).hide();
-        $( ".--go-back" ).show();
-    } );
-
     $( ".--adults" ).on( "click", function () {
-        $( "#adults" ).show();
+        $( "#programs" ).fadeOut( function () {
+            $( "#adults" ).show();
+            $( ".--go-back" ).show();
+        } );
     } );
 
     $( ".--kids" ).on( "click", function () {
-        $( "#kids" ).show();
+        $( "#programs" ).fadeOut( function () {
+            $( "#kids" ).show();
+            $( ".--go-back" ).show();
+        } );
+
     } );
 
     $( ".--go-back" ).on( "click", function () {
