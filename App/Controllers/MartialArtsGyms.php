@@ -722,6 +722,23 @@ class MartialArtsGyms extends Controller
         $this->view->render( "App/Views/MartialArtsGyms.php" );
     }
 
+    public function scheduleVisitAction()
+    {
+        $config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+        $facebookPixelBuilder->addPixelID([ $config::$configs[ "facebook" ][ "jjs_pixel_id" ] ]);
+
+        $facebookPixelBuilder->addCustomEvent([
+            "SelfSchedule"
+        ]);
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
+        $this->view->setTemplate( "martial-arts-gyms/schedule.tpl" );
+        $this->view->render( "App/Views/MartialArtsGyms.php" );
+    }
+
     public function promoAction()
     {
         $Config = $this->load( "config" );
@@ -732,6 +749,7 @@ class MartialArtsGyms extends Controller
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
         $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
         $landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
+        $landingPageSignUpRepo = $this->load( "landing-page-sign-up-repository" );
         $landingPageRepo = $this->load( "landing-page-repository" );
         $leadCaptureBuilder = $this->load( "lead-capture-builder" );
 
@@ -750,6 +768,22 @@ class MartialArtsGyms extends Controller
         // Render 404 page if there is no landing page with this slug and business_id
         if ( is_null( $landingPage ) ) {
             $this->view->render404();
+        }
+
+        // Check if this visitor has signed up on this landing page. If so, send
+        // them back to the thank you page.
+        if ( !is_null( $this->session->getSession( "landing-page-sign-up" ) ) ) {
+            $landingPageSignUp = $landingPageSignUpRepo->get(
+                [ "*" ],
+                [
+                    "token" => $this->session->getSession( "landing-page-sign-up" ),
+                    "landing_page_id" => $landingPage->id
+                ]
+            );
+
+            if ( !is_null( $landingPageSignUp ) ) {
+                $this->view->redirect( "martial-arts-gyms/" . $this->business->id . "/promo/" . $this->params[ "slug" ] . "/thank-you" );
+            }
         }
 
         // Get all the references to the facebook pixels used for this landing page
@@ -779,8 +813,11 @@ class MartialArtsGyms extends Controller
         $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] )
             ->addPixelID( $facebook_pixel_ids );
 
-        if ( $input->exists() && $input->issetField( "landing_page" ) && $inputValidator->validate(
-            $input,
+        if (
+            $input->exists() &&
+            $input->issetField( "landing_page" ) &&
+            $inputValidator->validate(
+                $input,
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -803,7 +840,6 @@ class MartialArtsGyms extends Controller
                         "phone" => true
                     ]
                 ],
-
                 "landing_page" // error index
             )
         ) {

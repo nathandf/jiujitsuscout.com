@@ -1,30 +1,34 @@
-{extends file="layouts/business-profile.tpl"}
+{extends file="layouts/core.tpl"}
 
-{block name="business-profile-head"}
-	{$facebook_pixel|default:""}
+{block name="head"}
+	<script src="{$HOME}{$JS_SCRIPTS}self-schedule.js"></script>
 {/block}
 
-{block name="business-profile-body"}
-	<h2 class="page-title">Schedule</h2>
-	<div class="schedule-container">
-	</div><!-- end schedule-container -->
-	{include file='includes/forms/sidebar-promo-form.tpl'}
-	<div class="clear"></div>
-	<div class="inner-pad-med" style="border-top: 1px solid #CCCCCC;">
-		<a class="btn btn-inline push-r-med floatright " href="{$HOME}martial-arts-gyms/{$business->site_slug}/free-class" style="margin-bottom: 0;">Free Class</a>
-		<table cellspacing="0" class="">
-			<tr>
-				<td style="padding: 0px;"><p class="text-med-heavy">Phone: </p></td>
-				<td style="padding: 0px;"><p class="text-sml push-l">+{$business->phone->country_code} {$business->phone->national_number}</p></td>
-			</tr>
-			<tr>
-				<td style="padding: 0px;"><p class="text-med-heavy">Address: </p></td>
-				<td style="padding: 0px;"><p class="text-sml push-l">{$business->address_1}, {$business->city}, {$business->region} {$business->postal_code}</p></td>
-			</tr>
-		</table>
-		<div class="clear"></div>
+{block name="body"}
+	<div class="con-cnt-med-plus-plus">
+		<div class="inner-pad-med bg-white push-t-lrg push-b-lrg mat-box-shadow" style="border: 2px solid #CCCCCC;">
+			<h2 class="title-wrapper">Schedule your first class</h2>
+			<div class="hr-full"></div>
+			<a class="--go-back link tc-deep-blue" style="display: none;">< Go back</a>
+			<div id="programs">
+				<p class="label push-t-lrg">Which program are you most interested in?</p>
+				<button class="button bg-deep-blue --choose-program --adults">Adults</button>
+				<button class="button bg-white tc-deep-blue push-t-sml --choose-program --kids" style="border: 2px solid #0667D0;">Kids</button>
+			</div>
+			<div id="adults" class="--program" style="display: none;">
+				<h2 class="title-wrapper">Adults Classes</h2>
+				<p class="label">Choose the most convenient time</p>
+				<form action="">
+					<button type="submit" class="button-link bg-deep-blue tc-white push-t-med" style="margin: 0 auto; margin-top: 25px;">Schedule Visit</button>
+				</form>
+			</div>
+			<div id="kids" class="--program" style="display: none;">
+				<h2 class="title-wrapper">Kids Classes</h2>
+				<p class="label">Choose the most convenient time</p>
+				<form action="">
+					<button type="submit" class="button-link bg-deep-blue tc-white push-t-med" style="margin: 0 auto; margin-top: 25px;">Schedule Visit</button>
+				</form>
+			</div>
+		</div>
 	</div>
-	<div class="clear"></div>
-	{include file='includes/widgets/js-google-map.tpl'}
-	<div class="clear"></div>
 {/block}

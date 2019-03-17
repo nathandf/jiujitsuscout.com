@@ -26,6 +26,7 @@ class Test extends Controller
     public function unsetAll()
     {
         unset( $_SESSION[ "respondent-token" ] );
+        unset( $_SESSION[ "landing-page-sign-up" ] );
     }
 
     public function twilio()
