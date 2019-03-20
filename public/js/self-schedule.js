@@ -18,5 +18,16 @@ $( function() {
         $( ".--program" ).hide();
         $( "#programs" ).show();
         $( ".--go-back" ).hide();
+        $( ".question-submit-kids" ).hide();
+        $( ".question-submit-adults" ).hide();
+    } );
+
+    $( ".question-choice" ).on( "click", function ( event ) {
+        if ( $( this ).hasClass( "--kid-question-choice" ) ) {
+            $( ".question-submit-kids" ).show();
+        }
+        if ( $( this ).hasClass( "--adult-question-choice" ) ) {
+            $( ".question-submit-adults" ).show();
+        }
     } );
 } );

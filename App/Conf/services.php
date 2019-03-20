@@ -1099,6 +1099,7 @@ $container->register( "mailer", function() use ( $container ) {
 $container->register( "user-mailer", function() use ( $container ) {
 	$mailerService = new \Model\Services\UserMailer(
 		$container->getService( "mailer" ),
+		$container->getService( "user-repository" ),
 		$container->getService( "config" )
 	);
 	return $mailerService;

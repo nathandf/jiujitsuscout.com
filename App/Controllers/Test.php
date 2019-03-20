@@ -92,4 +92,9 @@ class Test extends Controller
         $twilioPhoneNumberBuyer = $this->load( "twilio-phone-number-buyer" );
         $number = $twilioPhoneNumberBuyer->updateByPhoneNumber( "+13462203101" );
     }
+
+    public function checkSession()
+    {
+        vdumpd( $_SESSION );
+    }
 }
