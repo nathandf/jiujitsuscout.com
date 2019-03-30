@@ -530,6 +530,14 @@ $container->register( "landing-page-sequence-template-repository", function() us
 	return $repo;
 } );
 
+$container->register( "landing-page-sign-up-repository", function() use ( $container ) {
+	$repo = new \Model\Services\LandingPageSignUpRepository(
+	    $container->getService( "dao" ),
+	    $container->getService( "entity-factory" )
+	);
+	return $repo;
+} );
+
 $container->register( "landing-page-template-repository", function() use ( $container ) {
 	$repo = new \Model\Services\LandingPageTemplateRepository(
 	    $container->getService( "dao" ),
@@ -1091,6 +1099,7 @@ $container->register( "mailer", function() use ( $container ) {
 $container->register( "user-mailer", function() use ( $container ) {
 	$mailerService = new \Model\Services\UserMailer(
 		$container->getService( "mailer" ),
+		$container->getService( "user-repository" ),
 		$container->getService( "config" )
 	);
 	return $mailerService;

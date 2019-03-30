@@ -1,0 +1,15 @@
+.question-choice {
+	display: block;
+	margin: 0 auto;
+	width: 100%;
+	box-sizing: border-box;
+	border-radius: 3px;
+	border: 2px solid #DDDDDD;
+	margin-top: 15px;
+}
+
+input[type=radio]:checked + .question-choice {
+    border: 2px solid #0668D0;
+	background: #0668D0;
+	color: #FFFFFF;
+}

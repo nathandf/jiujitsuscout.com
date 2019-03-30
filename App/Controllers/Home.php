@@ -423,6 +423,9 @@ class Home extends Controller
             $prospectAppraiser = $this->load( "prospect-appraiser" );
             $prospectAppraiser->appraise( $prospect );
 
+            // Track this visitors information with a prospect id
+            $this->session->setSession( "prospect_id", $prospect->id );
+
             // Create a lead capture reference
             $leadCaptureBuilder->setProspectID( $prospect->id )
                 ->setBusinessID( 0 )
