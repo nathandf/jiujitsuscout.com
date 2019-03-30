@@ -371,7 +371,7 @@ class MartialArtsGyms extends Controller
                 }
                 $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "phone" ) ) );
 
-                $prospectRegistrar->add([
+                $prospect = $prospectRepo->insert([
                     "first_name" => $input->get( "name" ),
                     "email" => strtolower( $input->get( "email" ) ),
                     "phone_id" => $phone->id,
@@ -379,7 +379,8 @@ class MartialArtsGyms extends Controller
                     "source" => "JiuJitsuScout Profile"
                 ]);
 
-                $prospect = $prospectRegistrar->getProspect();
+                // Track this visitors information with a prospect id
+                $this->session->setSession( "prospect_id", $prospect->id );
 
                 // Create a lead capture reference
                 $leadCaptureBuilder->isProfile()
@@ -391,6 +392,45 @@ class MartialArtsGyms extends Controller
                 $respondent = $respondentRepo->getByToken(
                     $this->session->getSession( "respondent-token" )
                 );
+
+                // Check for a respondent registration. If one doesnt exist, create it
+                $respondentRegistration = $respondentRegistrationRepo->get(
+                    [ "*" ],
+                    [ "respondent_id" => $respondent->id ],
+                    "single"
+                );
+
+                if ( is_null( $respondentRegistration ) ) {
+                    // Create a new phone for the respondent registration from the
+                    // prospects phone
+                    $registrantsPhone = $phoneRepo->insert([
+                        "country_code" => $phone->country_code,
+                        "national_number" => $phone->national_number
+                    ]);
+
+                    $respondentRegistration = $respondentRegistrationRepo->insert([
+                        "respondent_id" => $respondent->id,
+                        "first_name" => $prospect->getFirstName(),
+                        "last_name" => $prospect->getLastName(),
+                        "email" => $prospect->email,
+                        "phone_id" => $registrantsPhone->id
+                    ]);
+                }
+
+                $respondentBusinessRegistration = $respondentBusinessRegistrationRepo->get(
+                    [ "*" ],
+                    [ "respondent_id" => $respondent->id, "business_id" => $this->business->id ],
+                    "single"
+                );
+
+                if ( is_null( $respondentBusinessRegistration ) ) {
+                    // Create a repsondent business registration if one doesn't
+                    // exist
+                    $respondentBusinessRegistration = $respondentBusinessRegistrationRepo->insert([
+                        "respondent_id" => $respondent->id,
+                        "business_id" => $this->business->id
+                    ]);
+                }
 
                 $respondentRepo->updateProspectIDByID( $respondent->id, $prospect->id );
 
@@ -556,18 +596,28 @@ class MartialArtsGyms extends Controller
                 "confirm_registration"
             )
         ) {
+            $registrantsPhone = $phoneRepo->get( [ "*" ], [ "id" => $respondentRegistration->phone_id ], "single" );
+
+            // Create a new phone entity for this new prospect from the old phone.
+            // If you use the old phone id, when one business updates a prospects phone details,
+            // it will be updated accross all accounts. This is not good.
+            $newPhone = $phoneRepo->insert([
+                "country_code" => $registrantsPhone->country_code,
+                "national_number" => $registrantsPhone->national_number
+            ]);
+
             // Use the details the respondent regsistered with to create the prospect
             $prospect = $prospectRepo->insert([
                 "business_id" => $this->business->id,
                 "first_name" => $respondentRegistration->first_name,
                 "last_name" => $respondentRegistration->last_name,
                 "email" => $respondentRegistration->email,
-                "phone_id" => $respondentRegistration->phone_id,
+                "phone_id" => $newPhone->id,
                 "source" => "JiuJitsuScout Profile",
                 "requires_purchase" => 1
             ]);
 
-            $prospect->phone = $phoneRepo->get( [ "*" ], [ "id" => $respondentRegistration->phone_id ], "single" );
+            $prospect->phone = $newPhone;
 
             // Update the respondent's prospect id to the new prospect's id. This
             // will ensue all actions taken after initially becoming a prospect are
@@ -575,6 +625,8 @@ class MartialArtsGyms extends Controller
             $respondentRepo->update( [ "prospect_id" => $prospect->id ], [ "id" => $respondent->id ] );
 
             $prospectAppraiser->appraise( $prospect );
+
+            $this->session->setSession( "prospect_id", $prospect->id );
 
             // Add this business id to the list of business ids for which this person
             // has registred and become a prospect
@@ -722,6 +774,126 @@ class MartialArtsGyms extends Controller
         $this->view->render( "App/Views/MartialArtsGyms.php" );
     }
 
+    public function scheduleVisitAction()
+    {
+        $config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+        $input = $this->load( "input" );
+        $inputValidator = $this->load( "input-validator" );
+        $userMailer = $this->load( "user-mailer" );
+        $prospectRepo = $this->load( "prospect-repository" );
+        $businessRepo = $this->load( "business-repository" );
+        $phoneRepo = $this->load( "phone-repository" );
+
+        $facebookPixelBuilder->addPixelID([ $config::$configs[ "facebook" ][ "jjs_pixel_id" ] ]);
+
+        if ( is_null( $this->session->getSession( "prospect_id" ) ) ) {
+            $this->view->redirect( "student-registration" );
+        }
+
+        $prospect = $prospectRepo->get( [ "*" ], [ "id" => $this->session->getSession( "prospect_id" ) ], "single" );
+        $prospect->phone = $phoneRepo->get( [ "*" ], [ "id" => $prospect->phone_id ], "single" );
+
+        if (
+            $input->exists() &&
+            $inputValidator->validate(
+                $input,
+                [
+                    "token" => [
+                        "equals-hidden" => $this->session->getSession( "csrf-token" ),
+                        "required" => true
+                    ],
+                    "program" => [
+                        "requried" => true,
+                        "in_array" => [ "kids", "adults" ]
+                    ],
+                    "schedule_time" => [
+                        "required" => true
+                    ]
+                ],
+                "self_schedule"
+            )
+        ) {
+            $program_time = "";
+            $program = $input->get( "program" );
+            switch ( $program ) {
+                case "kids":
+                    $program_time = "Afternoon";
+                    break;
+                case "adults":
+                    $program_time = "Evening";
+                    break;
+            }
+
+            $scheduled_time = "";
+
+            switch ( $input->get( "schedule_time" ) ) {
+                case "today":
+                    $scheduled_time = "today - " . $program_time;
+                    break;
+                case "tomorrow":
+                    $scheduled_time = "tomorrow - "  . $program_time;
+                    break;
+                case "days":
+                    $scheduled_time = "within the next 3 days - " . $program_time;
+                    break;
+                case "later":
+                    $scheduled_time = "in 3 days or more - " . $program_time;
+                    break;
+            }
+
+            if ( $prospect->requires_purchase ) {
+                $userMailer->sendUnpurchasedSelfScheduleNotification(
+                    explode( ",", $this->business->user_notification_recipient_ids ),
+                    [
+                        "id" => $prospect->id,
+                        "time" => $scheduled_time,
+                        "program" => ucfirst( $program )
+                    ]
+                );
+
+                $this->view->redirect( "martial-arts-gyms/" . $this->business->id . "/schedule-success" );
+            }
+
+            $userMailer->sendSelfScheduleNotification(
+                explode( ",", $this->business->user_notification_recipient_ids ),
+                [
+                    "id" => $prospect->id,
+                    "name" => $prospect->getFullName(),
+                    "email" => $prospect->email,
+                    "phone" => $prospect->phone->getNicePhoneNumber(),
+                    "time" => $scheduled_time,
+                    "program" => ucfirst( $program )
+                ]
+            );
+
+            $this->view->redirect( "martial-arts-gyms/" . $this->business->id . "/schedule-success" );
+        }
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+        $this->view->assign( "csrf_token", $this->session->generateCSRFToken() );
+
+        $this->view->setTemplate( "martial-arts-gyms/schedule.tpl" );
+        $this->view->render( "App/Views/MartialArtsGyms.php" );
+    }
+
+    public function scheduleSuccessAction()
+    {
+        $config = $this->load( "config" );
+        $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
+
+        $facebookPixelBuilder->addPixelID([ $config::$configs[ "facebook" ][ "jjs_pixel_id" ] ]);
+
+        $facebookPixelBuilder->addCustomEvent([
+            "SelfSchedule"
+        ]);
+
+        $this->view->assign( "facebook_pixel", $facebookPixelBuilder->build() );
+
+        $this->view->setTemplate( "martial-arts-gyms/schedule-success.tpl" );
+        $this->view->render( "App/Views/MartialArtsGyms.php" );
+    }
+
     public function promoAction()
     {
         $Config = $this->load( "config" );
@@ -732,6 +904,7 @@ class MartialArtsGyms extends Controller
         $facebookPixelBuilder = $this->load( "facebook-pixel-builder" );
         $facebookPixelRepo = $this->load( "facebook-pixel-repository" );
         $landingPageFacebookPixelRepo = $this->load( "landing-page-facebook-pixel-repository" );
+        $landingPageSignUpRepo = $this->load( "landing-page-sign-up-repository" );
         $landingPageRepo = $this->load( "landing-page-repository" );
         $leadCaptureBuilder = $this->load( "lead-capture-builder" );
 
@@ -750,6 +923,22 @@ class MartialArtsGyms extends Controller
         // Render 404 page if there is no landing page with this slug and business_id
         if ( is_null( $landingPage ) ) {
             $this->view->render404();
+        }
+
+        // Check if this visitor has signed up on this landing page. If so, send
+        // them back to the thank you page.
+        if ( !is_null( $this->session->getSession( "landing-page-sign-up" ) ) ) {
+            $landingPageSignUp = $landingPageSignUpRepo->get(
+                [ "*" ],
+                [
+                    "token" => $this->session->getSession( "landing-page-sign-up" ),
+                    "landing_page_id" => $landingPage->id
+                ]
+            );
+
+            if ( !is_null( $landingPageSignUp ) ) {
+                $this->view->redirect( "martial-arts-gyms/" . $this->business->id . "/promo/" . $this->params[ "slug" ] . "/thank-you" );
+            }
         }
 
         // Get all the references to the facebook pixels used for this landing page
@@ -779,8 +968,11 @@ class MartialArtsGyms extends Controller
         $facebookPixelBuilder->addPixelID( $Config::$configs[ "facebook" ][ "jjs_pixel_id" ] )
             ->addPixelID( $facebook_pixel_ids );
 
-        if ( $input->exists() && $input->issetField( "landing_page" ) && $inputValidator->validate(
-            $input,
+        if (
+            $input->exists() &&
+            $input->issetField( "landing_page" ) &&
+            $inputValidator->validate(
+                $input,
                 [
                     "token" => [
                         "equals-hidden" => $this->session->getSession( "csrf-token" ),
@@ -803,7 +995,6 @@ class MartialArtsGyms extends Controller
                         "phone" => true
                     ]
                 ],
-
                 "landing_page" // error index
             )
         ) {
@@ -820,6 +1011,26 @@ class MartialArtsGyms extends Controller
                 "phone_id" => $phone->id,
                 "source" => $landingPage->name
             ]);
+
+            // If the name provided has spaces in it, it's probably a full name.
+            // Break it up into a first and last name if possible and update the
+            // prospect in the database.
+            $prospect->setNamesFromFullName( $input->get( "name" ) );
+
+            if (
+                !is_null( $prospect->getFirstName() ) &&
+                !is_null( $prospect->getLastName() )
+            ) {
+                $prospectRepo->update(
+                    [
+                        "first_name" => $prospect->getFirstName(),
+                        "last_name" => $prospect->getLastName()
+                    ],
+                    [
+                        "id" => $prospect->id
+                    ]
+                );
+            }
 
             // Create lead capture reference
             $leadCaptureBuilder->setProspectID( $prospect->id )
@@ -892,6 +1103,9 @@ class MartialArtsGyms extends Controller
                     $landingPageSequenceTemplate->sequence_template_id
                 );
             }
+
+            // Track the prospect via session
+            $this->session->setSession( "prospect_id", $prospect->id );
 
             $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/promo/" . $landingPage->slug . "/thank-you" );
         }
@@ -982,7 +1196,7 @@ class MartialArtsGyms extends Controller
 
             // Get the users that require email lead notifications
             $users = [];
-            $user_ids = explode( ",", $this->business->user_notification_recipient_ids );
+            $user_ids = explode( $this->business->user_notification_recipient_ids );
 
             // Populate users array with users data
             foreach ( $user_ids as $user_id ) {

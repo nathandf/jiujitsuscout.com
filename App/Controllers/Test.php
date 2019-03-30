@@ -26,6 +26,7 @@ class Test extends Controller
     public function unsetAll()
     {
         unset( $_SESSION[ "respondent-token" ] );
+        unset( $_SESSION[ "landing-page-sign-up" ] );
     }
 
     public function twilio()
@@ -90,5 +91,10 @@ class Test extends Controller
     {
         $twilioPhoneNumberBuyer = $this->load( "twilio-phone-number-buyer" );
         $number = $twilioPhoneNumberBuyer->updateByPhoneNumber( "+13462203101" );
+    }
+
+    public function checkSession()
+    {
+        vdumpd( $_SESSION );
     }
 }

@@ -7,10 +7,15 @@ class UserMailer
 
     public $mailer;
     public $configs;
+    private $userRepo;
 
-    public function __construct( \Contracts\MailerInterface $mailer, \Conf\Config $Config )
-    {
+    public function __construct(
+        \Contracts\MailerInterface $mailer,
+        \Model\Services\UserRepository $userRepo,
+        \Conf\Config $Config
+    ) {
         $this->setMailer( $mailer );
+        $this->userRepo = $userRepo;
         $this->configs = $Config::$configs[ "email_settings" ][ $Config::getEnv() ];
     }
 
@@ -306,4 +311,97 @@ class UserMailer
         return true;
     }
 
+    public function sendUnpurchasedSelfScheduleNotification( array $user_ids, array $prospect_info )
+    {
+        $message = '
+            <div>
+                <h2 style="margin-bottom: 20px;">This lead has scheduled themselves to visit your gym</h2>
+                <table cellspacing=0 style="width: 300px; background: #f6f7f9; border-collapse: collapse; table-layout: fixed; border: 1px solid #CCCCCC; box-sizing: border-box; padding: 15px; display: block; margin-left: 20px;">
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Scheduled Time:</td>
+                        <td>' . $prospect_info[ "time" ] . '</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Program of Interest</td>
+                        <td>' . $prospect_info[ "program" ] . '</td>
+                    </tr>
+                </table>
+
+                <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
+                    <tr>
+                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #0667D4; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+                    </tr>
+                </table>
+            </div>
+        ';
+
+        foreach ( $user_ids as $user_id ) {
+            $user = $this->userRepo->get( [ "*" ], [ "id" => $user_id ], "single" );
+            if ( !is_null( $user ) ) {
+                $this->mailer->setRecipientName( $user->getFullName() );
+                $this->mailer->setRecipientEmailAddress( $user->email );
+                $this->mailer->setSenderName( "JiuJitsuScout" );
+                $this->mailer->setSenderEmailAddress( "noreply@jiujitsuscout.com" );
+                $this->mailer->setContentType( "text/html" );
+                $this->mailer->setEmailSubject( "Your unpurchased lead is ready to visit business!" );
+                $this->mailer->setEmailBody( $message );
+                $this->mailer->mail();
+            }
+        }
+
+        return;
+    }
+
+    public function sendSelfScheduleNotification( array $user_ids, array $prospect_info )
+    {
+        $message = '
+            <div>
+                <h2 style="margin-bottom: 20px;">' . $prospect_info[ "name" ] . ' has scheduled themselves to visit your business!</h2>
+                <table cellspacing=0 style="width: 300px; background: #f6f7f9; border-collapse: collapse; table-layout: fixed; border: 1px solid #CCCCCC; box-sizing: border-box; padding: 15px; display: block; margin-left: 20px;">
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Name:</td>
+                        <td>' . $prospect_info[ "name" ] . '</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Email:</td>
+                        <td>' . $prospect_info[ "email" ] . '</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Phone Number:</td>
+                        <td>' . $prospect_info[ "phone" ] . '</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Program of Interest</td>
+                        <td>' . $prospect_info[ "program" ] . '</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; padding: 15px;">Scheduled Time</td>
+                        <td>' . $prospect_info[ "time" ] . '</td>
+                    </tr>
+                </table>
+
+                <table cellspacing=0 style="border-collapse: collapse; table-layout: fixed; display: table; margin-left: 20px; margin-top: 20px;">
+                    <tr>
+                        <td><a href="' . $this->configs[ "url_prefix" ] . 'account-manager/business/lead/' . $prospect_info[ "id" ] . '/" style="background: #0667D4; color: #FFFFFF; text-align: center; border-radius: 3px; display: block; width: 300px; height: 40px; line-height: 40px; font-size: 15px; font-weight: 600; text-decoration: none;">View in Account Manager</a></td>
+                    </tr>
+                </table>
+            </div>
+        ';
+
+        foreach ( $user_ids as $user_id ) {
+            $user = $this->userRepo->get( [ "*" ], [ "id" => $user_id ], "single" );
+            if ( !is_null( $user ) ) {
+                $this->mailer->setRecipientName( $user->getFullName() );
+                $this->mailer->setRecipientEmailAddress( $user->email );
+                $this->mailer->setSenderName( "JiuJitsuScout" );
+                $this->mailer->setSenderEmailAddress( "noreply@jiujitsuscout.com" );
+                $this->mailer->setContentType( "text/html" );
+                $this->mailer->setEmailSubject( $prospect_info[ "name" ] . " scheduled themselves - " . $prospect_info[ "time" ] );
+                $this->mailer->setEmailBody( $message );
+                $this->mailer->mail();
+            }
+        }
+
+        return;
+    }
 }

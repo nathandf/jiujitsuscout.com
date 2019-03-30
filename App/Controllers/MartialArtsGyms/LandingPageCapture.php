@@ -55,21 +55,26 @@ class LandingPageCapture extends Controller
 
     public function thankYouAction()
     {
-        $this->facebookPixelBuilder->addEvent([
-            "Lead"
-        ]);
+        $landingPageSignUpRepo = $this->load( "landing-page-sign-up-repository" );
+
+        // Check if this visitor has signed up on this landing page. If not, create
+        // a landing page sign up and add the token to a session
+        if ( is_null( $this->session->getSession( "landing-page-sign-up" ) ) ) {
+            // Only track lead once
+            $this->facebookPixelBuilder->addEvent([
+                "Lead"
+            ]);
+
+            $token = $this->session->generateToken();
+            $landingPageSignUpRepo->insert([
+                "landing_page_id" => $this->params[ "id" ],
+                "token" => $token
+            ]);
+
+            $this->session->setSession( "landing-page-sign-up", $token );
+        }
 
         $this->view->assign( "facebook_pixel", $this->facebookPixelBuilder->build() );
-        $this->view->setTemplate( "martial-arts-gyms/landing-page/thank-you.tpl" );
-    }
-
-    public function scheduleVisitAction()
-    {
-        $this->facebookPixelBuilder->addCustomEvent([
-            "SelfSchedule"
-        ]);
-
-        $this->view->assign( "facebook_pixel", $this->facebookPixelBuilder->build() );
-        $this->view->setTemplate( "martial-arts-gyms/landing-page/schedule.tpl" );
+        $this->view->setTemplate( "martial-arts-gyms/thank-you.tpl" );
     }
 }

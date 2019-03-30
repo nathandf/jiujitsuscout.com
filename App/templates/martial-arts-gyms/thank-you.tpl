@@ -1,11 +1,12 @@
-{extends file="layouts/business-profile.tpl"}
+{extends file="layouts/core.tpl"}
 
-{block name="business-profile-body"}
-	<h2 class="page-title">Thank You</h2>
-	<div class="thank-you-container">
-		<div class="thank-you-header"><p>Thanks!</p></div>
-		<div class="thank-you-message">{$thank_you_message|default:"We've recieved your request and will be in touch with you very soon!"}<br><br>Contact us at <b style="color: #444;">{$business->phone_number}</b></div>
-	</div><!-- end thank-you-container -->
-
-	<div class="clear"></div>
+{block name="body"}
+	{include file="includes/navigation/main-menu.tpl"}
+	<div class="con-cnt-med-plus-plus">
+		<div class="inner-pad-med bg-white push-t-lrg push-b-lrg mat-box-shadow" style="border: 2px solid #CCCCCC;">
+			<h2 class="title-wrapper">Thanks! We recieved your request and we'll get in touch with you ASAP!</h2>
+			<div class="push-t-lrg"></div>
+			<a class="button-link bg-good-green tc-white" style="display: block; margin: 0 auto;" href="{$HOME}martial-arts-gyms/{$business->id}/schedule-visit">Schedule your first free class</a>
+		</div>
+	</div>
 {/block}
