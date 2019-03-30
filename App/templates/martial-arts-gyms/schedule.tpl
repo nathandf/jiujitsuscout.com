@@ -30,8 +30,8 @@
 					<label for="default-question-2-adult" style="display: block;" class="question-choice --adult-question-choice mat-hov inner-pad-sml push-t-med cursor-pt h3">Tomorrow - Evening</label>
 					<input class="question-choice-input" style="display: none;" id="default-question-3-adult" type="radio" name="schedule_time" value="days">
 					<label for="default-question-3-adult" style="display: block;" class="question-choice --adult-question-choice mat-hov inner-pad-sml push-t-med cursor-pt h3">Within the next 3 days</label>
-					<input class="question-choice-input" style="display: none;" id="default-question-3-adult" type="radio" name="schedule_time" value="later">
-					<label for="default-question-3-adult" style="display: block;" class="question-choice --adult-question-choice mat-hov inner-pad-sml push-t-med cursor-pt h3">3 or more days from today</label>
+					<input class="question-choice-input" style="display: none;" id="default-question-4-adult" type="radio" name="schedule_time" value="later">
+					<label for="default-question-4-adult" style="display: block;" class="question-choice --adult-question-choice mat-hov inner-pad-sml push-t-med cursor-pt h3">3 or more days from today</label>
 					{/if}
 					<button type="submit" class="question-submit-adults button-link bg-deep-blue tc-white push-t-med" style="margin: 0 auto; margin-top: 25px; display: none;">Schedule Visit</button>
 				</form>

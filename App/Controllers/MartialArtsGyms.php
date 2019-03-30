@@ -371,15 +371,13 @@ class MartialArtsGyms extends Controller
                 }
                 $phone = $phoneRepo->create( $this->business->phone->country_code, preg_replace( "/[^0-9]/", "", $input->get( "phone" ) ) );
 
-                $prospectRegistrar->add([
+                $prospect = $prospectRepo->insert([
                     "first_name" => $input->get( "name" ),
                     "email" => strtolower( $input->get( "email" ) ),
                     "phone_id" => $phone->id,
                     "business_id" => $this->business->id,
                     "source" => "JiuJitsuScout Profile"
                 ]);
-
-                $prospect = $prospectRegistrar->getProspect();
 
                 // Track this visitors information with a prospect id
                 $this->session->setSession( "prospect_id", $prospect->id );
@@ -394,6 +392,45 @@ class MartialArtsGyms extends Controller
                 $respondent = $respondentRepo->getByToken(
                     $this->session->getSession( "respondent-token" )
                 );
+
+                // Check for a respondent registration. If one doesnt exist, create it
+                $respondentRegistration = $respondentRegistrationRepo->get(
+                    [ "*" ],
+                    [ "respondent_id" => $respondent->id ],
+                    "single"
+                );
+
+                if ( is_null( $respondentRegistration ) ) {
+                    // Create a new phone for the respondent registration from the
+                    // prospects phone
+                    $registrantsPhone = $phoneRepo->insert([
+                        "country_code" => $phone->country_code,
+                        "national_number" => $phone->national_number
+                    ]);
+
+                    $respondentRegistration = $respondentRegistrationRepo->insert([
+                        "respondent_id" => $respondent->id,
+                        "first_name" => $prospect->getFirstName(),
+                        "last_name" => $prospect->getLastName(),
+                        "email" => $prospect->email,
+                        "phone_id" => $registrantsPhone->id
+                    ]);
+                }
+
+                $respondentBusinessRegistration = $respondentBusinessRegistrationRepo->get(
+                    [ "*" ],
+                    [ "respondent_id" => $respondent->id, "business_id" => $this->business->id ],
+                    "single"
+                );
+
+                if ( is_null( $respondentBusinessRegistration ) ) {
+                    // Create a repsondent business registration if one doesn't
+                    // exist
+                    $respondentBusinessRegistration = $respondentBusinessRegistrationRepo->insert([
+                        "respondent_id" => $respondent->id,
+                        "business_id" => $this->business->id
+                    ]);
+                }
 
                 $respondentRepo->updateProspectIDByID( $respondent->id, $prospect->id );
 
@@ -778,7 +815,8 @@ class MartialArtsGyms extends Controller
             )
         ) {
             $program_time = "";
-            switch ( $input->get( "schedule_time" ) ) {
+            $program = $input->get( "program" );
+            switch ( $program ) {
                 case "kids":
                     $program_time = "Afternoon";
                     break;
@@ -791,17 +829,30 @@ class MartialArtsGyms extends Controller
 
             switch ( $input->get( "schedule_time" ) ) {
                 case "today":
-                    $scheduled_time = "today in the " . $program_time;
+                    $scheduled_time = "today - " . $program_time;
                     break;
                 case "tomorrow":
-                    $scheduled_time = "tomorrow  in the " . $program_time;
+                    $scheduled_time = "tomorrow - "  . $program_time;
                     break;
                 case "days":
-                    $scheduled_time = "within the next 3 days  in the " . $program_time;
+                    $scheduled_time = "within the next 3 days - " . $program_time;
                     break;
                 case "later":
-                    $scheduled_time = "in 3 days or more  in the " . $program_time;
+                    $scheduled_time = "in 3 days or more - " . $program_time;
                     break;
+            }
+
+            if ( $prospect->requires_purchase ) {
+                $userMailer->sendUnpurchasedSelfScheduleNotification(
+                    explode( ",", $this->business->user_notification_recipient_ids ),
+                    [
+                        "id" => $prospect->id,
+                        "time" => $scheduled_time,
+                        "program" => ucfirst( $program )
+                    ]
+                );
+
+                $this->view->redirect( "martial-arts-gyms/" . $this->business->id . "/schedule-success" );
             }
 
             $userMailer->sendSelfScheduleNotification(
@@ -811,7 +862,8 @@ class MartialArtsGyms extends Controller
                     "name" => $prospect->getFullName(),
                     "email" => $prospect->email,
                     "phone" => $prospect->phone->getNicePhoneNumber(),
-                    "time" => $scheduled_time
+                    "time" => $scheduled_time,
+                    "program" => ucfirst( $program )
                 ]
             );
 
@@ -960,6 +1012,26 @@ class MartialArtsGyms extends Controller
                 "source" => $landingPage->name
             ]);
 
+            // If the name provided has spaces in it, it's probably a full name.
+            // Break it up into a first and last name if possible and update the
+            // prospect in the database.
+            $prospect->setNamesFromFullName( $input->get( "name" ) );
+
+            if (
+                !is_null( $prospect->getFirstName() ) &&
+                !is_null( $prospect->getLastName() )
+            ) {
+                $prospectRepo->update(
+                    [
+                        "first_name" => $prospect->getFirstName(),
+                        "last_name" => $prospect->getLastName()
+                    ],
+                    [
+                        "id" => $prospect->id
+                    ]
+                );
+            }
+
             // Create lead capture reference
             $leadCaptureBuilder->setProspectID( $prospect->id )
                 ->setLandingPageID( $landingPage->id )
@@ -1031,6 +1103,9 @@ class MartialArtsGyms extends Controller
                     $landingPageSequenceTemplate->sequence_template_id
                 );
             }
+
+            // Track the prospect via session
+            $this->session->setSession( "prospect_id", $prospect->id );
 
             $this->view->redirect( "martial-arts-gyms/" . $this->redirect_uri . "/promo/" . $landingPage->slug . "/thank-you" );
         }
