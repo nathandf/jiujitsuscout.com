@@ -222,6 +222,10 @@ class Form extends Controller
                 );
             }
 
+            if ( !is_null( $embeddableForm->redirect ) ) {
+                $this->view->externalRedirect( $embeddableForm->redirect );
+            }
+
             $this->view->redirect( "martial-arts-gyms/" . $business->id . "/" . "thank-you" );
         }
         // TODO This is tempory until user is redirect back to page from which they submitted the form
