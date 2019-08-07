@@ -39,6 +39,12 @@ class View extends CoreObject
         exit();
     }
 
+    public function externalRedirect( $redirect_url )
+    {
+        header( "Location: " . $redirect_url );
+        exit();
+    }
+
     /**
      *
      */
