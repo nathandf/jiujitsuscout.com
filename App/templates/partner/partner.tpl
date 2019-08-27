@@ -14,7 +14,7 @@
 		<div id="get-started" class="clear"></div>
 		<div>
 			<div class="con-cnt-lrg inner-pad-med">
-				<p class="title">A better way market your gym</p>
+				<p class="title">A better way to market your gym</p>
 				<p class="sub-title push-t-lrg">The Lead Generating. Follow-up Automating. Growth Stimulating. Marketing Automation platform for martial arts businesses.</p>
 			</div>
 			<div class="con-cnt-med-plus-plus border-std inner-pad-med bg-white push-t-med">
